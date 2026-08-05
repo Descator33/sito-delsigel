@@ -1,0 +1,289 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
+import {
+  statoDaPathname,
+  type FotoFarciture,
+  type FotoStati,
+} from "@/lib/configuratore";
+import { Banco } from "./Banco";
+import { Intro } from "./Intro";
+import { PassoBase, type DragPasso } from "./PassoBase";
+import { PassoFarcitura } from "./PassoFarcitura";
+import { PassoFinitura } from "./PassoFinitura";
+import { Selettore } from "./Selettore";
+import type { Punto } from "./TesseraScelta";
+
+/**
+ * L'isola client del configuratore. Lo stato prodotto NON è uno state:
+ * si deriva dal pathname, che è l'unica sorgente di verità — i passi
+ * avanzano con history.pushState (integrato nel router di Next, si
+ * sincronizza con usePathname) e il Back/Forward del browser funziona
+ * da solo. Restano client-only le cose di sessione: quantità in pedane,
+ * apertura del modulo, avviso di farcitura non più disponibile.
+ *
+ * Il passo 2 si attraversa SEMPRE, anche per le basi a farcitura unica:
+ * la scorciatoia del push diretto all'URL completo (prevista dalla spec)
+ * è stata tolta il 2026-08-02 — comporre il dolce con lo stesso gesto,
+ * un trascinamento per la base e uno per la farcitura, vale più del
+ * passo risparmiato, e una scelta fatta al posto dell'utente peggiora
+ * la UX anche quando l'opzione è una sola.
+ *
+ * Stessa decisione, stessa data, per la FINITURA: la ricetta decide
+ * quale sia, ma non si applica mai da sola — al passo 3 il dolce resta
+ * senza finitura finché l'utente non la trascina (o tocca) sul palco.
+ * È l'unico pezzo di stato prodotto che NON vive nell'URL: lo SKU non
+ * cambia, quindi è stato client (`finituraApplicata`) e si riazzera con
+ * lo SKU — dopo un reload o su un link condiviso il gesto si rifà, ed è
+ * il comportamento voluto.
+ *
+ * IMPAGINATO (redesign 2026-08-04) — tre aree, come la reference:
+ * l'insegna a sinistra, il palco al centro (l'elemento dominante) e la
+ * colonna delle scelte a destra. Sotto xl le tre colonne diventano due
+ * (insegna a tutta larghezza, poi palco e scelte), e sotto lg una sola
+ * pila: insegna, palco, prodotti. Quando il dolce è finito e restano
+ * solo i numeri, la terza colonna si allarga a spese del palco: lì il
+ * contenuto è un modulo, non una griglia di tessere.
+ *
+ * Con un puntatore fine le tessere si possono anche TRASCINARE sul
+ * palco — il rilascio riuscito chiama le stesse scegliBase /
+ * scegliFarcitura del click, quindi per l'URL (e per il Back) i due
+ * gesti sono indistinguibili. Il hit-test confronta le coordinate di
+ * pagina del puntatore (info.point di motion) con il rect del palco
+ * riportato in coordinate di pagina.
+ */
+export function Configuratore({
+  foto,
+  fotoFarciture,
+}: {
+  /** stato → URL foto, scoperta dal server nelle cartelle di
+   *  public/img/configuratore/prodotti/: chiave assente = niente foto */
+  foto: FotoStati;
+  /** farcitura → URL della foto dell'ingrediente da solo (cartelle di
+   *  public/img/configuratore/farciture/), per le tessere del passo 2 */
+  fotoFarciture: FotoFarciture;
+}) {
+  const pathname = usePathname();
+  const { base, comb } = useMemo(() => statoDaPathname(pathname), [pathname]);
+  const passo = comb ? 3 : base ? 2 : 1;
+
+  /* quantità proposta: il minimo dove esiste, 1 altrove — lazy init così
+     il primo render (anche server) è già giusto, senza flicker */
+  const [pedane, setPedane] = useState<number | "">(() =>
+    comb ? (comb.ordine_minimo_pedane ?? 1) : ""
+  );
+  const [moduloAperto, setModuloAperto] = useState(false);
+  const [finituraApplicata, setFinituraApplicata] = useState(false);
+
+  /* cambiare prodotto azzera quantità e modulo: minimo, pesi e catena
+     logistica sono della combinazione, un numero trascinato sembrerebbe
+     confermato e non lo è. Adeguamento durante il render, non in effect:
+     niente frame intermedio con i dati del prodotto precedente. */
+  const sku = comb?.sku ?? null;
+  const [skuPrecedente, setSkuPrecedente] = useState(sku);
+  if (sku !== skuPrecedente) {
+    setSkuPrecedente(sku);
+    setPedane(comb ? (comb.ordine_minimo_pedane ?? 1) : "");
+    setModuloAperto(false);
+    setFinituraApplicata(false);
+  }
+
+  /* avviso discreto per l'URL con farcitura non più disponibile: arriva
+     dal redirect server come ?nd=…, si legge una volta e si pulisce l'URL */
+  const [avviso, setAvviso] = useState<string | null>(null);
+  useEffect(() => {
+    /* lettura una-tantum di un sistema esterno (l'URL), impossibile in
+       SSR senza mismatch di idratazione: l'effect è il posto giusto */
+    const nd = new URLSearchParams(window.location.search).get("nd");
+    if (nd) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAvviso(
+        "La farcitura del link che hai aperto non è più disponibile per questa base: scegline una tra quelle a listino."
+      );
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
+
+  /* il drag è un'aggiunta per puntatori fini: sul touch litigherebbe con
+     lo scroll, e il tap resta la selezione. Falso in SSR e finché non si
+     idrata: le tessere diventano trascinabili dopo, ed è voluto. */
+  const dragDisponibile = usePuntatoreFine();
+  const palcoRef = useRef<HTMLDivElement | null>(null);
+  const [sopraPalco, setSopraPalco] = useState(false);
+
+  const dentroPalco = (p: Punto) => {
+    const el = palcoRef.current;
+    if (!el) return false;
+    const r = el.getBoundingClientRect();
+    const x = p.x - window.scrollX;
+    const y = p.y - window.scrollY;
+    return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+  };
+
+  const vaiA = (path: string) => window.history.pushState(null, "", path);
+
+  const scegliBase = (id: string) => vaiA(`/configuratore/${id}`);
+
+  const scegliFarcitura = (id: string) => {
+    if (base) vaiA(`/configuratore/${base.id}/${id}`);
+  };
+
+  const dragTessere: DragPasso = dragDisponibile
+    ? {
+        onSposta: (p) => setSopraPalco(dentroPalco(p)),
+        onRilascia: (id, p) => {
+          setSopraPalco(false);
+          if (!dentroPalco(p)) return false;
+          if (passo === 1) scegliBase(id);
+          else if (passo === 2) scegliFarcitura(id);
+          /* al passo 3 l'id è quello del topping ma non serve: la
+             finitura possibile è una sola, il gesto è la scelta */ else
+            setFinituraApplicata(true);
+          return true;
+        },
+      }
+    : null;
+
+  const apriPasso = (n: 1 | 2) => {
+    setAvviso(null);
+    if (n === 1) vaiA("/configuratore");
+    else if (base) vaiA(`/configuratore/${base.id}`);
+  };
+
+  const ricomincia = () => {
+    setAvviso(null);
+    vaiA("/configuratore");
+  };
+
+  /* la fase «numeri» è l'unica in cui la colonna delle scelte non è una
+     griglia di tessere ma un modulo: prende spazio al palco, che qui ha
+     finito il suo lavoro e resta come conferma di quel che si ordina */
+  const numeri = passo === 3 && finituraApplicata;
+
+  const titoloSelettore =
+    passo === 1
+      ? "Scegli la tua base"
+      : passo === 2
+        ? "Scegli la farcitura"
+        : numeri
+          ? "Formato e quantità"
+          : "Metti la finitura";
+
+  return (
+    <section className="mx-auto max-w-[1800px] px-6 pb-28 pt-28 md:px-12 md:pb-40 md:pt-32">
+      {/* chi naviga con lo screen reader deve sapere che il contenuto
+          sotto è cambiato senza che la pagina sia stata ricaricata */}
+      <p aria-live="polite" className="sr-only">
+        Passo {passo} di 3 — {titoloSelettore}
+      </p>
+
+      {avviso && (
+        <p
+          role="status"
+          className="mb-10 rounded-[18px] border border-linea border-l-[4px] border-l-corallo-scena bg-carta px-5 py-4 text-[13px] leading-relaxed"
+        >
+          {avviso}
+        </p>
+      )}
+
+      {/* grid-cols-1 esplicito e min-w-0 sulle colonne: il palco ha
+          aspect-ratio E min-height, quindi la sua larghezza intrinseca
+          vale 465px — con una traccia `auto` la griglia ci si allarga
+          sopra e sul telefono la colonna dei prodotti finisce tagliata
+          dall'overflow-x-clip della pagina. minmax(0,1fr) toglie il
+          minimo automatico e il palco torna a seguire la colonna. */}
+      <div
+        className={`grid grid-cols-1 items-start gap-x-8 gap-y-16 ${
+          numeri
+            ? "lg:grid-cols-2 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.7fr)_minmax(0,1.9fr)]"
+            : "lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,1fr)_minmax(0,2.15fr)_minmax(0,1.3fr)]"
+        }`}
+      >
+        <div className="min-w-0 lg:col-span-2 xl:col-span-1">
+          <Intro />
+        </div>
+
+        {/* impilato (sotto lg) il palco si tiene una misura da vetrina e
+            resta centrato: a tutta larghezza su un tablet diventerebbe
+            un quadrato di 900px, dominante fino a essere ingombrante */}
+        <div
+          className={`mx-auto w-full min-w-0 max-w-[620px] lg:max-w-none ${
+            numeri ? "xl:sticky xl:top-24" : ""
+          }`}
+        >
+          <Banco
+            ref={palcoRef}
+            base={base}
+            comb={comb}
+            foto={foto}
+            finituraApplicata={finituraApplicata}
+            sopra={sopraPalco}
+            passo={passo}
+            apriPasso={apriPasso}
+            onRicomincia={ricomincia}
+          />
+        </div>
+
+        <Selettore
+          titolo={titoloSelettore}
+          base={base}
+          comb={comb}
+          finituraApplicata={finituraApplicata}
+          apriPasso={apriPasso}
+        >
+          {passo === 1 && (
+            <PassoBase
+              foto={foto}
+              selezionata={null}
+              onScegli={scegliBase}
+              drag={dragTessere}
+            />
+          )}
+
+          {passo === 2 && base && (
+            <PassoFarcitura
+              base={base}
+              fotoFarciture={fotoFarciture}
+              selezionata={null}
+              onScegli={scegliFarcitura}
+              drag={dragTessere}
+            />
+          )}
+
+          {passo === 3 && base && comb && (
+            <PassoFinitura
+              base={base}
+              comb={comb}
+              finituraApplicata={finituraApplicata}
+              onApplicaFinitura={() => setFinituraApplicata(true)}
+              drag={dragTessere}
+              pedane={pedane}
+              onCambiaPedane={setPedane}
+              moduloAperto={moduloAperto}
+              onApriModulo={() => setModuloAperto(true)}
+            />
+          )}
+        </Selettore>
+      </div>
+    </section>
+  );
+}
+
+/** True quando il dispositivo ha hover e puntatore fine (mouse/trackpad):
+ *  l'unico contesto in cui il drag non compete con lo scroll. La media
+ *  query è un sistema esterno: useSyncExternalStore, con snapshot server
+ *  false — le tessere diventano trascinabili solo dopo l'idratazione, ed
+ *  è voluto. Prefisso "use" inglese: lo esige la convenzione dei hook. */
+const QUERY_PUNTATORE = "(hover: hover) and (pointer: fine)";
+function usePuntatoreFine(): boolean {
+  return useSyncExternalStore(
+    (avvisa) => {
+      const mq = window.matchMedia(QUERY_PUNTATORE);
+      mq.addEventListener("change", avvisa);
+      return () => mq.removeEventListener("change", avvisa);
+    },
+    () => window.matchMedia(QUERY_PUNTATORE).matches,
+    () => false
+  );
+}

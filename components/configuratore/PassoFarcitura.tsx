@@ -1,0 +1,89 @@
+"use client";
+
+import {
+  combinazione,
+  farcitureDi,
+  type Base,
+  type FotoFarciture,
+} from "@/lib/configuratore";
+import { ImmagineProdotto } from "./ImmagineProdotto";
+import { GrigliaTessere } from "./Selettore";
+import { SegnaPosto, TesseraScelta } from "./TesseraScelta";
+import type { DragPasso } from "./PassoBase";
+
+/**
+ * Passo 2 — la farcitura. L'unico passo dove la matrice sparsa si
+ * vede: si mostrano SOLO le farciture che esistono in combinazione con
+ * la base scelta, filtrate e mai disabilitate. Disabilitare comunica
+ * «esiste ma non per te»; filtrare comunica «queste sono le tue», che
+ * è la verità. Corollario per il drag & drop: non esistono rilasci
+ * invalidi.
+ *
+ * La tessera mostra la farcitura DA SOLA (cartelle di
+ * public/img/configuratore/farciture/): è l'ingrediente che si
+ * trascina. Il farcito — foto dello sku — appartiene al palco e
+ * compare lì, dopo il rilascio: anticiparlo sulla tessera mostrerebbe
+ * il risultato prima del gesto. Foto non ancora arrivata → resa
+ * tipografica, mai la foto di un'altra farcitura né quella del
+ * semiprodotto.
+ *
+ * Il wording viene sempre dal vocabolario (mai "vuoto" cablato): il
+ * giorno in cui il marketing sceglie "Naturale" si cambia il dataset,
+ * non qui.
+ */
+export function PassoFarcitura({
+  base,
+  fotoFarciture,
+  selezionata,
+  onScegli,
+  drag,
+}: {
+  base: Base;
+  fotoFarciture: FotoFarciture;
+  selezionata: string | null;
+  onScegli: (id: string) => void;
+  drag?: DragPasso;
+}) {
+  const farciture = farcitureDi(base.id);
+
+  return (
+    <GrigliaTessere>
+      {farciture.map((f) => {
+        /* se la combinazione ha un nome commerciale proprio (Bomba +
+           crema → Bomba Super), lo si annuncia sulla tessera: il
+           cambio di nome è parte della scelta, non una sorpresa al
+           passo 3 */
+        const nomeComb = combinazione(base.id, f.id)?.nome;
+        const fotoF = fotoFarciture[f.id];
+        return (
+          <li key={f.id}>
+            <TesseraScelta
+              titolo={f.nome}
+              sotto={nomeComb ? `diventa ${nomeComb}` : undefined}
+              selezionata={selezionata === f.id}
+              onScegli={() => onScegli(f.id)}
+              drag={
+                drag
+                  ? {
+                      onSposta: drag.onSposta,
+                      onRilascia: (p) => drag.onRilascia(f.id, p),
+                    }
+                  : null
+              }
+            >
+              {fotoF ? (
+                <ImmagineProdotto
+                  sorgenti={[fotoF]}
+                  alt={f.nome}
+                  iniziale={f.nome.charAt(0)}
+                />
+              ) : (
+                <SegnaPosto testo={f.nome} />
+              )}
+            </TesseraScelta>
+          </li>
+        );
+      })}
+    </GrigliaTessere>
+  );
+}

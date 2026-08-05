@@ -1,0 +1,200 @@
+/**
+ * Catalogo editoriale — il modello di PRESENTAZIONE della griglia bento.
+ *
+ * Non duplica il catalogo: `lib/catalog.ts` resta l'unica fonte di nomi,
+ * note, assi e still. Qui vive solo ciò che è impaginazione — quale
+ * tipologia va in vetrina, con che misura, su che campitura, con che
+ * ritaglio della foto — e la vetrina è una LISTA DI SLUG: se una tipologia
+ * sparisce dal catalogo il build si ferma qui (`vetrina()` lancia) invece
+ * di renderizzare una card vuota.
+ *
+ * Le sette tipologie in vetrina sono le sette del riferimento (N.01→N.07,
+ * i dolci di punta). Le altre due — Stella e Klejner — non spariscono:
+ * stanno dietro alla CTA in fondo alla griglia, che le apre in coda senza
+ * cambiare pagina.
+ *
+ * Rev 05/08 — questo modello parla SOLO di dolci. La linea salata è uscita
+ * dalla griglia e ha una sezione sua (`lib/catalog-salati.ts`), quindi qui
+ * si legge `DOLCI` e non più `CATALOG`: nessun salato può rientrare né
+ * nella vetrina né nella coda, e i conti dell'intestazione contano la sola
+ * linea dolce.
+ */
+
+import { DOLCI, type Tipologia } from "@/lib/catalog";
+
+/** Composizione della card: cambia il taglio, non i dati mostrati. */
+export type VarianteCard = "hero" | "grande" | "verticale" | "compatta";
+
+/** Le cinque campiture. Nessun colore nuovo se non `sabbia`. */
+export type TemaCard = "arancio" | "cacao" | "fucsia" | "acido" | "sabbia";
+
+export type CardCatalogo = {
+  t: Tipologia;
+  /** «01.» — derivato da `code` («N.01»), mai riscritto a mano */
+  indice: string;
+  /** claim di card, due righe: è copy di vetrina, non la descrizione
+   *  (quella è `t.note` e vive nella scheda prodotto) */
+  claim: readonly [string, string];
+  variante: VarianteCard;
+  tema: TemaCard;
+  badge?: string;
+  /** posto nella griglia a 12 colonne, da xl in su */
+  posto: string;
+  /** ritaglio della foto dentro la card, da xl in su: la sagoma esce dai
+   *  bordi quanto serve, ed è per-prodotto perché gli still hanno
+   *  proporzioni diverse (Lusekatt è largo il doppio del Golosone) */
+  foto: string;
+};
+
+/**
+ * Le variabili che il componente passa alla card: un tema = tre colori,
+ * più quanto si può smorzare il claim.
+ *
+ * `claim` non è una scelta estetica ma di contrasto: panna su cacao o
+ * inchiostro su acido hanno margine da vendere e il claim può stare in
+ * secondo piano, panna su mandarino no — lì il testo resta pieno, che è
+ * tutto quello che si può fare senza spostare la campitura.
+ */
+export const TEMI: Record<
+  TemaCard,
+  { fondo: string; testo: string; numero: string; claim: string }
+> = {
+  arancio: {
+    fondo: "var(--mandarino)",
+    testo: "var(--panna)",
+    numero: "var(--panna)",
+    claim: "opacity-100",
+  },
+  cacao: {
+    fondo: "var(--cacao)",
+    testo: "var(--panna)",
+    numero: "var(--fucsia)",
+    claim: "opacity-75",
+  },
+  fucsia: {
+    fondo: "var(--fucsia)",
+    testo: "var(--panna)",
+    numero: "var(--panna)",
+    claim: "opacity-100",
+  },
+  acido: {
+    fondo: "var(--acido)",
+    testo: "var(--inchiostro)",
+    numero: "var(--fucsia)",
+    claim: "opacity-80",
+  },
+  sabbia: {
+    fondo: "var(--sabbia)",
+    testo: "var(--inchiostro)",
+    numero: "var(--fucsia)",
+    claim: "opacity-75",
+  },
+};
+
+/** La vetrina, nell'ordine del riferimento. */
+const VETRINA = [
+  {
+    slug: "golosone",
+    claim: ["L'originale.", "Soffice e generoso."],
+    variante: "hero",
+    tema: "arancio",
+    badge: "Best seller",
+    posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
+    foto: "xl:w-[64%] xl:h-[110%] xl:right-[1%] xl:bottom-[-30%]",
+  },
+  {
+    slug: "bomba-fritta",
+    claim: ["Classica.", "Senza tempo."],
+    variante: "grande",
+    tema: "cacao",
+    posto: "xl:col-span-4 xl:row-span-2",
+    foto: "xl:w-[58%] xl:h-[70%] xl:right-[2%] xl:bottom-[13%]",
+  },
+  {
+    slug: "cuore",
+    claim: ["Morbido dentro.", "Pieno di gusto."],
+    variante: "verticale",
+    tema: "fucsia",
+    posto: "xl:col-span-3 xl:row-span-2",
+    foto: "xl:w-[86%] xl:h-[82%] xl:right-[-3%] xl:bottom-[-24%]",
+  },
+  {
+    slug: "frittella",
+    claim: ["Cremosa, dorata,", "irresistibile."],
+    variante: "compatta",
+    tema: "acido",
+    posto: "xl:col-span-3",
+    foto: "xl:w-[58%] xl:h-[104%] xl:right-[-1%] xl:bottom-[-15%]",
+  },
+  {
+    slug: "intriko",
+    claim: ["Intrecciata", "alla perfezione."],
+    variante: "compatta",
+    tema: "sabbia",
+    posto: "xl:col-span-3",
+    foto: "xl:w-[62%] xl:h-[92%] xl:right-[-2%] xl:bottom-[2%]",
+  },
+  {
+    slug: "lusekatt",
+    claim: ["La tradizione", "che scalda il cuore."],
+    variante: "compatta",
+    tema: "cacao",
+    posto: "xl:col-span-3",
+    foto: "xl:w-[52%] xl:h-[100%] xl:right-[-1%] xl:bottom-[-4%]",
+  },
+  {
+    slug: "nuvola",
+    claim: ["Leggera come", "una nuvola."],
+    variante: "compatta",
+    tema: "sabbia",
+    posto: "xl:col-span-3",
+    foto: "xl:w-[56%] xl:h-[100%] xl:right-[0%] xl:bottom-[-8%]",
+  },
+] as const satisfies readonly {
+  slug: string;
+  claim: readonly [string, string];
+  variante: VarianteCard;
+  tema: TemaCard;
+  badge?: string;
+  posto: string;
+  foto: string;
+}[];
+
+const PER_SLUG = new Map(DOLCI.map((t) => [t.slug, t]));
+
+/** «N.01» → «01.»: la numerazione della card è quella del catalogo. */
+const indiceDi = (code: string) => `${code.replace(/^N\./, "")}.`;
+
+function vetrina(): CardCatalogo[] {
+  return VETRINA.map((v) => {
+    const t = PER_SLUG.get(v.slug);
+    if (!t)
+      throw new Error(
+        `catalog-bento: la vetrina cita «${v.slug}», che non è fra i DOLCI`
+      );
+    return { ...v, t, indice: indiceDi(t.code) };
+  });
+}
+
+export const VETRINA_CATALOGO: CardCatalogo[] = vetrina();
+
+const IN_VETRINA = new Set<string>(VETRINA.map((v) => v.slug));
+
+/** I dolci che la vetrina non mostra, nell'ordine del catalogo. */
+export const RESTO_DOLCI: Tipologia[] = DOLCI.filter(
+  (t) => !IN_VETRINA.has(t.slug)
+);
+
+/** Quante varianti dichiara una tipologia: la riga di specifica della card
+ *  dice sempre e solo ciò che i dati contengono davvero. */
+export function varianti(t: Tipologia): number {
+  if (t.axes?.length)
+    return t.axes.reduce((n, a) => n * a.values.length, 1);
+  if (t.set?.length) return t.set.length;
+  return 1;
+}
+
+/** «9 tipologie / 30 varianti»: contato, non scritto. Da quando i salati
+ *  hanno una sezione loro, il conto dell'intestazione è quello dei dolci. */
+export const TOTALE_TIPOLOGIE = DOLCI.length;
+export const TOTALE_VARIANTI = DOLCI.reduce((n, t) => n + varianti(t), 0);
