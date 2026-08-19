@@ -10,15 +10,7 @@ import {
   type FotoStati,
 } from "@/lib/configuratore";
 import { Alzata } from "./Alzata";
-import {
-  Adesivo,
-  Asterisco,
-  FrecciaGiu,
-  FumettoCuore,
-  IconaMano,
-  Scintilla,
-  Smile,
-} from "./Decori";
+import { Asterisco, FrecciaGiu, IconaMano, Scintilla, Smile } from "./Decori";
 import { ImmagineProdotto } from "./ImmagineProdotto";
 
 /**
@@ -119,19 +111,14 @@ export function Banco({
     >
       <span aria-hidden className="palco-cornice" />
 
-      {/* --- i decori: leggeri, mai sopra a qualcosa da leggere ----- */}
+      {/* --- i decori: leggeri, mai sopra a qualcosa da leggere -----
+          Sfoltiti il 2026-08-19: restano i due segni agli angoli, fermi.
+          L'adesivo «il tuo dolce, la tua storia», il fumetto col cuore e
+          le scintille immobili sono usciti di scena — il centro del
+          palco è del dolce. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <Adesivo className="absolute left-[6.5%] top-[21%] w-[15%] min-w-[76px] -rotate-6 drop-shadow-[0_6px_12px_rgba(120,70,40,0.10)]" />
-        <FumettoCuore className="absolute right-[6%] top-[43%] w-[12%] min-w-[58px]" />
         <Smile className="absolute -right-[3%] -top-[3.5%] w-[11%] min-w-[58px]" />
         <Asterisco className="absolute -bottom-[2%] -left-[1.5%] w-[9%] min-w-[46px] text-corallo-scena" />
-
-        <Scintilla className="absolute left-[22.5%] top-[16%] w-[3.6%] min-w-[16px] text-oro" />
-        <Scintilla className="absolute left-[19.5%] top-[21.5%] w-[2%] min-w-[9px] text-oro" />
-        <Scintilla className="absolute right-[25%] top-[20%] w-[5%] min-w-[22px] text-corallo-scena" />
-        <Scintilla className="absolute right-[22%] top-[15.5%] w-[2.4%] min-w-[11px] text-corallo-scena" />
-        <Scintilla className="absolute right-[27.5%] top-[26%] w-[1.8%] min-w-[8px] text-corallo-scena" />
-        <Scintilla className="absolute left-[17.5%] top-[47%] w-[2.4%] min-w-[11px] text-corallo-scena" />
 
         {/* queste tre esistono solo durante il sorvolo */}
         <Scintilla className="scintilla-drag absolute left-[30%] top-[36%] w-[3%] min-w-[13px] text-oro" />
@@ -139,52 +126,22 @@ export function Banco({
         <Scintilla className="scintilla-drag absolute left-[44%] top-[12%] w-[2.6%] min-w-[12px] text-corallo-scena" />
       </div>
 
-      {/* --- il bersaglio del rilascio ------------------------------- */}
-      {dropAttivo && (
-        <div
+      {/* --- il segno del rilascio: la freccia, e basta -------------
+          Il cerchio tratteggiato e la scritta sono usciti il 2026-08-19.
+          Restava una freccia dentro una scatola che non serviva più:
+          ora le quote sono sul palco, non su quella scatola — 44.1% =
+          20% + 71% di 34%, 5.85% = 16% di 34% di altezza riportato in
+          larghezza (il palco è 93/100). Ciò che manca lo dicono la
+          pillola in basso e l'aria-label della scena. */}
+      {dropAttivo && vuoto && (
+        <motion.span
           aria-hidden
-          className={`pointer-events-none absolute left-1/2 aspect-square -translate-x-1/2 ${
-            vuoto ? "top-[20%] h-[34%]" : "top-[13%] h-[47%] opacity-45"
-          }`}
+          className="pointer-events-none absolute left-1/2 top-[44.1%] block w-[5.85%] min-w-[32px] -translate-x-1/2 text-corallo-scena"
+          animate={riduci || sopra ? { y: 0 } : { y: [0, 5, 0] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="bersaglio block h-full w-full">
-            <svg viewBox="0 0 200 200" className="h-full w-full">
-              <circle
-                cx="100"
-                cy="100"
-                r="98"
-                fill="none"
-                stroke="var(--corallo-scena)"
-                strokeWidth="2"
-                strokeDasharray="8 7"
-                className="bersaglio-tratto"
-              />
-            </svg>
-          </span>
-
-          {vuoto && (
-            <>
-              <p className="absolute inset-x-[6%] top-[42%] text-center text-[15px] font-bold leading-[1.3] text-inchiostro sm:text-[17px] xl:text-[19px]">
-                {sopra ? (
-                  "Rilascia qui"
-                ) : (
-                  <>
-                    Trascina qui
-                    <br />
-                    {cosaManca}
-                  </>
-                )}
-              </p>
-              <motion.span
-                className="absolute left-1/2 top-[71%] block w-[16%] min-w-[32px] -translate-x-1/2 text-corallo-scena"
-                animate={riduci || sopra ? { y: 0 } : { y: [0, 5, 0] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <FrecciaGiu className="w-full" />
-              </motion.span>
-            </>
-          )}
-        </div>
+          <FrecciaGiu className="w-full" />
+        </motion.span>
       )}
 
       {/* --- l'alzata e il dolce ------------------------------------- */}

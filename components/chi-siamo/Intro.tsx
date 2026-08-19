@@ -1,16 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import { Francobollo } from "@/components/chi-siamo/Francobollo";
+import Link from "next/link";
 import { useScatto } from "@/lib/useScatto";
 
 /* targa esagonale centrale, come l'emblema del riferimento */
 const HEX =
   "polygon(7% 0, 93% 0, 100% 50%, 93% 100%, 7% 100%, 0 50%)";
-
-/* ottagono del sigillo per gli adesivi */
-const OCTAGON =
-  "polygon(22% 0, 78% 0, 100% 22%, 100% 78%, 78% 100%, 22% 100%, 0 78%, 0 22%)";
 
 /* biglietto ritagliato per il CTA */
 const TICKET =
@@ -21,8 +17,8 @@ const CHECKER = "repeating-conic-gradient(#160601 0% 25%, transparent 0% 50%)";
 /**
  * Hero replica dell'insegna da fiera: la foto della squadra occupa la metà
  * alta e sfuma nel banco a scacchi; sul confine atterrano la targa
- * esagonale, i francobolli, gli adesivi e la card col biglietto. Ogni pezzo
- * schiva il cursore per conto suo e rientra piano al suo posto.
+ * esagonale e la card gialla col CTA. I due pezzi schivano il cursore per
+ * conto loro e rientrano piano al loro posto.
  */
 export function Intro() {
   const ref = useRef<HTMLElement>(null);
@@ -93,96 +89,21 @@ export function Intro() {
               storiche, Del Monte e Siani Pasticceri. Stessa passione, stessa
               ricetta: solo su scala più grande, certificata IFS.
             </p>
-            <a
-              href="#storia"
+            {/* la storia vive in homepage dal refactor 12/08: il
+                biglietto porta lì, non a un'ancora di questa pagina */}
+            <Link
+              href="/#storia"
               className="mt-6 inline-block bg-fucsia px-7 py-3.5 transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               style={{ clipPath: TICKET }}
             >
               <span className="type-scritta text-2xl leading-none text-panna">
                 Scopri la storia
               </span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* ------ cluster sinistro: pila di francobolli e adesivi ------ */}
-      <div
-        data-scatto
-        className="absolute -left-12 top-[20%] z-10 hidden -rotate-[7deg] lg:block"
-      >
-        <Francobollo
-          src="/chi-siamo/album/hero-modella-dolci.webp"
-          alt="Un'addetta Delsigel modella i dolci alla linea, sorridente"
-          className="w-[240px] xl:w-[270px]"
-        />
-      </div>
-      {/* l'insegna monta sopra l'angolo del fornaio */}
-      <div
-        data-scatto
-        className="absolute left-[4%] top-[42%] z-20 hidden rotate-[4deg] lg:block"
-      >
-        <Francobollo
-          src="/chi-siamo/album/hero-fritti.webp"
-          alt="Una collega Delsigel ride accanto ai fritti dolci appena zuccherati"
-          className="w-[260px] xl:w-[300px]"
-        />
-      </div>
-      {/* la scritta attraversa tutti e due */}
-      <div
-        data-scatto
-        className="absolute left-[10%] top-[36%] z-30 hidden -rotate-[10deg] lg:block"
-      >
-        <p className="type-scritta max-w-[240px] text-center text-4xl leading-[1.02] text-panna drop-shadow-[0_2px_12px_rgba(22,6,1,0.65)]">
-          innovativa e buona per tutti!
-        </p>
-      </div>
-      {/* il sigillo 2011 morde l'angolo dell'insegna */}
-      <div
-        data-scatto
-        className="absolute left-[17%] top-[70%] z-30 hidden -rotate-6 lg:block"
-      >
-        <div
-          className="flex h-20 w-20 items-center justify-center bg-mandarino"
-          style={{ clipPath: OCTAGON }}
-        >
-          <span className="type-scritta text-lg leading-none text-inchiostro">2011</span>
-        </div>
-      </div>
-
-      {/* ------ cluster destro: francobollo sotto la card, piatto sopra ------ */}
-      <div
-        data-scatto
-        className="absolute right-[7%] top-[24%] z-10 hidden rotate-[8deg] lg:block"
-      >
-        <Francobollo
-          src="/chi-siamo/album/hero-fondatore.webp"
-          alt="Un fondatore Delsigel controlla la sfoglia al banco di lavorazione"
-          className="w-[200px]"
-        />
-      </div>
-      {/* l'ottagono viola sull'angolo del francobollo */}
-      <div
-        data-scatto
-        className="absolute right-[18%] top-[21%] z-20 hidden rotate-12 lg:block"
-      >
-        <div className="h-14 w-14 bg-viola" style={{ clipPath: OCTAGON }} />
-      </div>
-      {/* il piatto morde l'angolo della card */}
-      <div
-        data-scatto
-        className="absolute bottom-[11%] right-[1%] z-30 hidden lg:block"
-      >
-        <div className="h-52 w-52 overflow-hidden rounded-full border-[6px] border-inchiostro shadow-[0_18px_40px_rgba(22,6,1,0.35)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/chi-siamo/album/hero-canol.webp"
-            alt="Un'addetta Delsigel lavora la sfoglia alla linea Canol"
-            className="h-full w-full scale-110 object-cover"
-            draggable={false}
-          />
-        </div>
-      </div>
     </section>
   );
 }

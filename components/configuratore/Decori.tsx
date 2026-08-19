@@ -1,6 +1,6 @@
 /**
  * Il repertorio disegnato del palco: scintille, asterischi, smile,
- * fumetto, adesivo, frecce e ghirigori. Tutto SVG, tutto in un file
+ * frecce e ghirigori. Tutto SVG, tutto in un file
  * solo — sono segni, non componenti: separarli in dieci file darebbe
  * dieci import e nessuna informazione in più.
  *
@@ -65,104 +65,6 @@ export function Smile({ className }: { className?: string }) {
         fill="none"
         stroke="var(--inchiostro)"
         strokeWidth="5"
-        className="mano-libera"
-      />
-    </svg>
-  );
-}
-
-/** Fumetto con il cuore: l'unico commento della scena, e non serve
- *  che dica altro. */
-export function FumettoCuore({ className }: { className?: string }) {
-  return (
-    <svg aria-hidden viewBox="0 0 100 80" className={className}>
-      <path
-        d="M14 2h72a12 12 0 0 1 12 12v34a12 12 0 0 1-12 12H40l-16 16 3-16H14A12 12 0 0 1 2 48V14A12 12 0 0 1 14 2Z"
-        fill="var(--carta)"
-        stroke="var(--inchiostro)"
-        strokeWidth="2.5"
-        className="mano-libera"
-      />
-      <path
-        d="M50 47.5l-1-.9C43.8 41.9 40 38.7 40 34.7c0-3.2 2.5-5.7 5.7-5.7 1.8 0 3.5.8 4.3 2.2.8-1.4 2.5-2.2 4.3-2.2 3.2 0 5.7 2.5 5.7 5.7 0 4-3.8 7.2-9 11.9l-1 .9Z"
-        fill="var(--corallo-scena)"
-      />
-    </svg>
-  );
-}
-
-/** L'adesivo «il tuo dolce, la tua storia»: un cartellino appeso,
- *  con la linguetta e il foro. Il testo è dentro l'SVG apposta —
- *  scala col palco senza una riga di CSS responsive. */
-export function Adesivo({ className }: { className?: string }) {
-  return (
-    <svg aria-hidden viewBox="0 0 112 140" className={className}>
-      <defs>
-        <linearGradient id="adesivo-carta" x1="0" y1="0" x2="0.3" y2="1">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="1" stopColor="#fdf1e4" />
-        </linearGradient>
-      </defs>
-      {/* la linguetta con il foro, dietro al corpo */}
-      <rect
-        x="36"
-        y="2"
-        width="40"
-        height="34"
-        rx="14"
-        fill="url(#adesivo-carta)"
-        stroke="var(--linea)"
-        strokeWidth="1.6"
-      />
-      <rect x="49" y="12" width="14" height="6" rx="3" fill="#e8d4bb" />
-      <rect
-        x="3"
-        y="22"
-        width="106"
-        height="116"
-        rx="20"
-        fill="url(#adesivo-carta)"
-        stroke="var(--linea)"
-        strokeWidth="1.6"
-      />
-      <text
-        x="56"
-        y="58"
-        textAnchor="middle"
-        fontSize="10"
-        fontWeight="700"
-        letterSpacing="0.2"
-        fill="var(--inchiostro)"
-      >
-        IL TUO DOLCE,
-      </text>
-      <text
-        x="56"
-        y="80"
-        textAnchor="middle"
-        fontSize="17"
-        fontWeight="800"
-        letterSpacing="-0.2"
-        fill="var(--corallo-scena)"
-      >
-        LA TUA
-      </text>
-      <text
-        x="56"
-        y="98"
-        textAnchor="middle"
-        fontSize="17"
-        fontWeight="800"
-        letterSpacing="-0.2"
-        fill="var(--corallo-scena)"
-      >
-        STORIA
-      </text>
-      <path
-        d="M56 126l-1.3-1.2c-6.6-6-11-10-11-15 0-4.1 3.2-7.3 7.3-7.3 2.3 0 4.5 1.1 5.5 2.8 1-1.7 3.2-2.8 5.5-2.8 4.1 0 7.3 3.2 7.3 7.3 0 5-4.4 9-11 15L56 126Z"
-        fill="none"
-        stroke="var(--corallo-scena)"
-        strokeWidth="2.4"
         className="mano-libera"
       />
     </svg>

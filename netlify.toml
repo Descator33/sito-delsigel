@@ -1,0 +1,19 @@
+# Deploy da git: a ogni push su main Netlify ricostruisce il sito.
+#
+# Next.js lo riconosce da solo e monta il proprio runtime
+# (@netlify/plugin-nextjs), perciò qui NON si dichiarano né `publish` né
+# il plugin: glielo si lascia decidere, ed è l'unico modo perché resti
+# allineato alle versioni di Next senza doverlo aggiornare a mano.
+#
+# Restano le due cose che il rilevamento automatico non indovina:
+#  · il comando, che passa da `prebuild` e quindi dalla validazione del
+#    dataset del configuratore — un dataset rotto deve fermare il
+#    deploy, non finire online;
+#  · la versione di Node, fissata perché il default della piattaforma
+#    cambia nel tempo e Next 16 vuole almeno la 20.9.
+
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "22"

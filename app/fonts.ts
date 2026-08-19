@@ -13,11 +13,39 @@
  */
 import {
   Anton,
+  Archivo_Black,
   DM_Sans,
+  Inter,
   League_Spartan,
   Inter_Tight,
   IBM_Plex_Mono,
 } from "next/font/google";
+
+/**
+ * Le due voci della hero (refactor 2026-08-12).
+ *
+ * Archivo Black e non l'Archivo variabile del resto del sito: alla misura
+ * del manifesto (oltre 90px) serve un nero disegnato come tale — l'asse
+ * `wght` di Archivo si ferma a 900 ma resta un grottesco da testo, con le
+ * aste più sottili e le contro-forme più larghe. Anton, l'altra candidata,
+ * è condensata e da poster: legge «affissione», non «campagna premium».
+ *
+ * Inter per descrizione, CTA e navigazione: è la sans neutra che la hero
+ * chiede, e non si può usare Inter Tight (già nel bundle) perché a 13px
+ * maiuscolo la sua larghezza ridotta stringe la CTA e ne cambia il ritmo.
+ */
+export const insegnaHero = Archivo_Black({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-archivo-black",
+  display: "swap",
+});
+
+export const testoHero = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 /** insegna del catalogo: titolo di sezione e nomi prodotto */
 export const insegnaCatalogo = League_Spartan({
@@ -75,4 +103,6 @@ export const variabiliCatalogo = [
   tecnicoCatalogo.variable,
   insegnaSalati.variable,
   testoSalati.variable,
+  insegnaHero.variable,
+  testoHero.variable,
 ].join(" ");

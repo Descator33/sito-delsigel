@@ -25,10 +25,14 @@ import {
  * La scheda prodotto del catalogo: Dialog da 768 px in su, Drawer sotto.
  *
  * Eredita dalla vecchia card la cosa che valeva la pena tenere — passando
- * su un gusto la foto cambia, così la gamma si sfoglia senza uscire dalla
- * scheda — e ci aggiunge quello che nella card non entrava: formato, peso,
- * farciture, topping e il salto al configuratore. Tutti dati veri: quel
- * che il foglio non dice, la scheda non lo scrive (vedi lib/catalog-scheda).
+ * su una variante la foto cambia, così la gamma si sfoglia senza uscire
+ * dalla scheda — e ci aggiunge quello che nella card non entrava: formato,
+ * peso, pezzi per cartone e il salto al configuratore. Tutti dati veri:
+ * quel che il foglio non dice, la scheda non lo scrive (lib/catalog-scheda).
+ *
+ * Quello che la scheda NON è: un configuratore in miniatura. Mostra i
+ * prodotti finiti a listino e basta — niente finiture, niente topping,
+ * niente farciture componibili. Chi vuole comporre passa dal pulsante.
  */
 
 /* La scheda resta montata mentre si chiude, altrimenti Radix non ha nulla
@@ -100,13 +104,21 @@ function Scheda({
 }) {
   const s = schedaDi(t);
   const [mostrato, setMostrato] = useState<string | null>(null);
+  const variante = s.gamma
+    .flatMap((g) => g.varianti)
+    .find((v) => v.id === mostrato);
   const still =
-    (mostrato === "spaccato" ? t.spaccato : mostrato && t.variants?.[mostrato]) ??
-    t.image;
+    (mostrato === "spaccato"
+      ? t.spaccato
+      : variante && t.variants?.[variante.chiave]) ?? t.image;
 
   const specifiche = [
     s.formato && { voce: "Formato", valore: s.formato },
-    s.peso && { voce: "Peso", valore: s.peso },
+    /* scelto un prodotto finito, il peso è il suo, non più l'intervallo */
+    (variante?.peso ?? s.peso) && {
+      voce: "Peso",
+      valore: variante?.peso ?? s.peso!,
+    },
     s.pezziPerCartone && {
       voce: "Per cartone",
       valore: `${s.pezziPerCartone} pz`,
@@ -125,8 +137,8 @@ function Scheda({
             key={still}
             src={still}
             alt={
-              mostrato && mostrato !== "spaccato"
-                ? `${t.name} ${mostrato}`
+              variante
+                ? `${t.name} ${variante.nome.toLowerCase()}`
                 : mostrato === "spaccato"
                   ? `${t.name} tagliato a metà`
                   : `${t.name}: ${t.note ?? "scatto di prodotto"}`
@@ -215,17 +227,19 @@ function Scheda({
               {g.label}
             </p>
             <ul className="mt-2.5 flex flex-wrap gap-1.5">
-              {g.values.map((v) => {
-                const sfogliabile = Boolean(t.variants?.[v]);
+              {g.varianti.map((v) => {
+                const sfogliabile = Boolean(t.variants?.[v.chiave]);
                 return (
-                  <li key={v}>
+                  <li key={v.id}>
                     <button
                       type="button"
                       disabled={!sfogliabile}
-                      onClick={() => setMostrato((m) => (m === v ? null : v))}
-                      aria-pressed={sfogliabile ? mostrato === v : undefined}
+                      onClick={() =>
+                        setMostrato((m) => (m === v.id ? null : v.id))
+                      }
+                      aria-pressed={sfogliabile ? mostrato === v.id : undefined}
                       className={`inline-flex min-h-9 items-center gap-2 rounded-full border py-1.5 pl-2 pr-3.5 text-[11px] font-semibold uppercase tracking-[0.04em] transition-colors ${
-                        mostrato === v
+                        mostrato === v.id
                           ? "border-inchiostro bg-inchiostro text-panna"
                           : "border-inchiostro/20 text-inchiostro/80"
                       } ${
@@ -237,9 +251,9 @@ function Scheda({
                       <span
                         aria-hidden
                         className="h-2.5 w-2.5 rounded-full ring-1 ring-inchiostro/20"
-                        style={{ backgroundColor: gustoColor(v) }}
+                        style={{ backgroundColor: gustoColor(v.chiave) }}
                       />
-                      {v}
+                      {v.nome}
                     </button>
                   </li>
                 );
@@ -247,13 +261,6 @@ function Scheda({
             </ul>
           </div>
         ))}
-
-        {s.farciture.length > 0 && (
-          <Elenco titolo="Farciture disponibili" voci={s.farciture} />
-        )}
-        {s.topping.length > 0 && (
-          <Elenco titolo="Topping compatibili" voci={s.topping} />
-        )}
 
         {s.modalitaUso && (
           <p className="font-tecnico mt-6 text-[10px] uppercase leading-relaxed tracking-[0.1em] text-inchiostro/45">
@@ -279,19 +286,6 @@ function Scheda({
           </Link>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Elenco({ titolo, voci }: { titolo: string; voci: string[] }) {
-  return (
-    <div className="mt-6">
-      <p className="font-tecnico text-[9px] font-semibold uppercase tracking-[0.16em] text-inchiostro/45">
-        {titolo}
-      </p>
-      <p className="mt-2 text-[0.9rem] leading-relaxed text-inchiostro/75">
-        {voci.join(" · ")}
-      </p>
     </div>
   );
 }

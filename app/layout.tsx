@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, Space_Mono, Caveat } from "next/font/google";
 import { variabiliCatalogo } from "./fonts";
+import { MenuProvider } from "@/components/MenuStato";
 import "./globals.css";
 
 /* Una sola famiglia (Archivo variable, asse wdth) declinata in due voci:
@@ -41,7 +42,12 @@ export default function RootLayout({
       lang="it"
       className={`${archivo.variable} ${spaceMono.variable} ${caveat.variable} ${variabiliCatalogo} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      {/* Il provider avvolge solo `children` e non l'intero documento: è
+          l'unico pezzo di client qui dentro, e serve perché navigazione e
+          hero leggano lo stesso stato del menu (vedi components/MenuStato.tsx). */}
+      <body className="min-h-full flex flex-col">
+        <MenuProvider>{children}</MenuProvider>
+      </body>
     </html>
   );
 }

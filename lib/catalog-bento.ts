@@ -8,10 +8,15 @@
  * sparisce dal catalogo il build si ferma qui (`vetrina()` lancia) invece
  * di renderizzare una card vuota.
  *
- * Le sette tipologie in vetrina sono le sette del riferimento (N.01→N.07,
- * i dolci di punta). Le altre due — Stella e Klejner — non spariscono:
- * stanno dietro alla CTA in fondo alla griglia, che le apre in coda senza
- * cambiare pagina.
+ * Le sette tipologie in vetrina sono i dolci di punta. Le altre due —
+ * Stella e Klejner — non spariscono: stanno dietro alla CTA in fondo alla
+ * griglia, che le apre in coda senza cambiare pagina.
+ *
+ * Rev 12/08 — l'Intriko prende la testa della vetrina: card grande in alto
+ * a sinistra, campitura fucsia, sigillo «best seller» (che era del
+ * Golosone). L'ordine di questa lista È la gerarchia della pagina, e da
+ * qui viene anche la numerazione stampata sulle card: la griglia si legge
+ * nell'ordine in cui è impaginata, non in quello del listino.
  *
  * Rev 05/08 — questo modello parla SOLO di dolci. La linea salata è uscita
  * dalla griglia e ha una sezione sua (`lib/catalog-salati.ts`), quindi qui
@@ -23,14 +28,14 @@
 import { DOLCI, type Tipologia } from "@/lib/catalog";
 
 /** Composizione della card: cambia il taglio, non i dati mostrati. */
-export type VarianteCard = "hero" | "grande" | "verticale" | "compatta";
+export type VarianteCard = "hero" | "grande" | "compatta";
 
 /** Le cinque campiture. Nessun colore nuovo se non `sabbia`. */
 export type TemaCard = "arancio" | "cacao" | "fucsia" | "acido" | "sabbia";
 
 export type CardCatalogo = {
   t: Tipologia;
-  /** «01.» — derivato da `code` («N.01»), mai riscritto a mano */
+  /** «01.» — il posto in vetrina, contato dalla lista */
   indice: string;
   /** claim di card, due righe: è copy di vetrina, non la descrizione
    *  (quella è `t.note` e vive nella scheda prodotto) */
@@ -91,32 +96,49 @@ export const TEMI: Record<
   },
 };
 
-/** La vetrina, nell'ordine del riferimento. */
+/**
+ * La vetrina, nell'ordine in cui si legge.
+ *
+ * Prima riga 5+4+3 su dodici colonne (≈41/33/25%): tre card della stessa
+ * altezza che scendono di peso da sinistra a destra. Seconda riga quattro
+ * card uguali, alte poco più della metà — la striscia che chiude
+ * l'impaginato senza fargli concorrenza.
+ */
 const VETRINA = [
+  {
+    slug: "intriko",
+    claim: ["Intrecciata", "alla perfezione."],
+    variante: "hero",
+    tema: "fucsia",
+    badge: "Best seller",
+    posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
+    /* la treccia è la sagoma più larga della vetrina (1,32:1) e attraversa
+       la card in diagonale: esce dallo spigolo in basso a destra */
+    foto: "xl:w-[68%] xl:h-[87%] xl:right-[-4%] xl:bottom-[-14%]",
+  },
   {
     slug: "golosone",
     claim: ["L'originale.", "Soffice e generoso."],
-    variante: "hero",
+    variante: "grande",
     tema: "arancio",
-    badge: "Best seller",
-    posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
-    foto: "xl:w-[64%] xl:h-[110%] xl:right-[1%] xl:bottom-[-30%]",
+    posto: "xl:col-span-4 xl:row-span-2",
+    foto: "xl:w-[64%] xl:h-[76%] xl:right-[0%] xl:bottom-[-12%]",
   },
   {
     slug: "bomba-fritta",
     claim: ["Classica.", "Senza tempo."],
     variante: "grande",
     tema: "cacao",
-    posto: "xl:col-span-4 xl:row-span-2",
-    foto: "xl:w-[58%] xl:h-[70%] xl:right-[2%] xl:bottom-[13%]",
+    posto: "xl:col-span-3 xl:row-span-2",
+    foto: "xl:w-[62%] xl:h-[58%] xl:right-[-2%] xl:bottom-[20%]",
   },
   {
     slug: "cuore",
     claim: ["Morbido dentro.", "Pieno di gusto."],
-    variante: "verticale",
+    variante: "compatta",
     tema: "fucsia",
-    posto: "xl:col-span-3 xl:row-span-2",
-    foto: "xl:w-[86%] xl:h-[82%] xl:right-[-3%] xl:bottom-[-24%]",
+    posto: "xl:col-span-3",
+    foto: "xl:w-[62%] xl:h-[112%] xl:right-[-2%] xl:bottom-[-16%]",
   },
   {
     slug: "frittella",
@@ -125,14 +147,6 @@ const VETRINA = [
     tema: "acido",
     posto: "xl:col-span-3",
     foto: "xl:w-[58%] xl:h-[104%] xl:right-[-1%] xl:bottom-[-15%]",
-  },
-  {
-    slug: "intriko",
-    claim: ["Intrecciata", "alla perfezione."],
-    variante: "compatta",
-    tema: "sabbia",
-    posto: "xl:col-span-3",
-    foto: "xl:w-[62%] xl:h-[92%] xl:right-[-2%] xl:bottom-[2%]",
   },
   {
     slug: "lusekatt",
@@ -162,17 +176,24 @@ const VETRINA = [
 
 const PER_SLUG = new Map(DOLCI.map((t) => [t.slug, t]));
 
-/** «N.01» → «01.»: la numerazione della card è quella del catalogo. */
-const indiceDi = (code: string) => `${code.replace(/^N\./, "")}.`;
+/**
+ * «01.» è il posto in vetrina, non il codice di listino.
+ *
+ * I due numeri divergono da quando l'impaginato ha una gerarchia sua
+ * (l'Intriko è N.05 a listino e 01. in griglia), ed è giusto così: sulla
+ * card il numero conta la lettura, il codice del prodotto resta dov'è
+ * sempre stato, in testa alla scheda.
+ */
+const indiceDi = (posto: number) => `${String(posto + 1).padStart(2, "0")}.`;
 
 function vetrina(): CardCatalogo[] {
-  return VETRINA.map((v) => {
+  return VETRINA.map((v, i) => {
     const t = PER_SLUG.get(v.slug);
     if (!t)
       throw new Error(
         `catalog-bento: la vetrina cita «${v.slug}», che non è fra i DOLCI`
       );
-    return { ...v, t, indice: indiceDi(t.code) };
+    return { ...v, t, indice: indiceDi(i) };
   });
 }
 

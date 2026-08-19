@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionConfig } from "motion/react";
+import { MotionConfig, motion } from "motion/react";
 import { useState } from "react";
 import type { Tipologia } from "@/lib/catalog";
 import { VETRINA_CATALOGO, type TemaCard } from "@/lib/catalog-bento";
@@ -21,6 +21,11 @@ import { ProductQuickView } from "./ProductQuickView";
  * proporzione, con un tetto in rem che la ferma quando il contenitore
  * smette di crescere.
  *
+ * La griglia orchestra anche l'entrata: le card salgono di 20px sfalsate
+ * di 50ms l'una dall'altra, nell'ordine dell'impaginato — l'Intriko per
+ * primo. Lo stagger sta qui e non sulle card perché è una proprietà
+ * della sequenza, non della singola tessera.
+ *
  * `MotionConfig reducedMotion="user"` vale per tutte le card in un colpo:
  * chi ha chiesto meno movimento vede i colori e le foto, non i salti.
  */
@@ -32,9 +37,13 @@ export function ProductBentoGrid() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div
+      <motion.div
         id="dolci"
         className="mt-8 grid scroll-mt-28 grid-cols-1 gap-[13px] sm:grid-cols-2 xl:mt-9 xl:grid-cols-12 xl:grid-rows-[clamp(8.5rem,11.1vw,12.5rem)_clamp(8.5rem,11.1vw,12.5rem)_clamp(10rem,12.5vw,14.1rem)]"
+        initial="nascosta"
+        whileInView="riposo"
+        viewport={{ once: true, amount: 0.15 }}
+        variants={{ nascosta: {}, riposo: { transition: { staggerChildren: 0.05 } } }}
       >
         {VETRINA_CATALOGO.map((card) => (
           <ProductCard
@@ -43,7 +52,7 @@ export function ProductBentoGrid() {
             onApri={() => setScheda({ t: card.t, tema: card.tema })}
           />
         ))}
-      </div>
+      </motion.div>
 
       <div id="altre-tipologie">
         {coda && (

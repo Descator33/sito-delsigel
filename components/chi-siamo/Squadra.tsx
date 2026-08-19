@@ -34,7 +34,8 @@ export function Squadra({ team }: { team: TeamMember[] }) {
   return (
     <section
       ref={section}
-      className="relative overflow-hidden bg-inchiostro py-24 text-panna md:py-28"
+      id="squadra"
+      className="relative scroll-mt-20 overflow-hidden bg-inchiostro py-24 text-panna md:py-28"
     >
       {/* il Golosone fa capolino dal bordo, come la pizza del riferimento */}
       {/* eslint-disable-next-line @next/next/no-img-element */}

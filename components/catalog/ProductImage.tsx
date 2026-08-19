@@ -30,7 +30,7 @@ export function ProductImage({
       style={{ transformOrigin: "72% 100%" }}
       variants={{
         riposo: { scale: 1, rotate: 0 },
-        attiva: { scale: 1.06, rotate: 1.5 },
+        attiva: { scale: 1.025, rotate: 1 },
       }}
       transition={{ type: "spring", stiffness: 240, damping: 20 }}
     >

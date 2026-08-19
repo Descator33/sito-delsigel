@@ -44,6 +44,14 @@
   --linea: #efd9bd;
   --corallo-scena: #ff4d43;
   --oro: #f6c542;
+  /* Hero (refactor 2026-08-12): i tre valori campionati dallo scatto e dal
+     mockup. Non coincidono con i colori del sistema e non devono — arancio
+     e nero sono quelli della fotografia, la panna è più calda di --panna
+     perché deve stare SOPRA l'arancio senza virare al rosa. Vivono nella
+     hero e nella navigazione che le sta sopra, non altrove. */
+  --hero-arancio: #ff4f0a;
+  --hero-nero: #171512;
+  --hero-panna: #fff8ed;
   --raggio-palco: 42px;
   --raggio-tessera: 22px;
 }
@@ -67,6 +75,9 @@
   --color-linea: var(--linea);
   --color-corallo-scena: var(--corallo-scena);
   --color-oro: var(--oro);
+  --color-hero-arancio: var(--hero-arancio);
+  --color-hero-nero: var(--hero-nero);
+  --color-hero-panna: var(--hero-panna);
   --radius-palco: var(--raggio-palco);
   --radius-tessera: var(--raggio-tessera);
   --font-display: var(--font-archivo);
@@ -79,6 +90,9 @@
   /* le due voci della sola sezione salati */
   --font-insegna-salati: var(--font-anton);
   --font-testo-salati: var(--font-dm-sans);
+  /* le due voci della sola hero (vedi app/fonts.ts) */
+  --font-hero: var(--font-archivo-black);
+  --font-ui: var(--font-inter);
   /* Le stesse due famiglie, sotto un nome che non parla di salati.
      La sub-page Contatti (redesign 2026-08-05) è un manifesto pop e
      chiede un grottesco condensato che Archivo — esteso per vocazione —
@@ -103,6 +117,324 @@
 @utility type-scritta {
   font-family: var(--font-scritta), cursive;
   font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- */
+/* Hero — la campagna                                                */
+/*                                                                   */
+/* Refactor 2026-08-12: al posto della fotografia col wordmark già    */
+/* stampato dentro e della copy appoggiata su uno scrim scuro, uno    */
+/* scatto pulito e un'insegna di quattro righe costruita in HTML.     */
+/* Metà destra alla ragazza, metà sinistra al testo; niente fascia    */
+/* gialla sotto — la fotografia arriva al bordo del viewport.         */
+/*                                                                   */
+/* Qui sta solo ciò che le classi non dicono bene: la voce            */
+/* dell'insegna, il velo appena percettibile sulla colonna del testo  */
+/* e gli stati di CTA, voci di navigazione e comando del menu.        */
+/* ---------------------------------------------------------------- */
+
+/* La voce del manifesto: Archivo Black, maiuscolo, righe serrate.
+   La misura NON sta qui — cambia per breakpoint e la decide la hero. */
+@utility type-hero {
+  font-family: var(--font-hero), "Arial Black", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: -0.055em;
+}
+
+/* La hero cambia impaginato per FORMA dello schermo, non per larghezza: un
+   1024×1366 in piedi ha il problema del telefono (la fotografia entra per
+   un terzo e il soggetto riempie il quadro), non quello del portatile. Le
+   due varianti valgono solo qui e si leggono in chiaro nelle classi —
+   `orizzontale:` è il mockup, `verticale:` è il taglio in piedi. */
+@custom-variant orizzontale (@media (min-aspect-ratio: 5/4));
+@custom-variant verticale (@media (max-aspect-ratio: 5/4));
+
+/* Il ritaglio dello scatto. Il grosso non si fa più qui: sotto il 5/4 il
+   `<picture>` serve un file già ritagliato 3:4 sul soggetto (vedi la nota
+   in Hero.tsx), quindi in tutte e due le forme l'immagine è inquadrata e
+   basta centrarla. Restano due sole regole.
+
+   Orizzontale (16:9 e dintorni): il taglio è minimo, il centro va bene —
+   restano visibili il volto, la bomba davanti alla bocca, la mano in
+   alto a destra e quella in basso a sinistra, e a sinistra avanza il
+   vuoto per l'insegna. */
+.hero-scatto {
+  position: absolute;
+  inset: 0;
+}
+.hero-foto {
+  object-position: 50% 50%;
+}
+
+/* Telefono: il ritaglio sale del 12% — è lo spazio vuoto sopra la testa,
+   che a questa scala non serve a niente e ruba mezzo schermo al testo.
+   Il volto resta alto, l'insegna sta sotto la bomba. Vive sulla cornice
+   e non sull'immagine: `top` negativo con `bottom: 0` la fa più alta del
+   contenitore, che la taglia in cima. */
+@media (max-aspect-ratio: 3/4) {
+  .hero-scatto {
+    top: -12%;
+  }
+}
+
+/* La dissolvenza del taglio in piedi. In verticale non esiste un lato
+   libero: la ragazza riempie il quadro e il testo cadrebbe sui capelli e
+   sulla camicia, dove né il nero né la panna si leggono. Il fondo della
+   fotografia si dissolve allora NEL SUO STESSO ARANCIO — è il colore
+   campionato dal bordo basso dello scatto, non un velo scuro: il soggetto
+   sfuma nella campitura invece di essere coperto, e sotto resta un campo
+   pulito per insegna, descrizione e invito. In orizzontale non serve e
+   non c'è. */
+.hero-sfumatura {
+  background: linear-gradient(
+    180deg,
+    rgba(224, 59, 2, 0) 34%,
+    rgba(224, 59, 2, 0.45) 52%,
+    rgba(224, 59, 2, 0.88) 68%,
+    rgba(224, 59, 2, 0.95) 100%
+  );
+}
+
+/* Il velo sulla colonna del testo. Quasi invisibile per scelta: serve a
+   tenere il nero dell'insegna staccato dall'arancio quando lo schermo è
+   largo e la campitura si schiarisce verso sinistra, non a scurire la
+   fotografia. Si ferma a metà, dove comincia il soggetto. */
+.hero-velo {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 10, 5, 0.08) 0%,
+    rgba(15, 10, 5, 0) 55%
+  );
+}
+
+/* La CTA: pillola panna, testo nero, freccia a destra. All'hover si
+   ribalta — fondo nero, testo panna — e la freccia scorre. Il salto di
+   scala è minimo: sopra il 3% diventa un giocattolo. */
+.hero-cta {
+  transition:
+    background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-cta svg {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-cta:is(:hover, :focus-visible) {
+  background: var(--hero-nero);
+  border-color: var(--hero-nero);
+  color: var(--hero-panna);
+  transform: scale(1.025);
+}
+.hero-cta:is(:hover, :focus-visible) svg {
+  transform: translateX(4px);
+}
+.hero-cta:focus-visible {
+  outline: 2px solid var(--hero-panna);
+  outline-offset: 4px;
+}
+
+/* La voce di navigazione: pillola panna translucida che all'hover passa
+   a nero pieno. Mai un cambio di sola opacità — sull'arancio non si
+   leggerebbe come uno stato. */
+.hero-voce {
+  background: rgb(255 248 237 / 0.9);
+  color: var(--hero-nero);
+  backdrop-filter: blur(8px);
+  transition:
+    background-color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-voce:is(:hover, :focus-visible) {
+  background: var(--hero-nero);
+  color: var(--hero-panna);
+}
+.hero-voce:focus-visible {
+  outline: 2px solid var(--hero-panna);
+  outline-offset: 3px;
+}
+
+/* Il comando del menu: cerchio vuoto, filo panna. Pieno all'hover — è
+   l'unico elemento della navigazione che a riposo non ha campitura, e
+   quel vuoto è ciò che lo distingue dalle voci senza aggiungere peso. */
+.hero-comando {
+  border: 1px solid rgb(255 248 237 / 0.75);
+  color: var(--hero-panna);
+  transition:
+    background-color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-comando:is(:hover, :focus-visible) {
+  background: var(--hero-panna);
+  border-color: var(--hero-panna);
+  color: var(--hero-nero);
+}
+.hero-comando:focus-visible {
+  outline: 2px solid var(--hero-panna);
+  outline-offset: 3px;
+}
+/* Sulle sub-page il comando galleggia su fondo chiaro: filo e segno
+   passano al nero, altrimenti sparisce. */
+.hero-comando[data-fondo="chiaro"] {
+  border-color: rgb(23 21 18 / 0.2);
+  color: var(--hero-nero);
+}
+.hero-comando[data-fondo="chiaro"]:is(:hover, :focus-visible) {
+  background: var(--hero-nero);
+  border-color: var(--hero-nero);
+  color: var(--hero-panna);
+}
+
+/* Il comando che diventa croce. Non due icone che si scambiano: sono le
+   stesse tre linee: la prima scende e ruota, l'ultima sale e ruota al
+   contrario, quella di mezzo sparisce prima che le altre si incontrino —
+   altrimenti si vedrebbe una X a tre tratti. */
+.hero-burger {
+  position: relative;
+  display: block;
+  width: 17px;
+  height: 11px;
+}
+.hero-burger > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.6px;
+  border-radius: 2px;
+  background: currentColor;
+  transition:
+    transform 0.38s cubic-bezier(0.76, 0, 0.24, 1),
+    opacity 0.16s linear 0.08s;
+}
+.hero-burger > span:nth-child(1) {
+  top: 0;
+}
+.hero-burger > span:nth-child(2) {
+  top: calc(50% - 0.8px);
+}
+.hero-burger > span:nth-child(3) {
+  bottom: 0;
+}
+.hero-burger[data-aperto="true"] > span:nth-child(1) {
+  transform: translateY(4.7px) rotate(45deg);
+}
+.hero-burger[data-aperto="true"] > span:nth-child(2) {
+  opacity: 0;
+  transition-delay: 0s;
+}
+.hero-burger[data-aperto="true"] > span:nth-child(3) {
+  transform: translateY(-4.7px) rotate(-45deg);
+}
+
+/* ------------------------------------------------------------------ */
+/* La finestra della hero a menu aperto.                              */
+/* Il rettangolo lo anima il JS (components/Hero.tsx), le misure       */
+/* stanno in lib/hero-finestra.ts: qui c'è solo quello che il          */
+/* rettangolo si porta dietro — ritaglio, veli, respiro.               */
+/* ------------------------------------------------------------------ */
+
+/* mentre è staccata dal flusso: il browser sa che quel rettangolo cambia
+   a ogni frame, e `contain` gli impedisce di ricalcolare la pagina sotto
+   (che è ferma e coperta) per una finestra che è già fuori dal flusso */
+.hero-finestra[data-libera] {
+  contain: layout paint;
+  will-change: top, left, width, height;
+}
+
+/* rimpicciolita è un'anteprima, non una destinazione: si guarda e basta,
+   i clic li prende il menu che ci sta sotto */
+.hero-finestra[data-compatta] {
+  pointer-events: none;
+}
+
+/* Il ritaglio si riadatta al nuovo formato, non si deforma: `cover` fa il
+   suo lavoro, noi spostiamo solo il punto di fuoco. La finestra è molto
+   più bassa che larga rispetto al viewport, e a metà altezza il taglio
+   prenderebbe la camicia invece del viso: si sale. Il ritaglio del
+   telefono (`.hero-scatto` alzato del 12%) qui non serve più — quello
+   spazio vuoto sopra la testa, in una striscia, non esiste. */
+.hero-foto {
+  transition: object-position 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.hero-finestra[data-compatta] .hero-scatto {
+  top: 0;
+}
+/* orizzontale: la finestra è più tozza del 16:9, quindi il taglio è sui
+   lati. Restare al centro costerebbe metà del vuoto arancio a sinistra,
+   che è dove va l'insegna: si tiene il fuoco un po' più a sinistra. */
+@media (min-aspect-ratio: 5/4) {
+  .hero-finestra[data-compatta] .hero-foto {
+    object-position: 40% 50%;
+  }
+}
+/* in piedi il taglio è in altezza, e a metà prenderebbe la camicia
+   invece del viso: si sale */
+@media (max-aspect-ratio: 5/4) {
+  .hero-finestra[data-compatta] .hero-foto {
+    object-position: 50% 34%;
+  }
+}
+
+/* I due veli servono a far leggere il testo sulla fotografia. Quando il
+   testo non c'è (telefono: la finestra è una striscia di sola immagine)
+   coprirebbero l'anteprima e basta. */
+.hero-velo,
+.hero-sfumatura {
+  transition: opacity 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.hero-finestra[data-solo-foto] .hero-velo,
+.hero-finestra[data-solo-foto] .hero-sfumatura {
+  opacity: 0;
+}
+
+/* Il margine interno è tarato sul viewport (fino a 96px): dentro una
+   finestra da mezzo schermo diventa uno spreco. Si stringe insieme a lei. */
+.hero-impaginato {
+  transition: padding 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.hero-finestra[data-compatta] .hero-impaginato {
+  padding-inline: clamp(16px, 2.6vw, 44px);
+  padding-bottom: 7%;
+}
+
+/* Il pannello del menu: campitura nera piena, voci enormi. Nessun vetro,
+   nessuna card — è una pagina che copre la pagina. */
+.hero-menu-voce {
+  transition:
+    color 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-menu-voce:is(:hover, :focus-visible) {
+  color: var(--hero-arancio);
+  transform: translateX(12px);
+}
+.hero-menu-voce:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta,
+  .hero-cta svg,
+  .hero-voce,
+  .hero-comando,
+  .hero-menu-voce,
+  .hero-burger > span,
+  .hero-foto,
+  .hero-velo,
+  .hero-sfumatura,
+  .hero-impaginato {
+    transition-duration: 0.01ms;
+  }
+  .hero-cta:is(:hover, :focus-visible),
+  .hero-cta:is(:hover, :focus-visible) svg,
+  .hero-menu-voce:is(:hover, :focus-visible) {
+    transform: none;
+  }
 }
 
 /* Etichetta tecnica mono: usata con parsimonia (max una ogni tre sezioni) */
@@ -222,21 +554,23 @@ html.lenis body {
   border-radius: 9999px;
   border: 1px solid color-mix(in srgb, currentColor 45%, transparent);
   transition:
-    background-color 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    background-color 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .freccia-tonda svg {
-  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .freccia-tonda:is(:hover, :focus-visible) {
   background: currentColor;
   border-color: currentColor;
+  transform: scale(1.05);
 }
 /* il segno si ridipinge col fondo della card: è l'unico punto in cui
    --fondo serve dopo la campitura */
 .freccia-tonda:is(:hover, :focus-visible) svg {
   color: var(--fondo);
-  transform: translateX(2px);
+  transform: translateX(3px);
 }
 .freccia-tonda:focus-visible {
   outline: 2px solid currentColor;
@@ -246,10 +580,11 @@ html.lenis body {
 .card-catalogo:hover .freccia-tonda {
   background: currentColor;
   border-color: currentColor;
+  transform: scale(1.05);
 }
 .card-catalogo:hover .freccia-tonda svg {
   color: var(--fondo);
-  transform: translateX(2px);
+  transform: translateX(3px);
 }
 
 /* Il sigillo "best seller": stella a 22 punte disegnata in SVG, quindi
@@ -439,7 +774,7 @@ html.lenis body {
   color: var(--inchiostro);
 }
 .cf-cta:is(:hover, :focus-visible) svg {
-  transform: translateX(2px);
+  transform: translateX(3px);
 }
 .cf-cta:focus-visible {
   outline: 2px solid var(--inchiostro);
@@ -521,7 +856,7 @@ html.lenis body {
   color: var(--cacao);
 }
 .salati-cta:is(:hover, :focus-visible) svg {
-  transform: translateX(2px);
+  transform: translateX(3px);
 }
 .salati-cta:focus-visible {
   outline: 2px solid var(--panna);
@@ -683,13 +1018,14 @@ html.lenis body {
    nero e ombra pop gialla — con dentro l'alzata su cui il dolce si
    compone. Non è una card di dashboard: è una vetrina, e la
    differenza la fanno la cornice tratteggiata, i decori disegnati e
-   il fatto che il bersaglio del rilascio sia grande quanto la scena.
+   il fatto che il bersaglio del rilascio sia grande quanto la scena
+   (il palco intero, non un cerchio disegnato in mezzo).
 
    Tutti gli stati vivono su due data-attribute del palco:
    `data-sopra` (una tessera trascinata è sopra la scena) e
    `data-fase` (vuota / base / comb). Una sola classe governa così
-   cornice, bersaglio e alone, senza propagare props fino alle
-   foglie e senza far ridisegnare la griglia durante il drag. */
+   cornice e alone, senza propagare props fino alle foglie e senza far
+   ridisegnare la griglia durante il drag. */
 
 /* L'ombra pop: un rettangolo pieno spostato in basso a destra col suo
    profilo nero, non una sfumatura. Il secondo box-shadow è lo stesso
@@ -748,40 +1084,10 @@ html.lenis body {
   inset: 10px;
 }
 
-/* Il bersaglio del rilascio: cerchio tratteggiato in SVG (il
-   tratteggio si controlla al pixel, e il cerchio scala uniforme senza
-   deformarsi). Respira finché c'è qualcosa da trascinare, si fa pieno
-   e corallo quando la tessera è sopra. */
-@keyframes bersaglio-respiro {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.75;
-  }
-  50% {
-    transform: scale(1.035);
-    opacity: 1;
-  }
-}
-.bersaglio {
-  animation: bersaglio-respiro 3s ease-in-out infinite;
-  transition:
-    transform 0.3s ease-out,
-    opacity 0.3s ease-out;
-}
-.palco[data-sopra="true"] .bersaglio {
-  animation: none;
-  transform: scale(1.06);
-  opacity: 1;
-}
-.bersaglio-tratto {
-  transition:
-    stroke-dashoffset 0.4s ease-out,
-    opacity 0.3s ease-out;
-}
-.palco[data-sopra="true"] .bersaglio-tratto {
-  stroke-dasharray: none;
-}
+/* Il cerchio tratteggiato del rilascio (classi `bersaglio` e
+   `bersaglio-tratto`) è uscito di scena il 2026-08-19 insieme alla
+   scritta: sopra l'alzata resta la sola freccia, e a dire che la
+   tessera è arrivata bastano la cornice e l'alone. */
 
 /* L'alone sotto il dolce, disegnato dentro l'SVG dell'alzata così da
    scalare col piatto. Cresce quando la tessera sorvola: è il segnale
@@ -867,14 +1173,7 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bersaglio,
-  .palco[data-sopra="true"] .bersaglio {
-    animation: none;
-    transform: none;
-  }
   .palco-cornice,
-  .bersaglio,
-  .bersaglio-tratto,
   .alzata-alone,
   .scintilla-drag,
   .tessera {
@@ -893,24 +1192,20 @@ html.lenis body {
 }
 
 /* ---------------------------------------------------------------- */
-/* Crea da solo il tuo dolce custom — la chiusura della home         */
+/* Ora tocca a te — il teaser del configuratore, chiusura della home */
 /*                                                                   */
-/* Al posto del blocco inchiostro «Ricette di laboratorio, scala da  */
-/* industria»: là una campitura nera piena parlava di noi proprio    */
-/* dove la pagina deve passare la parola a chi guarda. Tre pezzi —   */
-/* la fila delle tappe, il nastro che ci passa sotto, la campitura   */
-/* mandarino del richiamo.                                           */
-/*                                                                   */
-/* Qui sta solo ciò che Tailwind non dice bene: la riga di colonne   */
-/* condivisa fra card e dolci, il nastro (che è tutto gradienti e    */
-/* pseudo-elementi) e le transizioni dei comandi. Misure, colori e   */
-/* spaziature restano in classi.                                     */
+/* Refactor architettura 12/08: al posto della vetrina a tre colonne */
+/* (fila di card + campitura mandarino) resta il gesto — il nastro   */
+/* con i tre stati del dolce che si assemblano in scrub (la regia    */
+/* sta in components/home/ConfiguratorTeaser). Le classi delle card  */
+/* e del binario sono uscite con i loro componenti; nastro, dolce e  */
+/* pillole CTA restano quelli di prima.                              */
 /* ---------------------------------------------------------------- */
 
 /* La scena. Le misure che tengono insieme la composizione stanno qui e
    non sparse nei componenti: altezza del nastro, altezza del dolce,
-   vuoto fra una tappa e l'altra e larghezza delle testate si citano a
-   vicenda, e separarle vorrebbe dire allinearle a mano ogni volta.
+   passo fra le colonne e larghezza delle testate si citano a vicenda,
+   e separarle vorrebbe dire allinearle a mano ogni volta.
 
    Il `padding-bottom` è calcolato, non scelto: il nastro è appoggiato in
    basso ed è alto `--nastro`, quindi lasciare sotto le file il 74% della
@@ -924,73 +1219,6 @@ html.lenis body {
   --testata: clamp(18px, 1.8vw, 26px);
   position: relative;
   padding-bottom: calc(var(--nastro) * 0.74);
-}
-
-/* La fila delle tappe: quattro colonne uguali, con il vuoto in cui la
-   card ospita la freccia verso quella dopo. */
-.percorso-fila {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: var(--passo);
-}
-
-/* I dolci sono TRE su quattro tappe, e non è un disallineamento: gli
-   stati del prodotto sono tre (vuoto, farcito, finito) mentre le tappe
-   contano anche l'esito. Si distribuiscono in parti uguali sulla stessa
-   larghezza della fila — corrispondenza di ritmo, non di colonna: sul
-   nastro il dolce attraversa la fila mentre si compone, non sta fermo
-   sotto una card. Il `margin-top` negativo li fa risalire dentro le
-   card, perché sul nastro il prodotto sta davanti, non sotto. */
-.percorso-dolci {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: var(--passo);
-  margin-top: calc(var(--dolce) * -0.45);
-}
-
-/* Il binario. Sotto xl la fila esce dalla colonna e scorre: cinque card
-   minuscole su un telefono non le legge nessuno. L'aggancio è
-   `proximity` e non `mandatory` — con mandatory il salto all'ancora
-   «scopri come funziona» verrebbe corretto dal browser a metà corsa. */
-.percorso-binario {
-  scroll-snap-type: x proximity;
-}
-.percorso-binario:focus-visible {
-  outline: 2px solid var(--mandarino);
-  outline-offset: 4px;
-  border-radius: 14px;
-}
-@media (min-width: 80rem) {
-  .percorso-binario {
-    scroll-snap-type: none;
-  }
-}
-
-/* --------------------------- la tappa ----------------------------- */
-
-/* Il sollevamento al passaggio del mouse NON è qui ma in Motion
-   (`whileHover`): l'ingresso scaglionato lascia un `transform` in linea
-   sulla card, e una regola CSS sullo stesso asse non lo batterebbe. Qui
-   restano bordo e ombra, che Motion non tocca. */
-.percorso-tappa {
-  scroll-snap-align: center;
-  box-shadow: 0 1px 2px rgb(90 45 12 / 0.05);
-  transition:
-    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.3s ease-out;
-}
-.percorso-tappa:hover {
-  box-shadow: 0 14px 24px -16px rgb(90 45 12 / 0.5);
-  border-color: color-mix(in srgb, var(--mandarino) 45%, transparent);
-}
-
-/* La freccia verso la tappa seguente, centrata nel vuoto alla sua
-   destra: `right` la porta a filo di metà vuoto, la traslazione la
-   centra sul proprio asse. Nessuna colonna occupata, quindi la riga
-   delle card e quella dei dolci restano la stessa griglia. */
-.percorso-freccia {
-  right: calc(var(--passo) / -2);
-  transform: translate(50%, -50%);
 }
 
 /* -------------------------- il nastro ----------------------------- */
@@ -1131,19 +1359,7 @@ html.lenis body {
   }
 }
 
-/* ---------------------- il richiamo mandarino --------------------- */
-
-.cta-configuratore {
-  border-radius: clamp(20px, 1.7vw, 28px);
-  /* stessa ricetta della copertina salati, ruotata: un gradiente appena
-     percettibile che toglie la piattezza alla campitura piena */
-  background: linear-gradient(
-    155deg,
-    #ff8a12 0%,
-    var(--mandarino) 58%,
-    #e35f04 100%
-  );
-}
+/* ------------------------- la pillola CTA ------------------------- */
 
 .cta-azione,
 .cta-azione > span,
@@ -1161,16 +1377,9 @@ html.lenis body {
   outline: 2px solid var(--panna);
   outline-offset: 3px;
 }
-/* il comando primario: il cerchio si accende d'acido, il resto sta fermo */
-.cta-azione:not(.cta-azione-vuota):is(:hover, :focus-visible) > span {
+/* il cerchio si accende d'acido, il resto sta fermo */
+.cta-azione:is(:hover, :focus-visible) > span {
   background: var(--acido);
-}
-.cta-azione-vuota:is(:hover, :focus-visible) {
-  background: rgb(255 244 230 / 0.14);
-  border-color: var(--panna);
-}
-.cta-azione-vuota:is(:hover, :focus-visible) > span {
-  border-color: var(--panna);
 }
 
 /* ----------------------- chiusura del sito ------------------------ */
@@ -1210,7 +1419,6 @@ html.lenis body {
   .percorso-dolce {
     animation: none;
   }
-  .percorso-tappa,
   .cta-azione,
   .cta-azione > span,
   .cta-azione svg,
@@ -1220,6 +1428,97 @@ html.lenis body {
   .cta-azione:is(:hover, :focus-visible) svg,
   .biglietto-configuratore:is(:hover, :focus-visible) svg {
     transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Regia della home — apertura, stacco di capitolo, ponte, teaser    */
+/*                                                                   */
+/* Refactor architettura 2026-08-12: la home è una sequenza continua */
+/* (hero → catalogo 2026/27 → storia → futuro → crea il tuo dolce)   */
+/* e i confini tra le sezioni sono passaggi di scena, non bordi.     */
+/* I tempi stanno nei componenti (components/home/*); qui stanno gli */
+/* stati iniziali che devono valere anche PRIMA dell'idratazione, i  */
+/* bordi strappati e i ripiegamenti per prefers-reduced-motion.      */
+/* ---------------------------------------------------------------- */
+
+/* Il quadro in ingresso dell'apertura: nasce chiuso e invisibile — lo
+   apre solo lo scrub. Senza JS non compare mai: la hero resta intera. */
+.apertura-quadro {
+  clip-path: inset(100% 36% 0% 36% round 26px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* A menu aperto la finestra della hero è un'anteprima e deve mostrare
+   la hero INTERA, anche se lo scrub dell'apertura ha già fatto uscire
+   insegna e invito: qui si riporta tutto allo stato composto. Gli
+   `!important` battono gli stili in linea scritti da GSAP; alla
+   chiusura del menu (via `data-libera`) gli inline tornano a valere. */
+.hero-finestra[data-libera] [data-hero-uscita],
+.hero-finestra[data-libera] .hero-scatto {
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Il bordo alto strappato del capitolo scuro: lo stesso linguaggio
+   delle fasce della storia, sopra la coda del catalogo. */
+.stacco-strappo {
+  clip-path: polygon(
+    0 3.4rem,
+    14% 1.9rem,
+    32% 3rem,
+    52% 1.2rem,
+    72% 2.6rem,
+    88% 1rem,
+    100% 2.2rem,
+    100% 100%,
+    0 100%
+  );
+}
+
+/* I tre stati del dolce sul banco del teaser: tre colonne sul passo
+   del percorso — la fila delle card non c'è più, il ritmo resta. */
+.teaser-pezzi {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--passo);
+}
+
+/* la CTA del teaser sta sul crema, non sul mandarino: il focus panna
+   della .cta-azione lì non si vedrebbe */
+.teaser-cta:focus-visible {
+  outline-color: var(--inchiostro);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* niente corse, niente quinte: le sezioni tornano in flusso e
+     mostrano direttamente la composizione finale */
+  .apertura-corsa,
+  .ponte-corsa,
+  .apertura-quadro {
+    display: none;
+  }
+  .apertura-quinta,
+  .ponte-quinta {
+    position: static;
+  }
+  /* il ponte diventa due blocchi impilati: la domanda sul buio, la
+     risposta sul suo crema — già composti, senza sipario da alzare */
+  .ponte-quinta {
+    min-height: 0;
+    display: block;
+    padding-top: clamp(4rem, 10vh, 7rem);
+  }
+  .ponte-quinta > div:first-child {
+    padding-bottom: clamp(4rem, 10vh, 7rem);
+  }
+  .ponte-sipario {
+    position: static;
+    inset: auto;
+    clip-path: none !important;
+    padding: clamp(4rem, 10vh, 7rem) 1.5rem;
   }
 }
 
@@ -1529,6 +1828,209 @@ textarea.pop-campo {
     transform: none;
   }
   .pop-tessera:hover .pop-icona {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Chi siamo · La nostra storia — parallasse emozionale              */
+/*                                                                   */
+/* Rev 2026-08-06: la scena è un palco scuro, non una pagina chiara.  */
+/* Sei fasce narrative impilate — fotografia, velo di colore, testo — */
+/* attraversate scorrendo mentre la scena resta agganciata. Il fondo  */
+/* è l'inchiostro del sito riscaldato da due aloni di cacao: deve     */
+/* leggersi come una sala, non come un rettangolo nero.               */
+/*                                                                   */
+/* Qui stanno solo le cose che Tailwind non dice: la materia del      */
+/* fondo, la geometria strappata delle fasce e gli stati dei marker.  */
+/* Misure, colori e spaziature restano in classi.                    */
+/*                                                                   */
+/* Regola di prestazione: quel che si muove a ogni frame è solo       */
+/* transform e opacity. I `filter` cambiano nei passaggi di tappa —   */
+/* tween brevi, non continui — e `will-change` si accende soltanto    */
+/* mentre la scena è in scena (`.storia-scena--viva`).                */
+/* ---------------------------------------------------------------- */
+
+.storia-scena {
+  background-color: var(--inchiostro);
+  background-image:
+    radial-gradient(70% 55% at 12% 6%, rgba(43, 29, 22, 0.95), transparent 68%),
+    radial-gradient(85% 70% at 88% 96%, rgba(43, 29, 22, 0.7), transparent 70%);
+}
+
+/* grana grossa sul palco: la stessa idea della grana globale del body,
+   ma più marcata — su fondo scuro serve a togliere il «digitale» dalle
+   campiture piene. Livello fermo, non si anima mai. */
+.storia-scena::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23s)'/%3E%3C/svg%3E");
+}
+
+/* il velo di carta sotto la colonna di sinistra: le fasce passano
+   dietro, la copy resta leggibile senza spostare la composizione */
+.storia-sipario {
+  background-image: linear-gradient(
+    90deg,
+    var(--inchiostro) 0%,
+    color-mix(in srgb, var(--inchiostro) 92%, transparent) 62%,
+    transparent 100%
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* La fascia narrativa                                                 */
+/*                                                                     */
+/* Non è un rettangolo: i due bordi lunghi sono spezzati, come una      */
+/* striscia strappata. Gli otto vertici arrivano dal componente         */
+/* (--t0…--t3 in alto, --b0…--b3 in basso), così le sei fasce non sono  */
+/* mai identiche senza che la forma vada scritta a mano ogni volta.     */
+/* ------------------------------------------------------------------ */
+.storia-fascia {
+  --t0: 2%;
+  --t1: 0%;
+  --t2: 3%;
+  --t3: 1%;
+  --b0: 98%;
+  --b1: 100%;
+  --b2: 97%;
+  --b3: 99%;
+  clip-path: polygon(
+    0% var(--t0),
+    34% var(--t1),
+    68% var(--t2),
+    100% var(--t3),
+    100% var(--b3),
+    66% var(--b2),
+    32% var(--b1),
+    0% var(--b0)
+  );
+}
+
+/* Il velo della tappa. Pieno a sinistra — dove sta il testo, e deve
+   reggere il contrasto — e trasparente a destra, dove la fotografia
+   resta protagonista. Il colore arriva da `--accento`, l'intensità
+   dell'insieme la scrive GSAP su `opacity`. */
+.storia-velo {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accento) 86%, var(--inchiostro)) 0%,
+    color-mix(in srgb, var(--accento) 68%, transparent) 34%,
+    color-mix(in srgb, var(--accento) 38%, transparent) 66%,
+    color-mix(in srgb, var(--accento) 20%, transparent) 100%
+  );
+}
+
+/* la fotografia sotto il velo va tenuta giù: senza questo strato le
+   alte luci degli scatti in stabilimento bucano il colore */
+.storia-fondino {
+  background-image: linear-gradient(
+    90deg,
+    rgba(22, 6, 1, 0.6) 0%,
+    rgba(22, 6, 1, 0.22) 46%,
+    rgba(22, 6, 1, 0.05) 100%
+  );
+}
+
+/* lo spessore della striscia: un filo di luce sul bordo alto e
+   un'ombra sotto, così le fasce si leggono impilate e non affiancate */
+.storia-spessore {
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 244, 230, 0.16),
+    0 18px 34px -18px rgba(0, 0, 0, 0.85);
+}
+
+.storia-scena--viva .storia-fascia,
+.storia-scena--viva .storia-foto,
+.storia-scena--viva .storia-pop {
+  will-change: transform;
+}
+
+/* ------------------------------------------------------------------ */
+/* La linea del tempo verticale                                        */
+/* ------------------------------------------------------------------ */
+
+/* il marker: numero in un tondo, pieno quando la tappa è attiva o già
+   passata, solo contornato quando deve ancora arrivare */
+.storia-marker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 1.5px solid color-mix(in srgb, var(--panna) 26%, transparent);
+  background: color-mix(in srgb, var(--inchiostro) 82%, transparent);
+  color: color-mix(in srgb, var(--panna) 55%, transparent);
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.5s ease,
+    border-color 0.5s ease,
+    color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.storia-tappa--fatta .storia-marker {
+  background: color-mix(in srgb, var(--accento) 82%, var(--inchiostro));
+  border-color: color-mix(in srgb, var(--accento) 70%, transparent);
+  color: var(--panna);
+}
+
+.storia-tappa--attiva .storia-marker {
+  background: var(--accento);
+  border-color: var(--accento);
+  color: var(--inchiostro);
+  transform: scale(1.18);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accento) 20%, transparent);
+}
+
+.storia-tappa--futura .storia-etichetta {
+  opacity: 0.55;
+}
+
+.storia-tappa--attiva .storia-etichetta {
+  opacity: 1;
+}
+
+.storia-tappa--attiva .storia-etichetta-titolo {
+  color: var(--accento);
+}
+
+.storia-tappa button:focus-visible {
+  outline: 2px solid var(--panna);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Il finale                                                           */
+/* ------------------------------------------------------------------ */
+
+/* l'alba dell'ultima tappa: il futuro schiarisce il palco */
+.storia-alba {
+  background-image:
+    radial-gradient(58% 48% at 62% 44%, rgba(255, 107, 74, 0.3), transparent 72%),
+    radial-gradient(80% 62% at 78% 22%, rgba(251, 197, 10, 0.16), transparent 74%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Mobile: la stessa storia, in colonna                                */
+/* ------------------------------------------------------------------ */
+
+/* la fotografia di ogni tappa, strappata come le fasce del desktop */
+.storia-scatto {
+  clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storia-marker {
+    transition-duration: 0.01ms;
+  }
+  .storia-tappa--attiva .storia-marker {
     transform: none;
   }
 }

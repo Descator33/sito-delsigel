@@ -2,22 +2,28 @@ import { CatalogCarousel } from "./CatalogCarousel";
 import { CatalogPhysicalIntro } from "./CatalogPhysicalIntro";
 
 /**
- * Il catalogo stampato 2026/2027, subito sotto la griglia dei dolci.
+ * Il catalogo stampato 2026/2027 — il secondo capitolo della home, subito
+ * dopo la hero (refactor architettura 2026-08-12: la griglia dei dolci e
+ * la linea salata sono uscite dalla home e vivono su /catalogo).
  *
- * È l'unica sezione della home tagliata in due campiture piene che vanno da
- * bordo a bordo: blush a sinistra (44%), tortora a destra (56%). Lo
- * stacco dalla griglia prodotti — che vive dentro `max-w-[1800px]` — è
- * voluto: lì si guardano i dolci uno a uno, qui si sfoglia un oggetto.
+ * È l'unica sezione della home tagliata in due campiture piene che vanno
+ * da bordo a bordo: blush a sinistra (44%), tortora a destra (56%).
+ * L'arrivo dalla hero non è uno stacco netto: il primo scatto della
+ * galleria entra in campo già durante l'uscita della hero (vedi
+ * components/home/AperturaEditoriale) e qui "trova il suo posto" come
+ * pagina attiva del carosello.
  *
- * Rev 05/08 — la sezione esce dal panna del sito. Prima il fondo era lo
- * stesso della griglia sopra e le due sembravano una cosa sola: adesso
- * apre una fascia fucsia a tutta larghezza, e sotto il crema vira al
- * rosato. A destra il mandarino ha lasciato il posto al tortora: era
- * l'unico fondo che entrava in conflitto con gli scatti — che hanno
- * campiture gialle, rosse e arancioni — invece di farli staccare.
+ * Rev 05/08 — la fascia fucsia a tutta larghezza apre la sezione, sotto
+ * il crema vira al rosato. A destra il tortora: era l'unico fondo che non
+ * litigava con gli scatti (campiture gialle, rosse e arancioni).
  *
  * Sotto lg le due campiture si impilano nell'ordine di lettura: prima il
  * testo, poi la galleria. La fascia resta in cima a ogni misura.
+ *
+ * `data-quadro-catalogo` è il contratto con lo stacco di capitolo che
+ * segue (components/home/StaccoCapitolo): all'uscita della sezione la
+ * griglia arretra di qualche vh — solo `y`, mai scale, per non falsare
+ * le misure di Embla.
  *
  * Server Component: lo stato sta nelle due metà, che sono client.
  */
@@ -33,7 +39,10 @@ export function CatalogPhysicalSection() {
     >
       <FasciaStacco />
 
-      <div className="grid lg:min-h-[clamp(45rem,84vh,53rem)] lg:grid-cols-[44fr_56fr]">
+      <div
+        data-quadro-catalogo
+        className="grid lg:min-h-[clamp(45rem,84vh,53rem)] lg:grid-cols-[44fr_56fr]"
+      >
         <CatalogPhysicalIntro titoloId={TITOLO_ID} />
         <CatalogCarousel />
       </div>

@@ -23,15 +23,18 @@ const COLONNE: { titolo: string; voci: [string, string][] }[] = [
     titolo: "Delsigel",
     voci: [
       ["Chi siamo", "/chi-siamo"],
-      ["La nostra storia", "/chi-siamo#storia"],
+      /* la storia vive in homepage dal refactor 12/08 */
+      ["La nostra storia", "/#storia"],
       ["Contatti", "/contatti"],
     ],
   },
   {
     titolo: "Prodotti",
     voci: [
-      ["I nostri dolci", "/#catalogo"],
-      ["I nostri salati", "/#salati"],
+      /* dolci e salati stanno su /catalogo dal refactor 12/08; il
+         catalogo stampato resta una scena della home */
+      ["I nostri dolci", "/catalogo#dolci"],
+      ["I nostri salati", "/catalogo#salati"],
       ["Catalogo 2026/27", "/#catalogo-fisico"],
     ],
   },

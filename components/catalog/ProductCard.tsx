@@ -9,12 +9,11 @@ import { ProductImage } from "./ProductImage";
 
 /**
  * La card del catalogo. Una sola composizione — numero, nome, claim,
- * freccia in colonna a sinistra, prodotto a destra — che le quattro
- * varianti riscalano: cambia la misura, non l'ordine di lettura.
+ * freccia in colonna a sinistra, prodotto a destra — che le tre varianti
+ * riscalano: cambia la misura, non l'ordine di lettura.
  *
- *   hero        il Golosone: prodotto enorme, tagliato dal fondo card
- *   grande      testo a sinistra, prodotto dominante a destra, intero
- *   verticale   colonna stretta, prodotto largo appoggiato in basso
+ *   hero        l'Intriko: prodotto enorme, tagliato dallo spigolo
+ *   grande      testo a sinistra, prodotto dominante a destra
  *   compatta    la riga bassa: tutto più piccolo, prodotto di fianco
  *
  * Il tema entra come tre variabili CSS e non come classi: la stessa
@@ -24,6 +23,11 @@ import { ProductImage } from "./ProductImage";
  * — la foto cresce e ruota, la freccia si riempie (CSS). Col mouse
  * tutta la campitura è cliccabile; da tastiera e per gli screen reader
  * il comando è il solo bottone della freccia.
+ *
+ * L'entrata (`nascosta` → `riposo`) non è comandata qui: la sfalsa la
+ * griglia, che orchestra le sette card con uno `staggerChildren`. Così
+ * il ritardo vale una volta sola, all'ingresso in viewport, e non torna
+ * a ogni uscita dall'hover — che è pur sempre un ritorno a `riposo`.
  */
 
 type Misure = {
@@ -35,6 +39,10 @@ type Misure = {
   testo: string;
   freccia: "grande" | "piccola";
   spazio: string;
+  /** il ritaglio della foto sotto xl, dove la griglia è una colonna sola:
+   *  i ritagli dei dati valgono da xl in su e qui non arriverebbero, ma
+   *  la hero deve restare la card più forte anche sul telefono */
+  foto: string;
 };
 
 const MISURE: Record<VarianteCard, Misure> = {
@@ -47,6 +55,7 @@ const MISURE: Record<VarianteCard, Misure> = {
     testo: "max-w-[62%] sm:max-w-[54%] xl:max-w-[58%]",
     freccia: "grande",
     spazio: "mt-6 xl:mt-[clamp(1rem,1.6vw,1.9rem)]",
+    foto: "bottom-[-6%] right-[-5%] h-[64%] w-[76%]",
   },
   grande: {
     guscio: "min-h-[18rem] sm:min-h-[24rem] xl:min-h-0",
@@ -57,16 +66,7 @@ const MISURE: Record<VarianteCard, Misure> = {
     testo: "max-w-[60%] xl:max-w-[54%]",
     freccia: "grande",
     spazio: "mt-6 xl:mt-[clamp(1rem,1.5vw,1.8rem)]",
-  },
-  verticale: {
-    guscio: "min-h-[18rem] sm:min-h-[24rem] xl:min-h-0",
-    padding: "p-5 sm:p-6 xl:p-[clamp(1rem,1.4vw,1.6rem)]",
-    numero: "text-[0.66rem] xl:text-[clamp(0.58rem,0.66vw,0.78rem)]",
-    nome: "text-[1.8rem] sm:text-[2.1rem] xl:text-[clamp(1.6rem,2.4vw,2.9rem)]",
-    claim: "text-[0.7rem] xl:text-[clamp(0.58rem,0.68vw,0.82rem)]",
-    testo: "max-w-[60%] xl:max-w-[92%]",
-    freccia: "grande",
-    spazio: "mt-6 xl:mt-[clamp(0.9rem,1.4vw,1.7rem)]",
+    foto: "bottom-[2%] right-[1%] h-[78%] w-[52%]",
   },
   compatta: {
     guscio: "min-h-[13rem] xl:min-h-0",
@@ -77,6 +77,7 @@ const MISURE: Record<VarianteCard, Misure> = {
     testo: "max-w-[56%] xl:max-w-[62%]",
     freccia: "piccola",
     spazio: "mt-auto pt-4 xl:pt-[clamp(0.5rem,0.9vw,1.1rem)]",
+    foto: "bottom-[2%] right-[1%] h-[78%] w-[48%]",
   },
 };
 
@@ -102,17 +103,19 @@ export function ProductCard({
           "--numero": colori.numero,
         } as CSSProperties
       }
-      initial="riposo"
-      animate="riposo"
       whileHover="attiva"
-      variants={{ riposo: { y: 0 }, attiva: { y: -6 } }}
+      variants={{
+        nascosta: { opacity: 0, y: 20 },
+        riposo: { opacity: 1, y: 0 },
+        attiva: { opacity: 1, y: -6 },
+      }}
       transition={{ type: "spring", stiffness: 260, damping: 22 }}
     >
       {t.image && (
         <ProductImage
           src={t.image}
           alt={`${t.name}: ${t.note ?? "scatto di prodotto"}`}
-          riquadro={`bottom-[2%] right-[1%] z-0 h-[78%] w-[48%] ${foto}`}
+          riquadro={`z-0 ${m.foto} ${foto}`}
         />
       )}
 
