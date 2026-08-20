@@ -14,16 +14,20 @@
  * dolce. Quindi il fondo vero è solo ciò che è NERO **e** connesso al bordo
  * del frame (flood fill 4-vie dai bordi): il resto è prodotto, ombre incluse.
  *
- * uso: node scripts/cut-product.mjs <render.png> <public/products/x.webp> [maxSide=900] [erode=168]
+ * uso: node scripts/cut-product.mjs <render.png> <public/products/x.webp> [maxSide=900] [erode=168] [bgLuma=24]
  */
 import sharp from "sharp";
 
-const [, , inPath, outPath, maxSideArg, erodeArg] = process.argv;
+const [, , inPath, outPath, maxSideArg, erodeArg, bgLumaArg] = process.argv;
 const MAX_SIDE = Number(maxSideArg || 1400);
 /** soglia dell'erosione finale: alzarla morde di più il bordo, e serve sui
  *  render in cui il rim light è uscito freddo e lascia un filo azzurro */
 const ERODE = Number(erodeArg || 168);
-const BG_LUMA = 24; // sotto questo valore è candidato fondo
+/** soglia del fondo: sotto questo luma il pixel è candidato fondo. Abbassarla
+ *  serve sui soggetti che nel nero ci vanno per natura (cioccolato fondente,
+ *  ganache): con 24 le loro ombre proprie diventano fondo e il fill le
+ *  scava da dentro. */
+const BG_LUMA = Number(bgLumaArg || 24);
 const FEATHER = 1.1;
 const CLOSE = 5; // raggio del closing che ricuce il bordo in ombra
 

@@ -302,7 +302,7 @@ export const TESSERA_A_BASE: Record<string, string | null> = {
 /**
  * Le foto del configuratore arrivano SOLO dalle cartelle di
  * public/img/configuratore/ (una per base, per sku, per prodotto
- * completo e per farcitura). Le mappe chiave → URL le costruisce il
+ * completo, per farcitura e per topping). Le mappe chiave → URL le costruisce il
  * server con lib/configuratore/foto.ts e scendono ai client component
  * come prop: l'assenza della chiave significa "foto non ancora
  * arrivata" e la UI ripiega sullo stato precedente o sul placeholder
@@ -317,6 +317,12 @@ export type FotoStati = Record<string, string>;
  *  delle tessere del passo 2: la tessera è la cosa che si trascina, il
  *  farcito (foto dello sku) compare sul banco dopo il rilascio. */
 export type FotoFarciture = Record<string, string>;
+
+/** Id topping → URL della foto della finitura DA SOLA. Stesso patto
+ *  della farcitura, un passo più in là: è l'immagine della tessera del
+ *  passo 3, quella che si trascina sul dolce farcito; il prodotto
+ *  completo (foto sku--topping) compare sul banco dopo il rilascio. */
+export type FotoTopping = Record<string, string>;
 
 /* ------------------------------ formattazione ---------------------------- */
 

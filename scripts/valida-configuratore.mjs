@@ -127,8 +127,9 @@ for (const c of dati.combinazioni) {
    devono dichiararlo nell'intestazione. In più, ogni cartella deve
    corrispondere a una voce reale del vocabolario: una cartella con un
    refuso nel nome non verrebbe mai mostrata, meglio saperlo al build.
-   Due radici, stesso contratto: prodotti/ (gli stati del prodotto) e
-   farciture/ (l'ingrediente da solo, tessere del passo 2). */
+   Tre radici, stesso contratto: prodotti/ (gli stati del prodotto),
+   farciture/ (l'ingrediente da solo, tessere del passo 2) e topping/
+   (la finitura da sola, tessera del passo 3). */
 
 const radiceFoto = join(qui, "..", "public", "img", "configuratore");
 const radici = [
@@ -145,6 +146,11 @@ const radici = [
     cartella: "farciture",
     validi: farciture,
     cosa: "farcitura del vocabolario",
+  },
+  {
+    cartella: "topping",
+    validi: topping,
+    cosa: "topping del vocabolario",
   },
 ];
 

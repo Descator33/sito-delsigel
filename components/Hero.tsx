@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, type ReactNode } from "react";
 import { animate, motion, useMotionValue, useReducedMotion } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { useMenu } from "@/components/MenuStato";
+import { lenisAttivo } from "@/components/SmoothScroll";
 import {
   DURATA_MENU,
   EASE_MENU,
@@ -54,6 +54,9 @@ export const HERO_IMAGE_VERT = "/hero/hero-verticale.webp";
 export const HERO_IMAGE_VERT_2X = "/hero/hero-verticale@2x.webp";
 
 const MOLLA = [0.22, 1, 0.36, 1] as const;
+
+/** dove porta l'invito: la sezione del catalogo stampato, in home */
+const DESTINAZIONE = "catalogo-fisico";
 
 /* Le quattro righe entrano scaglionate da sotto una finestra ritagliata;
    descrizione e invito le seguono a distanza fissa. */
@@ -310,6 +313,38 @@ export function Hero() {
     };
   }, [aperto, ridotto, alto, sinistra, larghezza, altezza, scala, velo, trasparenza]);
 
+  /* L'INVITO NON PORTA VIA: PORTA GIÙ (2026-08-20). Prima era un link a
+     /catalogo — la gamma prodotti — mentre qui sotto comincia il catalogo
+     STAMPATO 2026/27, che è ciò che la hero promette. Ora è un comando di
+     scroll: la scena tra hero e catalogo è tutta scroll-driven (vedi
+     components/home/AperturaEditoriale), quindi la corsa va PERCORSA e non
+     saltata — si chiede a Lenis un viaggio lungo fino alla sezione e la
+     regia si suona da sé lungo la strada. Senza Lenis (reduced motion, o
+     hero montata fuori dalla home) resta lo scroll del browser. */
+  const scorriAlCatalogo = useCallback(() => {
+    const meta = document.getElementById(DESTINAZIONE);
+    if (!meta) return;
+
+    /* La sezione porta uno `scroll-mt` per le ancore del menu, e sia Lenis
+       sia `scrollIntoView` lo rispettano: si fermerebbero un dito sopra,
+       lasciando in cima la coda dello scatto d'ingresso. Qui l'arrivo deve
+       essere a filo — la fascia fucsia attaccata al bordo alto — quindi il
+       margine si annulla invece di darlo per scontato. */
+    const margine = parseFloat(getComputedStyle(meta).scrollMarginTop) || 0;
+    const arrivo = meta.getBoundingClientRect().top + window.scrollY;
+
+    const lenis = lenisAttivo();
+    if (lenis) {
+      lenis.scrollTo(meta, {
+        offset: margine,
+        duration: 1.9,
+        easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      });
+      return;
+    }
+    window.scrollTo({ top: arrivo, behavior: ridotto ? "auto" : "smooth" });
+  }, [ridotto]);
+
   return (
     <section
       ref={sezione}
@@ -439,17 +474,38 @@ export function Hero() {
                   transition={{ duration: 0.7, delay: ATTESA_INVITO, ease: MOLLA }}
                   className="mt-7 sm:mt-8"
                 >
-                  <Link
-                    href="/catalogo"
+                  <button
+                    type="button"
+                    onClick={scorriAlCatalogo}
                     /* a menu aperto la hero è un'anteprima, non una
                        destinazione: l'invito si vede ma non si preme, e
                        soprattutto non risponde al TAB dentro il menu */
                     tabIndex={aperto ? -1 : undefined}
                     className="hero-cta font-ui inline-flex h-[52px] w-[220px] items-center justify-between rounded-full border border-[rgb(23_21_18/0.08)] bg-hero-panna pl-[26px] pr-[22px] text-[13px] font-extrabold uppercase tracking-[0.03em] text-hero-nero"
                   >
-                    Scopri il catalogo
-                    <ArrowRight size={16} strokeWidth={2.6} aria-hidden />
-                  </Link>
+                    Scorri il catalogo
+                    {/* la freccia respira in giù: è il verso dello scroll,
+                        non quello di un link. Il rimbalzo sta su questo
+                        involucro e l'hover sull'icona (globals.css) —
+                        due transform sullo stesso nodo si pesterebbero. */}
+                    <motion.span
+                      aria-hidden
+                      className="flex"
+                      animate={ridotto || aperto ? { y: 0 } : { y: [0, 3.5, 0] }}
+                      transition={
+                        ridotto || aperto
+                          ? { duration: 0 }
+                          : {
+                              duration: 1.6,
+                              repeat: Infinity,
+                              repeatDelay: 0.6,
+                              ease: "easeInOut",
+                            }
+                      }
+                    >
+                      <ArrowDown size={16} strokeWidth={2.6} />
+                    </motion.span>
+                  </button>
                 </motion.div>
               </div>
             </div>

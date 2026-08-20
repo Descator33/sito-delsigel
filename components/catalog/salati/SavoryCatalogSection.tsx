@@ -1,5 +1,6 @@
 import { SavoryEditorialPanel } from "./SavoryEditorialPanel";
 import { SavoryProductShowcase } from "./SavoryProductShowcase";
+import { CatalogSurfaceReveal } from "@/components/catalog/CatalogMotion";
 
 /**
  * «I nostri salati» — la sezione della linea salata, subito dopo il
@@ -38,8 +39,19 @@ export function SavoryCatalogSection() {
             del carosello, che è lungo quanto tutti i prodotti in fila) e
             sfonda il quadro. Vale anche per la colonna singola sotto lg. */}
         <div className="salati-quadro grid grid-cols-[minmax(0,1fr)] lg:min-h-[clamp(33rem,40vw,38.75rem)] lg:grid-cols-[minmax(0,31fr)_minmax(0,69fr)]">
-          <SavoryEditorialPanel titoloId={TITOLO_ID} />
-          <SavoryProductShowcase />
+          <CatalogSurfaceReveal
+            direzione="sinistra"
+            className="relative z-[1] min-w-0 lg:h-full"
+          >
+            <SavoryEditorialPanel titoloId={TITOLO_ID} />
+          </CatalogSurfaceReveal>
+          <CatalogSurfaceReveal
+            direzione="destra"
+            ritardo={0.08}
+            className="min-w-0 lg:h-full"
+          >
+            <SavoryProductShowcase />
+          </CatalogSurfaceReveal>
         </div>
       </div>
     </section>

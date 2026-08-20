@@ -126,22 +126,65 @@ export function Banco({
         <Scintilla className="scintilla-drag absolute left-[44%] top-[12%] w-[2.6%] min-w-[12px] text-corallo-scena" />
       </div>
 
-      {/* --- il segno del rilascio: la freccia, e basta -------------
-          Il cerchio tratteggiato e la scritta sono usciti il 2026-08-19.
-          Restava una freccia dentro una scatola che non serviva più:
-          ora le quote sono sul palco, non su quella scatola — 44.1% =
-          20% + 71% di 34%, 5.85% = 16% di 34% di altezza riportato in
-          larghezza (il palco è 93/100). Ciò che manca lo dicono la
-          pillola in basso e l'aria-label della scena. */}
+      {/* --- l'invito: la scritta e la freccia -----------------------
+          Il cerchio tratteggiato è uscito il 2026-08-19 e per un po'
+          sopra l'alzata è restata la sola freccia: puntava al piano
+          senza dire che farne, e il palco vuoto si leggeva come un
+          decoro (rilievo 2026-08-20). Torna una scritta, ma sopra la
+          freccia e a mano: dice il gesto («trascina qui») e la via
+          alternativa per chi è sul touch, dove il drag non è ovvio.
+
+          Le quote restano sul palco, non su una scatola — 44.1% = 20%
+          + 71% di 34%, 5.85% = 16% di 34% di altezza riportato in
+          larghezza (il palco è 93/100). La scritta è ancorata alla
+          stessa quota della freccia e sale della propria altezza: se
+          la copy cambia, la freccia non si muove.
+
+          Tutto aria-hidden: la scena si racconta una volta sola,
+          nell'aria-label del palco. */}
       {dropAttivo && vuoto && (
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[44.1%] block w-[5.85%] min-w-[32px] -translate-x-1/2 text-corallo-scena"
-          animate={riduci || sopra ? { y: 0 } : { y: [0, 5, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <FrecciaGiu className="w-full" />
-        </motion.span>
+        <>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-[44.1%] flex -translate-y-[calc(100%+12px)] flex-col items-center gap-1 px-[12%] text-center"
+          >
+            <span
+              className={`type-scritta -rotate-2 text-[22px] leading-tight transition-colors duration-200 sm:text-[28px] ${
+                sopra ? "text-corallo-scena" : "text-inchiostro/85"
+              }`}
+            >
+              {sopra ? (
+                "Perfetto, lascia qui!"
+              ) : (
+                <>
+                  <span className="invito-mouse">Trascina qui la tua base</span>
+                  <span className="invito-touch">Tocca una base per iniziare</span>
+                </>
+              )}
+            </span>
+            {/* la seconda via serve a chi non ha ancora cominciato:
+                mentre la tessera è in volo sarebbe un consiglio dato
+                troppo tardi */}
+            {!sopra && (
+              <span className="flex items-center gap-1.5 text-inchiostro/45">
+                <IconaMano className="h-3.5 w-3.5" />
+                <span className="type-label text-[9px] sm:text-[10px]">
+                  <span className="invito-mouse">o toccala nella lista</span>
+                  <span className="invito-touch">o trascinala fin qui</span>
+                </span>
+              </span>
+            )}
+          </div>
+
+          <motion.span
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-[44.1%] block w-[5.85%] min-w-[32px] -translate-x-1/2 text-corallo-scena"
+            animate={riduci || sopra ? { y: 0 } : { y: [0, 5, 0] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <FrecciaGiu className="w-full" />
+          </motion.span>
+        </>
       )}
 
       {/* --- l'alzata e il dolce ------------------------------------- */}
@@ -198,44 +241,39 @@ export function Banco({
         )}
       </motion.div>
 
-      {/* --- la pillola di stato, con le azioni discrete ------------- */}
-      <div className="absolute inset-x-0 bottom-[5%] flex justify-center px-[8%]">
-        <div className="flex max-w-full flex-wrap items-center justify-center gap-x-2.5 gap-y-1 rounded-full border border-linea bg-carta px-4 py-2.5 shadow-[0_2px_10px_rgba(107,60,30,0.06)] sm:px-5">
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-corallo-scena" />
-          {vuoto ? (
-            <>
-              <IconaMano className="h-4 w-4 text-inchiostro/70" />
-              <span className="text-[12px] text-inchiostro/80 sm:text-[13px]">
-                {sopra ? "Rilascia per posare la base" : "Drag & drop per iniziare"}
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="text-[12px] font-bold text-inchiostro sm:text-[13px]">
-                {nomeInScena}
-              </span>
-              <span aria-hidden className="text-inchiostro/25">
-                ·
-              </span>
-              <button
-                type="button"
-                onClick={() => apriPasso(passo === 3 ? 2 : 1)}
-                className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
-              >
-                {passo === 3 ? "Cambia farcitura" : "Cambia base"}
-              </button>
-              <button
-                type="button"
-                onClick={onRicomincia}
-                className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
-              >
-                Ricomincia
-              </button>
-            </>
-          )}
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-corallo-scena" />
+      {/* --- la pillola di stato, con le azioni discrete -------------
+          A palco vuoto non c'è: l'istruzione la dà l'invito sopra la
+          freccia, e ripeterla anche qui sotto (2026-08-20) faceva tre
+          righe di testo su una scena che ne chiede una. La pillola
+          torna quando c'è un dolce da nominare e da correggere. */}
+      {!vuoto && (
+        <div className="absolute inset-x-0 bottom-[5%] flex justify-center px-[8%]">
+          <div className="flex max-w-full flex-wrap items-center justify-center gap-x-2.5 gap-y-1 rounded-full border border-linea bg-carta px-4 py-2.5 shadow-[0_2px_10px_rgba(107,60,30,0.06)] sm:px-5">
+            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-corallo-scena" />
+            <span className="text-[12px] font-bold text-inchiostro sm:text-[13px]">
+              {nomeInScena}
+            </span>
+            <span aria-hidden className="text-inchiostro/25">
+              ·
+            </span>
+            <button
+              type="button"
+              onClick={() => apriPasso(passo === 3 ? 2 : 1)}
+              className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
+            >
+              {passo === 3 ? "Cambia farcitura" : "Cambia base"}
+            </button>
+            <button
+              type="button"
+              onClick={onRicomincia}
+              className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
+            >
+              Ricomincia
+            </button>
+            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-corallo-scena" />
+          </div>
         </div>
-      </div>
+      )}
     </motion.div>
   );
 }

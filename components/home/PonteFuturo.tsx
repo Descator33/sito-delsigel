@@ -10,9 +10,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
  *
  * La storia chiude su «La storia continua / Cambiano le mani. Non cambia
  * la cura.» — questo ponte prende quel filo e lo gira verso chi guarda:
- * IL PROSSIMO CAPITOLO? / LO SCRIVI TU. La domanda vive sul buio della
- * storia, con la voce del sito (Archivo); la risposta arriva con l'alba
- * crema del configuratore e con la sua voce (Anton, il pop della
+ * IL PROSSIMO CAPITOLO? / LO SCRIVI TU. La domanda vive sul lilla chiaro
+ * della nuova storia, con la voce del sito (Archivo); la risposta arriva
+ * con il crema del configuratore e con la sua voce (Anton, il pop della
  * chiusura): è il cambio di registro tipografico a dire che si è
  * cambiato mondo, non un bordo.
  *
@@ -97,21 +97,24 @@ export function PonteFuturo() {
   );
 
   return (
-    <section ref={radice} className="ponte-futuro relative bg-inchiostro">
+    <section
+      ref={radice}
+      className="ponte-futuro relative bg-[color-mix(in_srgb,var(--viola)_22%,var(--panna))]"
+    >
       <div className="ponte-quinta sticky top-0 flex min-h-[100svh] items-center justify-center overflow-clip">
-        {/* primo tempo: la domanda, sul buio della storia */}
+        {/* primo tempo: la domanda, sul lilla della storia */}
         <div className="relative px-6 text-center">
-          <p data-ponte-eco className="type-label text-panna/45">
+          <p data-ponte-eco className="type-label text-cacao/70">
             Dal 2011 a domani
           </p>
           <p className="mt-6 overflow-hidden pb-[0.06em]">
             <span
               data-ponte-domanda
-              className="type-display block text-[clamp(2.4rem,7.5vw,6.8rem)] leading-[0.9] text-panna"
+              className="type-display block text-[clamp(2.4rem,7.5vw,6.8rem)] leading-[0.9] text-cacao"
             >
               Il prossimo
               <br />
-              capitolo<span className="text-corallo">?</span>
+              capitolo<span className="text-mandarino">?</span>
             </span>
           </p>
         </div>

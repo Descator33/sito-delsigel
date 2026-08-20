@@ -20,13 +20,14 @@
  * /catalogo; la storia è arrivata qui da /chi-siamo (stesso componente,
  * nessuna copia); la chiusura configuratore è diventata un teaser. I confini
  * tra le sezioni sono passaggi di scena, non bordi: l'apertura tiene la hero
- * in quinta mentre entra il primo scatto del catalogo, lo stacco di capitolo
- * porta il buio della storia sopra la coda del catalogo, il ponte gira il
- * racconto dal passato al futuro. La regia sta in components/home/*.
+ * in quinta mentre entra il primo scatto del catalogo, il catalogo si ferma
+ * un attimo sulle sue fotografie (SostaCatalogo) prima che la storia apra il
+ * suo film dalla coda della sezione, e il ponte gira il racconto dal passato
+ * al futuro. La regia sta in components/home/*.
  *
  * Questo file resta un Server Component: i pezzi di regia sono client per
- * conto loro, e la storia va montata come figlia DIRETTA del flusso — il suo
- * pin (620vh, pinSpacing:false) non tollera involucri trasformati.
+ * conto loro, e la storia va montata come figlia DIRETTA del flusso: il suo
+ * palco sticky non deve finire dentro involucri trasformati o ritagliati.
  * `catalogoFisico` e `teaser` restano props: impaginarli in app/page.tsx
  * tiene il teaser vicino alle foto che legge dal filesystem.
  */
@@ -36,7 +37,8 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AperturaEditoriale } from "@/components/home/AperturaEditoriale";
-import { StaccoCapitolo } from "@/components/home/StaccoCapitolo";
+import { HomeScrollGuide } from "@/components/home/HomeScrollGuide";
+import { SostaCatalogo } from "@/components/home/SostaCatalogo";
 import { PonteFuturo } from "@/components/home/PonteFuturo";
 import { HistoryJourney } from "@/components/chi-siamo/history/HistoryJourney";
 
@@ -51,8 +53,9 @@ export default function Experience({
   teaser: ReactNode;
 }) {
   return (
-    <div className="bg-panna text-inchiostro">
+    <div data-home-experience className="bg-panna text-inchiostro">
       <SmoothScroll />
+      <HomeScrollGuide />
 
       <Header fondo="scuro" />
 
@@ -61,9 +64,9 @@ export default function Experience({
 
       {/* ---------------------- CATALOGO FISICO 2026/27 -------------------- */}
       {catalogoFisico}
-
-      {/* ------------------- CATALOGO → STORIA (capitolo) ------------------ */}
-      <StaccoCapitolo />
+      {/* la scena si ferma un attimo sulle foto prima di lasciare entrare
+          la storia: la regia sta fuori dalla sezione, che resta riusabile */}
+      <SostaCatalogo />
 
       {/* --------------------------- LA STORIA ----------------------------- */}
       <HistoryJourney />

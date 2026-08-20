@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { DESTINAZIONE_CATALOGO } from "@/lib/catalogo-fisico";
+import { CatalogRevealSequence } from "@/components/catalog/CatalogMotion";
 import { DecorativeDoodles, Rosetta } from "./DecorativeDoodles";
 
 /**
@@ -20,11 +21,13 @@ export function SavoryEditorialPanel({ titoloId }: { titoloId: string }) {
     /* z-[1]: il ghirigoro sconfina sulla vetrina, che nel DOM viene dopo e
        altrimenti lo coprirebbe. Il pannello non ha overflow proprio,
        quindi a tagliare il sconfinamento è il bordo del quadro. */
-    <div className="salati-pannello relative z-[1] flex min-w-0 flex-col justify-center px-[clamp(1.5rem,2.6vw,2.85rem)] py-[clamp(2.4rem,4vw,3.75rem)]">
-      <SectionEyebrow />
-      <DisplayHeading id={titoloId} />
-      <Description />
-      <CatalogButton />
+    <div className="salati-pannello relative z-[1] flex h-full min-w-0 flex-col justify-center px-[clamp(1.5rem,2.6vw,2.85rem)] py-[clamp(2.4rem,4vw,3.75rem)]">
+      <CatalogRevealSequence className="relative z-[2]" ritardo={0.1}>
+        <SectionEyebrow />
+        <DisplayHeading id={titoloId} />
+        <Description />
+        <CatalogButton />
+      </CatalogRevealSequence>
       <DecorativeDoodles zona="pannello" />
     </div>
   );

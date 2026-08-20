@@ -10,7 +10,7 @@ import {
   parseScelta,
   toppingVoce,
 } from "@/lib/configuratore";
-import { fotoFarciture, fotoStati } from "@/lib/configuratore/foto";
+import { fotoFarciture, fotoStati, fotoTopping } from "@/lib/configuratore/foto";
 
 /**
  * Configuratore dolci — route unica con optional catch-all:
@@ -86,7 +86,11 @@ export default async function ConfiguratorePage({ params }: Props) {
       {/* le mappe delle foto si leggono dal filesystem qui, lato server:
           le cartelle sono il contratto, l'isola client riceve solo gli
           URL delle voci che una foto ce l'hanno */}
-      <Configuratore foto={fotoStati()} fotoFarciture={fotoFarciture()} />
+      <Configuratore
+        foto={fotoStati()}
+        fotoFarciture={fotoFarciture()}
+        fotoTopping={fotoTopping()}
+      />
 
       <Footer />
     </div>

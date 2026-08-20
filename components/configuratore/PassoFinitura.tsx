@@ -6,8 +6,10 @@ import {
   toppingVoce,
   type Base,
   type Combinazione,
+  type FotoTopping,
 } from "@/lib/configuratore";
 import { CampoPedane } from "./CampoPedane";
+import { ImmagineProdotto } from "./ImmagineProdotto";
 import { ModuloQuotazione } from "./ModuloQuotazione";
 import { GrigliaTessere } from "./Selettore";
 import { SegnaPosto, TesseraScelta } from "./TesseraScelta";
@@ -22,7 +24,10 @@ import type { DragPasso } from "./PassoBase";
  * scelta fatta al posto dell'utente peggiora la UX anche quando
  * l'opzione è una). La finitura è una tessera come le altre — si
  * trascina sul palco o si tocca — e finché non atterra il dolce resta
- * incompleto: niente formato, niente quantità, niente CTA.
+ * incompleto: niente formato, niente quantità, niente CTA. La tessera
+ * mostra la finitura DA SOLA (cartelle di
+ * public/img/configuratore/topping/): è la cosa che si trascina, non
+ * il dolce finito.
  *
  * POI i numeri: applicata la finitura, arrivano gli attributi tecnici,
  * il formato letto dalla catena logistica e la quantità in pedane,
@@ -32,6 +37,7 @@ import type { DragPasso } from "./PassoBase";
 export function PassoFinitura({
   base,
   comb,
+  fotoTopping,
   finituraApplicata,
   onApplicaFinitura,
   drag,
@@ -42,6 +48,7 @@ export function PassoFinitura({
 }: {
   base: Base;
   comb: Combinazione;
+  fotoTopping: FotoTopping;
   finituraApplicata: boolean;
   onApplicaFinitura: () => void;
   drag?: DragPasso;
@@ -53,13 +60,20 @@ export function PassoFinitura({
   const farcitura = farcituraVoce(comb.farcitura)!;
   const topping = toppingVoce(comb.topping)!;
   const nome = nomeCommerciale(comb);
+  /* la finitura da sola, come l'ingrediente al passo 2: cartella vuota →
+     resa tipografica, mai la foto del prodotto completo (mostrerebbe il
+     risultato prima del gesto) */
+  const fotoT = fotoTopping[topping.id];
 
   if (!finituraApplicata) {
     return (
       <div>
         <p className="mb-6 max-w-[42ch] text-[14px] leading-relaxed text-inchiostro/70">
-          La ricetta di {nome} · {farcitura.nome.toLowerCase()} prevede una
-          finitura precisa. Mettila tu: è l&apos;ultimo tocco del dolce.
+          {/* lo spazio esplicito: il testo che segue va a capo nel sorgente e
+              il compilatore JSX lo mangerebbe, incollando «lamponeprevede» */}
+          La ricetta di {nome} · {farcitura.nome.toLowerCase()}{" "}
+          prevede una finitura precisa. Mettila tu: è l&apos;ultimo tocco del
+          dolce.
         </p>
         <GrigliaTessere>
           <li>
@@ -76,7 +90,15 @@ export function PassoFinitura({
                   : null
               }
             >
-              <SegnaPosto testo={topping.nome} />
+              {fotoT ? (
+                <ImmagineProdotto
+                  sorgenti={[fotoT]}
+                  alt={topping.nome}
+                  iniziale={topping.nome.charAt(0)}
+                />
+              ) : (
+                <SegnaPosto testo={topping.nome} />
+              )}
             </TesseraScelta>
           </li>
         </GrigliaTessere>

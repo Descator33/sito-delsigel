@@ -50,8 +50,7 @@ const COLONNE: { titolo: string; voci: [string, string][] }[] = [
 
 /**
  * Chiusura del sito: campitura cacao, wordmark con la fascia pop, le
- * colonne di navigazione, le coordinate vere e il biglietto per il
- * configuratore.
+ * colonne di navigazione, le coordinate vere e la mappa della sede.
  *
  * Rev 05/08 — riscritto sul riferimento della nuova home. Due cose
  * cambiano rispetto a prima: il fondo passa da inchiostro a cacao (un
@@ -60,12 +59,13 @@ const COLONNE: { titolo: string; voci: [string, string][] }[] = [
  * scacchi sul confine spariscono. Erano il morso della vecchia sezione
  * scura sopra: senza quella non mordono più niente.
  *
- * Il biglietto prende il posto del francobollo con la foto della
- * squadra: lì era un ricordo, qui è un comando — porta al configuratore,
- * ed è l'ultima occasione della pagina di dirlo. La cornice dentellata è
- * la stessa (`stamp`).
+ * Nell'angolo si sono alternati il francobollo con la foto della
+ * squadra (un ricordo), poi il biglietto per il configuratore (un
+ * comando, ma il terzo della stessa pagina) e infine — 2026-08-20 — la
+ * mappa: l'unica informazione che lì mancava davvero.
  *
- * Wordmark e biglietto schivano il cursore come i pezzi del collage.
+ * Il wordmark schiva il cursore come i pezzi del collage; la mappa no,
+ * si guarda e si trascina.
  */
 export function Footer() {
   const ref = useRef<HTMLElement>(null);
@@ -164,7 +164,7 @@ export function Footer() {
             </div>
           </div>
 
-          <BigliettoConfiguratore />
+          <MappaSede />
         </div>
 
         {/* barra finale a tre zone */}
@@ -196,39 +196,51 @@ function ColumnHeading({ children }: { children: string }) {
   );
 }
 
+/** L'indirizzo, scritto una volta sola: lo leggono la mappa (che ci
+ *  cerca sopra) e il link che apre Google Maps. */
+const SEDE = "Delsigel, Via della Meccanica 1, 04013 Sermoneta LT";
+
 /**
- * Il biglietto: cornice dentellata, tre righe e una freccia. È un link
- * vero al configuratore, non un ornamento — e ha la sua rotazione, come
- * ogni pezzo di collage del sito.
+ * La mappa della sede. Prende il posto del biglietto per il
+ * configuratore (2026-08-20): al configuratore ci portano già la colonna
+ * qui accanto, la CTA del teaser e il menu — tre inviti alla stessa
+ * porta, e il quarto era quello che occupava l'angolo. Qui invece manca
+ * l'unica cosa che un footer di un'azienda con uno stabilimento deve
+ * dare: dove si trova.
  *
- * `data-scatto` sta sul contenitore e non sul link: la schivata è un
- * tween GSAP sul `transform`, e sull'elemento interattivo si
- * sovrapporrebbe alla transizione della freccia.
+ * È l'embed pubblico di Google Maps, senza chiave e senza SDK: un
+ * iframe pigro che si scarica solo quando il footer si avvicina. Sopra
+ * ci sta un filo panna e sotto l'indirizzo, che resta un link vero — se
+ * l'iframe non arriva (blocco di terze parti, rete lenta), la strada per
+ * arrivare in via della Meccanica c'è lo stesso.
+ *
+ * Niente `data-scatto`: la schivata dal cursore ha senso sui pezzi di
+ * collage, non su una mappa che si guarda e si trascina.
  */
-function BigliettoConfiguratore() {
+function MappaSede() {
   return (
-    /* c'è a ogni misura: sotto xl scende in fondo alle colonne invece di
-       sparire — è l'ultimo invito della pagina, e sul telefono è proprio
-       dove serve */
-    <div
-      data-scatto
-      data-scatto-rot="7"
-      className="w-max justify-self-start rotate-[-4deg]"
-    >
-      <Link
-        href={DESTINAZIONE_CONFIGURATORE}
-        className="biglietto-configuratore stamp flex w-[14.5rem] items-center justify-between gap-4 text-cacao"
+    <div className="w-full max-w-[26rem] justify-self-start xl:w-[22rem]">
+      <ColumnHeading>Dove siamo</ColumnHeading>
+
+      <div className="mappa-sede mt-6 overflow-hidden rounded-[18px] border border-panna/25">
+        <iframe
+          title="Mappa: sede Delsigel in via della Meccanica 1, Sermoneta"
+          src={`https://www.google.com/maps?q=${encodeURIComponent(SEDE)}&z=15&output=embed`}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="block h-[13.5rem] w-full border-0"
+        />
+      </div>
+
+      <a
+        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SEDE)}`}
+        target="_blank"
+        rel="noreferrer"
+        className="voce-footer mt-4 inline-flex items-center gap-2 text-[13px]"
       >
-        {/* niente padding proprio: i 14px che lo tengono lontano dai denti
-            li mette già la cornice `stamp` */}
-        <span className="font-pop text-[clamp(0.85rem,0.95vw,1.05rem)] uppercase leading-[1.15] tracking-[-0.01em]">
-          Inizia ora
-          <br />a creare il tuo
-          <br />
-          dolce custom
-        </span>
-        <ArrowRight aria-hidden strokeWidth={1.8} className="h-5 w-5 flex-none" />
-      </Link>
+        Via della Meccanica, 1 · Sermoneta (LT)
+        <ArrowRight aria-hidden strokeWidth={1.8} className="h-4 w-4 flex-none" />
+      </a>
     </div>
   );
 }

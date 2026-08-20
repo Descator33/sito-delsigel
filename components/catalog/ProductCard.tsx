@@ -24,10 +24,9 @@ import { ProductImage } from "./ProductImage";
  * tutta la campitura è cliccabile; da tastiera e per gli screen reader
  * il comando è il solo bottone della freccia.
  *
- * L'entrata (`nascosta` → `riposo`) non è comandata qui: la sfalsa la
- * griglia, che orchestra le sette card con uno `staggerChildren`. Così
- * il ritardo vale una volta sola, all'ingresso in viewport, e non torna
- * a ogni uscita dall'hover — che è pur sempre un ritorno a `riposo`.
+ * L'entrata vive su un wrapper esterno montato dalla griglia. Questo
+ * article possiede soltanto `riposo`/`attiva`, quindi il ritorno
+ * dall'hover non riattiva mai il reveal di viewport.
  */
 
 type Misure = {
@@ -88,14 +87,14 @@ export function ProductCard({
   card: CardCatalogo;
   onApri: () => void;
 }) {
-  const { t, indice, claim, variante, tema, badge, posto, foto } = card;
+  const { t, indice, claim, variante, tema, badge, foto } = card;
   const m = MISURE[variante];
   const colori = TEMI[tema];
 
   return (
     <motion.article
       onClick={onApri}
-      className={`card-catalogo ${posto} ${m.guscio}`}
+      className={`card-catalogo h-full ${m.guscio}`}
       style={
         {
           "--fondo": colori.fondo,
@@ -103,11 +102,12 @@ export function ProductCard({
           "--numero": colori.numero,
         } as CSSProperties
       }
+      initial="riposo"
+      animate="riposo"
       whileHover="attiva"
       variants={{
-        nascosta: { opacity: 0, y: 20 },
-        riposo: { opacity: 1, y: 0 },
-        attiva: { opacity: 1, y: -6 },
+        riposo: { y: 0 },
+        attiva: { y: -6 },
       }}
       transition={{ type: "spring", stiffness: 260, damping: 22 }}
     >

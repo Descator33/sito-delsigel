@@ -1,6 +1,6 @@
 import { readdirSync } from "node:fs";
 import { extname, join } from "node:path";
-import type { FotoFarciture, FotoStati } from "../configuratore";
+import type { FotoFarciture, FotoStati, FotoTopping } from "../configuratore";
 
 /**
  * Le foto del configuratore vivono in public/img/configuratore/, due
@@ -13,6 +13,8 @@ import type { FotoFarciture, FotoStati } from "../configuratore";
  *   farciture/<farcitura> la farcitura DA SOLA, l'ingrediente che si
  *                         trascina al passo 2 (il farcito compare sul
  *                         banco solo dopo il rilascio, mai sulla tessera)
+ *   topping/<topping>     la finitura DA SOLA, stessa regola un passo
+ *                         più in là: è la tessera del passo 3
  *
  * La cartella È il contratto: si scansiona a render (server), la prima
  * immagine in ordine alfabetico vince, una cartella vuota significa
@@ -60,3 +62,6 @@ export const fotoStati = (): FotoStati => scansiona("prodotti");
 /** Farcitura → URL della foto dell'ingrediente da solo (tessere del
  *  passo 2). */
 export const fotoFarciture = (): FotoFarciture => scansiona("farciture");
+
+/** Topping → URL della foto della finitura da sola (tessera del passo 3). */
+export const fotoTopping = (): FotoTopping => scansiona("topping");

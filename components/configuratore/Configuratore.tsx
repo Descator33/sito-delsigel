@@ -6,6 +6,7 @@ import {
   statoDaPathname,
   type FotoFarciture,
   type FotoStati,
+  type FotoTopping,
 } from "@/lib/configuratore";
 import { Banco } from "./Banco";
 import { Intro } from "./Intro";
@@ -56,6 +57,7 @@ import type { Punto } from "./TesseraScelta";
 export function Configuratore({
   foto,
   fotoFarciture,
+  fotoTopping,
 }: {
   /** stato → URL foto, scoperta dal server nelle cartelle di
    *  public/img/configuratore/prodotti/: chiave assente = niente foto */
@@ -63,6 +65,9 @@ export function Configuratore({
   /** farcitura → URL della foto dell'ingrediente da solo (cartelle di
    *  public/img/configuratore/farciture/), per le tessere del passo 2 */
   fotoFarciture: FotoFarciture;
+  /** topping → URL della foto della finitura da sola (cartelle di
+   *  public/img/configuratore/topping/), per la tessera del passo 3 */
+  fotoTopping: FotoTopping;
 }) {
   const pathname = usePathname();
   const { base, comb } = useMemo(() => statoDaPathname(pathname), [pathname]);
@@ -255,6 +260,7 @@ export function Configuratore({
             <PassoFinitura
               base={base}
               comb={comb}
+              fotoTopping={fotoTopping}
               finituraApplicata={finituraApplicata}
               onApplicaFinitura={() => setFinituraApplicata(true)}
               drag={dragTessere}

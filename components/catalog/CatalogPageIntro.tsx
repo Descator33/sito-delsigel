@@ -1,92 +1,127 @@
+import Image from "next/image";
 import { ArrowDown } from "lucide-react";
+import { CATALOG, SALATI, type Tipologia } from "@/lib/catalog";
 import { TOTALE_TIPOLOGIE, TOTALE_VARIANTI } from "@/lib/catalog-bento";
-import { SALATI } from "@/lib/catalog";
+import { CatalogProductPortal } from "./CatalogMotion";
 
 /**
- * L'ingresso della pagina Catalogo (refactor architettura 2026-08-12).
- *
- * Non è una seconda homepage: è il frontespizio di una pagina di
- * consultazione. Un occhiello, l'insegna, una riga di promessa e i due
- * salti rapidi alle sezioni — dolci e salati — con il conto vero della
- * gamma, contato dai dati come fa già CatalogHeading.
- *
- * La voce è quella del catalogo (League Spartan / Inter Tight / IBM Plex
- * Mono, vedi app/fonts.ts): la pagina È il mondo-catalogo, e l'insegna
- * grande qui sostituisce l'emozione che in home fanno le fotografie.
- *
- * Il padding alto tiene conto della navigazione flottante, che non ha
- * campitura: `pt` largo, non un offset magico.
- *
- * Server Component — qui non succede niente.
+ * L'ingresso del catalogo è un portale di prodotto, non un secondo
+ * frontespizio tipografico. I tre still arrivano dalla stessa fonte delle
+ * card: se un'immagine cambia nel catalogo, cambia anche qui.
  */
 export function CatalogPageIntro() {
   return (
     <header className="font-testo bg-panna text-inchiostro">
-      <div className="mx-auto max-w-[1800px] px-6 pb-2 pt-32 md:px-12 md:pt-40">
-        <p className="font-tecnico text-[10px] font-semibold uppercase tracking-[0.22em] text-fucsia">
-          La gamma Delsigel
-        </p>
-
-        <h1 className="font-insegna mt-4 text-[clamp(2.8rem,9vw,8rem)] font-extrabold uppercase leading-[0.84] tracking-[-0.05em]">
-          Tutto il
-          <br />
-          catalogo<span className="text-fucsia">.</span>
-        </h1>
-
-        <div className="mt-7 flex flex-col gap-7 md:mt-9 md:flex-row md:items-end md:justify-between">
-          <p className="max-w-[44ch] text-[clamp(0.95rem,1.05vw,1.15rem)] leading-[1.6] text-inchiostro/85">
+      <CatalogProductPortal
+        occhiello="La gamma Delsigel"
+        principale={
+          <ImmaginePortale prodotto={PRODOTTI_PORTALE.principale} principale />
+        }
+        dolce={<ImmaginePortale prodotto={PRODOTTI_PORTALE.dolce} />}
+        salato={<ImmaginePortale prodotto={PRODOTTI_PORTALE.salato} />}
+        descrizione={
+          <p className="max-w-[40ch] text-[clamp(0.92rem,1.05vw,1.12rem)] leading-[1.55] text-inchiostro/82">
             Dolci e salati da laboratorio, prodotti su scala. Sfoglia le
             tipologie, apri le schede, personalizza dal configuratore.
           </p>
-
-          {/* i due salti rapidi: ancore vere, non una nav — la pagina è
-              corta e si legge dall'alto, questi servono a chi arriva
-              cercando una delle due linee */}
-          <nav aria-label="Le sezioni del catalogo" className="flex gap-3">
+        }
+        navigazione={
+          <nav
+            aria-label="Le sezioni del catalogo"
+            className="grid w-full grid-cols-2 lg:w-[min(42rem,46vw)]"
+          >
             <SaltoRapido
               href="#dolci"
-              etichetta="I dolci"
-              conto={`${TOTALE_TIPOLOGIE} tipologie · ${TOTALE_VARIANTI} varianti`}
+              etichetta="Dolci"
+              linea="dolci"
+              conto={`${TOTALE_TIPOLOGIE} tipologie / ${TOTALE_VARIANTI} varianti`}
             />
             <SaltoRapido
               href="#salati"
-              etichetta="I salati"
+              etichetta="Salati"
+              linea="salati"
               conto={`${SALATI.length} tipologie`}
             />
           </nav>
-        </div>
-      </div>
+        }
+      />
     </header>
   );
 }
 
-/** salto di sezione: pillola col filo, si accende d'inchiostro all'hover
- *  (stessa meccanica delle pillole del sito, nessun segno nuovo) */
+function prodottoPortale(slug: string): Tipologia & { image: string } {
+  const prodotto = CATALOG.find((voce) => voce.slug === slug);
+  if (!prodotto?.image) {
+    throw new Error(
+      `CatalogPageIntro: il prodotto «${slug}» non ha uno still per il portale`,
+    );
+  }
+  return prodotto as Tipologia & { image: string };
+}
+
+const PRODOTTI_PORTALE = {
+  principale: prodottoPortale("intriko"),
+  dolce: prodottoPortale("golosone"),
+  salato: prodottoPortale("pizzetta-al-pomodoro"),
+};
+
+function ImmaginePortale({
+  prodotto,
+  principale = false,
+}: {
+  prodotto: Tipologia & { image: string };
+  principale?: boolean;
+}) {
+  return (
+    <Image
+      src={prodotto.image}
+      alt=""
+      fill
+      draggable={false}
+      loading={principale ? "eager" : "lazy"}
+      fetchPriority={principale ? "high" : "auto"}
+      sizes={
+        principale
+          ? "(max-width: 767px) 100vw, (max-width: 1023px) 62vw, 50vw"
+          : "(max-width: 767px) 1vw, (max-width: 1023px) 24vw, 22vw"
+      }
+      className="catalog-portal__image object-contain"
+    />
+  );
+}
+
+/**
+ * Link editoriale di capitolo: l'intera riga è il bersaglio, mentre la
+ * freccia conserva il vocabolario dei comandi già presenti nel catalogo.
+ */
 function SaltoRapido({
   href,
   etichetta,
+  linea,
   conto,
 }: {
   href: string;
   etichetta: string;
+  linea: "dolci" | "salati";
   conto: string;
 }) {
   return (
     <a
       href={href}
-      className="group flex items-center gap-3 rounded-full border border-inchiostro/20 py-2.5 pl-5 pr-3 transition-colors duration-300 hover:border-inchiostro hover:bg-inchiostro hover:text-panna focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-inchiostro"
+      data-catalog-linea={linea}
+      className="catalog-portal__link group relative grid min-h-[4.75rem] grid-cols-[1fr_auto] items-center gap-x-3 overflow-hidden px-3 py-3 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-inchiostro sm:min-h-[5.4rem] sm:px-5"
     >
-      <span className="leading-tight">
-        <span className="font-tecnico block text-[11px] font-semibold uppercase tracking-[0.14em]">
+      <span className="relative z-[1] min-w-0 leading-tight">
+        <span className="font-insegna block text-[clamp(1.15rem,1.8vw,1.65rem)] font-extrabold uppercase tracking-[-0.035em]">
           {etichetta}
         </span>
-        <span className="font-tecnico block text-[9px] font-semibold uppercase tracking-[0.1em] opacity-55">
+        <span className="font-tecnico mt-1 block text-[8px] font-semibold uppercase leading-[1.35] tracking-[0.08em] opacity-60 sm:text-[9px] sm:tracking-[0.1em]">
           {conto}
         </span>
       </span>
       <span
         aria-hidden
-        className="grid h-9 w-9 flex-none place-items-center rounded-full border border-current/30"
+        className="relative z-[1] grid h-9 w-9 flex-none place-items-center rounded-full border border-current/30 sm:h-10 sm:w-10"
       >
         <ArrowDown
           strokeWidth={1.5}

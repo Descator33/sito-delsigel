@@ -2,7 +2,7 @@
 
 Una cartella per farcitura, nome = `id` del vocabolario `farciture` in
 `lib/configuratore/dati-dolci.json`. **La cartella è il contratto**,
-come per `../prodotti/`: il configuratore la scansiona da solo
+come per `../prodotti/` e `../topping/`: il configuratore la scansiona da solo
 (`lib/configuratore/foto.ts`) e mostra la prima immagine in ordine
 alfabetico. Per pubblicare una foto basta metterla nella cartella
 giusta, il nome del file è libero. Cartella vuota = la tessera ripiega

@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { CatalogPageIntro } from "@/components/catalog/CatalogPageIntro";
 import { CatalogSection } from "@/components/catalog/CatalogSection";
+import { CatalogJourney } from "@/components/catalog/CatalogMotion";
 import { SavoryCatalogSection } from "@/components/catalog/salati/SavoryCatalogSection";
 
 export const metadata: Metadata = {
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
  * Le due sezioni arrivano dalla homepage così com'erano: la griglia bento
  * dei dolci (con la scheda rapida) e il quadro della linea salata. La
  * home ora racconta, questa pagina fa consultare: intro minima, poi i
- * prodotti — la transizione dolci→salati resta quella dei componenti
- * (panna→fucsia), che qui basta e avanza.
+ * prodotti. `CatalogJourney` lascia intatti i tre blocchi e aggiunge la
+ * regia di ingresso, il progresso e il ponte cromatico dolci→salati.
  *
  * La rotta tiene i metadati e il guscio condiviso (nav flottante, smooth
  * scroll, chiusura), come chi-siamo e contatti: il root layout non li
@@ -30,9 +31,11 @@ export default function CatalogoPage() {
     <div className="bg-panna text-inchiostro">
       <SmoothScroll />
       <Header />
-      <CatalogPageIntro />
-      <CatalogSection />
-      <SavoryCatalogSection />
+      <CatalogJourney
+        intro={<CatalogPageIntro />}
+        dolci={<CatalogSection />}
+        salati={<SavoryCatalogSection />}
+      />
       <Footer />
     </div>
   );

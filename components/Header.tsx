@@ -7,10 +7,14 @@ import { Logo } from "@/components/Logo";
 import { useMenu } from "@/components/MenuStato";
 import { ATTESA_VOCI, EASE_MENU, PASSO_VOCI } from "@/lib/hero-finestra";
 
-/** Le quattro rotte del sito: le stesse nelle pillole e dentro il menu.
- *  Dal refactor 12/08 «Catalogo» è una rotta vera (/catalogo, dolci +
- *  salati), non più un'ancora della home. */
+/** Le rotte del sito, che dal 2026-08-20 vivono solo dentro il menu.
+ *  «Home» apre la fila: il marchio in alto a sinistra ci porta, ma è una
+ *  convenzione, non una voce — e in un menu che è l'unica navigazione la
+ *  pagina della hero non può mancare dall'elenco. Dal refactor 12/08
+ *  «Catalogo» è una rotta vera (/catalogo, dolci + salati), non più
+ *  un'ancora della home. */
 const VOCI = [
+  ["Home", "/"],
   ["Catalogo", "/catalogo"],
   ["Configuratore", "/configuratore"],
   ["Chi siamo", "/chi-siamo"],
@@ -23,8 +27,8 @@ const MOLLA = [0.22, 1, 0.36, 1] as const;
  * Navigazione flottante sopra la pagina (refactor hero 2026-08-12).
  *
  * Non è una barra: è un lockup appoggiato sul contenuto — pillola del
- * marchio a sinistra, voci e comando del menu a destra, niente campitura
- * dietro. Le pillole restano leggibili su qualunque fondo (la fotografia
+ * marchio a sinistra, comando del menu a destra, niente campitura dietro.
+ * Le due pillole restano leggibili su qualunque fondo (la fotografia
  * arancio della home, il panna delle sub-page).
  *
  * Il lockup è ancorato ai bordi del viewport e non più a una colonna di
@@ -33,14 +37,15 @@ const MOLLA = [0.22, 1, 0.36, 1] as const;
  * sinistra del contenuto delle sub-page — è il comportamento di una nav
  * flottante, ed è voluto.
  *
- * Le voci sono visibili da `lg` in su come nel mockup, ma NON sono l'unica
- * strada: le stesse quattro rotte vivono dentro il menu, che è il sistema
- * di navigazione unico sotto `lg` e una scorciatoia sopra. Così il comando
- * tondo non è un ornamento su desktop e il tablet non perde niente.
+ * Le quattro pillole delle rotte, visibili da `lg` in su, sono uscite di
+ * scena il 2026-08-20: duplicavano il menu e affollavano l'angolo alto
+ * della hero. Il menu resta il sistema di navigazione unico a ogni misura,
+ * e il comando che lo apre ha preso il peso che gli tocca — pillola piena
+ * con la parola «MENU» accanto alle linee, non più un cerchio vuoto.
  *
- * `fondo` dice su cosa galleggia il comando tondo, che a riposo è vuoto:
- * "scuro" (la fotografia della home) gli dà filo e segno panna, "chiaro"
- * (il panna delle sub-page) glieli dà inchiostro.
+ * `fondo` dice su cosa galleggia: "scuro" (la fotografia della home) lo
+ * vuole panna col segno nero, "chiaro" (il panna delle sub-page) lo vuole
+ * nero col segno panna. Gli stili stanno in globals.css.
  *
  * IL MENU NON È UN PANNELLO SOPRA LA PAGINA (rev 2026-08-12). Aprendolo la
  * pagina cambia composizione: il campo nero prende il posto del contenuto,
@@ -133,43 +138,30 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
             />
           </Link>
 
-          <nav className="flex items-center gap-2">
-            {/* a menu aperto le pillole sarebbero un doppione delle voci
-                grandi: escono di scena e, con `inert`, anche dal TAB */}
-            <motion.ul
-              inert={aperto}
-              animate={{ opacity: aperto ? 0 : 1, y: aperto ? -8 : 0 }}
-              transition={{ duration: 0.3, ease: EASE_MENU }}
-              className="hidden items-center gap-2 lg:flex"
-            >
-              {VOCI.map(([voce, rotta]) => (
-                <li key={voce}>
-                  <Link
-                    href={rotta}
-                    className="hero-voce font-ui flex h-[42px] items-center whitespace-nowrap rounded-full px-[21px] text-[12px] font-bold uppercase tracking-[0.025em]"
-                  >
-                    {voce}
-                  </Link>
-                </li>
-              ))}
-            </motion.ul>
-
+          <nav className="flex items-center">
             {/* Un solo comando per aprire e chiudere: le tre linee ruotano
-                in croce sul posto (vedi `.hero-burger` in globals.css). */}
+                in croce sul posto (vedi `.hero-burger` in globals.css).
+                Le quattro pillole delle rotte sono uscite di scena il
+                2026-08-20: le stesse voci vivono dentro il menu, e il
+                lockup torna a essere due soli pesi — marchio a sinistra,
+                comando a destra. La parola accanto alle linee non è un
+                vezzo: ora quel bottone è l'unica porta del sito. */}
             <button
               ref={comando}
               type="button"
               onClick={commuta}
               data-fondo={aperto ? "scuro" : fondo}
+              data-aperto={aperto}
               aria-expanded={aperto}
               aria-controls="menu-delsigel"
-              className="hero-comando grid h-11 w-11 place-items-center rounded-full"
+              className="hero-comando font-ui flex h-11 items-center gap-2.5 rounded-full pl-[18px] pr-5 text-[12px] font-bold uppercase tracking-[0.025em]"
             >
               <span className="hero-burger" data-aperto={aperto} aria-hidden>
                 <span />
                 <span />
                 <span />
               </span>
+              <span aria-hidden>{aperto ? "Chiudi" : "Menu"}</span>
               <span className="sr-only">{aperto ? "Chiudi il menu" : "Apri il menu"}</span>
             </button>
           </nav>

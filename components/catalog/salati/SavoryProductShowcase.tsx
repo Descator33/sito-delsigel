@@ -39,7 +39,7 @@ export function SavoryProductShowcase() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="relative flex min-w-0 flex-col justify-center px-[clamp(1.25rem,2.2vw,2.5rem)] py-[clamp(2.5rem,3.6vw,3.5rem)]">
+      <div className="relative flex h-full min-w-0 flex-col justify-center px-[clamp(1.25rem,2.2vw,2.5rem)] py-[clamp(2.5rem,3.6vw,3.5rem)]">
         {/* la corsia delle frecce: da md in su la fila si stringe di
             quanto basta a farle stare fuori dagli ovali */}
         <div className="relative md:px-[3.25rem]">

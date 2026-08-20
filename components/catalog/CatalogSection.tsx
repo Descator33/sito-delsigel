@@ -22,8 +22,10 @@ export function CatalogSection() {
       className="font-testo scroll-mt-24 bg-panna text-inchiostro"
     >
       <div className="mx-auto max-w-[1800px] px-6 pb-16 pt-14 md:px-12 md:pb-24 md:pt-20">
-        <CatalogHeading />
-        <ProductBentoGrid />
+        <div id="dolci" className="scroll-mt-24">
+          <CatalogHeading />
+          <ProductBentoGrid />
+        </div>
       </div>
     </section>
   );

@@ -20,11 +20,6 @@ import { CatalogPhysicalIntro } from "./CatalogPhysicalIntro";
  * Sotto lg le due campiture si impilano nell'ordine di lettura: prima il
  * testo, poi la galleria. La fascia resta in cima a ogni misura.
  *
- * `data-quadro-catalogo` è il contratto con lo stacco di capitolo che
- * segue (components/home/StaccoCapitolo): all'uscita della sezione la
- * griglia arretra di qualche vh — solo `y`, mai scale, per non falsare
- * le misure di Embla.
- *
  * Server Component: lo stato sta nelle due metà, che sono client.
  */
 

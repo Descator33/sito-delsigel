@@ -75,12 +75,21 @@ export function ConfiguratorTeaser({
         );
 
         if (banco && pezzi.length) {
+          /* Lo scrub non è agganciato al banco ma al BLOCCO: parte quando
+             la scena si ferma a schermo pieno (top top) e dura due terzi
+             della sosta. Sul banco, che ora vive in una quinta sticky, il
+             trigger si congelerebbe — fermo l'elemento, ferma la corsa.
+             Così invece la sosta È il tempo del racconto: i tre stati si
+             posano mentre la pagina, sotto, continua a scorrere. */
           const tl = gsap.timeline({
             defaults: { ease: "none" },
             scrollTrigger: {
-              trigger: banco,
-              start: "top 88%",
-              end: "top 34%",
+              trigger: scope,
+              start: "top top",
+              /* 55% della sosta al racconto, il resto alla scena
+                 compiuta: l'ultimo stato deve poter essere guardato
+                 fermo prima che il blocco si sganci */
+              end: "+=55%",
               scrub: 0.5,
               invalidateOnRefresh: true,
             },
@@ -139,9 +148,12 @@ export function ConfiguratorTeaser({
             duration: 0.6,
             stagger: 0.08,
             ease: "power2.out",
+            /* la coda entra quando la scena è arrivata in campo, non
+               quando spunta da sotto: dentro una quinta sticky «top 88%»
+               del primo elemento non vuol più dire «sta entrando» */
             scrollTrigger: {
-              trigger: coda[0],
-              start: "top 88%",
+              trigger: scope,
+              start: "top 45%",
               once: true,
             },
           });
@@ -154,140 +166,148 @@ export function ConfiguratorTeaser({
   );
 
   return (
-    <div
-      ref={radice}
-      /* overflow-x-clip (mai hidden): i pezzi in arrivo sconfinano di
-         qualche decina di pixel, e su un telefono quei pixel sarebbero
-         scroll orizzontale di pagina */
-      className="mx-auto max-w-[1800px] overflow-x-clip px-6 py-[clamp(4.5rem,7vw,8rem)] md:px-12"
-    >
-      {/* ------------------------------ INSEGNA ------------------------------ */}
-      <header className="mx-auto max-w-[54rem] text-center">
-        <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-mandarino">
-          Il configuratore
-        </p>
-        <h2
-          id={titoloId}
-          className="font-pop mt-5 text-[clamp(3rem,10vw,7.5rem)] font-normal uppercase leading-[0.87] tracking-[-0.02em]"
-        >
-          <Reveal className="text-cacao">Ora tocca</Reveal>
-          <Reveal delay={0.08} className="text-mandarino">
-            a te.
-          </Reveal>
-        </h2>
-        <p className="mx-auto mt-[clamp(1.2rem,1.8vw,2rem)] max-w-[40ch] text-[clamp(0.95rem,1.1vw,1.18rem)] font-medium leading-[1.6] text-cacao/80">
-          <Reveal delay={0.18}>
-            Scegli base, crema, topping e dettagli. Con il nostro configuratore
-            componi il tuo dolce ideale in pochi step. Tutto online, tutto su
-            misura, tutto tuo.
-          </Reveal>
-        </p>
-      </header>
-
-      {/* ------------------------------- BANCO ------------------------------- */}
-      {/* la scena riusa le misure del percorso (--nastro, --dolce, --passo):
-          il nastro è lo stesso, cambia solo cosa ci succede sopra */}
+    /* IL BLOCCO. Alto due schermi: il primo lo passa fermo — la quinta
+       sticky tiene la scena a schermo pieno mentre la pagina scorre — e
+       solo dopo il footer entra da sotto. Prima era una fascia in mezzo
+       al flusso, alta quanto il suo contenuto: piccola, e col cacao del
+       footer già in vista mentre la si guardava (rilievo 2026-08-20). La
+       sosta serve al racconto: è lì che i tre stati si posano. */
+    <section ref={radice} className="teaser-blocco relative h-[200svh]">
       <div
-        data-teaser-banco
-        className="percorso-scena teaser-banco relative mx-auto mt-[clamp(3rem,5vw,5.5rem)] w-full max-w-[64rem]"
+        /* overflow-x-clip (mai hidden): i pezzi in arrivo sconfinano di
+           qualche decina di pixel, e su un telefono quei pixel sarebbero
+           scroll orizzontale di pagina */
+        className="teaser-quinta sticky top-0 mx-auto flex h-svh max-w-[1800px] flex-col items-center justify-center overflow-x-clip px-6 py-[clamp(2rem,4vh,4rem)] md:px-12"
       >
-        <ConveyorBelt />
+        {/* ------------------------------ INSEGNA ------------------------------ */}
+        <header className="mx-auto max-w-[60rem] text-center">
+          <p className="text-[clamp(11px,0.8vw,13px)] font-bold uppercase tracking-[0.3em] text-mandarino">
+            Il configuratore
+          </p>
+          <h2
+            id={titoloId}
+            className="font-pop mt-[clamp(0.8rem,2vh,1.6rem)] text-[clamp(3.2rem,min(11vw,15vh),9rem)] font-normal uppercase leading-[0.87] tracking-[-0.02em]"
+          >
+            <Reveal className="text-cacao">Ora tocca</Reveal>
+            <Reveal delay={0.08} className="text-mandarino">
+              a te.
+            </Reveal>
+          </h2>
+          <p className="mx-auto mt-[clamp(1rem,2.4vh,2rem)] max-w-[46ch] text-[clamp(1rem,1.25vw,1.35rem)] font-medium leading-[1.55] text-cacao/80">
+            <Reveal delay={0.18}>
+              Scegli base, crema, topping e dettagli. Con il nostro configuratore
+              componi il tuo dolce ideale in pochi step. Tutto online, tutto su
+              misura, tutto tuo.
+            </Reveal>
+          </p>
+        </header>
 
-        <div className="teaser-pezzi relative z-10">
-          {dolci.map((dolce, i) => (
-            <div key={dolce.stato} data-teaser-pezzo className="relative">
-              <div
-                className="percorso-dolce relative"
-                style={{ animationDelay: `${i * 0.55}s` }}
-              >
-                <span
-                  aria-hidden
-                  className="percorso-ombra absolute bottom-[3%] left-1/2 h-[16%] w-[64%] -translate-x-1/2"
-                />
-                {dolce.foto ? (
-                  <Image
-                    src={dolce.foto}
-                    alt=""
-                    title={dolce.alt}
-                    fill
-                    /* molto sotto la piega: nessun preload, resta pigra */
-                    sizes="(max-width: 1279px) 180px, 13vw"
-                    className="percorso-foto select-none object-contain object-bottom"
-                    draggable={false}
-                  />
-                ) : (
-                  /* la foto di quello stato non è ancora in cartella: al
-                     suo posto un disco muto, che tiene il posto sul nastro
-                     senza mentire */
+        {/* ------------------------------- BANCO ------------------------------- */}
+        {/* la scena riusa le misure del percorso (--nastro, --dolce, --passo):
+            riscritte per lo schermo pieno in «.teaser-banco»: il nastro è
+            lo stesso, cambia la taglia e cosa ci succede sopra */}
+        <div
+          data-teaser-banco
+          className="percorso-scena teaser-banco relative mx-auto mt-[clamp(2rem,5vh,4.5rem)] w-full max-w-[min(72rem,90vw)]"
+        >
+          <ConveyorBelt />
+
+          <div className="teaser-pezzi relative z-10">
+            {dolci.map((dolce, i) => (
+              <div key={dolce.stato} data-teaser-pezzo className="relative">
+                <div
+                  className="percorso-dolce relative"
+                  style={{ animationDelay: `${i * 0.55}s` }}
+                >
                   <span
                     aria-hidden
-                    className="absolute inset-x-[22%] bottom-0 h-[38%] rounded-full border border-dashed border-cacao/25 bg-cacao/5"
+                    className="percorso-ombra absolute bottom-[3%] left-1/2 h-[16%] w-[64%] -translate-x-1/2"
                   />
-                )}
+                  {dolce.foto ? (
+                    <Image
+                      src={dolce.foto}
+                      alt=""
+                      title={dolce.alt}
+                      fill
+                      /* molto sotto la piega: nessun preload, resta pigra */
+                      sizes="(max-width: 1279px) 180px, 13vw"
+                      className="percorso-foto select-none object-contain object-bottom"
+                      draggable={false}
+                    />
+                  ) : (
+                    /* la foto di quello stato non è ancora in cartella: al
+                       suo posto un disco muto, che tiene il posto sul nastro
+                       senza mentire */
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-[22%] bottom-0 h-[38%] rounded-full border border-dashed border-cacao/25 bg-cacao/5"
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* le scintille dell'assemblaggio compiuto: compaiono a fine corsa
+              sopra il terzo stato, mai prima. Il data-attribute sta su uno
+              span involucro: Scintilla accetta solo `className`. */}
+          <span aria-hidden>
+            <span
+              data-teaser-scintilla
+              className="absolute right-[6%] top-[8%] block"
+            >
+              <Scintilla className="h-[clamp(16px,1.6vw,24px)] w-[clamp(16px,1.6vw,24px)] text-mandarino" />
+            </span>
+            <span
+              data-teaser-scintilla
+              className="absolute right-[16%] top-[30%] block"
+            >
+              <Scintilla className="h-[clamp(11px,1.1vw,16px)] w-[clamp(11px,1.1vw,16px)] text-fucsia" />
+            </span>
+          </span>
         </div>
 
-        {/* le scintille dell'assemblaggio compiuto: compaiono a fine corsa
-            sopra il terzo stato, mai prima. Il data-attribute sta su uno
-            span involucro: Scintilla accetta solo `className`. */}
-        <span aria-hidden>
-          <span
-            data-teaser-scintilla
-            className="absolute right-[6%] top-[8%] block"
-          >
-            <Scintilla className="h-[clamp(16px,1.6vw,24px)] w-[clamp(16px,1.6vw,24px)] text-mandarino" />
-          </span>
-          <span
-            data-teaser-scintilla
-            className="absolute right-[16%] top-[30%] block"
-          >
-            <Scintilla className="h-[clamp(11px,1.1vw,16px)] w-[clamp(11px,1.1vw,16px)] text-fucsia" />
-          </span>
-        </span>
-      </div>
+        {/* ------------------------- LE TAPPE, IN BREVE ------------------------ */}
+        <ol
+          id={ANCORA_PERCORSO}
+          className="mx-auto mt-[clamp(1.8rem,4vh,3.4rem)] grid w-full max-w-[72rem] scroll-mt-28 grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4"
+        >
+          {PERCORSO.map((tappa) => (
+            <li
+              key={tappa.numero}
+              data-teaser-coda
+              className="flex items-start gap-3"
+            >
+              <span
+                aria-hidden
+                className="mt-[3px] h-2.5 w-2.5 flex-none rounded-full"
+                style={{ background: tappa.colore }}
+              />
+              <p className="text-[clamp(13px,0.95vw,15px)] font-medium leading-snug text-cacao/80">
+                <span className="font-bold text-cacao">{tappa.numero}</span>
+                <span className="mx-2 text-cacao/35">·</span>
+                {tappa.titolo}
+              </p>
+            </li>
+          ))}
+        </ol>
 
-      {/* ------------------------- LE TAPPE, IN BREVE ------------------------ */}
-      <ol
-        id={ANCORA_PERCORSO}
-        className="mx-auto mt-[clamp(2.6rem,4.5vw,4.5rem)] grid w-full max-w-[64rem] scroll-mt-28 grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-4"
-      >
-        {PERCORSO.map((tappa) => (
-          <li
-            key={tappa.numero}
-            data-teaser-coda
-            className="flex items-start gap-3"
+        {/* -------------------------------- CTA -------------------------------- */}
+        <div data-teaser-coda className="mt-[clamp(1.8rem,3.6vh,3rem)] flex justify-center">
+          <Link
+            href={DESTINAZIONE_CONFIGURATORE}
+            className="cta-azione teaser-cta group flex min-h-[3.6rem] items-center justify-between gap-4 rounded-full bg-inchiostro py-[0.3rem] pl-[clamp(1.4rem,1.8vw,2rem)] pr-[0.3rem] text-[clamp(10px,0.75vw,12px)] font-bold uppercase leading-none tracking-[0.08em] text-panna"
           >
+            Crea il tuo dolce
             <span
               aria-hidden
-              className="mt-[3px] h-2.5 w-2.5 flex-none rounded-full"
-              style={{ background: tappa.colore }}
-            />
-            <p className="text-[13px] font-medium leading-snug text-cacao/80">
-              <span className="font-bold text-cacao">{tappa.numero}</span>
-              <span className="mx-2 text-cacao/35">·</span>
-              {tappa.titolo}
-            </p>
-          </li>
-        ))}
-      </ol>
-
-      {/* -------------------------------- CTA -------------------------------- */}
-      <div data-teaser-coda className="mt-[clamp(2.6rem,4vw,4rem)] flex justify-center">
-        <Link
-          href={DESTINAZIONE_CONFIGURATORE}
-          className="cta-azione teaser-cta group flex min-h-[3.6rem] items-center justify-between gap-4 rounded-full bg-inchiostro py-[0.3rem] pl-[clamp(1.4rem,1.8vw,2rem)] pr-[0.3rem] text-[clamp(10px,0.75vw,12px)] font-bold uppercase leading-none tracking-[0.08em] text-panna"
-        >
-          Crea il tuo dolce
-          <span
-            aria-hidden
-            className="grid h-[clamp(2.5rem,2.7vw,2.9rem)] w-[clamp(2.5rem,2.7vw,2.9rem)] flex-none place-items-center rounded-full bg-panna text-inchiostro"
-          >
-            <ArrowRight strokeWidth={1.8} className="h-[1.05rem] w-[1.05rem]" />
-          </span>
-        </Link>
+              className="grid h-[clamp(2.5rem,2.7vw,2.9rem)] w-[clamp(2.5rem,2.7vw,2.9rem)] flex-none place-items-center rounded-full bg-panna text-inchiostro"
+            >
+              <ArrowRight strokeWidth={1.8} className="h-[1.05rem] w-[1.05rem]" />
+            </span>
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
