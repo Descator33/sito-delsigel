@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Logo } from "@/components/Logo";
+import { LogoStorico } from "@/components/LogoStorico";
 import { DESTINAZIONE_CONFIGURATORE } from "@/lib/percorso-configuratore";
 import { useScatto } from "@/lib/useScatto";
 
@@ -75,11 +75,11 @@ export function Footer() {
     <footer ref={ref} className="font-pop-testo relative bg-cacao text-panna">
       <div className="mx-auto w-full max-w-[1800px] px-6 pb-10 pt-16 md:px-12 md:pt-20">
         <div className="grid items-start gap-x-10 gap-y-12 lg:grid-cols-[minmax(200px,270px)_minmax(0,1fr)] xl:grid-cols-[minmax(200px,270px)_minmax(0,1fr)_auto]">
-          {/* logo storto con la fascia pop: lettere panna, occhielli cacao */}
+          {/* marchio storico storto con la fascia pop: la maschera lascia
+              trasparenti gli occhielli, che si campiscono da soli di cacao */}
           <div data-scatto className="w-max -rotate-3">
-            <Logo
+            <LogoStorico
               variant="stacked"
-              surface="var(--cacao)"
               className="w-[clamp(150px,12vw,190px)] text-panna"
             />
             <div aria-hidden className="mt-3 flex h-2.5">

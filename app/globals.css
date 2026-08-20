@@ -20,6 +20,10 @@
      cacao per il wordmark su superfici chiare */
   --corallo: #ff6b4a;
   --cacao: #2b1d16;
+  /* ritorno al marchio storico (20/08/2026): il bruno campionato dal
+     sigillo originale di delsigel.it — è il colore del logo sulle
+     superfici chiare, NON un nuovo neutro per la UI */
+  --bruno: #56340f;
   /* Palco del configuratore (redesign 2026-08-04): la scena chiara di
      «crea il tuo dolce». I due accenti sono parenti stretti di quelli
      del marchio ma non coincidono — il corallo di scena è più freddo
@@ -67,6 +71,7 @@
   --color-rosso: var(--rosso);
   --color-corallo: var(--corallo);
   --color-cacao: var(--cacao);
+  --color-bruno: var(--bruno);
   --color-blush: var(--blush);
   --color-tortora: var(--tortora);
   --color-sabbia: var(--sabbia);
@@ -576,19 +581,13 @@
   letter-spacing: 0.32em;
 }
 
-/* I raccordi della nuova Home condividono lo stesso principio: superfici
-   a tutta larghezza che entrano l'una nell'altra, mai card impilate. */
-.story-preview {
-  clip-path: polygon(
-    0 4.8rem,
-    17% 2.2rem,
-    39% 4.2rem,
-    64% 1.4rem,
-    83% 3.5rem,
-    100% 1.8rem,
-    100% 100%,
-    0 100%
-  );
+/* Seconda hero della Home. Hero e storia si susseguono con un taglio netto:
+   nessuna sagoma o sovrapposizione tra le due fotografie. Lo scrim protegge
+   la copy senza spegnere il forno, che resta il punto luminoso della scena. */
+.story-preview__scrim {
+  background:
+    linear-gradient(90deg, rgb(18 9 4 / 0.84) 0%, rgb(18 9 4 / 0.62) 42%, rgb(18 9 4 / 0.1) 76%),
+    linear-gradient(180deg, rgb(18 9 4 / 0.3) 0%, transparent 42%, rgb(18 9 4 / 0.72) 100%);
 }
 
 .story-preview__cta {
@@ -599,12 +598,128 @@
 }
 
 .story-preview__cta:is(:hover, :focus-visible) {
-  background: var(--cacao);
+  background: var(--panna);
+  color: var(--cacao);
   transform: translateY(-2px);
 }
 
 .story-preview__cta:active {
   transform: translateY(0) scale(0.98);
+}
+
+.story-preview__catalog-cue,
+.story-preview__catalog-arrow {
+  transition:
+    color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.story-preview__catalog-cue:is(:hover, :focus-visible) {
+  color: var(--panna);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.story-preview__catalog-cue:is(:hover, :focus-visible)
+  .story-preview__catalog-arrow {
+  border-color: var(--fucsia);
+  background: var(--fucsia);
+  transform: translateY(3px);
+}
+
+/* ---------------------------------------------------------------- */
+/* Scena Home — Storia → Dolci                                     */
+/*                                                                  */
+/* Il documento parte sempre in flusso naturale. Solo dopo che la   */
+/* regia client ha scelto una modalità il dataset abilita sticky e  */
+/* track lunghi: senza JS o con reduced motion non esistono vuoti.   */
+/* ---------------------------------------------------------------- */
+
+.story-sweets-scene {
+  overflow-x: clip;
+}
+
+.story-sweets-scene__story-track,
+.story-sweets-scene__story-sticky,
+.story-sweets-scene__catalog-track,
+.story-sweets-scene__catalog-sticky {
+  position: relative;
+}
+
+/* Desktop con abbastanza altezza: la Storia resta ferma, il foglio panna
+   sale dal basso e poi diventa il palco delle sette entrate laterali. */
+[data-scene-mode="desktop"] .story-sweets-scene__story-track {
+  height: 280svh;
+}
+
+[data-scene-mode="desktop"] .story-sweets-scene__story-sticky,
+[data-scene-mode="desktop"] .story-sweets-scene__catalog-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+
+[data-scene-mode="desktop"] .story-sweets-scene__catalog {
+  margin-top: -100svh;
+}
+
+[data-scene-mode="desktop"] .story-sweets-scene__catalog-track {
+  height: 480svh;
+}
+
+[data-scene-mode="desktop"] .story-sweets-scene__catalog-sticky {
+  overflow-x: clip;
+}
+
+[data-scene-mode="desktop"] .story-sweets-scene__catalog-frame {
+  display: flex;
+  height: 100%;
+  padding-block: clamp(5rem, 8svh, 6rem) clamp(0.75rem, 2svh, 1.5rem);
+  padding-inline: 3rem;
+}
+
+[data-scene-mode="desktop"] [data-scroll-catalog-pinned] {
+  width: 100%;
+  margin-block: auto;
+}
+
+[data-scene-mode="desktop"] [data-scroll-catalog-grid] {
+  margin-top: clamp(1.25rem, 2.5svh, 1.75rem);
+}
+
+/* Sul telefono alto la sola Storia conserva un breve respiro sticky. Il
+   catalogo torna nel flusso e ogni card si anima soltanto quando arriva. */
+[data-scene-mode="mobile"] .story-sweets-scene__story-track {
+  height: 180svh;
+}
+
+[data-scene-mode="mobile"] .story-sweets-scene__story-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+
+[data-scene-mode="desktop"] .story-preview,
+[data-scene-mode="mobile"] .story-preview {
+  height: 100svh;
+  min-height: 100svh;
+}
+
+[data-scene-card] {
+  transform-origin: center;
+}
+
+@media (scripting: none), (prefers-reduced-motion: reduce) {
+  [data-scene-story-item],
+  [data-scene-story-media],
+  [data-scene-heading-item],
+  [data-scene-card] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 .configurator-bridge__surface {
@@ -625,16 +740,10 @@
 }
 
 @media (max-width: 767px) {
-  .story-preview {
-    clip-path: polygon(
-      0 2.2rem,
-      30% 0.8rem,
-      58% 2rem,
-      82% 0.5rem,
-      100% 1.4rem,
-      100% 100%,
-      0 100%
-    );
+  .story-preview__scrim {
+    background:
+      linear-gradient(180deg, rgb(18 9 4 / 0.3) 0%, rgb(18 9 4 / 0.08) 28%, rgb(18 9 4 / 0.88) 68%, rgb(18 9 4 / 0.96) 100%),
+      linear-gradient(90deg, rgb(18 9 4 / 0.34) 0%, transparent 75%);
   }
   .configurator-bridge__surface {
     clip-path: ellipse(92% 100% at 50% 100%);
@@ -643,11 +752,16 @@
 
 @media (prefers-reduced-motion: reduce) {
   .story-preview__cta,
-  .story-preview__cta svg {
+  .story-preview__cta svg,
+  .story-preview__catalog-cue,
+  .story-preview__catalog-arrow {
     transition-duration: 0.01ms;
   }
   .story-preview__cta:is(:hover, :focus-visible),
-  .story-preview__cta:is(:hover, :focus-visible) svg {
+  .story-preview__cta:is(:hover, :focus-visible) svg,
+  .story-preview__catalog-cue:is(:hover, :focus-visible),
+  .story-preview__catalog-cue:is(:hover, :focus-visible)
+    .story-preview__catalog-arrow {
     transform: none;
   }
 }
@@ -1262,11 +1376,13 @@ html.lenis body {
 
 /* Il redesign del 2026-08-04 ribalta la scena: il quadro inchiostro
    lascia il posto a un PALCO chiaro — crema, raggi larghi, profilo
-   nero e ombra pop gialla — con dentro l'alzata su cui il dolce si
-   compone. Non è una card di dashboard: è una vetrina, e la
-   differenza la fanno la cornice tratteggiata, i decori disegnati e
-   il fatto che il bersaglio del rilascio sia grande quanto la scena
-   (il palco intero, non un cerchio disegnato in mezzo).
+   nero e ombra pop gialla — su cui il dolce si compone (l'alzata
+   disegnata che lo reggeva è uscita di scena il 2026-08-20: resta
+   l'ombra a terra a fare da piano). Non è una card di dashboard: è
+   una vetrina, e la differenza la fanno la cornice tratteggiata, i
+   decori disegnati e il fatto che il bersaglio del rilascio sia
+   grande quanto la scena (il palco intero, non un cerchio disegnato
+   in mezzo).
 
    Tutti gli stati vivono su due data-attribute del palco:
    `data-sopra` (una tessera trascinata è sopra la scena) e
@@ -1333,22 +1449,28 @@ html.lenis body {
 
 /* Il cerchio tratteggiato del rilascio (classi `bersaglio` e
    `bersaglio-tratto`) è uscito di scena il 2026-08-19 insieme alla
-   scritta: sopra l'alzata resta la sola freccia, e a dire che la
-   tessera è arrivata bastano la cornice e l'alone. */
+   scritta: sopra il piano resta la sola freccia, e a dire che la
+   tessera è arrivata bastano la cornice e l'ombra a terra. */
 
-/* L'alone sotto il dolce, disegnato dentro l'SVG dell'alzata così da
-   scalare col piatto. Cresce quando la tessera sorvola: è il segnale
-   che il piano è pronto a ricevere. */
-.alzata-alone {
-  transform-box: fill-box;
-  transform-origin: center;
+/* L'ombra a terra del dolce: da quando l'alzata è uscita di scena
+   (2026-08-20) il piano lo dice questa macchia morbida, presente
+   anche a palco vuoto dove segna il punto d'atterraggio. Quando una
+   tessera sorvola cresce e si fa più tenue — l'ombra di qualcosa
+   che si solleva per fare posto. */
+.palco-ombra {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(122, 58, 30, 0.22) 0%,
+    rgba(122, 58, 30, 0.08) 58%,
+    rgba(122, 58, 30, 0) 100%
+  );
   transition:
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.32s ease-out;
 }
-.palco[data-sopra="true"] .alzata-alone {
-  transform: scale(1.22);
-  opacity: 0.85;
+.palco[data-sopra="true"] .palco-ombra {
+  transform: scale(1.16);
+  opacity: 0.8;
 }
 
 /* L'invito sopra la freccia parla la lingua del dispositivo: dove c'è
@@ -1439,7 +1561,7 @@ html.lenis body {
 
 @media (prefers-reduced-motion: reduce) {
   .palco-cornice,
-  .alzata-alone,
+  .palco-ombra,
   .scintilla-drag,
   .tessera {
     transition-duration: 0.01ms;
@@ -1447,9 +1569,9 @@ html.lenis body {
   .tessera:is(:hover, :focus-visible) {
     transform: none;
   }
-  .palco[data-sopra="true"] .alzata-alone {
+  .palco[data-sopra="true"] .palco-ombra {
     transform: none;
-    opacity: 0.85;
+    opacity: 0.8;
   }
   .scintilla-drag {
     transform: none;

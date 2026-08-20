@@ -25,10 +25,12 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
+import { CatalogHeading } from "@/components/catalog/CatalogHeading";
 import { CatalogPhysicalSection } from "@/components/catalog/CatalogPhysicalSection";
 import { ConfiguratorClosingSection } from "@/components/home/ConfiguratorClosingSection";
 import { ProductCatalog } from "@/components/home/ProductCatalog";
 import { StoryPreview } from "@/components/home/StoryPreview";
+import { StorySweetsScene } from "@/components/home/StorySweetsScene";
 
 export default function Experience() {
   return (
@@ -38,7 +40,10 @@ export default function Experience() {
 
       <main id="contenuto-principale">
         <Hero />
-        <StoryPreview />
+        <StorySweetsScene
+          story={<StoryPreview />}
+          heading={<CatalogHeading />}
+        />
         <ProductCatalog />
         <ConfiguratorClosingSection />
         <CatalogPhysicalSection />

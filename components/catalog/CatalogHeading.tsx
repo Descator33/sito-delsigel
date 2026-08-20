@@ -1,5 +1,4 @@
 import { TOTALE_TIPOLOGIE, TOTALE_VARIANTI } from "@/lib/catalog-bento";
-import { CatalogRevealSequence } from "./CatalogMotion";
 
 /**
  * L'intestazione del catalogo: tre aree appoggiate alla stessa linea di
@@ -11,17 +10,14 @@ import { CatalogRevealSequence } from "./CatalogMotion";
  * salata stava qui dentro, adesso ha una sezione sua e al suo posto il
  * secondo numero dice la gamma.
  *
- * Resta un Server Component: il piccolo wrapper client orchestra soltanto
- * l'ingresso delle tre aree quando l'intestazione arriva in viewport.
+ * Resta un Server Component. I tre wrapper dichiarano alla scena della Home
+ * quali blocchi rivelare; fuori da quella scena sono normali elementi statici.
  */
 export function CatalogHeading() {
   return (
     <header>
-      <CatalogRevealSequence
-        className="grid gap-x-8 gap-y-7 xl:grid-cols-[minmax(0,6fr)_minmax(180px,2fr)_minmax(240px,3fr)] xl:items-end xl:gap-y-0"
-        classiElementi={["", "", "xl:justify-self-end"]}
-      >
-        <div>
+      <div className="grid gap-x-8 gap-y-7 xl:grid-cols-[minmax(0,6fr)_minmax(180px,2fr)_minmax(240px,3fr)] xl:items-end xl:gap-y-0">
+        <div data-scene-heading-item>
           <p className="font-tecnico text-[10px] font-semibold uppercase tracking-[0.22em] text-fucsia">
             Catalogo 2026/27
           </p>
@@ -30,12 +26,14 @@ export function CatalogHeading() {
           </h2>
         </div>
 
-        <p className="max-w-[34ch] text-[0.82rem] leading-[1.6] text-inchiostro/85 xl:max-w-[15rem]">
-          Ricette semplici, ingredienti selezionati e tanta passione. Ogni
-          giorno, dolci buoni per davvero.
-        </p>
+        <div data-scene-heading-item>
+          <p className="max-w-[34ch] text-[0.82rem] leading-[1.6] text-inchiostro/85 xl:max-w-[15rem]">
+            Ricette semplici, ingredienti selezionati e tanta passione. Ogni
+            giorno, dolci buoni per davvero.
+          </p>
+        </div>
 
-        <div>
+        <div data-scene-heading-item className="xl:justify-self-end">
           <div
             aria-hidden
             className="h-px w-full max-w-[16rem] bg-inchiostro/85 xl:ml-auto"
@@ -46,7 +44,7 @@ export function CatalogHeading() {
             {TOTALE_VARIANTI} varianti
           </p>
         </div>
-      </CatalogRevealSequence>
+      </div>
     </header>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 import type { Base, Combinazione } from "@/lib/configuratore";
 import { Riepilogo } from "./Riepilogo";
 
@@ -11,9 +11,17 @@ import { Riepilogo } from "./Riepilogo";
  * finito. Il guscio è uno solo per tutti e tre i passi: cambiando
  * passo cambia il contenuto, non l'impaginato, e l'occhio non deve
  * riorientarsi.
+ *
+ * Il titolo è il punto d'arrivo del focus quando la fase cambia (il
+ * Configuratore lo raggiunge via `titoloRef`): chi naviga da
+ * tastiera o con lo screen reader atterra sull'intestazione nuova
+ * invece di restare su un controllo che non c'è più. tabIndex -1,
+ * così il giro del Tab non lo incontra; l'anello si vede solo
+ * :focus-visible, quindi mai per chi ha cliccato col mouse.
  */
 export function Selettore({
   titolo,
+  titoloRef,
   base,
   comb,
   finituraApplicata,
@@ -21,6 +29,7 @@ export function Selettore({
   children,
 }: {
   titolo: string;
+  titoloRef?: Ref<HTMLHeadingElement>;
   base: Base | null;
   comb: Combinazione | null;
   finituraApplicata: boolean;
@@ -51,7 +60,11 @@ export function Selettore({
         apriPasso={apriPasso}
       />
 
-      <h2 className="mt-5 inline-block">
+      <h2
+        ref={titoloRef}
+        tabIndex={-1}
+        className="mt-5 inline-block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-corallo-scena"
+      >
         <span className="block text-[14px] font-extrabold uppercase leading-none tracking-[0.05em] text-inchiostro sm:text-[15px]">
           {titolo}
         </span>

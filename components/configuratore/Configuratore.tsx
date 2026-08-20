@@ -1,20 +1,27 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   statoDaPathname,
   type FotoFarciture,
   type FotoStati,
   type FotoTopping,
 } from "@/lib/configuratore";
-import { Banco } from "./Banco";
+import { Banco, ZONA_DOLCE } from "./Banco";
 import { Intro } from "./Intro";
 import { PassoBase, type DragPasso } from "./PassoBase";
 import { PassoFarcitura } from "./PassoFarcitura";
 import { PassoFinitura } from "./PassoFinitura";
 import { Selettore } from "./Selettore";
-import type { Punto } from "./TesseraScelta";
+import { SegnaPosto, type Punto, type VoloTessera } from "./TesseraScelta";
 
 /**
  * L'isola client del configuratore. Lo stato prodotto NON è uno state:
@@ -53,6 +60,19 @@ import type { Punto } from "./TesseraScelta";
  * gesti sono indistinguibili. Il hit-test confronta le coordinate di
  * pagina del puntatore (info.point di motion) con il rect del palco
  * riportato in coordinate di pagina.
+ *
+ * IL VOLO (2026-08-20): anche il tap ha la sua scenografia. La scelta
+ * col click/tocco fa volare il contenuto della tessera fino alla zona
+ * del dolce sul palco — un clone fixed che parte dal rect del quadro e
+ * atterra su ZONA_DOLCE — e la selezione vera (pushState o finitura)
+ * parte SOLO all'atterraggio: così l'ingresso del prodotto sul palco è
+ * il naturale secondo tempo del volo. Durante il volo la scena si
+ * accende come al sorvolo del drag (stesso `sopraPalco`). Niente volo
+ * con reduced-motion o quando la zona d'atterraggio non è tutta nel
+ * viewport (lì al gesto risponde il CONTROCAMPO: sotto lg il palco sta
+ * sopra la colonna delle scelte, e dopo ogni scelta col tap la pagina
+ * scorre a centrarlo — il gesto parte dalla tessera, lo sguardo torna
+ * alla scena).
  */
 export function Configuratore({
   foto,
@@ -72,6 +92,7 @@ export function Configuratore({
   const pathname = usePathname();
   const { base, comb } = useMemo(() => statoDaPathname(pathname), [pathname]);
   const passo = comb ? 3 : base ? 2 : 1;
+  const riduci = useReducedMotion();
 
   /* quantità proposta: il minimo dove esiste, 1 altrove — lazy init così
      il primo render (anche server) è già giusto, senza flicker */
@@ -134,6 +155,75 @@ export function Configuratore({
     if (base) vaiA(`/configuratore/${base.id}/${id}`);
   };
 
+  const applicaFinitura = () => setFinituraApplicata(true);
+
+  /* sotto lg (impaginato a pila) il palco sta sopra la colonna delle
+     scelte e la scelta col tap accadrebbe fuori schermo: il controcampo
+     centra il palco dopo ogni gesto. Da lg in su è un no-op: le colonne
+     sono affiancate e la scena è già davanti agli occhi. */
+  const controcampo = () => {
+    if (window.matchMedia("(max-width: 63.99rem)").matches) {
+      palcoRef.current?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+        block: "center",
+      });
+    }
+  };
+
+  /* --- il volo della tessera ------------------------------------- */
+
+  type VoloInCorso = {
+    chiave: number;
+    foto: string | null;
+    iniziale: string;
+    da: { x: number; y: number; w: number; h: number };
+    a: { x: number; y: number; w: number; h: number };
+    fine: () => void;
+  };
+  const [volo, setVolo] = useState<VoloInCorso | null>(null);
+  const contatoreVolo = useRef(0);
+  const voloCommesso = useRef(0);
+
+  /* la zona del dolce sul palco, in coordinate viewport: le stesse
+     frazioni con cui il Banco posiziona il prodotto (ZONA_DOLCE) */
+  const zonaAtterraggio = () => {
+    const el = palcoRef.current;
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    const w = r.width * ZONA_DOLCE.width;
+    const h = r.height * ZONA_DOLCE.height;
+    const x = r.left + r.width * ZONA_DOLCE.left;
+    const y = r.top + r.height * (1 - ZONA_DOLCE.bottom - ZONA_DOLCE.height);
+    return { x, y, w, h, visibile: y >= 0 && y + h <= window.innerHeight };
+  };
+
+  /* fa volare la tessera e commette la scelta all'atterraggio; senza
+     volo possibile (reduced-motion, zona fuori viewport, quadro non
+     misurato) commette subito e risponde col controcampo */
+  const lanciaVerso = (fine: () => void, v?: VoloTessera) => {
+    const zona = zonaAtterraggio();
+    if (riduci || !v || !zona || !zona.visibile) {
+      fine();
+      controcampo();
+      return;
+    }
+    contatoreVolo.current += 1;
+    setSopraPalco(true);
+    setVolo({
+      chiave: contatoreVolo.current,
+      foto: v.foto,
+      iniziale: v.iniziale,
+      da: { x: v.quadro.left, y: v.quadro.top, w: v.quadro.width, h: v.quadro.height },
+      a: zona,
+      fine: () => {
+        setSopraPalco(false);
+        fine();
+      },
+    });
+  };
+
   const dragTessere: DragPasso = dragDisponibile
     ? {
         onSposta: (p) => setSopraPalco(dentroPalco(p)),
@@ -144,7 +234,7 @@ export function Configuratore({
           else if (passo === 2) scegliFarcitura(id);
           /* al passo 3 l'id è quello del topping ma non serve: la
              finitura possibile è una sola, il gesto è la scelta */ else
-            setFinituraApplicata(true);
+            applicaFinitura();
           return true;
         },
       }
@@ -165,6 +255,21 @@ export function Configuratore({
      griglia di tessere ma un modulo: prende spazio al palco, che qui ha
      finito il suo lavoro e resta come conferma di quel che si ordina */
   const numeri = passo === 3 && finituraApplicata;
+
+  /* quando la fase cambia il focus raggiunge il titolo del passo:
+     chi naviga da tastiera o con lo screen reader atterra
+     sull'intestazione nuova, non su un controllo che non esiste più.
+     preventScroll perché lo scroll, dove serve, è del controcampo.
+     Il confronto col ref salta il primo render: al caricamento il
+     focus non si ruba. */
+  const titoloRef = useRef<HTMLHeadingElement | null>(null);
+  const fase = numeri ? "numeri" : `passo-${passo}`;
+  const fasePrecedente = useRef(fase);
+  useEffect(() => {
+    if (fasePrecedente.current === fase) return;
+    fasePrecedente.current = fase;
+    titoloRef.current?.focus({ preventScroll: true });
+  }, [fase]);
 
   const titoloSelettore =
     passo === 1
@@ -232,6 +337,7 @@ export function Configuratore({
 
         <Selettore
           titolo={titoloSelettore}
+          titoloRef={titoloRef}
           base={base}
           comb={comb}
           finituraApplicata={finituraApplicata}
@@ -241,7 +347,7 @@ export function Configuratore({
             <PassoBase
               foto={foto}
               selezionata={null}
-              onScegli={scegliBase}
+              onScegli={(id, v) => lanciaVerso(() => scegliBase(id), v)}
               drag={dragTessere}
             />
           )}
@@ -251,7 +357,7 @@ export function Configuratore({
               base={base}
               fotoFarciture={fotoFarciture}
               selezionata={null}
-              onScegli={scegliFarcitura}
+              onScegli={(id, v) => lanciaVerso(() => scegliFarcitura(id), v)}
               drag={dragTessere}
             />
           )}
@@ -262,7 +368,7 @@ export function Configuratore({
               comb={comb}
               fotoTopping={fotoTopping}
               finituraApplicata={finituraApplicata}
-              onApplicaFinitura={() => setFinituraApplicata(true)}
+              onApplicaFinitura={(v) => lanciaVerso(applicaFinitura, v)}
               drag={dragTessere}
               pedane={pedane}
               onCambiaPedane={setPedane}
@@ -272,6 +378,58 @@ export function Configuratore({
           )}
         </Selettore>
       </div>
+
+      {/* --- il clone in volo ------------------------------------------
+          Renderizzato alla misura d'ARRIVO e riportato alla partenza
+          con la trasformazione iniziale (x/y/scale): a fine corsa è
+          nitido, e il ridimensionamento lo paga il tratto in movimento.
+          La scelta si commette una volta sola: il guard sul contatore
+          scarta sia il replay dell'evento all'exit sia i voli
+          sorpassati da un tap più recente (commette solo l'ultimo). */}
+      <AnimatePresence>
+        {volo && (
+          <motion.div
+            key={volo.chiave}
+            aria-hidden
+            className="pointer-events-none fixed z-[80] @container"
+            style={{
+              left: volo.a.x,
+              top: volo.a.y,
+              width: volo.a.w,
+              height: volo.a.h,
+            }}
+            initial={{
+              x: volo.da.x + volo.da.w / 2 - (volo.a.x + volo.a.w / 2),
+              y: volo.da.y + volo.da.h / 2 - (volo.a.y + volo.a.h / 2),
+              scale: volo.da.w / volo.a.w,
+            }}
+            animate={{ x: 0, y: 0, scale: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.16 } }}
+            transition={{ duration: 0.55, ease: [0.3, 0.85, 0.25, 1] }}
+            onAnimationComplete={() => {
+              if (volo.chiave !== contatoreVolo.current) return;
+              if (voloCommesso.current === volo.chiave) return;
+              voloCommesso.current = volo.chiave;
+              volo.fine();
+              setVolo(null);
+            }}
+          >
+            {volo.foto ? (
+              /* stessa inquadratura della tessera (contain + aria),
+                 così alla partenza il clone ricalca l'originale */
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={volo.foto}
+                alt=""
+                draggable={false}
+                className="h-full w-full object-contain p-3"
+              />
+            ) : (
+              <SegnaPosto testo={volo.iniziale} />
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

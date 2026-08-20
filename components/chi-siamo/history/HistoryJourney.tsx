@@ -57,6 +57,30 @@ function StoryPicture({
   );
 }
 
+function Certificazioni({ tappa }: { tappa: TappaStoria }) {
+  if (!tappa.certificazioni) return null;
+  return (
+    <ul className="mt-6 flex flex-wrap items-center gap-3">
+      {tappa.certificazioni.map((cert) => (
+        <li
+          key={cert.nome}
+          title={cert.nome}
+          className="flex h-16 w-[5.5rem] items-center justify-center rounded-md border border-cacao/12 bg-white p-2.5 shadow-[0_2px_10px_rgba(22,6,1,0.06)]"
+        >
+          {/* loghi ufficiali in SVG: nessuna ottimizzazione Next necessaria */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={cert.logo}
+            alt={cert.alt}
+            loading="lazy"
+            className="max-h-full max-w-full object-contain"
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function HistoryReduced() {
   return (
     <ol className="hidden border-t border-cacao/15 px-5 text-cacao motion-reduce:block md:px-10">
@@ -81,6 +105,7 @@ function HistoryReduced() {
             <p className="mt-4 max-w-[42ch] text-sm leading-6 text-cacao/65">
               {tappa.descrizione}
             </p>
+            <Certificazioni tappa={tappa} />
           </div>
         </li>
       ))}
@@ -276,8 +301,7 @@ export function HistoryJourney() {
               </span>
             </h2>
             <p className="mt-9 max-w-[34ch] text-pretty text-base leading-7 text-cacao/68 md:text-lg">
-              Non una cronologia. Sei gesti che hanno acceso, e tengono acceso,
-              il nostro forno.
+              {INTESTAZIONE.testo[0]} {INTESTAZIONE.testo[1]}
             </p>
           </div>
         </div>
@@ -390,6 +414,7 @@ export function HistoryJourney() {
                   <p className="mt-4 max-w-[42ch] text-pretty text-sm leading-6 text-cacao/70 md:text-[15px] md:leading-7">
                     {tappa.descrizione}
                   </p>
+                  <Certificazioni tappa={tappa} />
                 </article>
               </li>
             ))}

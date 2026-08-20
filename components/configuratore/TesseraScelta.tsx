@@ -39,6 +39,17 @@ export type DragTessera = {
   onRilascia: (p: Punto) => boolean;
 };
 
+/** Quel che serve al volo della tessera scelta col tap: da dove parte
+ *  (il rect del quadro, misurato al click) e cosa vola — la foto, o
+ *  l'iniziale del segnaposto quando la foto non c'è ancora. Lo
+ *  compone il passo, che conosce foto e nome; la tessera mette solo
+ *  il rect. */
+export type VoloTessera = {
+  quadro: DOMRect;
+  foto: string | null;
+  iniziale: string;
+};
+
 /**
  * La tessera del configuratore: un controllo, non una decorazione.
  * Fondo carta, filo beige, angoli larghi, il prodotto scontornato
@@ -75,13 +86,16 @@ export function TesseraScelta({
   /** etichetta accessibile completa, quando il nome da solo non basta */
   descrizione?: string;
   selezionata?: boolean;
-  onScegli: () => void;
+  /** al tap arriva il rect del quadro, perché la scelta possa volare
+   *  dalla tessera al palco; assente solo se il quadro non è montato */
+  onScegli: (quadro?: DOMRect) => void;
   /** trascinamento verso il palco: presente solo con puntatori fini */
   drag?: DragTessera | null;
   /** contenuto del quadro: immagine scontornata o resa tipografica */
   children: ReactNode;
 }) {
   const clickDaDrag = useRef(false);
+  const quadroRef = useRef<HTMLSpanElement | null>(null);
   const [inDrag, setInDrag] = useState(false);
   const riduci = useReducedMotion();
 
@@ -90,7 +104,7 @@ export function TesseraScelta({
       type="button"
       onClick={() => {
         if (clickDaDrag.current) return;
-        onScegli();
+        onScegli(quadroRef.current?.getBoundingClientRect());
       }}
       aria-pressed={selezionata ?? false}
       aria-label={descrizione}
@@ -99,7 +113,7 @@ export function TesseraScelta({
         drag ? "cursor-grab active:cursor-grabbing" : ""
       } ${inDrag ? "z-[60]" : ""}`}
     >
-      <span className="relative block aspect-square w-full @container">
+      <span ref={quadroRef} className="relative block aspect-square w-full @container">
         {drag ? (
           <motion.span
             className="absolute inset-0 block"

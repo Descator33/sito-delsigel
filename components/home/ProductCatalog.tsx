@@ -1,9 +1,8 @@
 import { MotionConfig } from "motion/react";
-import { CatalogSection } from "@/components/catalog/CatalogSection";
 import { CatalogFlavorTransition } from "@/components/catalog/CatalogMotion";
 import { SavoryCatalogSection } from "@/components/catalog/salati/SavoryCatalogSection";
 
-/** I due capitoli della gamma condividono dati, ritmo e passaggio cromatico. */
+/** La coda della gamma: il capitolo dolce ora vive nella scena Storia → Dolci. */
 export function ProductCatalog() {
   return (
     <MotionConfig reducedMotion="user">
@@ -11,7 +10,6 @@ export function ProductCatalog() {
         aria-label="Catalogo prodotti Delsigel"
         className="relative bg-panna"
       >
-        <CatalogSection />
         <CatalogFlavorTransition />
         <SavoryCatalogSection />
       </div>

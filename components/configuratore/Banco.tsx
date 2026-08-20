@@ -9,8 +9,14 @@ import {
   type Combinazione,
   type FotoStati,
 } from "@/lib/configuratore";
-import { Alzata } from "./Alzata";
-import { Asterisco, FrecciaGiu, IconaMano, Scintilla, Smile } from "./Decori";
+import {
+  Asterisco,
+  FrecciaGiu,
+  FrecciaRicomincia,
+  IconaMano,
+  Scintilla,
+  Smile,
+} from "./Decori";
 import { ImmagineProdotto } from "./ImmagineProdotto";
 
 /**
@@ -18,24 +24,45 @@ import { ImmagineProdotto } from "./ImmagineProdotto";
  * bersaglio del drag & drop. Il ref esposto serve al Configuratore per
  * il hit-test del rilascio; `sopra` accende tutta la scena attraverso
  * l'unico data-attribute `data-sopra` (stili in «Configuratore: il
- * palco» di globals.css) — cornice, cerchio, alone e scintille
+ * palco» di globals.css) — cornice, ombra a terra e scintille
  * rispondono da soli, senza che una prop scenda fino alle foglie e
  * senza far ridisegnare la griglia dei prodotti a ogni pixel di drag.
  *
- * Geometria: tutto è in percentuale del palco, tranne il dolce, che è
- * in percentuale dell'ALZATA — deve poggiare sul piano, e il piano è
- * alto quanto è larga l'alzata, non quanto è alto il palco. Il piano
- * sta al 13% dell'altezza dell'SVG (vedi Alzata): da lì il
- * `bottom-[87%]` del prodotto.
+ * Geometria: tutto in percentuale del palco. L'alzata disegnata è
+ * uscita di scena il 2026-08-20 («via il tavolino»): il dolce poggia
+ * direttamente sul palco, sopra una macchia d'ombra che fa da piano —
+ * e senza piatto sotto si prende più scena di prima. Il bordo
+ * inferiore della foto (object-bottom) cade sul centro dell'ombra:
+ * le due quote (bottom del prodotto, centro verticale dell'ombra)
+ * devono restare uguali, oggi 17%.
  *
  * Il dolce è COMPLETO solo quando la finitura è stata applicata dal
  * gesto dell'utente (decisione 2026-08-02: niente automatismi, mai):
- * fino a quel momento il bersaglio resta acceso. Le foto vengono dalle
- * cartelle di stato (prop `foto`, scoperta dal server): a ogni fase la
- * sua — base → farcito senza finitura → completo — e dove la foto non
- * è ancora arrivata si ripiega sullo stato precedente, che è onesto
- * perché mostra sempre MENO del configurato, mai un'altra farcitura.
+ * fino a quel momento il bersaglio resta acceso. Al completamento il
+ * dolce FESTEGGIA — un guizzo sul posto mentre cade la spolverata,
+ * poi un respiro lento che tiene viva la scena — e in testa al palco
+ * arrivano le CTA «Cambia farcitura» e «Ricomincia», le due uscite
+ * chiare della scena. Le foto vengono dalle cartelle di stato (prop
+ * `foto`, scoperta dal server): a ogni fase la sua — base → farcito
+ * senza finitura → completo — e dove la foto non è ancora arrivata si
+ * ripiega sullo stato precedente, che è onesto perché mostra sempre
+ * MENO del configurato, mai un'altra farcitura.
  */
+/** Il box del dolce, in frazioni del palco. Da qui escono sia le
+ *  quote inline del prodotto (e della spolverata, che gli cade
+ *  addosso) sia la zona d'atterraggio che il Configuratore usa per
+ *  far volare la tessera scelta col tap: un numero solo, mai due da
+ *  tenere allineati. Il bordo inferiore (foto object-bottom) deve
+ *  cadere sul centro verticale dell'ombra a terra. */
+export const ZONA_DOLCE = { left: 0.23, bottom: 0.17, width: 0.54, height: 0.5 };
+
+const stileZonaDolce = {
+  left: `${ZONA_DOLCE.left * 100}%`,
+  bottom: `${ZONA_DOLCE.bottom * 100}%`,
+  width: `${ZONA_DOLCE.width * 100}%`,
+  height: `${ZONA_DOLCE.height * 100}%`,
+};
+
 export function Banco({
   base,
   comb,
@@ -91,15 +118,37 @@ export function Banco({
     ? `${nomeCommerciale(comb)} · ${farcitura!.nome.toLowerCase()}`
     : (base?.nome ?? "");
 
+  const immagineDolce = base && (
+    <ImmagineProdotto
+      sorgenti={
+        completato
+          ? [fotoCompleta, fotoFarcito, fotoBase]
+          : comb
+            ? [fotoFarcito, fotoBase]
+            : [fotoBase]
+      }
+      alt={
+        comb
+          ? `${nomeCommerciale(comb)} con ${farcitura!.nome.toLowerCase()}`
+          : base.nome
+      }
+      iniziale={base.nome.charAt(0)}
+      notaRipiego={
+        completato ? "Foto senza finitura — descritta accanto" : undefined
+      }
+      classe="absolute inset-0 h-full w-full object-contain object-bottom"
+    />
+  );
+
   return (
     <motion.div
       ref={ref}
       role="region"
       aria-label={
         vuoto
-          ? "Palco del configuratore, vuoto: trascina o tocca una base per posarla sull'alzata"
-          : `Palco del configuratore: ${nomeInScena} sull'alzata${
-              dropAttivo ? `. Manca ${cosaManca}` : ""
+          ? "Palco del configuratore, vuoto: trascina o tocca una base per posarla sul palco"
+          : `Palco del configuratore: ${nomeInScena}${
+              dropAttivo ? `. Manca ${cosaManca}` : ". Il dolce è completo"
             }`
       }
       data-sopra={dropAttivo && sopra ? "true" : "false"}
@@ -128,17 +177,17 @@ export function Banco({
 
       {/* --- l'invito: la scritta e la freccia -----------------------
           Il cerchio tratteggiato è uscito il 2026-08-19 e per un po'
-          sopra l'alzata è restata la sola freccia: puntava al piano
+          sopra il piano è restata la sola freccia: puntava al palco
           senza dire che farne, e il palco vuoto si leggeva come un
           decoro (rilievo 2026-08-20). Torna una scritta, ma sopra la
           freccia e a mano: dice il gesto («trascina qui») e la via
           alternativa per chi è sul touch, dove il drag non è ovvio.
 
-          Le quote restano sul palco, non su una scatola — 44.1% = 20%
-          + 71% di 34%, 5.85% = 16% di 34% di altezza riportato in
-          larghezza (il palco è 93/100). La scritta è ancorata alla
-          stessa quota della freccia e sale della propria altezza: se
-          la copy cambia, la freccia non si muove.
+          Le quote sono sul palco: la freccia sta sopra la zona in cui
+          il dolce atterra — il punto lo segna già l'ombra a terra — e
+          la scritta è ancorata alla stessa quota della freccia e sale
+          della propria altezza: se la copy cambia, la freccia non si
+          muove.
 
           Tutto aria-hidden: la scena si racconta una volta sola,
           nell'aria-label del palco. */}
@@ -146,7 +195,7 @@ export function Banco({
         <>
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-[44.1%] flex -translate-y-[calc(100%+12px)] flex-col items-center gap-1 px-[12%] text-center"
+            className="pointer-events-none absolute inset-x-0 top-[45%] flex -translate-y-[calc(100%+12px)] flex-col items-center gap-1 px-[12%] text-center"
           >
             <span
               className={`type-scritta -rotate-2 text-[22px] leading-tight transition-colors duration-200 sm:text-[28px] ${
@@ -178,7 +227,7 @@ export function Banco({
 
           <motion.span
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[44.1%] block w-[5.85%] min-w-[32px] -translate-x-1/2 text-corallo-scena"
+            className="pointer-events-none absolute left-1/2 top-[45%] block w-[5.85%] min-w-[32px] -translate-x-1/2 text-corallo-scena"
             animate={riduci || sopra ? { y: 0 } : { y: [0, 5, 0] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -187,59 +236,120 @@ export function Banco({
         </>
       )}
 
-      {/* --- l'alzata e il dolce ------------------------------------- */}
-      <motion.div
-        className="absolute inset-x-0 bottom-[16%] mx-auto w-[79%]"
-        animate={riduci ? undefined : sopra && dropAttivo ? { y: -10 } : { y: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      >
-        <Alzata className="block w-full" />
+      {/* --- l'ombra a terra e il dolce -------------------------------
+          L'ombra è il piano: c'è anche a palco vuoto, dove segna il
+          punto d'atterraggio indicato dalla freccia, e al sorvolo
+          cresce e si fa tenue (classe .palco-ombra) come se il dolce
+          già si sollevasse per fare posto. */}
+      <div
+        aria-hidden
+        className="palco-ombra absolute inset-x-0 bottom-[15%] mx-auto h-[4%] w-[46%]"
+      />
 
-        <AnimatePresence mode="wait">
-          {base && (
-            <motion.div
-              key={chiave}
-              /* il bordo inferiore cade sulla quota di appoggio del
-                 piano (13% dell'altezza dell'SVG): il dolce poggia,
-                 non fluttua */
-              className="absolute bottom-[87%] left-[24%] h-[133%] w-[52%]"
-              initial={riduci ? { opacity: 0 } : { y: -26, scale: 0.92, opacity: 0 }}
-              animate={riduci ? { opacity: 1 } : { y: 0, scale: 1, opacity: 1 }}
-              exit={{ opacity: 0, y: 8, scale: 0.95, transition: { duration: 0.18 } }}
-              transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            >
-              <ImmagineProdotto
-                sorgenti={
-                  completato
-                    ? [fotoCompleta, fotoFarcito, fotoBase]
-                    : comb
-                      ? [fotoFarcito, fotoBase]
-                      : [fotoBase]
-                }
-                alt={
-                  comb
-                    ? `${nomeCommerciale(comb)} con ${farcitura!.nome.toLowerCase()}`
-                    : base.nome
-                }
-                iniziale={base.nome.charAt(0)}
-                notaRipiego={
-                  completato ? "Foto senza finitura — descritta accanto" : undefined
-                }
-                classe="absolute inset-0 h-full w-full object-contain object-bottom"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {completato && !riduci && (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-[87%] left-[24%] h-[133%] w-[52%]"
+      <AnimatePresence mode="wait">
+        {base && (
+          <motion.div
+            key={chiave}
+            /* il bordo inferiore della foto (object-bottom) cade sul
+               centro dell'ombra a terra: il dolce poggia, non fluttua.
+               Il sollevamento al sorvolo sta nello stesso animate
+               dell'ingresso: due target, una molla sola. */
+            className="absolute"
+            style={stileZonaDolce}
+            initial={riduci ? { opacity: 0 } : { y: -26, scale: 0.92, opacity: 0 }}
+            animate={
+              riduci
+                ? { opacity: 1 }
+                : { y: sopra && dropAttivo ? -10 : 0, scale: 1, opacity: 1 }
+            }
+            exit={{ opacity: 0, y: 8, scale: 0.95, transition: { duration: 0.18 } }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
           >
-            <Spolverata key={comb!.sku} />
-          </div>
+            {completato && !riduci ? (
+              /* la festa del dolce finito, in due tempi sul posto:
+                 un guizzo di gioia (perno in basso: balla poggiato al
+                 piano, non a mezz'aria) mentre cade la spolverata,
+                 poi un respiro lento e continuo. Vive solo dentro la
+                 chiave `--finito`: al replay del gesto riparte, con
+                 reduced-motion non esiste. */
+              <motion.div
+                className="absolute inset-0"
+                animate={{ y: [0, -5, 0] }}
+                transition={{
+                  delay: 1.7,
+                  duration: 3.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <motion.div
+                  className="absolute inset-0"
+                  style={{ originY: 1 }}
+                  animate={{
+                    rotate: [0, -3, 2.6, -1.6, 1, 0],
+                    scale: [1, 1.07, 0.96, 1.03, 0.99, 1],
+                  }}
+                  transition={{ delay: 0.35, duration: 1.05, ease: "easeInOut" }}
+                >
+                  {immagineDolce}
+                </motion.div>
+              </motion.div>
+            ) : (
+              immagineDolce
+            )}
+          </motion.div>
         )}
-      </motion.div>
+      </AnimatePresence>
+
+      {completato && !riduci && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute"
+          style={stileZonaDolce}
+        >
+          <Spolverata key={comb!.sku} />
+        </div>
+      )}
+
+      {/* --- le CTA del dolce finito ---------------------------------
+          A dolce completo il palco guadagna le due uscite chiare, in
+          testa alla scena e con lo stesso peso: «Cambia farcitura»
+          riapre il passo 2, «Ricomincia» riparte dalla scelta delle
+          basi. Arrivano con un pop sfalsato dopo la festa, mai prima:
+          prima si guarda il dolce, poi si decide. La pillola in basso
+          perde i suoi link doppioni e resta la targhetta col nome. */}
+      {completato && (
+        <div className="pointer-events-none absolute inset-x-0 top-[4.5%] z-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 px-[6%]">
+          {(
+            [
+              { testo: "Cambia farcitura", azione: () => apriPasso(2), ritardo: 1.1 },
+              { testo: "Ricomincia", azione: onRicomincia, ritardo: 1.25 },
+            ] as const
+          ).map((cta) => (
+            <motion.div
+              key={cta.testo}
+              initial={riduci ? { opacity: 0 } : { opacity: 0, y: -14, scale: 0.6 }}
+              animate={riduci ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+              transition={
+                riduci
+                  ? { duration: 0.25 }
+                  : { type: "spring", stiffness: 400, damping: 22, delay: cta.ritardo }
+              }
+            >
+              <button
+                type="button"
+                onClick={cta.azione}
+                className="ombra-pop-piccola pointer-events-auto inline-flex items-center gap-2 rounded-full bg-inchiostro px-5 py-3 text-[11px] font-bold uppercase tracking-[0.1em] text-panna transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-corallo-scena motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              >
+                {cta.testo === "Ricomincia" && (
+                  <FrecciaRicomincia className="h-[14px] w-[14px] text-oro" />
+                )}
+                {cta.testo}
+              </button>
+            </motion.div>
+          ))}
+        </div>
+      )}
 
       {/* --- la pillola di stato, con le azioni discrete -------------
           A palco vuoto non c'è: l'istruzione la dà l'invito sopra la
@@ -253,23 +363,29 @@ export function Banco({
             <span className="text-[12px] font-bold text-inchiostro sm:text-[13px]">
               {nomeInScena}
             </span>
-            <span aria-hidden className="text-inchiostro/25">
-              ·
-            </span>
-            <button
-              type="button"
-              onClick={() => apriPasso(passo === 3 ? 2 : 1)}
-              className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
-            >
-              {passo === 3 ? "Cambia farcitura" : "Cambia base"}
-            </button>
-            <button
-              type="button"
-              onClick={onRicomincia}
-              className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
-            >
-              Ricomincia
-            </button>
+            {/* a dolce completo le azioni salgono nelle CTA in testa
+                al palco: qui resta la targhetta col nome */}
+            {!completato && (
+              <>
+                <span aria-hidden className="text-inchiostro/25">
+                  ·
+                </span>
+                <button
+                  type="button"
+                  onClick={() => apriPasso(passo === 3 ? 2 : 1)}
+                  className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
+                >
+                  {passo === 3 ? "Cambia farcitura" : "Cambia base"}
+                </button>
+                <button
+                  type="button"
+                  onClick={onRicomincia}
+                  className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
+                >
+                  Ricomincia
+                </button>
+              </>
+            )}
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-corallo-scena" />
           </div>
         </div>

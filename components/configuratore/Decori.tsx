@@ -145,6 +145,58 @@ export function FrecciaCerchio({ className }: { className?: string }) {
   );
 }
 
+/** La freccia che torna sui suoi passi, per la CTA «Ricomincia» del
+ *  dolce finito: un giro quasi completo in senso antiorario con la
+ *  coda ad angolo, lo stesso segno del glifo ↺ dei chip del rail. */
+export function FrecciaRicomincia({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className={`mano-libera ${className ?? ""}`}
+    >
+      <path d="M3 12a9 9 0 1 0 9-9 9.7 9.7 0 0 0-6.7 2.7L3 8" />
+      <path d="M3 3v5h5" />
+    </svg>
+  );
+}
+
+/** I due anelli della catena, per «copia il link del tuo dolce». */
+export function IconaLink({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className={`mano-libera ${className ?? ""}`}
+    >
+      <path d="M10 14a4 4 0 0 0 6 .4l3-3a4 4 0 0 0-5.7-5.7l-1.7 1.7" />
+      <path d="M14 10a4 4 0 0 0-6-.4l-3 3a4 4 0 0 0 5.7 5.7l1.7-1.7" />
+    </svg>
+  );
+}
+
+/** La spunta del «fatto»: conferma il link copiato. */
+export function IconaSpunta({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      className={`mano-libera ${className ?? ""}`}
+    >
+      <path d="M4.5 12.5l5 5L19.5 6.5" />
+    </svg>
+  );
+}
+
 /** La manina della pillola in fondo al palco: dice «si prende e si
  *  trascina» meglio di qualsiasi parola in più. */
 export function IconaMano({ className }: { className?: string }) {

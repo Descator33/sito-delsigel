@@ -10,7 +10,7 @@ import {
   useReducedMotion,
   useScroll,
 } from "motion/react";
-import { Logo } from "@/components/Logo";
+import { LogoStorico } from "@/components/LogoStorico";
 import { useMenu } from "@/components/MenuStato";
 import { ATTESA_VOCI, EASE_MENU, PASSO_VOCI } from "@/lib/hero-finestra";
 
@@ -145,10 +145,11 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
             aria-label="Delsigel, home"
             className="site-nav-logo col-start-1 flex h-12 items-center rounded-full px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fucsia sm:px-[18px]"
           >
-            <Logo
+            {/* marchio storico, e più grande dei 13px di prima: in un
+                sito che deve dire "Delsigel" il logo non è un timbro */}
+            <LogoStorico
               variant="horizontal"
-              surface="var(--hero-panna)"
-              className="h-[13px] w-auto text-cacao sm:h-[15px]"
+              className="h-[20px] text-bruno sm:h-[23px]"
             />
           </Link>
 

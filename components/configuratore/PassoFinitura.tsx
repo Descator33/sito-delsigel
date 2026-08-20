@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import {
   farcituraVoce,
   nomeCommerciale,
@@ -9,10 +10,11 @@ import {
   type FotoTopping,
 } from "@/lib/configuratore";
 import { CampoPedane } from "./CampoPedane";
+import { IconaLink, IconaSpunta } from "./Decori";
 import { ImmagineProdotto } from "./ImmagineProdotto";
 import { ModuloQuotazione } from "./ModuloQuotazione";
 import { GrigliaTessere } from "./Selettore";
-import { SegnaPosto, TesseraScelta } from "./TesseraScelta";
+import { SegnaPosto, TesseraScelta, type VoloTessera } from "./TesseraScelta";
 import { ScalaFormato } from "./ScalaFormato";
 import type { DragPasso } from "./PassoBase";
 
@@ -50,7 +52,7 @@ export function PassoFinitura({
   comb: Combinazione;
   fotoTopping: FotoTopping;
   finituraApplicata: boolean;
-  onApplicaFinitura: () => void;
+  onApplicaFinitura: (volo?: VoloTessera) => void;
   drag?: DragPasso;
   pedane: number | "";
   onCambiaPedane: (v: number | "") => void;
@@ -80,7 +82,15 @@ export function PassoFinitura({
             <TesseraScelta
               titolo={topping.nome}
               sotto="dalla ricetta"
-              onScegli={onApplicaFinitura}
+              onScegli={(quadro) =>
+                onApplicaFinitura(
+                  quadro && {
+                    quadro,
+                    foto: fotoT ?? null,
+                    iniziale: topping.nome.charAt(0),
+                  }
+                )
+              }
               drag={
                 drag
                   ? {
@@ -133,6 +143,8 @@ export function PassoFinitura({
             <dd className="inline">{base.modalita_uso.toLowerCase()}</dd>
           </div>
         </dl>
+
+        <CopiaLink />
       </div>
 
       <ScalaFormato base={base} comb={comb} />
@@ -156,5 +168,60 @@ export function PassoFinitura({
         <ModuloQuotazione comb={comb} pedane={pedane} />
       )}
     </div>
+  );
+}
+
+/**
+ * «Copia il link del tuo dolce»: l'URL è già lo stato del prodotto
+ * (base e farcitura, cioè lo SKU), quindi condividere la scheda è
+ * copiare l'indirizzo — pensato per il buyer che gira la combinazione
+ * a un collega. La finitura, di proposito, non viaggia: chi apre il
+ * link rifà il gesto (decisione 2026-08-02, nessun automatismo).
+ *
+ * Si copia il pathname ricostruito, non l'href: eventuali query o
+ * hash di sessione non appartengono al dolce. Il ripiego col textarea
+ * copre i contesti senza Clipboard API (http, browser vecchi).
+ */
+function CopiaLink() {
+  const [copiato, setCopiato] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const copia = async () => {
+    const url = window.location.origin + window.location.pathname;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.append(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    setCopiato(true);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCopiato(false), 2400);
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={copia}
+      className="mt-5 inline-flex w-fit items-center gap-2 rounded-full text-[12px] font-semibold text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
+    >
+      {copiato ? (
+        <IconaSpunta className="h-3.5 w-3.5 text-corallo-scena" />
+      ) : (
+        <IconaLink className="h-3.5 w-3.5" />
+      )}
+      {copiato ? "Link copiato!" : "Copia il link del tuo dolce"}
+      {/* l'esito anche a chi non vede il cambio di etichetta */}
+      <span aria-live="polite" className="sr-only">
+        {copiato ? "Link copiato negli appunti" : ""}
+      </span>
+    </button>
   );
 }

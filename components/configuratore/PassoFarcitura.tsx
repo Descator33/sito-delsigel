@@ -8,7 +8,7 @@ import {
 } from "@/lib/configuratore";
 import { ImmagineProdotto } from "./ImmagineProdotto";
 import { GrigliaTessere } from "./Selettore";
-import { SegnaPosto, TesseraScelta } from "./TesseraScelta";
+import { SegnaPosto, TesseraScelta, type VoloTessera } from "./TesseraScelta";
 import type { DragPasso } from "./PassoBase";
 
 /**
@@ -41,7 +41,7 @@ export function PassoFarcitura({
   base: Base;
   fotoFarciture: FotoFarciture;
   selezionata: string | null;
-  onScegli: (id: string) => void;
+  onScegli: (id: string, volo?: VoloTessera) => void;
   drag?: DragPasso;
 }) {
   const farciture = farcitureDi(base.id);
@@ -61,7 +61,16 @@ export function PassoFarcitura({
               titolo={f.nome}
               sotto={nomeComb ? `diventa ${nomeComb}` : undefined}
               selezionata={selezionata === f.id}
-              onScegli={() => onScegli(f.id)}
+              onScegli={(quadro) =>
+                onScegli(
+                  f.id,
+                  quadro && {
+                    quadro,
+                    foto: fotoF ?? null,
+                    iniziale: f.nome.charAt(0),
+                  }
+                )
+              }
               drag={
                 drag
                   ? {

@@ -1,57 +1,137 @@
 "use client";
 
-import Image from "next/image";
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { getImageProps } from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "motion/react";
 
-/** Movimento leggero e isolato: rivela il visual e gli dà profondità. */
-export function StoryPreviewMedia({ src, alt }: { src: string; alt: string }) {
+type StoryPreviewMediaProps = {
+  src: string;
+  srcVertical: string;
+  videoSrc: string;
+  videoSrcMobile: string;
+  alt: string;
+};
+
+/**
+ * Sfondo della seconda hero. Il picture resta sotto al filmato come poster e
+ * fallback responsive; il video gira in loop solo quando la sezione è davvero
+ * in vista, si ferma fuori schermo e non viene riprodotto con reduced motion.
+ */
+export function StoryPreviewMedia({
+  src,
+  srcVertical,
+  videoSrc,
+  videoSrcMobile,
+  alt,
+}: StoryPreviewMediaProps) {
   const figura = useRef<HTMLElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const [videoPronto, setVideoPronto] = useState(false);
   const riduciMovimento = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: figura,
-    offset: ["start end", "end start"],
+
+  const comuni = { alt, sizes: "100vw" } as const;
+  const {
+    props: { srcSet: desktopSrcSet },
+  } = getImageProps({
+    ...comuni,
+    src,
+    width: 1536,
+    height: 1024,
   });
-  const y = useTransform(scrollYProgress, [0, 1], ["-3%", "3%"]);
+  const {
+    props: { srcSet: mobileSrcSet, ...mobileProps },
+  } = getImageProps({
+    ...comuni,
+    src: srcVertical,
+    width: 768,
+    height: 1024,
+  });
+
+  useEffect(() => {
+    const elemento = video.current;
+    const contenitore = figura.current;
+
+    if (!elemento || !contenitore || riduciMovimento) {
+      elemento?.pause();
+      return;
+    }
+
+    let sezioneVisibile = false;
+    const mostraVideo = () => setVideoPronto(true);
+
+    if (elemento.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      mostraVideo();
+    } else {
+      elemento.addEventListener("loadeddata", mostraVideo, { once: true });
+    }
+
+    const sincronizzaRiproduzione = () => {
+      if (sezioneVisibile && !document.hidden) {
+        if (elemento.ended) elemento.currentTime = 0;
+        void elemento.play().catch(() => undefined);
+      } else {
+        elemento.pause();
+      }
+    };
+
+    const osservatore = new IntersectionObserver(
+      ([voce]) => {
+        sezioneVisibile = voce.isIntersecting;
+        sincronizzaRiproduzione();
+      },
+      { threshold: 0.2 },
+    );
+
+    osservatore.observe(contenitore);
+    document.addEventListener("visibilitychange", sincronizzaRiproduzione);
+
+    return () => {
+      osservatore.disconnect();
+      document.removeEventListener(
+        "visibilitychange",
+        sincronizzaRiproduzione,
+      );
+      elemento.removeEventListener("loadeddata", mostraVideo);
+      elemento.pause();
+    };
+  }, [riduciMovimento]);
 
   return (
-    <motion.figure
+    <figure
       ref={figura}
-      initial={
-        riduciMovimento
-          ? false
-          : { opacity: 0, clipPath: "inset(12% 0 10% 18%)" }
-      }
-      whileInView={{ opacity: 1, clipPath: "inset(0% 0 0% 0%)" }}
-      viewport={{ once: true, amount: 0.18 }}
-      transition={
-        riduciMovimento
-          ? { duration: 0 }
-          : { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
-      }
-      className="absolute inset-y-0 left-0 right-[-6vw] z-[1] overflow-hidden bg-mandarino lg:left-[4%]"
+      className="absolute inset-0 z-0 overflow-hidden bg-cacao"
     >
-      <motion.div
-        className="absolute -inset-y-[4%] inset-x-0"
-        style={{ y: riduciMovimento ? 0 : y }}
+      <div
+        data-scene-story-media
+        className="absolute -inset-y-[4%] inset-x-0 origin-center"
       >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes="(max-width: 1023px) 100vw, 58vw"
-          className="object-cover object-center"
-        />
-      </motion.div>
-      <span
-        aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgb(43_29_22_/_0.2)_100%)]"
-      />
-    </motion.figure>
+        <picture className="block h-full w-full">
+          <source media="(min-aspect-ratio: 5/4)" srcSet={desktopSrcSet} />
+          <img
+            {...mobileProps}
+            alt={alt}
+            srcSet={mobileSrcSet}
+            className="h-full w-full object-cover object-center"
+          />
+        </picture>
+        <video
+          ref={video}
+          aria-hidden="true"
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          data-ready={videoPronto}
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-500 data-[ready=true]:opacity-100 motion-reduce:hidden"
+        >
+          <source
+            media="(max-width: 767px)"
+            src={videoSrcMobile}
+            type="video/mp4"
+          />
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      </div>
+    </figure>
   );
 }

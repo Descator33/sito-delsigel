@@ -10,6 +10,8 @@ gsap.registerPlugin(useGSAP, CustomEase);
 const DART = 0.2; /* fuga: rapida e decisa */
 const RETURN = 1.2; /* rientro: lento */
 const MAX_ROT = 14; /* deg */
+const MIN_DIST = 28; /* px: sotto questa soglia la fuga non si legge */
+const MAX_DIST = 64; /* px */
 
 /**
  * Reazione "schiva" per i pezzi del collage `[data-scatto]` dentro lo scope:
@@ -17,6 +19,14 @@ const MAX_ROT = 14; /* deg */
  * un pivot fisso — tocco a destra → fuga a sinistra — e quando il cursore li
  * lascia rientrano lentamente nella posizione di partenza. Solo desktop
  * (>1024px) e solo senza prefers-reduced-motion.
+ *
+ * Ampiezza e rotazione della fuga si ricavano dalla taglia del pezzo, ma un
+ * pezzo che non è libero nello spazio le può accorciare con
+ * `data-scatto-dist="<px>"` e `data-scatto-rot="<deg>"`, e schiacciare la
+ * componente verticale con `data-scatto-y="<0…1>"`. Serve a chi poggia su
+ * qualcosa: i dolci sul nastro del teaser, che scappando verso il basso
+ * entrerebbero dentro al nastro. Con `data-scatto-y` bassa scivolano invece
+ * lungo il nastro, che è poi quello che farebbe un dolce vero.
  *
  * Fuga e rientro hanno durate diverse, quindi niente quickTo: i tween nascono
  * sugli eventi enter/move/leave (non a ogni frame) con overwrite automatico.
@@ -42,6 +52,9 @@ export function useScatto(scope: RefObject<HTMLElement | null>) {
                possono attenuarla con data-scatto-rot="<deg>" */
             gsap.set(el, { transformOrigin: "50% 50%" });
             const maxRot = Number(el.dataset.scattoRot) || MAX_ROT;
+            const maxDist = Number(el.dataset.scattoDist) || 0;
+            const fattoreY =
+              el.dataset.scattoY === undefined ? 1 : Number(el.dataset.scattoY);
 
             const dart = (e: MouseEvent) => {
               const r = el.getBoundingClientRect();
@@ -53,15 +66,18 @@ export function useScatto(scope: RefObject<HTMLElement | null>) {
               dy /= len;
               /* il lato toccato decide il verso della rotazione */
               const nx = (e.clientX - r.left) / r.width - 0.5;
+              /* il tetto scende con `data-scatto-dist`, e con lui la
+                 soglia minima: un pezzo trattenuto resta trattenuto */
+              const tetto = maxDist || MAX_DIST;
               const dist = gsap.utils.clamp(
-                28,
-                64,
+                Math.min(MIN_DIST, tetto),
+                tetto,
                 Math.min(r.width, r.height) * 0.45,
               );
               el.style.willChange = "transform";
               gsap.to(el, {
                 x: dx * dist,
-                y: dy * dist,
+                y: dy * dist * fattoreY,
                 rotation: -nx * 2 * maxRot,
                 duration: DART,
                 ease: "brand",

@@ -3,7 +3,7 @@
 import { DATASET, farcitureDi, type FotoStati } from "@/lib/configuratore";
 import { ImmagineProdotto } from "./ImmagineProdotto";
 import { GrigliaTessere } from "./Selettore";
-import { TesseraScelta, type Punto } from "./TesseraScelta";
+import { TesseraScelta, type Punto, type VoloTessera } from "./TesseraScelta";
 
 /** Trascinamento verso il palco, da legare alla singola tessera. */
 export type DragPasso = {
@@ -28,7 +28,7 @@ export function PassoBase({
 }: {
   foto: FotoStati;
   selezionata: string | null;
-  onScegli: (id: string) => void;
+  onScegli: (id: string, volo?: VoloTessera) => void;
   drag?: DragPasso;
 }) {
   return (
@@ -41,7 +41,16 @@ export function PassoBase({
               titolo={b.nome}
               descrizione={`${b.nome} — ${n === 1 ? "1 farcitura" : `${n} farciture`} a listino`}
               selezionata={selezionata === b.id}
-              onScegli={() => onScegli(b.id)}
+              onScegli={(quadro) =>
+                onScegli(
+                  b.id,
+                  quadro && {
+                    quadro,
+                    foto: foto[b.id] ?? null,
+                    iniziale: b.nome.charAt(0),
+                  }
+                )
+              }
               drag={
                 drag
                   ? {

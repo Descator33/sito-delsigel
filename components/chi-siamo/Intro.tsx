@@ -35,6 +35,7 @@ export function Intro() {
           alt="Quattro colleghe Delsigel abbracciate e sorridenti in laboratorio"
           fill
           priority
+          quality={90}
           sizes="100vw"
           className="object-cover object-[center_30%]"
           draggable={false}
@@ -75,7 +76,7 @@ export function Intro() {
                 di Sermoneta<span className="text-fucsia">.</span>
               </h1>
               <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-inchiostro/70">
-                dal 2011 · certificata IFS
+                dal 2011 · IFS Food · Rainforest Alliance · RSPO
               </p>
             </div>
           </div>
@@ -88,9 +89,10 @@ export function Intro() {
         >
           <div className="bg-acido p-6 text-inchiostro shadow-[0_18px_40px_rgba(22,6,1,0.3)] md:p-7">
             <p className="font-mono text-[13px] leading-relaxed">
-              Nati nel 2011 dall&apos;incontro tra due industrie dolciarie
-              storiche, Del Monte e Siani Pasticceri. Stessa passione, stessa
-              ricetta: solo su scala più grande, certificata IFS.
+              Nati nel 2011 dall&apos;incontro tra Del Monte e Siani: i fritti
+              dolci da una parte, la pasta sfoglia dall&apos;altra. Oggi 13
+              milioni di dolci l&apos;anno e tre certificazioni, con la regola
+              di sempre: fai il tuo lavoro con passione.
             </p>
             {/* Il racconto completo prosegue nella sezione successiva. */}
             <Link

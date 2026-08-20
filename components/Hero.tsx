@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, type ReactNode } from "react";
 import { animate, motion, useMotionValue, useReducedMotion } from "motion/react";
 import { ArrowDown } from "lucide-react";
+import { LogoStorico } from "@/components/LogoStorico";
 import { useMenu } from "@/components/MenuStato";
 import { lenisAttivo } from "@/components/SmoothScroll";
 import {
@@ -16,10 +17,10 @@ import {
  * Hero "Vortice Intriko" (2026-08-20).
  *
  * Il prodotto di punta è il soggetto, non un accessorio: un Intriko
- * monumentale occupa la metà destra e il nastro corallo riprende sia la
- * torsione della sfoglia sia il Vortice del marchio. A sinistra restano il
- * logo Delsigel vero, il nome del prodotto e l'invito — tutti in HTML/SVG,
- * mai stampati nel raster, così marchio e parole restano esatti.
+ * monumentale occupa la metà destra e il nastro corallo riprende la
+ * torsione della sfoglia. A sinistra il blocco brand: il marchio storico
+ * Delsigel sopra l'insegna, poi copy e invito — tutti in HTML, mai
+ * stampati nel raster, così marchio e parole restano esatti.
  *
  * Anche il telefono ha una regia propria: il prodotto vive nella metà alta
  * e il set scende nel cacao per lasciare un campo leggibile alla copy. Non
@@ -319,7 +320,6 @@ export function Hero() {
     const lenis = lenisAttivo();
     if (lenis) {
       lenis.scrollTo(meta, {
-        offset: -88,
         duration: 1.25,
         easing: (t: number) => 1 - Math.pow(1 - t, 3),
       });
@@ -366,7 +366,7 @@ export function Hero() {
             <img
               src={HERO_IMAGE}
               srcSet={`${HERO_IMAGE} 1x, ${HERO_IMAGE_2X} 2x`}
-              alt="Composizione editoriale di Intriko tra un nastro corallo e un set color cacao."
+              alt="Intriko, il dolce di punta Delsigel, tra un nastro corallo e un set color cacao."
               fetchPriority="high"
               decoding="async"
               draggable={false}
@@ -414,6 +414,20 @@ export function Hero() {
             style={{ scale: scala, opacity: velo, transformOrigin: "left bottom" }}
           >
             <div className="w-fit orizzontale:-translate-y-[7vh]">
+              {/* il marchio apre il blocco: entra per primo, con la stessa
+                  molla delle righe. Bruno storico sul campo crema, panna
+                  quando la copy poggia sul cacao (telefono in piedi). */}
+              <motion.div
+                initial={ridotto ? false : { y: 18, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.7, delay: ATTESA_RIGA * 0.5, ease: MOLLA }}
+                className="mb-6 sm:mb-7"
+              >
+                <LogoStorico
+                  variant="horizontal"
+                  className="h-[26px] text-hero-panna sm:h-[30px] lg:h-[34px] orizzontale:text-bruno"
+                />
+              </motion.div>
               <h1 className="type-hero text-[clamp(2.3rem,9.6vw,3.4rem)] sm:text-[clamp(2.8rem,6.6vw,4.4rem)] lg:text-[clamp(3.2rem,4.62vw,6rem)]">
                 <Riga indice={0} ridotto={ridotto}>
                   L&rsquo;industria

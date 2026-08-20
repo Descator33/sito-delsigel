@@ -6,6 +6,15 @@
  * ha un taglio orizzontale e un reframe verticale dedicato.
  */
 
+export type Certificazione = {
+  /** nome dell'ente o dello standard */
+  nome: string;
+  /** logo ufficiale, in public/brand/certificazioni */
+  logo: string;
+  /** testo alternativo descrittivo */
+  alt: string;
+};
+
 export type TappaStoria = {
   /** ancora e chiave React */
   id: string;
@@ -25,6 +34,8 @@ export type TappaStoria = {
   immagineVertical: string;
   /** testo alternativo descrittivo */
   alt: string;
+  /** loghi ufficiali mostrati sotto il testo della tappa */
+  certificazioni?: Certificazione[];
 };
 
 export const STORIA: TappaStoria[] = [
@@ -32,10 +43,10 @@ export const STORIA: TappaStoria[] = [
     id: "origini",
     numero: "01",
     titolo: "2011",
-    sottotitolo: "Le origini",
+    sottotitolo: "L'incontro",
     descrizione:
-      "Nasce Delsigel in un piccolo laboratorio con un grande sogno: creare dolci unici, buoni per tutti.",
-    frase: "Tutto comincia da un forno acceso.",
+      "Del Monte, maestra dei fritti dolci. Siani, casa della pasta sfoglia. Nel 2011 due aziende dolciarie affermate uniscono ricette e mestiere: nasce Delsigel, a Sermoneta.",
+    frase: "Due mestieri, un forno solo.",
     immagine: "/storia-generated/01-origini-wide.webp",
     immagineVertical: "/storia-generated/01-origini-vertical.webp",
     alt: "Composizione editoriale evocativa di un pasticcere che apre il forno all'alba",
@@ -43,62 +54,79 @@ export const STORIA: TappaStoria[] = [
   {
     id: "unione",
     numero: "02",
-    titolo: "L'unione",
-    sottotitolo: "Del Monte e Siani",
+    titolo: "L'ossimoro",
+    sottotitolo: "Industria artigianale",
     descrizione:
-      "Due storie, una visione. L'unione che ha dato forma a un nuovo inizio.",
-    frase: "Due nomi, un solo laboratorio.",
+      "Ricette tradizionali, lavorazione semi-artigianale, impianti di ultima generazione. Ci chiamano ossimoro; per noi è un pensiero: fare in grande ciò che pochi sanno ancora fare a mano.",
+    frase: "Mani d'artigiano, passo d'industria.",
     immagine: "/storia-generated/02-unione-wide.webp",
     immagineVertical: "/storia-generated/02-unione-vertical.webp",
     alt: "Composizione editoriale evocativa di due pasticceri che uniscono le mani sul banco",
   },
   {
-    id: "artigianalita",
+    id: "qualita",
     numero: "03",
-    titolo: "Artigianalità",
-    sottotitolo: "e ricette",
+    titolo: "La qualità",
+    sottotitolo: "Certificata, ogni giorno",
     descrizione:
-      "Mani esperte, ingredienti selezionati, ricette che raccontano la nostra terra e il nostro tempo.",
-    frase: "Il gesto non si automatizza.",
+      "Materie prime selezionate e processi verificati da chi non fa sconti: IFS Food per la sicurezza alimentare, Rainforest Alliance e RSPO per ingredienti che rispettano chi li coltiva. Non promesse: verifiche.",
+    frase: "La cura, messa nero su bianco.",
     immagine: "/storia-generated/03-artigianalita-wide.webp",
     immagineVertical: "/storia-generated/03-artigianalita-vertical.webp",
     alt: "Composizione editoriale evocativa di mani che piegano la sfoglia sul banco infarinato",
+    certificazioni: [
+      {
+        nome: "IFS Food",
+        logo: "/brand/certificazioni/ifs.svg",
+        alt: "Logo della certificazione IFS Food — International Featured Standards",
+      },
+      {
+        nome: "Rainforest Alliance",
+        logo: "/brand/certificazioni/rainforest-alliance.svg",
+        alt: "Logo Rainforest Alliance, People & Nature",
+      },
+      {
+        nome: "RSPO",
+        logo: "/brand/certificazioni/rspo.svg",
+        alt: "Marchio RSPO — Certified Sustainable Palm Oil",
+      },
+    ],
   },
   {
-    id: "crescita",
+    id: "traguardo",
     numero: "04",
-    titolo: "Crescita",
-    sottotitolo: "e innovazione",
+    titolo: "13 milioni",
+    sottotitolo: "2025 · Intriko",
     descrizione:
-      "Investiamo in tecnologia e persone, mantenendo intatta l'anima artigianale che ci distingue.",
-    frase: "Più grandi, mai più veloci del giusto.",
+      "Nel 2025 firmiamo tredici milioni di Intriko e le linee toccano il loro limite. Un traguardo che diventa subito una domanda: come crescere senza perdere la mano?",
+    frase: "Tredici milioni di volte, lo stesso gesto.",
     immagine: "/storia-generated/04-crescita-wide.webp",
     immagineVertical: "/storia-generated/04-crescita-vertical.webp",
     alt: "Composizione editoriale evocativa di un pasticcere che controlla una linea moderna",
   },
   {
-    id: "oggi",
+    id: "generazione",
     numero: "05",
-    titolo: "Oggi",
-    sottotitolo: "La squadra",
+    titolo: "2026",
+    sottotitolo: "La nuova generazione",
     descrizione:
-      "Siamo una squadra che cresce ogni giorno, con la stessa passione di sempre e lo sguardo rivolto avanti.",
-    frase: "Ventuno volti, un solo standard.",
-    immagine: "/storia-generated/05-squadra-wide.webp",
-    immagineVertical: "/storia-generated/05-squadra-vertical.webp",
-    alt: "Composizione editoriale evocativa di una squadra di pasticceri al lavoro",
+      "Il socio fondatore Del Monte passa il timone e sceglie il mare, dopo una vita di farina. Al banco arrivano Gaia e una squadra giovane, con la regola imparata il primo giorno: fai il tuo lavoro con passione.",
+    frase: "Il timone passa. La rotta resta.",
+    immagine: "/storia-generated/06-futuro-wide.webp",
+    immagineVertical: "/storia-generated/06-futuro-vertical.webp",
+    alt: "Composizione editoriale evocativa del passaggio di un ricettario tra due generazioni",
   },
   {
     id: "futuro",
     numero: "06",
-    titolo: "Il futuro",
-    sottotitolo: "Il passaggio alla figlia",
+    titolo: "25 milioni",
+    sottotitolo: "Il piano 2026–27",
     descrizione:
-      "La nostra storia continua con una nuova generazione, custode dei valori di ieri e creatrice di domani.",
-    frase: "Il forno resta acceso.",
-    immagine: "/storia-generated/06-futuro-wide.webp",
-    immagineVertical: "/storia-generated/06-futuro-vertical.webp",
-    alt: "Composizione editoriale evocativa del passaggio di un ricettario tra due generazioni",
+      "Nuovi spazi entro il 2026, nuove linee nel 2027: la capacità raddoppia, fino a venticinque milioni di pezzi. E le Nuvole — soffice fritto, farcitura a vista, decoro a mano — hanno già il sapore del domani.",
+    frase: "Il forno resta acceso. E raddoppia.",
+    immagine: "/storia-generated/05-squadra-wide.webp",
+    immagineVertical: "/storia-generated/05-squadra-vertical.webp",
+    alt: "Composizione editoriale evocativa di una squadra di pasticceri al lavoro",
   },
 ];
 
@@ -106,10 +134,10 @@ export const STORIA: TappaStoria[] = [
 export const INTESTAZIONE = {
   eyebrow: "Delsigel · dal 2011",
   titolo: ["La nostra", "storia"],
-  sottotitolo: "Un viaggio immersivo tra memoria, passione e innovazione.",
+  sottotitolo: "Quindici anni, sei capitoli, tredici milioni di dolci.",
   testo: [
-    "Scorri la storia come se fosse un racconto.",
-    "Ogni tappa è un'emozione, ogni cambio di prospettiva è ciò che ci ha portati fin qui.",
+    "Non una cronologia: sei capitoli con dentro numeri veri e mani vere.",
+    "E una promessa che non cambia: fare del nostro meglio, ogni giorno.",
   ],
   invito: "Scorri per vivere il viaggio",
   azione: { testo: "Conosci la squadra", href: "#squadra" },
@@ -119,5 +147,5 @@ export const INTESTAZIONE = {
 export const FINALE = {
   eyebrow: "La storia continua",
   frase: ["Cambiano le mani.", "Non cambia la cura."],
-  coda: "Dal 2011, a Sermoneta.",
+  coda: "Dal 2011, a Sermoneta · del nostro meglio, ogni giorno",
 };

@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { useScatto } from "@/lib/useScatto";
 import { Scintilla } from "@/components/catalog/salati/DecorativeDoodles";
 import { ConveyorBelt } from "./ConveyorBelt";
 import {
@@ -40,6 +41,13 @@ import {
  * I trasformi dello scrub stanno su un involucro (`data-teaser-pezzo`) e
  * NON su `.percorso-dolce`: lì sopra c'è l'onda CSS (`dolce-onda`), e
  * un'animazione CSS vincerebbe sullo stile in linea di GSAP.
+ *
+ * Da qui i tre strati di trasformo, uno per padrone, che si compongono
+ * annidati: lo scrub sull'involucro esterno, la schivata al cursore
+ * (`useScatto`, la stessa delle card della linea produttiva in chi-siamo)
+ * sul `[data-scatto]` in mezzo, l'onda CSS sul `.percorso-dolce` dentro.
+ * Metterne due sullo stesso nodo vorrebbe dire che l'ultimo che scrive
+ * cancella l'altro.
  */
 
 /* l'arrivo di ciascun pezzo: sparsi e storti, poi in fila */
@@ -57,6 +65,10 @@ export function ConfiguratorTeaser({
   titoloId: string;
 }) {
   const radice = useRef<HTMLDivElement>(null);
+
+  /* la schivata al cursore sui tre dolci: solo desktop e solo senza
+     prefers-reduced-motion, ci pensa l'hook */
+  useScatto(radice);
 
   useGSAP(
     () => {
@@ -216,34 +228,51 @@ export function ConfiguratorTeaser({
           <div className="teaser-pezzi relative z-10">
             {dolci.map((dolce, i) => (
               <div key={dolce.stato} data-teaser-pezzo className="relative">
+                {/* La presa della schivata. Stretta quanto la foto invece
+                    che quanto la colonna — il dolce sta al centro e attorno
+                    è tutto vuoto, e su un vuoto grande la fuga partirebbe
+                    quando il cursore è ancora lontano. Il tetto 1.6×
+                    l'altezza resta sopra la proporzione della foto più larga
+                    (1.5), quindi l'`object-contain` continua a misurarsi
+                    sull'altezza e il dolce non rimpicciolisce; sotto i 1025px
+                    l'effetto nemmeno nasce, e lì `min(100%, …)` tiene la
+                    presa dentro la colonna. */}
                 <div
-                  className="percorso-dolce relative"
-                  style={{ animationDelay: `${i * 0.55}s` }}
+                  data-scatto
+                  data-scatto-dist="34"
+                  data-scatto-rot="10"
+                  data-scatto-y="0.3"
+                  className="mx-auto w-[min(100%,calc(var(--dolce)*1.6))]"
                 >
-                  <span
-                    aria-hidden
-                    className="percorso-ombra absolute bottom-[3%] left-1/2 h-[16%] w-[64%] -translate-x-1/2"
-                  />
-                  {dolce.foto ? (
-                    <Image
-                      src={dolce.foto}
-                      alt=""
-                      title={dolce.alt}
-                      fill
-                      /* molto sotto la piega: nessun preload, resta pigra */
-                      sizes="(max-width: 1279px) 180px, 13vw"
-                      className="percorso-foto select-none object-contain object-bottom"
-                      draggable={false}
-                    />
-                  ) : (
-                    /* la foto di quello stato non è ancora in cartella: al
-                       suo posto un disco muto, che tiene il posto sul nastro
-                       senza mentire */
+                  <div
+                    className="percorso-dolce relative"
+                    style={{ animationDelay: `${i * 0.55}s` }}
+                  >
                     <span
                       aria-hidden
-                      className="absolute inset-x-[22%] bottom-0 h-[38%] rounded-full border border-dashed border-cacao/25 bg-cacao/5"
+                      className="percorso-ombra absolute bottom-[3%] left-1/2 h-[16%] w-[64%] -translate-x-1/2"
                     />
-                  )}
+                    {dolce.foto ? (
+                      <Image
+                        src={dolce.foto}
+                        alt=""
+                        title={dolce.alt}
+                        fill
+                        /* molto sotto la piega: nessun preload, resta pigra */
+                        sizes="(max-width: 1279px) 180px, 13vw"
+                        className="percorso-foto select-none object-contain object-bottom"
+                        draggable={false}
+                      />
+                    ) : (
+                      /* la foto di quello stato non è ancora in cartella: al
+                         suo posto un disco muto, che tiene il posto sul nastro
+                         senza mentire */
+                      <span
+                        aria-hidden
+                        className="absolute inset-x-[22%] bottom-0 h-[38%] rounded-full border border-dashed border-cacao/25 bg-cacao/5"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
