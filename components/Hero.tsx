@@ -13,33 +13,20 @@ import {
 } from "@/lib/hero-finestra";
 
 /**
- * Hero: una campagna, non una sezione (refactor 2026-08-12).
+ * Hero "Vortice Intriko" (2026-08-20).
  *
- * Lo scatto è pulito — niente wordmark stampato dentro, niente testo
- * nell'immagine: la fotografia riempie il primo viewport e tutto ciò che
- * ci sta sopra (insegna, descrizione, invito) è HTML. La ragazza tiene la
- * metà destra, l'insegna la sinistra, e sotto non c'è più la fascia acido
- * a chiudere il quadro: la fotografia arriva al bordo.
+ * Il prodotto di punta è il soggetto, non un accessorio: un Intriko
+ * monumentale occupa la metà destra e il nastro corallo riprende sia la
+ * torsione della sfoglia sia il Vortice del marchio. A sinistra restano il
+ * logo Delsigel vero, il nome del prodotto e l'invito — tutti in HTML/SVG,
+ * mai stampati nel raster, così marchio e parole restano esatti.
  *
- * L'insegna alterna inchiostro e panna calda riga per riga — è il segno
- * distintivo della hero, e vale sugli schermi orizzontali, dove il testo
- * cade sul vuoto arancio. In verticale non c'è vuoto: la fotografia
- * sfuma nel proprio arancio (vedi `.hero-sfumatura`) e l'insegna passa
- * tutta panna, che è l'unico colore leggibile su quel campo.
+ * Anche il telefono ha una regia propria: il prodotto vive nella metà alta
+ * e il set scende nel cacao per lasciare un campo leggibile alla copy. Non
+ * è il ritaglio del desktop. Il `<picture>` sceglie quattro esportazioni:
  *
- * LA RISOLUZIONE. Il master è 5504×3072 (Kling, Nano Banana Pro a 4K dallo
- * scatto di campagna): a tutto schermo su un Retina la hero chiede più di
- * 3000 pixel veri, e la sorgente da 1672 li faceva ingrandire dal browser
- * — capelli e mani si sgranavano. Da lì escono QUATTRO file, due per
- * forma dello schermo e due per densità, scelti dal `<picture>`:
- *
- *   orizzontale  1920×1080 (151 KB)  ·  3840×2160 (296 KB)
- *   verticale    1152×1536 (181 KB)  ·  2304×3072 (329 KB)
- *
- * Il file verticale non è lo stesso scatto rimpicciolito: è un RITAGLIO
- * 3:4 sul soggetto, preso a piena risoluzione dal master. Senza, il
- * telefono scaricherebbe l'orizzontale intero per mostrarne un quarto —
- * il quadruplo dei byte per un quarto dei pixel utili.
+ *   orizzontale  1920×1080 (148 KB)  ·  3840×2160 (382 KB)
+ *   verticale    1080×1920 (107 KB)  ·  2160×3840 (279 KB)
  *
  * Per questo qui c'è un `<picture>` e non `next/image`: ritaglio per
  * media query e `srcSet` a densità, che `next/image` non lascia scrivere
@@ -48,15 +35,15 @@ import {
  * ricomprimerli. `fetchPriority="high"` perché è l'elemento LCP: sta in
  * cima all'HTML, il preload scanner lo trova subito.
  */
-export const HERO_IMAGE = "/hero/hero-campagna.webp";
-export const HERO_IMAGE_2X = "/hero/hero-campagna@2x.webp";
-export const HERO_IMAGE_VERT = "/hero/hero-verticale.webp";
-export const HERO_IMAGE_VERT_2X = "/hero/hero-verticale@2x.webp";
+export const HERO_IMAGE = "/hero/hero-intriko-vortice.webp";
+export const HERO_IMAGE_2X = "/hero/hero-intriko-vortice@2x.webp";
+export const HERO_IMAGE_VERT = "/hero/hero-intriko-vortice-mobile.webp";
+export const HERO_IMAGE_VERT_2X = "/hero/hero-intriko-vortice-mobile@2x.webp";
 
 const MOLLA = [0.22, 1, 0.36, 1] as const;
 
-/** dove porta l'invito: la sezione del catalogo stampato, in home */
-const DESTINAZIONE = "catalogo-fisico";
+/** dove porta l'invito: il primo capitolo della gamma, in Home */
+const DESTINAZIONE = "catalogo";
 
 /* Le quattro righe entrano scaglionate da sotto una finestra ritagliata;
    descrizione e invito le seguono a distanza fissa. */
@@ -66,26 +53,25 @@ const ATTESA_DESCRIZIONE = ATTESA_RIGA + 3 * PASSO_RIGA + 0.15;
 const ATTESA_INVITO = ATTESA_DESCRIZIONE + 0.1;
 
 /** riga dell'insegna: la maschera sta sul blocco, il testo ci sale dentro.
- *  `data-hero-uscita` sta sulla maschera, non sul testo animato da Motion:
- *  è l'aggancio della regia di scroll (components/home/AperturaEditoriale),
- *  che all'uscita della hero fa salire le righe a velocità diverse. Due
- *  padroni sullo stesso nodo si pesterebbero i piedi — così Motion tiene
- *  l'entrata sul figlio e GSAP l'uscita sul contenitore. */
+ *  `data-hero-uscita` resta sulla maschera come aggancio stabile per
+ *  eventuali regie esterne, senza contendere a Motion il nodo animato. */
 function Riga({
   indice,
-  chiara,
+  accento,
   ridotto,
   children,
 }: {
   indice: number;
-  chiara?: boolean;
+  accento?: boolean;
   ridotto: boolean | null;
   children: ReactNode;
 }) {
   return (
     <span className="block overflow-hidden pb-[0.06em]" data-hero-uscita={indice}>
       <motion.span
-        className={`block ${chiara ? "text-hero-panna" : "text-hero-panna orizzontale:text-hero-nero"}`}
+        className={`block ${
+          accento ? "text-corallo" : "text-hero-panna orizzontale:text-cacao"
+        }`}
         initial={ridotto ? false : { y: "45%", opacity: 0 }}
         animate={{ y: "0%", opacity: 1 }}
         transition={{
@@ -105,7 +91,7 @@ function Riga({
  * anche il secondo attore del menu. Aprendolo, tutto quello che sta qui
  * dentro — fotografia, veli, insegna, invito — smette di riempire lo
  * schermo e si raccoglie in un rettangolo appoggiato all'angolo in basso
- * a destra, mentre a sinistra si apre il campo nero della navigazione.
+ * a destra, mentre il campo POP della navigazione resta in primo piano.
  *
  * Come, in quattro righe:
  *
@@ -232,6 +218,7 @@ export function Hero() {
         delay: ridotto ? 0 : RITARDO_FINESTRA,
         ease: EASE_MENU,
       };
+      fin.dataset.inVolo = "si";
       corse.push(
         animate(alto, `${meta.top}px`, opzioni),
         animate(sinistra, `${meta.left}px`, opzioni),
@@ -241,6 +228,11 @@ export function Hero() {
         animate(scala, meta.scala, opzioni),
         animate(velo, meta.testo ? 1 : 0, opzioni),
       );
+      Promise.all(corse.map((c) => c.finished))
+        .then(() => {
+          delete fin.dataset.inVolo;
+        })
+        .catch(() => {});
 
       /* Ruotare il telefono a menu aperto cambia il rettangolo d'arrivo:
          lo si riallinea di netto, inseguire un resize con un'animazione
@@ -248,6 +240,7 @@ export function Hero() {
       const suMisura = () => {
         const nuova = finestraHero();
         corse.forEach((c) => c.stop());
+        delete fin.dataset.inVolo;
         posa(`${nuova.top}px`, `${nuova.left}px`, `${nuova.width}px`, `${nuova.height}px`);
         scala.set(nuova.scala);
         velo.set(nuova.testo ? 1 : 0);
@@ -258,6 +251,7 @@ export function Hero() {
 
       return () => {
         corse.forEach((c) => c.stop());
+        delete fin.dataset.inVolo;
         window.removeEventListener("resize", suMisura);
       };
     }
@@ -269,6 +263,7 @@ export function Hero() {
 
     const r = sez.getBoundingClientRect();
     const opzioni = { duration: durata, ease: EASE_MENU };
+    fin.dataset.inVolo = "si";
 
     if (inQuadro(r)) {
       corse.push(
@@ -280,9 +275,8 @@ export function Hero() {
         animate(velo, 1, opzioni),
       );
     } else {
-      /* la hero è fuori campo: non c'è niente da riespandere sotto gli
-         occhi di nessuno. Si dissolve, e il posto in flusso se lo
-         riprende quando il nero l'ha già coperta. */
+      /* La hero è fuori campo: non c'è niente da riespandere sotto gli
+         occhi di nessuno. Si dissolve dietro la campitura del menu. */
       corse.push(animate(trasparenza, 0, { duration: durata * 0.45, ease: EASE_MENU }));
       scala.set(1);
       velo.set(1);
@@ -298,6 +292,7 @@ export function Hero() {
            frame in cui si toglie il fisso: nessun salto, e soprattutto
            niente pixel congelati addosso alla finestra. */
         if (!vivo) return;
+        delete fin.dataset.inVolo;
         delete fin.dataset.libera;
         delete fin.dataset.soloFoto;
         fin.style.removeProperty("position");
@@ -310,39 +305,30 @@ export function Hero() {
     return () => {
       vivo = false;
       corse.forEach((c) => c.stop());
+      delete fin.dataset.inVolo;
     };
   }, [aperto, ridotto, alto, sinistra, larghezza, altezza, scala, velo, trasparenza]);
 
-  /* L'INVITO NON PORTA VIA: PORTA GIÙ (2026-08-20). Prima era un link a
-     /catalogo — la gamma prodotti — mentre qui sotto comincia il catalogo
-     STAMPATO 2026/27, che è ciò che la hero promette. Ora è un comando di
-     scroll: la scena tra hero e catalogo è tutta scroll-driven (vedi
-     components/home/AperturaEditoriale), quindi la corsa va PERCORSA e non
-     saltata — si chiede a Lenis un viaggio lungo fino alla sezione e la
-     regia si suona da sé lungo la strada. Senza Lenis (reduced motion, o
-     hero montata fuori dalla home) resta lo scroll del browser. */
+  /* L'invito resta nella pagina e porta al primo capitolo del catalogo.
+     Lenis gestisce la corsa quando è attivo; con reduced motion rimane lo
+     scroll nativo. */
   const scorriAlCatalogo = useCallback(() => {
     const meta = document.getElementById(DESTINAZIONE);
     if (!meta) return;
 
-    /* La sezione porta uno `scroll-mt` per le ancore del menu, e sia Lenis
-       sia `scrollIntoView` lo rispettano: si fermerebbero un dito sopra,
-       lasciando in cima la coda dello scatto d'ingresso. Qui l'arrivo deve
-       essere a filo — la fascia fucsia attaccata al bordo alto — quindi il
-       margine si annulla invece di darlo per scontato. */
-    const margine = parseFloat(getComputedStyle(meta).scrollMarginTop) || 0;
-    const arrivo = meta.getBoundingClientRect().top + window.scrollY;
-
     const lenis = lenisAttivo();
     if (lenis) {
       lenis.scrollTo(meta, {
-        offset: margine,
-        duration: 1.9,
+        offset: -88,
+        duration: 1.25,
         easing: (t: number) => 1 - Math.pow(1 - t, 3),
       });
       return;
     }
-    window.scrollTo({ top: arrivo, behavior: ridotto ? "auto" : "smooth" });
+    meta.scrollIntoView({
+      block: "start",
+      behavior: ridotto ? "auto" : "smooth",
+    });
   }, [ridotto]);
 
   return (
@@ -351,7 +337,7 @@ export function Hero() {
       /* niente `isolate`: creerebbe un contesto di impilamento e la
          finestra fissa, per quanto alta, resterebbe sotto il pannello del
          menu. Il z-index se lo prende lei quando serve. */
-      className="relative min-h-[100svh] w-full overflow-hidden bg-hero-arancio"
+      className="relative min-h-[100svh] w-full overflow-hidden bg-cacao"
     >
       <motion.div
         ref={finestra}
@@ -380,7 +366,7 @@ export function Hero() {
             <img
               src={HERO_IMAGE}
               srcSet={`${HERO_IMAGE} 1x, ${HERO_IMAGE_2X} 2x`}
-              alt="Su fondo arancio una ragazza addenta una bomba farcita; due mani entrano dai lati reggendone altre due."
+              alt="Composizione editoriale di Intriko tra un nastro corallo e un set color cacao."
               fetchPriority="high"
               decoding="async"
               draggable={false}
@@ -435,10 +421,10 @@ export function Hero() {
                 <Riga indice={1} ridotto={ridotto}>
                   artigianale.
                 </Riga>
-                <Riga indice={2} chiara ridotto={ridotto}>
+                <Riga indice={2} accento ridotto={ridotto}>
                   Innovativa e
                 </Riga>
-                <Riga indice={3} chiara ridotto={ridotto}>
+                <Riga indice={3} accento ridotto={ridotto}>
                   Buona per{" "}
                   <br className="sm:hidden" />
                   tutti.
@@ -483,7 +469,7 @@ export function Hero() {
                     tabIndex={aperto ? -1 : undefined}
                     className="hero-cta font-ui inline-flex h-[52px] w-[220px] items-center justify-between rounded-full border border-[rgb(23_21_18/0.08)] bg-hero-panna pl-[26px] pr-[22px] text-[13px] font-extrabold uppercase tracking-[0.03em] text-hero-nero"
                   >
-                    Scorri il catalogo
+                    Esplora il catalogo
                     {/* la freccia respira in giù: è il verso dello scroll,
                         non quello di un link. Il rimbalzo sta su questo
                         involucro e l'hover sull'icona (globals.css) —

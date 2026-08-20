@@ -1,6 +1,6 @@
 /**
- * La scheda prodotto del catalogo: il ponte fra la tessera di home
- * (lib/catalog.ts) e il dataset del configuratore (lib/configuratore.ts).
+ * La scheda prodotto del catalogo: il ponte fra la tessera editoriale
+ * (lib/catalog.ts) e i dati tecnici condivisi con il configuratore.
  *
  * Regola unica: qui non si inventa niente. Formato, peso e varianti escono
  * dal foglio Delsigel attraverso le funzioni già esistenti — `baseDi`,
@@ -9,7 +9,7 @@
  * del configuratore non esiste ancora: la sua scheda mostra la gamma
  * dichiarata dal catalogo e nient'altro.
  *
- * Rev 12/08 — la scheda è un catalogo, non un configuratore. Mostra i
+ * La scheda è un catalogo, non un configuratore. Mostra i
  * PRODOTTI FINITI a listino, cioè le combinazioni (base, farcitura) del
  * dataset: il Golosone è due prodotti, crema e cioccolato. Restano fuori
  * le scelte che si fanno solo nel configuratore — la finitura, il topping
@@ -47,8 +47,6 @@ export type Scheda = {
   modalitaUso?: string;
   /** i prodotti finiti a catalogo */
   gamma: { label: string; varianti: Variante[] }[];
-  /** href del configuratore, solo se la tipologia ha una base configurabile */
-  configuratore?: string;
 };
 
 /**
@@ -109,8 +107,6 @@ export function schedaDi(t: Tipologia): Scheda {
   scheda.formato = `Ø ${numero(base.diametro_cm)} cm`;
   scheda.pezziPerCartone = base.packaging.pezzi_per_cartone;
   scheda.modalitaUso = base.modalita_uso;
-  scheda.configuratore = `/configuratore/${base.id}`;
-
   const varianti: Variante[] = [];
   const grammature: number[] = [];
   for (const f of farcitureDi(base.id)) {

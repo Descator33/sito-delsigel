@@ -31,10 +31,9 @@ const COLONNE: { titolo: string; voci: [string, string][] }[] = [
   {
     titolo: "Prodotti",
     voci: [
-      /* dolci e salati stanno su /catalogo dal refactor 12/08; il
-         catalogo stampato resta una scena della home */
-      ["I nostri dolci", "/catalogo#dolci"],
-      ["I nostri salati", "/catalogo#salati"],
+      /* Gamma e catalogo stampato sono capitoli della home. */
+      ["I nostri dolci", "/#dolci"],
+      ["I nostri salati", "/#salati"],
       ["Catalogo 2026/27", "/#catalogo-fisico"],
     ],
   },

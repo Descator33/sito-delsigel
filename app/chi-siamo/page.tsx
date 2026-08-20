@@ -8,6 +8,7 @@ import { Biglietti } from "@/components/chi-siamo/Biglietti";
 import { Nastri } from "@/components/chi-siamo/Nastri";
 import { Squadra } from "@/components/chi-siamo/Squadra";
 import { Linea } from "@/components/chi-siamo/Linea";
+import { HistoryJourney } from "@/components/chi-siamo/history/HistoryJourney";
 import type { TeamMember } from "@/components/TeamCard";
 
 export const metadata: Metadata = {
@@ -52,18 +53,14 @@ const TEAM: TeamMember[] = PERSONE.map(({ slug, ...p }, i) => ({
   image: `/chi-siamo/squadra/${slug}.webp`,
 }));
 
-/* Refactor architettura 12/08 — «La nostra storia» è passata alla
-   homepage (components/chi-siamo/history, montata da Experience): qui
-   restano le persone e la linea. Con la storia se n'è andato anche lo
-   Stacco che la separava dalla squadra: senza i 620vh scuri in mezzo,
-   Marquee e Stacco sarebbero stati due stacchi appiccicati — la fascia
-   acida da sola fa il cambio di capitolo verso il blocco scuro. */
+/* La narrazione completa vive qui; la Home ne mostra soltanto un'anteprima. */
 export default function ChiSiamoPage() {
   return (
     <div className="bg-panna text-inchiostro">
       <SmoothScroll />
       <Header />
       <Intro />
+      <HistoryJourney />
       <Biglietti />
       <Marquee />
       <Squadra team={TEAM} />

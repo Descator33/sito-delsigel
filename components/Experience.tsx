@@ -12,70 +12,37 @@
  * Rev 12/08 — refactor della hero: fotografia pulita, insegna di quattro
  * righe costruita in HTML e nessuna fascia sotto.
  *
- * REFACTOR ARCHITETTURA 12/08 — la home cambia racconto:
+ * Refactor architettura 2026-08-20:
  *
- *   HERO → CATALOGO 2026/27 → LA NOSTRA STORIA → IL FUTURO → CREA IL TUO DOLCE
+ *   HERO → STORIA BREVE → DOLCI → SALATI → CONFIGURATORE → CATALOGO FISICO
  *
- * La griglia dei dolci e la linea salata sono uscite dalla home e vivono su
- * /catalogo; la storia è arrivata qui da /chi-siamo (stesso componente,
- * nessuna copia); la chiusura configuratore è diventata un teaser. I confini
- * tra le sezioni sono passaggi di scena, non bordi: l'apertura tiene la hero
- * in quinta mentre entra il primo scatto del catalogo, il catalogo si ferma
- * un attimo sulle sue fotografie (SostaCatalogo) prima che la storia apra il
- * suo film dalla coda della sezione, e il ponte gira il racconto dal passato
- * al futuro. La regia sta in components/home/*.
- *
- * Questo file resta un Server Component: i pezzi di regia sono client per
- * conto loro, e la storia va montata come figlia DIRETTA del flusso: il suo
- * palco sticky non deve finire dentro involucri trasformati o ritagliati.
- * `catalogoFisico` e `teaser` restano props: impaginarli in app/page.tsx
- * tiene il teaser vicino alle foto che legge dal filesystem.
+ * La storia completa vive su /chi-siamo. Qui resta un invito breve che usa
+ * gli stessi dati e asset. Dolci e salati riusano invece i componenti del
+ * catalogo, compresa la transizione cromatica che li lega.
  */
 
-import { type ReactNode } from "react";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { AperturaEditoriale } from "@/components/home/AperturaEditoriale";
-import { HomeScrollGuide } from "@/components/home/HomeScrollGuide";
-import { SostaCatalogo } from "@/components/home/SostaCatalogo";
-import { PonteFuturo } from "@/components/home/PonteFuturo";
-import { HistoryJourney } from "@/components/chi-siamo/history/HistoryJourney";
+import { Hero } from "@/components/Hero";
+import { CatalogPhysicalSection } from "@/components/catalog/CatalogPhysicalSection";
+import { ConfiguratorClosingSection } from "@/components/home/ConfiguratorClosingSection";
+import { ProductCatalog } from "@/components/home/ProductCatalog";
+import { StoryPreview } from "@/components/home/StoryPreview";
 
-export default function Experience({
-  catalogoFisico,
-  teaser,
-}: {
-  /** il catalogo stampato 2026/27: seconda scena della home */
-  catalogoFisico: ReactNode;
-  /** «Ora tocca a te»: arriva da app/page.tsx perché legge le foto
-   *  degli stati del dolce dal filesystem e deve restare Server Component */
-  teaser: ReactNode;
-}) {
+export default function Experience() {
   return (
     <div data-home-experience className="bg-panna text-inchiostro">
       <SmoothScroll />
-      <HomeScrollGuide />
-
       <Header fondo="scuro" />
 
-      {/* ------------------- HERO → CATALOGO (apertura) ------------------- */}
-      <AperturaEditoriale />
-
-      {/* ---------------------- CATALOGO FISICO 2026/27 -------------------- */}
-      {catalogoFisico}
-      {/* la scena si ferma un attimo sulle foto prima di lasciare entrare
-          la storia: la regia sta fuori dalla sezione, che resta riusabile */}
-      <SostaCatalogo />
-
-      {/* --------------------------- LA STORIA ----------------------------- */}
-      <HistoryJourney />
-
-      {/* -------------------- STORIA → FUTURO (ponte) ---------------------- */}
-      <PonteFuturo />
-
-      {/* ---------------------- TEASER CONFIGURATORE ----------------------- */}
-      {teaser}
+      <main id="contenuto-principale">
+        <Hero />
+        <StoryPreview />
+        <ProductCatalog />
+        <ConfiguratorClosingSection />
+        <CatalogPhysicalSection />
+      </main>
 
       <Footer />
     </div>

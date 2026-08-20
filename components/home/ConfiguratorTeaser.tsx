@@ -18,8 +18,7 @@ import {
 } from "@/lib/percorso-configuratore";
 
 /**
- * ORA TOCCA A TE — il teaser del configuratore, chiusura della home
- * (refactor architettura 2026-08-12).
+ * CREA IL TUO DOLCE: la hero secondaria del configuratore.
  *
  * Prende il posto della vetrina a tre colonne (intro + percorso di card +
  * pannello mandarino): quella spiegava, questa fa intuire. Sul nastro —
@@ -66,99 +65,101 @@ export function ConfiguratorTeaser({
       if (!scope) return;
 
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const banco = scope.querySelector<HTMLElement>("[data-teaser-banco]");
-        const pezzi = gsap.utils.toArray<HTMLElement>("[data-teaser-pezzo]", scope);
-        const scintille = gsap.utils.toArray<HTMLElement>(
-          "[data-teaser-scintilla]",
-          scope
-        );
+      mm.add(
+        "(prefers-reduced-motion: no-preference) and (min-height: 700px)",
+        () => {
+          const banco = scope.querySelector<HTMLElement>(
+            "[data-teaser-banco]",
+          );
+          const pezzi = gsap.utils.toArray<HTMLElement>(
+            "[data-teaser-pezzo]",
+            scope,
+          );
+          const scintille = gsap.utils.toArray<HTMLElement>(
+            "[data-teaser-scintilla]",
+            scope,
+          );
 
-        if (banco && pezzi.length) {
-          /* Lo scrub non è agganciato al banco ma al BLOCCO: parte quando
-             la scena si ferma a schermo pieno (top top) e dura due terzi
-             della sosta. Sul banco, che ora vive in una quinta sticky, il
-             trigger si congelerebbe — fermo l'elemento, ferma la corsa.
-             Così invece la sosta È il tempo del racconto: i tre stati si
-             posano mentre la pagina, sotto, continua a scorrere. */
-          const tl = gsap.timeline({
-            defaults: { ease: "none" },
-            scrollTrigger: {
-              trigger: scope,
-              start: "top top",
-              /* 55% della sosta al racconto, il resto alla scena
-                 compiuta: l'ultimo stato deve poter essere guardato
-                 fermo prima che il blocco si sganci */
-              end: "+=55%",
-              scrub: 0.5,
-              invalidateOnRefresh: true,
-            },
-          });
+          if (banco && pezzi.length) {
+            /* Lo scrub non è agganciato al banco ma al BLOCCO: parte
+               quando la scena si ferma a schermo pieno (top top). */
+            const tl = gsap.timeline({
+              defaults: { ease: "none" },
+              scrollTrigger: {
+                trigger: scope,
+                start: "top top",
+                /* 55% della sosta al racconto, il resto alla scena
+                   compiuta: l'ultimo stato resta leggibile. */
+                end: "+=55%",
+                scrub: 0.5,
+                invalidateOnRefresh: true,
+              },
+            });
 
-          /* i pezzi si posano uno dopo l'altro: l'ultimo — il dolce
-             finito — arriva per ultimo, che è il verso del racconto */
-          pezzi.forEach((pezzo, i) => {
-            const arrivo = ARRIVI[i % ARRIVI.length];
-            tl.fromTo(
-              pezzo,
-              {
-                x: arrivo.x,
-                y: arrivo.y,
-                rotation: arrivo.rotazione,
-                scale: 0.9,
-                autoAlpha: 0,
-              },
-              {
-                x: 0,
-                y: 0,
-                rotation: 0,
-                scale: 1,
-                autoAlpha: 1,
-                duration: 0.62,
-                ease: "power2.out",
-              },
-              i * 0.14
-            );
-          });
+            /* I pezzi si posano uno dopo l'altro: il dolce finito arriva
+               per ultimo, nel verso del racconto. */
+            pezzi.forEach((pezzo, i) => {
+              const arrivo = ARRIVI[i % ARRIVI.length];
+              tl.fromTo(
+                pezzo,
+                {
+                  x: arrivo.x,
+                  y: arrivo.y,
+                  rotation: arrivo.rotazione,
+                  scale: 0.9,
+                  autoAlpha: 0,
+                },
+                {
+                  x: 0,
+                  y: 0,
+                  rotation: 0,
+                  scale: 1,
+                  autoAlpha: 1,
+                  duration: 0.62,
+                  ease: "power2.out",
+                },
+                i * 0.14,
+              );
+            });
 
-          /* le scintille salutano l'assemblaggio compiuto */
-          if (scintille.length) {
-            tl.fromTo(
-              scintille,
-              { scale: 0.3, autoAlpha: 0 },
-              {
-                scale: 1,
-                autoAlpha: 1,
-                duration: 0.2,
-                stagger: 0.06,
-                ease: "back.out(2)",
-              },
-              0.78
-            );
+            if (scintille.length) {
+              tl.fromTo(
+                scintille,
+                { scale: 0.3, autoAlpha: 0 },
+                {
+                  scale: 1,
+                  autoAlpha: 1,
+                  duration: 0.2,
+                  stagger: 0.06,
+                  ease: "back.out(2)",
+                },
+                0.78,
+              );
+            }
           }
-        }
 
-        /* tappe e CTA: un'entrata sola, non in scrub — dopo il numero
-           forte serve un momento leggibile e fermo */
-        const coda = gsap.utils.toArray<HTMLElement>("[data-teaser-coda]", scope);
-        if (coda.length) {
-          gsap.from(coda, {
-            autoAlpha: 0,
-            y: 20,
-            duration: 0.6,
-            stagger: 0.08,
-            ease: "power2.out",
-            /* la coda entra quando la scena è arrivata in campo, non
-               quando spunta da sotto: dentro una quinta sticky «top 88%»
-               del primo elemento non vuol più dire «sta entrando» */
-            scrollTrigger: {
-              trigger: scope,
-              start: "top 45%",
-              once: true,
-            },
-          });
-        }
-      });
+          /* Tappe e CTA: un'entrata sola, non in scrub. */
+          const coda = gsap.utils.toArray<HTMLElement>(
+            "[data-teaser-coda]",
+            scope,
+          );
+          if (coda.length) {
+            gsap.from(coda, {
+              autoAlpha: 0,
+              y: 20,
+              duration: 0.6,
+              stagger: 0.08,
+              ease: "power2.out",
+              /* La coda entra quando la scena è arrivata in campo. */
+              scrollTrigger: {
+                trigger: scope,
+                start: "top 45%",
+                once: true,
+              },
+            });
+          }
+        },
+      );
 
       return () => mm.revert();
     },
@@ -188,9 +189,9 @@ export function ConfiguratorTeaser({
             id={titoloId}
             className="font-pop mt-[clamp(0.8rem,2vh,1.6rem)] text-[clamp(3.2rem,min(11vw,15vh),9rem)] font-normal uppercase leading-[0.87] tracking-[-0.02em]"
           >
-            <Reveal className="text-cacao">Ora tocca</Reveal>
+            <Reveal className="text-cacao">Crea il tuo</Reveal>
             <Reveal delay={0.08} className="text-mandarino">
-              a te.
+              dolce.
             </Reveal>
           </h2>
           <p className="mx-auto mt-[clamp(1rem,2.4vh,2rem)] max-w-[46ch] text-[clamp(1rem,1.25vw,1.35rem)] font-medium leading-[1.55] text-cacao/80">
@@ -298,7 +299,7 @@ export function ConfiguratorTeaser({
             href={DESTINAZIONE_CONFIGURATORE}
             className="cta-azione teaser-cta group flex min-h-[3.6rem] items-center justify-between gap-4 rounded-full bg-inchiostro py-[0.3rem] pl-[clamp(1.4rem,1.8vw,2rem)] pr-[0.3rem] text-[clamp(10px,0.75vw,12px)] font-bold uppercase leading-none tracking-[0.08em] text-panna"
           >
-            Crea il tuo dolce
+            Configura il tuo dolce
             <span
               aria-hidden
               className="grid h-[clamp(2.5rem,2.7vw,2.9rem)] w-[clamp(2.5rem,2.7vw,2.9rem)] flex-none place-items-center rounded-full bg-panna text-inchiostro"

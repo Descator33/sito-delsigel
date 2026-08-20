@@ -2,7 +2,7 @@ import { CatalogHeading } from "./CatalogHeading";
 import { ProductBentoGrid } from "./ProductBentoGrid";
 
 /**
- * Il catalogo editoriale, subito sotto la fascia marquee.
+ * Il capitolo dolce del catalogo editoriale.
  *
  * Redesign 2026-08-04: sostituisce i due caroselli orizzontali su fondo
  * panna e la card ottagonale che si apriva a cerchio. La sezione non è

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 /**
@@ -19,10 +19,12 @@ export function Reveal({
   onMount?: boolean;
   className?: string;
 }) {
+  const riduciMovimento = useReducedMotion();
+
   return (
     <motion.span
       className={`block overflow-hidden ${className}`}
-      initial="hidden"
+      initial={riduciMovimento ? false : "hidden"}
       {...(onMount
         ? { animate: "visible" }
         : { whileInView: "visible", viewport: { once: true, amount: 0.6 } })}
@@ -33,7 +35,11 @@ export function Reveal({
           hidden: { y: "115%", opacity: 0 },
           visible: { y: "0%", opacity: 1 },
         }}
-        transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
+        transition={
+          riduciMovimento
+            ? { duration: 0 }
+            : { duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }
+        }
       >
         {children}
       </motion.span>

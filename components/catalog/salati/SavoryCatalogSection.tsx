@@ -3,17 +3,11 @@ import { SavoryProductShowcase } from "./SavoryProductShowcase";
 import { CatalogSurfaceReveal } from "@/components/catalog/CatalogMotion";
 
 /**
- * «I nostri salati» — la sezione della linea salata, subito dopo il
- * catalogo stampato 2026/2027.
+ * «I nostri salati», secondo capitolo della gamma prodotti.
  *
- * È il terzo capitolo della home e deve staccarsi dal secondo senza
- * uscire dal linguaggio del sito: il catalogo stampato è due campiture
- * piene che vanno da bordo a bordo, questo è un quadro solo — chiuso da
- * un filo crema, angoli larghi — che torna dentro il container. Il
- * fondo su cui il quadro è appoggiato esce dal panna della pagina (rev
- * 2026-08-05): è lo stesso fucsia con cui è scritto «2026/2027» nel
- * catalogo stampato, così i due capitoli si rispondono e la card
- * chiara stacca invece di sciogliersi nella pagina. Il taglio interno
+ * Si stacca dai dolci senza uscire dal linguaggio del sito: è un quadro
+ * unico, chiuso da un filo crema e appoggiato su una campitura fucsia.
+ * Il taglio interno
  * è quello del riferimento: copertina mandarino a sinistra (31%),
  * vetrina crema a destra (69%), niente cesura in mezzo.
  *

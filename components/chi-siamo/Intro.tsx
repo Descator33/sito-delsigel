@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useScatto } from "@/lib/useScatto";
 
@@ -29,11 +30,13 @@ export function Intro() {
     <section ref={ref} className="relative overflow-hidden bg-panna">
       {/* ------ metà alta: la squadra al banco ------ */}
       <div className="relative h-[52vh] min-h-[400px] w-full overflow-hidden md:h-[64vh]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/chi-siamo/hero-team.webp"
           alt="Quattro colleghe Delsigel abbracciate e sorridenti in laboratorio"
-          className="h-full w-full object-cover object-[center_30%]"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_30%]"
           draggable={false}
         />
         {/* la linea del banco, a scacchi */}
@@ -89,10 +92,9 @@ export function Intro() {
               storiche, Del Monte e Siani Pasticceri. Stessa passione, stessa
               ricetta: solo su scala più grande, certificata IFS.
             </p>
-            {/* la storia vive in homepage dal refactor 12/08: il
-                biglietto porta lì, non a un'ancora di questa pagina */}
+            {/* Il racconto completo prosegue nella sezione successiva. */}
             <Link
-              href="/#storia"
+              href="#storia"
               className="mt-6 inline-block bg-fucsia px-7 py-3.5 transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               style={{ clipPath: TICKET }}
             >
@@ -103,7 +105,6 @@ export function Intro() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }

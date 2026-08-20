@@ -168,32 +168,15 @@
   object-position: 50% 50%;
 }
 
-/* Telefono: il ritaglio sale del 12% — è lo spazio vuoto sopra la testa,
-   che a questa scala non serve a niente e ruba mezzo schermo al testo.
-   Il volto resta alto, l'insegna sta sotto la bomba. Vive sulla cornice
-   e non sull'immagine: `top` negativo con `bottom: 0` la fa più alta del
-   contenitore, che la taglia in cima. */
-@media (max-aspect-ratio: 3/4) {
-  .hero-scatto {
-    top: -12%;
-  }
-}
-
-/* La dissolvenza del taglio in piedi. In verticale non esiste un lato
-   libero: la ragazza riempie il quadro e il testo cadrebbe sui capelli e
-   sulla camicia, dove né il nero né la panna si leggono. Il fondo della
-   fotografia si dissolve allora NEL SUO STESSO ARANCIO — è il colore
-   campionato dal bordo basso dello scatto, non un velo scuro: il soggetto
-   sfuma nella campitura invece di essere coperto, e sotto resta un campo
-   pulito per insegna, descrizione e invito. In orizzontale non serve e
-   non c'è. */
+/* La dissolvenza verticale prosegue il cacao già presente nel reframe
+   mobile del Vortice: protegge la copy senza coprire il prodotto. */
 .hero-sfumatura {
   background: linear-gradient(
     180deg,
-    rgba(224, 59, 2, 0) 34%,
-    rgba(224, 59, 2, 0.45) 52%,
-    rgba(224, 59, 2, 0.88) 68%,
-    rgba(224, 59, 2, 0.95) 100%
+    rgb(43 29 22 / 0) 42%,
+    rgb(43 29 22 / 0.2) 56%,
+    rgb(43 29 22 / 0.72) 76%,
+    rgb(43 29 22 / 0.94) 100%
   );
 }
 
@@ -204,8 +187,8 @@
 .hero-velo {
   background: linear-gradient(
     90deg,
-    rgba(15, 10, 5, 0.08) 0%,
-    rgba(15, 10, 5, 0) 55%
+    rgb(255 248 237 / 0.12) 0%,
+    rgb(255 248 237 / 0) 55%
   );
 }
 
@@ -229,8 +212,8 @@
   transform: scale(1.025);
 }
 /* l'invito è un comando di scroll: la freccia si sposta in GIÙ, nel verso
-   in cui la pagina sta per muoversi (era translateX, da quando puntava a
-   destra verso /catalogo). Il rimbalzo continuo sta sull'involucro della
+   in cui la pagina sta per muoversi (era translateX, quando puntava a una
+   pagina separata). Il rimbalzo continuo sta sull'involucro della
    freccia, animato da Motion: due transform sullo stesso nodo si
    annullerebbero a vicenda. */
 .hero-cta:is(:hover, :focus-visible) svg {
@@ -241,11 +224,90 @@
   outline-offset: 4px;
 }
 
-/* La voce di navigazione: pillola panna translucida che all'hover passa
-   a nero pieno. Mai un cambio di sola opacità — sull'arancio non si
-   leggerebbe come uno stato. */
-/* Le pillole delle quattro rotte (`.hero-voce`) sono uscite di scena il
-   2026-08-20 insieme al loro stile: la navigazione sta tutta nel menu. */
+/* Navigazione primaria. In cima alla hero i tre pesi restano separati;
+   sulle pagine chiare e dopo il primo tratto di scroll diventano una sola
+   capsula calda. Il blur è un aiuto secondario: il fondo resta abbastanza
+   opaco da essere leggibile anche senza backdrop-filter. */
+.site-nav-shell {
+  min-width: 0;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav-logo,
+.site-nav-primary {
+  background: rgb(255 248 237 / 0.94);
+  border: 1px solid rgb(23 21 18 / 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+}
+
+.site-nav-shell:is([data-scrolled], [data-fondo="chiaro"]) {
+  border-color: rgb(43 29 22 / 0.12);
+  background: rgb(255 248 237 / 0.95);
+  box-shadow: 0 12px 34px rgb(43 29 22 / 0.14);
+  backdrop-filter: blur(12px) saturate(1.05);
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
+}
+
+.site-nav-shell:is([data-scrolled], [data-fondo="chiaro"])
+  :is(.site-nav-logo, .site-nav-primary, .hero-comando) {
+  border-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-nav-shell[data-menu-open] {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-nav-shell[data-menu-open] .site-nav-logo {
+  border-color: rgb(43 29 22 / 0.12);
+  background: var(--hero-panna);
+}
+
+.site-nav-shell[data-menu-open] .site-nav-primary {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.site-nav-link {
+  color: var(--cacao);
+  transition:
+    color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav-link:is(:hover, :focus-visible) {
+  background: var(--fucsia);
+  color: var(--panna);
+  transform: translateY(-1px);
+}
+
+.site-nav-link[data-active] {
+  color: var(--fucsia);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.36rem;
+}
+
+.site-nav-link[data-active]:is(:hover, :focus-visible) {
+  color: var(--panna);
+  text-decoration-color: currentColor;
+}
 
 /* Il comando del menu. Era un cerchio vuoto col solo filo, e reggeva
    finché accanto aveva quattro pillole a dire che lì c'era la
@@ -278,27 +340,32 @@
   outline-offset: 3px;
 }
 .hero-comando[data-fondo="chiaro"] {
-  background: var(--hero-nero);
-  border-color: var(--hero-nero);
-  color: var(--hero-panna);
+  background: var(--cacao);
+  border-color: var(--cacao);
+  color: var(--panna);
+}
+.site-nav-shell[data-scrolled] .hero-comando[data-fondo="chiaro"],
+.site-nav-shell[data-fondo="chiaro"] .hero-comando[data-fondo="chiaro"] {
+  color: var(--cacao);
 }
 .hero-comando[data-fondo="chiaro"]:is(:hover, :focus-visible) {
-  background: rgb(255 248 237 / 0.94);
-  border-color: rgb(23 21 18 / 0.14);
-  color: var(--hero-nero);
+  background: var(--fucsia);
+  border-color: var(--fucsia);
+  color: var(--panna);
 }
-/* il contorno del fuoco vale quanto si vede: sul chiaro il panna non si
-   vedrebbe */
 .hero-comando[data-fondo="chiaro"]:focus-visible {
-  outline-color: var(--hero-nero);
+  outline-color: var(--cacao);
 }
-/* A menu aperto il comando sta sul campo nero: lì la campitura piena
-   dell'hover sarebbe nera su nero. Torna il cerchio vuoto di prima —
-   filo panna e niente fondo — che su quel campo è il segno più forte. */
+.hero-comando[data-aperto="true"],
+.site-nav-shell[data-menu-open] .hero-comando[data-aperto="true"] {
+  border-color: var(--cacao);
+  background: var(--cacao);
+  color: var(--panna);
+}
 .hero-comando[data-aperto="true"]:is(:hover, :focus-visible) {
-  background: transparent;
-  border-color: var(--hero-panna);
-  color: var(--hero-panna);
+  border-color: var(--panna);
+  background: var(--panna);
+  color: var(--cacao);
 }
 
 /* Il comando che diventa croce. Non due icone che si scambiano: sono le
@@ -308,8 +375,8 @@
 .hero-burger {
   position: relative;
   display: block;
-  width: 18px;
-  height: 12px;
+  width: 22px;
+  height: 16px;
 }
 .hero-burger > span {
   position: absolute;
@@ -332,14 +399,14 @@
   bottom: 0;
 }
 .hero-burger[data-aperto="true"] > span:nth-child(1) {
-  transform: translateY(5px) rotate(45deg);
+  transform: translateY(7px) rotate(45deg);
 }
 .hero-burger[data-aperto="true"] > span:nth-child(2) {
   opacity: 0;
   transition-delay: 0s;
 }
 .hero-burger[data-aperto="true"] > span:nth-child(3) {
-  transform: translateY(-5px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* ------------------------------------------------------------------ */
@@ -349,11 +416,12 @@
 /* rettangolo si porta dietro — ritaglio, veli, respiro.               */
 /* ------------------------------------------------------------------ */
 
-/* mentre è staccata dal flusso: il browser sa che quel rettangolo cambia
-   a ogni frame, e `contain` gli impedisce di ricalcolare la pagina sotto
-   (che è ferma e coperta) per una finestra che è già fuori dal flusso */
+/* Mentre è staccata dal flusso, `contain` isola il rettangolo dalla
+   pagina coperta. L'hint costoso resta attivo soltanto durante il volo. */
 .hero-finestra[data-libera] {
   contain: layout paint;
+}
+.hero-finestra[data-in-volo] {
   will-change: top, left, width, height;
 }
 
@@ -361,30 +429,25 @@
    i clic li prende il menu che ci sta sotto */
 .hero-finestra[data-compatta] {
   pointer-events: none;
+  outline: clamp(3px, 0.32vw, 6px) solid var(--hero-panna);
+  box-shadow: 0 24px 70px rgb(43 29 22 / 0.28);
 }
 
-/* Il ritaglio si riadatta al nuovo formato, non si deforma: `cover` fa il
-   suo lavoro, noi spostiamo solo il punto di fuoco. La finestra è molto
-   più bassa che larga rispetto al viewport, e a metà altezza il taglio
-   prenderebbe la camicia invece del viso: si sale. Il ritaglio del
-   telefono (`.hero-scatto` alzato del 12%) qui non serve più — quello
-   spazio vuoto sopra la testa, in una striscia, non esiste. */
+/* Il ritaglio si riadatta senza deformarsi: `cover` mantiene le
+   proporzioni e il punto di fuoco segue il prodotto principale. */
 .hero-foto {
   transition: object-position 0.85s cubic-bezier(0.76, 0, 0.24, 1);
 }
 .hero-finestra[data-compatta] .hero-scatto {
   top: 0;
 }
-/* orizzontale: la finestra è più tozza del 16:9, quindi il taglio è sui
-   lati. Restare al centro costerebbe metà del vuoto arancio a sinistra,
-   che è dove va l'insegna: si tiene il fuoco un po' più a sinistra. */
+/* In orizzontale resta visibile anche il respiro editoriale a sinistra. */
 @media (min-aspect-ratio: 5/4) {
   .hero-finestra[data-compatta] .hero-foto {
     object-position: 40% 50%;
   }
 }
-/* in piedi il taglio è in altezza, e a metà prenderebbe la camicia
-   invece del viso: si sale */
+/* In verticale la fascia compatta mette al centro il Vortice. */
 @media (max-aspect-ratio: 5/4) {
   .hero-finestra[data-compatta] .hero-foto {
     object-position: 50% 34%;
@@ -413,28 +476,83 @@
   padding-bottom: 7%;
 }
 
-/* Il pannello del menu: campitura nera piena, voci enormi. Nessun vetro,
-   nessuna card — è una pagina che copre la pagina. */
+/* Il menu esteso usa solo colori del marchio. Le grandi campiture sono
+   parti della pagina, non pannelli o card sovrapposte. */
+.expanded-menu {
+  isolation: isolate;
+}
+
+.expanded-menu::before,
+.expanded-menu::after {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  content: "";
+}
+
+.expanded-menu::before {
+  inset-block-start: -18vw;
+  inset-inline-end: -13vw;
+  inline-size: clamp(18rem, 46vw, 52rem);
+  block-size: clamp(18rem, 46vw, 52rem);
+  border-radius: 50%;
+  background: var(--mandarino);
+}
+
+.expanded-menu::after {
+  inset-block-end: -24vw;
+  inset-inline-start: 28%;
+  inline-size: clamp(16rem, 38vw, 42rem);
+  block-size: clamp(16rem, 38vw, 42rem);
+  border-radius: 50%;
+  background: var(--fucsia);
+}
+
 .hero-menu-voce {
   transition:
     color 0.24s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .hero-menu-voce:is(:hover, :focus-visible) {
-  color: var(--hero-arancio);
+  color: var(--fucsia);
   transform: translateX(12px);
+}
+.hero-menu-voce[data-active] {
+  text-decoration: underline;
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.12em;
 }
 .hero-menu-voce:focus-visible {
   outline: none;
   text-decoration: underline;
-  text-underline-offset: 10px;
+  text-underline-offset: 0.12em;
+}
+
+.expanded-menu__secondary,
+.expanded-menu__instagram {
+  transition:
+    color 0.22s ease,
+    transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.expanded-menu__secondary:is(:hover, :focus-visible),
+.expanded-menu__instagram:is(:hover, :focus-visible) {
+  color: var(--fucsia);
+  transform: translateX(6px);
+  outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-cta,
   .hero-cta svg,
   .hero-comando,
+  .site-nav-shell,
+  .site-nav-logo,
+  .site-nav-primary,
+  .site-nav-link,
   .hero-menu-voce,
+  .expanded-menu__secondary,
+  .expanded-menu__instagram,
   .hero-burger > span,
   .hero-foto,
   .hero-velo,
@@ -456,6 +574,82 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.32em;
+}
+
+/* I raccordi della nuova Home condividono lo stesso principio: superfici
+   a tutta larghezza che entrano l'una nell'altra, mai card impilate. */
+.story-preview {
+  clip-path: polygon(
+    0 4.8rem,
+    17% 2.2rem,
+    39% 4.2rem,
+    64% 1.4rem,
+    83% 3.5rem,
+    100% 1.8rem,
+    100% 100%,
+    0 100%
+  );
+}
+
+.story-preview__cta {
+  transition:
+    background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.story-preview__cta:is(:hover, :focus-visible) {
+  background: var(--cacao);
+  transform: translateY(-2px);
+}
+
+.story-preview__cta:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.configurator-bridge__surface {
+  clip-path: ellipse(72% 100% at 50% 100%);
+}
+
+.catalog-physical-bridge__surface {
+  clip-path: polygon(
+    0 30%,
+    18% 12%,
+    39% 24%,
+    62% 4%,
+    82% 18%,
+    100% 8%,
+    100% 100%,
+    0 100%
+  );
+}
+
+@media (max-width: 767px) {
+  .story-preview {
+    clip-path: polygon(
+      0 2.2rem,
+      30% 0.8rem,
+      58% 2rem,
+      82% 0.5rem,
+      100% 1.4rem,
+      100% 100%,
+      0 100%
+    );
+  }
+  .configurator-bridge__surface {
+    clip-path: ellipse(92% 100% at 50% 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-preview__cta,
+  .story-preview__cta svg {
+    transition-duration: 0.01ms;
+  }
+  .story-preview__cta:is(:hover, :focus-visible),
+  .story-preview__cta:is(:hover, :focus-visible) svg {
+    transform: none;
+  }
 }
 
 html {
@@ -669,209 +863,15 @@ html.lenis body {
   }
 }
 
-/* Portale di prodotto della sub-page catalogo. La pista misura il breve
-   tratto narrativo; la quinta si ferma solo su desktop abbastanza alto.
-   L'overflow sta nel viewport interno, mai su un antenato dello sticky. */
-.catalog-portal {
-  min-height: calc(100svh + 1px);
-}
-.catalog-portal__sticky {
-  min-height: 100svh;
-}
-
-.catalog-portal__aperture {
-  z-index: 0;
-  top: 31%;
-  left: 18%;
-  width: 64%;
-  height: 40%;
-}
-.catalog-portal__product--principale {
-  z-index: 15;
-  top: 35%;
-  left: -4%;
-  width: 108%;
-  height: 38%;
-}
-.catalog-portal__product--dolce {
-  z-index: 10;
-}
-.catalog-portal__product--salato {
-  z-index: 12;
-}
-.catalog-portal__image {
-  filter: drop-shadow(0 1.35rem 1.1rem rgb(43 29 22 / 0.16));
-  transition:
-    transform 0.46s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.32s ease;
-}
-
-/* Le due destinazioni sono righe editoriali, non altre due pillole. Il
-   riempimento scuro rende leggibile anche il micro-conto all'hover. */
-.catalog-portal__link {
-  border-top: 1px solid rgb(22 6 1 / 0.26);
-  color: var(--inchiostro);
-  transition:
-    color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.catalog-portal__link:nth-child(2) {
-  border-left: 1px solid rgb(22 6 1 / 0.18);
-}
-.catalog-portal__link::before {
-  position: absolute;
-  inset: 0;
-  background: var(--inchiostro);
-  content: "";
-  transform: scaleY(0);
-  transform-origin: center bottom;
-  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.catalog-portal__link:is(:hover, :focus-visible) {
-  border-color: var(--inchiostro);
-  color: var(--panna);
-}
-.catalog-portal__link:is(:hover, :focus-visible)::before {
-  transform: scaleY(1);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .catalog-portal:has(
-      [data-catalog-linea="dolci"]:is(:hover, :focus-visible)
-    )
-    [data-portal-product="principale"]
-    .catalog-portal__image,
-  .catalog-portal:has(
-      [data-catalog-linea="dolci"]:is(:hover, :focus-visible)
-    )
-    [data-portal-product="dolce"]
-    .catalog-portal__image {
-    transform: scale(1.035);
-  }
-  .catalog-portal:has(
-      [data-catalog-linea="salati"]:is(:hover, :focus-visible)
-    )
-    [data-portal-product="salato"]
-    .catalog-portal__image {
-    transform: scale(1.075);
-  }
-  .catalog-portal:has(
-      [data-catalog-linea="salati"]:is(:hover, :focus-visible)
-    )
-    [data-portal-product="principale"]
-    .catalog-portal__image,
-  .catalog-portal:has(
-      [data-catalog-linea="salati"]:is(:hover, :focus-visible)
-    )
-    [data-portal-product="dolce"]
-    .catalog-portal__image {
-    opacity: 0.7;
-    transform: scale(0.975);
-  }
-}
-
-@media (min-width: 768px) {
-  .catalog-portal__aperture {
-    top: 17%;
-    left: 47%;
-    width: 42%;
-    height: 65%;
-  }
-  .catalog-portal__product--principale {
-    top: 29%;
-    left: 34%;
-    width: 62%;
-    height: 51%;
-  }
-  .catalog-portal__product--dolce {
-    top: 11%;
-    right: 1%;
-    width: 25%;
-    height: 31%;
-  }
-  .catalog-portal__product--salato {
-    right: 0;
-    bottom: 20%;
-    width: 25%;
-    height: 31%;
-  }
-}
-
-@media (min-width: 1024px) {
-  .catalog-portal__aperture {
-    top: 7%;
-    left: 55%;
-    width: 33%;
-    height: 78%;
-  }
-  .catalog-portal__product--principale {
-    top: 26%;
-    left: 43%;
-    width: 52%;
-    height: 54%;
-  }
-  .catalog-portal__product--dolce {
-    top: 8%;
-    right: 1%;
-    width: 23%;
-    height: 32%;
-  }
-  .catalog-portal__product--salato {
-    right: 0;
-    bottom: 18%;
-    width: 23%;
-    height: 31%;
-  }
-}
-
-@media (min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
-  .catalog-portal {
-    min-height: 122svh;
-  }
-  .catalog-portal__sticky {
-    position: sticky;
-    top: 0;
-    height: 100svh;
-  }
-}
-
-/* Fuori dalla breve esperienza sticky i MotionValue restano nel DOM, ma
-   non devono spostare la cover: il CSS è il selettore responsive stabile
-   anche prima dell'idratazione. */
-@media (width < 1024px), (height < 700px) {
-  [data-catalog-motion="portal-scroll"] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
-/* Regia della sub-page catalogo. Il markup di Motion resta identico fra
-   server e primo render client; la preferenza dell'utente si applica qui,
-   senza condizioni React che possano produrre hydration mismatch. */
+/* Le animazioni del catalogo conservano contenuti e gerarchia anche con
+   movimento ridotto o senza scripting. */
 @media (prefers-reduced-motion: reduce) {
-  [data-catalog-motion="progress"] {
-    display: none;
-  }
-  [data-catalog-motion="intro-depth"],
   [data-catalog-motion="reveal"],
   [data-catalog-motion="surface"],
   [data-catalog-motion="card"],
   [data-catalog-motion="tail"],
   [data-catalog-motion="layout"],
-  [data-catalog-motion="portal-enter"],
-  [data-catalog-motion="portal-scroll"],
   [data-catalog-motion="flavor-layer"] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .catalog-portal__image,
-  .catalog-portal__link,
-  .catalog-portal__link::before,
-  .catalog-portal__link svg {
-    transition-duration: 0.01ms !important;
-  }
-  .catalog-portal__image,
-  .catalog-portal__link:is(:hover, :focus-visible) svg {
     opacity: 1 !important;
     transform: none !important;
   }
@@ -884,28 +884,15 @@ html.lenis body {
   }
 }
 
-/* Senza scripting il contenuto non deve conservare gli stati iniziali che
-   Motion stampa nel markup server. Il catalogo torna un documento statico
-   completo, con la stessa gerarchia e le stesse ancore. */
+/* Senza scripting il contenuto non conserva gli stati iniziali stampati
+   da Motion e resta un documento statico completo. */
 @media (scripting: none) {
-  .catalog-portal {
-    min-height: 100svh;
-  }
-  .catalog-portal__sticky {
-    position: static;
-    height: auto;
-    min-height: 100svh;
-  }
-  [data-catalog-motion="progress"] {
-    display: none;
-  }
   [data-catalog-motion="reveal"],
   [data-catalog-motion="surface"],
   [data-catalog-motion="card"],
   [data-catalog-motion="tail"],
   [data-catalog-motion="layout"],
-  [data-catalog-motion="portal-enter"],
-  [data-catalog-motion="portal-scroll"] {
+  [data-catalog-motion="flavor-layer"] {
     opacity: 1 !important;
     transform: none !important;
   }
@@ -1470,7 +1457,7 @@ html.lenis body {
 }
 
 /* ---------------------------------------------------------------- */
-/* Ora tocca a te — il teaser del configuratore, chiusura della home */
+/* Crea il tuo dolce: hero secondaria del configuratore.              */
 /*                                                                   */
 /* Refactor architettura 12/08: al posto della vetrina a tre colonne */
 /* (fila di card + campitura mandarino) resta il gesto — il nastro   */
@@ -1695,11 +1682,6 @@ html.lenis body {
 .mappa-sede + a:is(:hover, :focus-visible) svg {
   transform: translateX(5px);
 }
-.biglietto-configuratore:focus-visible {
-  outline: 2px solid var(--panna);
-  outline-offset: 6px;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .nastro-rulli,
   .percorso-dolce {
@@ -1707,290 +1689,12 @@ html.lenis body {
   }
   .cta-azione,
   .cta-azione > span,
-  .cta-azione svg,
-  .biglietto-configuratore svg {
+  .cta-azione svg {
     transition-duration: 0.01ms;
   }
-  .cta-azione:is(:hover, :focus-visible) svg,
-  .biglietto-configuratore:is(:hover, :focus-visible) svg {
+  .cta-azione:is(:hover, :focus-visible) svg {
     transform: none;
   }
-}
-
-/* ---------------------------------------------------------------- */
-/* Regia della home — apertura, stacco di capitolo, ponte, teaser    */
-/*                                                                   */
-/* Refactor architettura 2026-08-12: la home è una sequenza continua */
-/* (hero → catalogo 2026/27 → storia → futuro → crea il tuo dolce)   */
-/* e i confini tra le sezioni sono passaggi di scena, non bordi.     */
-/* I tempi stanno nei componenti (components/home/*); qui stanno gli */
-/* stati iniziali che devono valere anche PRIMA dell'idratazione, i  */
-/* bordi strappati e i ripiegamenti per prefers-reduced-motion.      */
-/* ---------------------------------------------------------------- */
-
-/* Una bussola, non una scrollbar alternativa. Segue tutta la home e
-   lascia vedere le durate reali dei cinque capitoli: la lunga storia,
-   per esempio, occupa davvero più rail del ponte. La capsula sta sopra
-   le scene ma sotto header, menu e finestra della hero. */
-.home-scroll-guide {
-  position: fixed;
-  z-index: 50;
-  inset-block-start: 50%;
-  inset-inline-end: clamp(0.65rem, 1.7vw, 1.75rem);
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.home-scroll-guide__shell {
-  display: flex;
-  inline-size: 3.9rem;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.85rem 0.5rem 0.7rem;
-  overflow: hidden;
-  border: 1px solid rgb(23 21 18 / 0.15);
-  border-radius: 999px;
-  background: rgb(255 248 237 / 0.9);
-  box-shadow: 0 12px 34px rgb(22 6 1 / 0.14);
-  color: var(--hero-nero);
-  backdrop-filter: blur(13px) saturate(1.08);
-  -webkit-backdrop-filter: blur(13px) saturate(1.08);
-}
-
-.home-scroll-guide__prompt,
-.home-scroll-guide__label,
-.home-scroll-guide__counter {
-  font-family: var(--font-ui), system-ui, sans-serif;
-  line-height: 1;
-}
-
-.home-scroll-guide__prompt {
-  font-size: 0.45rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  transition: opacity 0.3s ease;
-}
-
-.home-scroll-guide__counter {
-  display: flex;
-  align-items: baseline;
-  font-size: 0.68rem;
-  font-variant-numeric: tabular-nums;
-  font-weight: 750;
-  letter-spacing: 0.04em;
-  transition: opacity 0.3s ease;
-}
-
-.home-scroll-guide__total {
-  margin-inline-start: 0.08rem;
-  font-size: 0.46rem;
-  opacity: 0.48;
-}
-
-.home-scroll-guide__track {
-  position: relative;
-  display: block;
-  inline-size: 1.15rem;
-  block-size: clamp(4.6rem, 10svh, 6rem);
-}
-
-.home-scroll-guide__track::before,
-.home-scroll-guide__fill {
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: calc(50% - 0.5px);
-  inline-size: 1px;
-  content: "";
-}
-
-.home-scroll-guide__track::before {
-  background: rgb(23 21 18 / 0.23);
-}
-
-.home-scroll-guide__fill {
-  inline-size: 2px;
-  inset-inline-start: calc(50% - 1px);
-  background: var(--mandarino);
-  transform: scaleY(0);
-  transform-origin: center top;
-}
-
-.home-scroll-guide__marker {
-  --home-scroll-marker: 0%;
-  position: absolute;
-  z-index: 1;
-  inset-block-start: var(--home-scroll-marker);
-  inset-inline-start: 50%;
-  display: block;
-  inline-size: 0.78rem;
-  block-size: 1px;
-  background: var(--hero-nero);
-  opacity: 0.42;
-  transform: translate(-50%, -50%) scaleX(0.62);
-  transition:
-    opacity 0.28s ease,
-    transform 0.28s ease;
-}
-
-.home-scroll-guide__marker[data-active] {
-  opacity: 1;
-  transform: translate(-50%, -50%) scaleX(1.25);
-}
-
-.home-scroll-guide__label {
-  max-inline-size: 100%;
-  overflow: hidden;
-  font-size: 0.43rem;
-  font-weight: 750;
-  letter-spacing: 0.09em;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition: opacity 0.3s ease;
-}
-
-.home-scroll-guide__arrow {
-  inline-size: 0.85rem;
-  block-size: 0.85rem;
-  color: var(--mandarino);
-  animation: home-scroll-respiro 1.85s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-  transition: opacity 0.3s ease;
-}
-
-/* Nel palco della storia esiste già una regia locale: rimane il solo
-   rail globale, così i due segnali non si contendono l'attenzione. */
-.home-scroll-guide[data-quiet] .home-scroll-guide__prompt,
-.home-scroll-guide[data-quiet] .home-scroll-guide__label,
-.home-scroll-guide[data-quiet] .home-scroll-guide__arrow {
-  opacity: 0;
-}
-
-.home-scroll-guide[data-quiet] .home-scroll-guide__counter {
-  opacity: 0.52;
-}
-
-@keyframes home-scroll-respiro {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(0.24rem);
-  }
-}
-
-@media (max-width: 639px) {
-  .home-scroll-guide {
-    inset-block-start: 54%;
-    inset-inline-end: max(0.5rem, env(safe-area-inset-right));
-  }
-  .home-scroll-guide__shell {
-    inline-size: 2.65rem;
-    gap: 0.43rem;
-    padding: 0.7rem 0.35rem 0.58rem;
-  }
-  .home-scroll-guide__prompt {
-    font-size: 0.39rem;
-    letter-spacing: 0.13em;
-  }
-  .home-scroll-guide__counter {
-    font-size: 0.58rem;
-  }
-  .home-scroll-guide__total {
-    font-size: 0.39rem;
-  }
-  .home-scroll-guide__track {
-    block-size: clamp(3.8rem, 9svh, 4.7rem);
-  }
-  .home-scroll-guide__label {
-    display: none;
-  }
-  .home-scroll-guide__arrow {
-    inline-size: 0.75rem;
-    block-size: 0.75rem;
-  }
-}
-
-@media (max-height: 600px) {
-  .home-scroll-guide__track {
-    block-size: 3.4rem;
-  }
-  .home-scroll-guide__label {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .home-scroll-guide__shell {
-    background: var(--hero-panna);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
-
-@media (forced-colors: active) {
-  .home-scroll-guide__shell {
-    border-color: CanvasText;
-    background: Canvas;
-    color: CanvasText;
-    forced-color-adjust: none;
-  }
-  .home-scroll-guide__track::before,
-  .home-scroll-guide__fill,
-  .home-scroll-guide__marker {
-    background: CanvasText;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-scroll-guide__arrow {
-    animation: none;
-  }
-  .home-scroll-guide__prompt,
-  .home-scroll-guide__label,
-  .home-scroll-guide__counter,
-  .home-scroll-guide__arrow,
-  .home-scroll-guide__marker {
-    transition-duration: 0.01ms;
-  }
-}
-
-/* Il quadro in ingresso dell'apertura: nasce chiuso e invisibile — lo
-   apre solo lo scrub. Senza JS non compare mai: la hero resta intera. */
-.apertura-quadro {
-  clip-path: inset(100% 36% 0% 36% round 26px);
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* A menu aperto la finestra della hero è un'anteprima e deve mostrare
-   la hero INTERA, anche se lo scrub dell'apertura ha già fatto uscire
-   insegna e invito: qui si riporta tutto allo stato composto. Gli
-   `!important` battono gli stili in linea scritti da GSAP; alla
-   chiusura del menu (via `data-libera`) gli inline tornano a valere. */
-.hero-finestra[data-libera] [data-hero-uscita],
-.hero-finestra[data-libera] .hero-scatto {
-  transform: none !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Il bordo alto strappato del capitolo scuro: lo stesso linguaggio
-   delle fasce della storia, sopra la coda del catalogo. */
-.stacco-strappo {
-  clip-path: polygon(
-    0 3.4rem,
-    14% 1.9rem,
-    32% 3rem,
-    52% 1.2rem,
-    72% 2.6rem,
-    88% 1rem,
-    100% 2.2rem,
-    100% 100%,
-    0 100%
-  );
 }
 
 /* La taglia del banco a schermo pieno. Le misure del percorso
@@ -2021,15 +1725,7 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* niente corse, niente quinte: le sezioni tornano in flusso e
-     mostrano direttamente la composizione finale */
-  .apertura-corsa,
-  .ponte-corsa,
-  .apertura-quadro {
-    display: none;
-  }
-  /* niente sosta: il blocco torna alto quanto la sua scena, che si
-     legge tutta insieme come una fascia qualunque */
+  /* Niente sosta: la composizione finale torna nel flusso. */
   .teaser-blocco {
     height: auto;
   }
@@ -2038,25 +1734,19 @@ html.lenis body {
     height: auto;
     padding-block: clamp(4rem, 7vw, 7rem);
   }
-  .apertura-quinta,
-  .ponte-quinta {
+}
+
+/* In landscape e sui viewport bassi la scena completa non entra nella
+   quinta sticky: torna nel flusso, senza comprimere testo, tappe e CTA. */
+@media (max-height: 699px) {
+  .teaser-blocco {
+    height: auto;
+  }
+  .teaser-quinta {
     position: static;
-  }
-  /* il ponte diventa due blocchi impilati: la domanda sul buio, la
-     risposta sul suo crema — già composti, senza sipario da alzare */
-  .ponte-quinta {
-    min-height: 0;
-    display: block;
-    padding-top: clamp(4rem, 10vh, 7rem);
-  }
-  .ponte-quinta > div:first-child {
-    padding-bottom: clamp(4rem, 10vh, 7rem);
-  }
-  .ponte-sipario {
-    position: static;
-    inset: auto;
-    clip-path: none !important;
-    padding: clamp(4rem, 10vh, 7rem) 1.5rem;
+    height: auto;
+    min-height: 100svh;
+    padding-block: clamp(4rem, 8vh, 6rem);
   }
 }
 

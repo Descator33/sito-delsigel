@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, type ElementType } from "react";
-import { ArrowRight } from "lucide-react";
 import { gustoColor, type Tipologia } from "@/lib/catalog";
 import { TEMI, type TemaCard } from "@/lib/catalog-bento";
 import { schedaDi } from "@/lib/catalog-scheda";
@@ -26,13 +25,13 @@ import {
  *
  * Eredita dalla vecchia card la cosa che valeva la pena tenere — passando
  * su una variante la foto cambia, così la gamma si sfoglia senza uscire
- * dalla scheda — e ci aggiunge quello che nella card non entrava: formato,
- * peso, pezzi per cartone e il salto al configuratore. Tutti dati veri:
+ * dalla scheda, e ci aggiunge quello che nella card non entrava: formato,
+ * peso e pezzi per cartone. Tutti dati veri:
  * quel che il foglio non dice, la scheda non lo scrive (lib/catalog-scheda).
  *
  * Quello che la scheda NON è: un configuratore in miniatura. Mostra i
- * prodotti finiti a listino e basta — niente finiture, niente topping,
- * niente farciture componibili. Chi vuole comporre passa dal pulsante.
+ * prodotti finiti a listino e basta: niente finiture, topping, farciture
+ * componibili o ingressi impliciti al configuratore.
  */
 
 /* La scheda resta montata mentre si chiude, altrimenti Radix non ha nulla
@@ -269,15 +268,6 @@ function Scheda({
         )}
 
         <div className="mt-8 flex flex-wrap gap-2.5">
-          {s.configuratore && (
-            <Link
-              href={s.configuratore}
-              className="font-tecnico inline-flex min-h-11 items-center gap-2.5 rounded-full bg-fucsia px-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-panna transition-colors hover:bg-inchiostro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fucsia"
-            >
-              Personalizza questo dolce
-              <ArrowRight aria-hidden strokeWidth={1.6} className="h-4 w-4" />
-            </Link>
-          )}
           <Link
             href="/contatti"
             className="font-tecnico inline-flex min-h-11 items-center gap-2.5 rounded-full border border-inchiostro/25 px-5 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors hover:border-inchiostro hover:bg-inchiostro hover:text-panna focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fucsia"

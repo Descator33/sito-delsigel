@@ -75,7 +75,7 @@ function Description() {
 }
 
 /**
- * «Vedi il catalogo». Porta dove porta già la CTA del catalogo stampato
+ * Porta dove porta già la CTA del catalogo stampato
  * (`DESTINAZIONE_CATALOGO`): il catalogo sfogliabile non esiste ancora nel
  * progetto e la richiesta di listino e campionatura si fa dal modulo
  * contatti. Quando ci sarà una pagina dedicata basta cambiare quella
@@ -89,7 +89,7 @@ function CatalogButton() {
         href={DESTINAZIONE_CATALOGO}
         className="salati-cta group inline-flex min-h-14 w-full max-w-[22rem] items-center justify-between gap-5 rounded-full bg-cacao py-[0.4rem] pl-[clamp(1.25rem,1.8vw,1.9rem)] pr-[0.4rem] text-[clamp(10px,0.72vw,12px)] font-bold uppercase tracking-[0.16em] text-panna sm:w-auto"
       >
-        Vedi il catalogo
+        Richiedi il catalogo
         <span
           aria-hidden
           className="grid h-11 w-11 flex-none place-items-center rounded-full border border-panna/55"

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { MotionConfig, motion } from "motion/react";
 import { Reveal } from "@/components/Reveal";
 import { DESTINAZIONE_CATALOGO } from "@/lib/catalogo-fisico";
@@ -37,7 +37,7 @@ export function CatalogPhysicalIntro({ titoloId }: { titoloId: string }) {
             arriva quasi a toccare la campitura arancione. */}
         <div className="relative max-w-[42rem] lg:max-w-none lg:-mr-[clamp(2rem,3.4vw,4rem)]">
           <p className="font-tecnico text-[10px] font-semibold uppercase tracking-[0.22em] text-fucsia">
-            Catalogo 2026/27
+            Catalogo fisico 2026/27
           </p>
           <div aria-hidden className="mt-3 h-[2px] w-10 bg-fucsia" />
 
@@ -86,21 +86,6 @@ export function CatalogPhysicalIntro({ titoloId }: { titoloId: string }) {
           </Link>
         </motion.div>
 
-        {/* Coda: nel riferimento sta in basso a sinistra ed è un invito a
-            scorrere, non un comando — resta testo, la freccia è decoro. */}
-        <motion.p
-          {...SALE}
-          transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="font-tecnico mt-14 flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-inchiostro/70 lg:mt-auto lg:pt-[clamp(3rem,5vw,6rem)]"
-        >
-          <span
-            aria-hidden
-            className="grid h-11 w-11 flex-none place-items-center rounded-full border border-inchiostro/25"
-          >
-            <ArrowDown strokeWidth={1.5} className="h-[18px] w-[18px]" />
-          </span>
-          Scorri il catalogo
-        </motion.p>
       </div>
     </MotionConfig>
   );

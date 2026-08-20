@@ -3,8 +3,8 @@
  *
  * Aprendo il menu la home non riceve un pannello sopra: cambia
  * composizione. La hero smette di essere il primo viewport e diventa una
- * finestra appoggiata all'angolo in basso a destra, mentre a sinistra
- * resta il campo nero della navigazione. Chiudendo, la finestra torna
+ * finestra appoggiata all'angolo in basso a destra, mentre il menu usa la
+ * campitura POP del sito. Chiudendo, la finestra torna
  * esattamente dov'era — al pixel, perché il punto di partenza non è un
  * numero scritto qui ma la misura reale della sezione (`getBoundingClientRect`
  * in Hero.tsx): la hero non "sa" di essere a tutto schermo, ci torna.
@@ -18,7 +18,7 @@
  *  sopra 1.1 sembra lento: 0.9 è il passo "editoriale" del riferimento. */
 export const DURATA_MENU = 0.9;
 
-/** La finestra parte un soffio dopo il fondo nero, non insieme: è quel
+/** La finestra parte un soffio dopo la campitura del menu: è quel
  *  ritardo minimo a far leggere l'ordine degli eventi invece di uno stacco. */
 export const RITARDO_FINESTRA = 0.05;
 
@@ -53,9 +53,9 @@ export type Finestra = {
  * Tre tagli, per forma dello schermo e non per moda:
  *
  *   ≥1024  52vw × 56vh — il menu tiene la metà sinistra, come nel mockup
- *    ≥640  62vw × 46vh — su tablet le voci sono più larghe: la finestra
- *                        cede in altezza e guadagna in base
- *    <640  100vw × 34vh — sul telefono non esiste una "metà sinistra": il
+ *    ≥640  62vw × 30vh — su tablet resta una fascia fotografica e il
+ *                        menu esteso conserva il proprio spazio di lettura
+ *    <640  100vw × 24vh — sul telefono non esiste una "metà sinistra": il
  *                        menu prende tutto e la hero resta una striscia di
  *                        anteprima sul fondo, senza testo (non ci sta, e
  *                        rimpicciolito sarebbe illeggibile)
@@ -66,16 +66,31 @@ export function finestraHero(): Finestra {
 
   if (vw >= 1024) {
     const width = vw * 0.52;
-    const height = vh * 0.56;
-    return { top: vh - height, left: vw - width, width, height, scala: 0.56, testo: true };
+    const corta = vh < 700;
+    const height = vh * (corta ? 0.42 : 0.56);
+    return {
+      top: vh - height,
+      left: vw - width,
+      width,
+      height,
+      scala: corta ? 0.48 : 0.56,
+      testo: !corta,
+    };
   }
 
   if (vw >= 640) {
     const width = vw * 0.62;
-    const height = vh * 0.46;
-    return { top: vh - height, left: vw - width, width, height, scala: 0.5, testo: true };
+    const height = vh * 0.3;
+    return {
+      top: vh - height,
+      left: vw - width,
+      width,
+      height,
+      scala: 0.5,
+      testo: false,
+    };
   }
 
-  const height = vh * 0.34;
+  const height = vh * 0.24;
   return { top: vh - height, left: 0, width: vw, height, scala: 0.42, testo: false };
 }

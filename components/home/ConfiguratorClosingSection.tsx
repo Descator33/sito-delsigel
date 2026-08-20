@@ -3,7 +3,7 @@ import { DOLCI, type DolceConFoto } from "@/lib/percorso-configuratore";
 import { ConfiguratorTeaser } from "./ConfiguratorTeaser";
 
 /**
- * «Ora tocca a te» — la chiusura della home: il teaser del configuratore.
+ * Hero secondaria del configuratore, subito dopo i salati.
  *
  * Refactor architettura 2026-08-12. La vetrina a tre colonne (insegna +
  * percorso di card + pannello mandarino) raccontava il configuratore per
@@ -13,10 +13,8 @@ import { ConfiguratorTeaser } from "./ConfiguratorTeaser";
  * tre stati della Nuvola in scrub sta nel teaser (client); qui resta il
  * guscio.
  *
- * Il fondo non ha più il bordo di confine: ci arriva sopra l'alba crema
- * del ponte narrativo (components/home/PonteFuturo), che È la
- * transizione — un filo lì sotto tornerebbe a essere il muro che il
- * refactor ha tolto.
+ * Una curva crema sale dentro il fucsia della sezione precedente e prepara
+ * il cambio di ritmo senza introdurre un blocco narrativo autonomo.
  *
  * Server Component, e deve restarlo: le foto degli stati del dolce si
  * leggono qui, dal filesystem, con la stessa funzione che usa la pagina
@@ -33,12 +31,17 @@ export function ConfiguratorClosingSection() {
   }));
 
   return (
-    <section
+    <div
       id="crea-il-tuo-dolce"
-      aria-labelledby={TITOLO_ID}
       className="font-pop-testo scroll-mt-24 bg-crema text-cacao"
     >
+      <div
+        aria-hidden
+        className="configurator-bridge relative h-[clamp(7rem,16vw,14rem)] overflow-hidden bg-fucsia"
+      >
+        <span className="configurator-bridge__surface absolute -bottom-px left-[-10%] h-[92%] w-[120%] bg-crema" />
+      </div>
       <ConfiguratorTeaser dolci={dolci} titoloId={TITOLO_ID} />
-    </section>
+    </div>
   );
 }

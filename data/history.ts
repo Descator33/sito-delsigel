@@ -1,5 +1,5 @@
 /**
- * Le sei tappe del film scroll-driven «La nostra storia» in homepage.
+ * Le sei tappe del film scroll-driven «La nostra storia».
  *
  * Le immagini sono interpretazioni editoriali generate per la campagna,
  * non fotografie d'archivio né ritratti delle persone reali. Ogni scena
@@ -102,10 +102,7 @@ export const STORIA: TappaStoria[] = [
   },
 ];
 
-/** L'intestazione della scena: la parte che non cambia con lo scroll.
- *  L'eyebrow non dice più «Chi siamo» — la scena sta in homepage — e il
- *  CTA della squadra porta alla pagina delle persone, non a un'ancora
- *  locale che qui non esiste più. */
+/** L'intestazione della scena: la parte che non cambia con lo scroll. */
 export const INTESTAZIONE = {
   eyebrow: "Delsigel · dal 2011",
   titolo: ["La nostra", "storia"],
@@ -115,7 +112,7 @@ export const INTESTAZIONE = {
     "Ogni tappa è un'emozione, ogni cambio di prospettiva è ciò che ci ha portati fin qui.",
   ],
   invito: "Scorri per vivere il viaggio",
-  azione: { testo: "Conosci la squadra", href: "/chi-siamo#squadra" },
+  azione: { testo: "Conosci la squadra", href: "#squadra" },
 };
 
 /** La chiusura: si apre sull'ultima tappa e introduce «La squadra». */
