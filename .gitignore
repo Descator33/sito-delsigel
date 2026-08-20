@@ -62,8 +62,8 @@ next-env.d.ts
 /public/intro-delsigel-poster.jpg
 /public/Pastries_as_luxury_objects_montage_202607272157.mp4
 
-# Claude Code: le skill del progetto si versionano, i permessi locali no —
-# sono legati a questa macchina e ai suoi percorsi.
+# Claude Code: i permessi locali non si versionano — sono legati a questa
+# macchina e ai suoi percorsi.
 .claude/settings.local.json
 
 # Sorgenti della hero: i PNG da cui derivano i webp serviti da
