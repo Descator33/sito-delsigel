@@ -156,6 +156,71 @@
 @custom-variant orizzontale (@media (min-aspect-ratio: 5/4));
 @custom-variant verticale (@media (max-aspect-ratio: 5/4));
 
+/* Moviescroller Intriko. La track dà 340 viewport utili di scrub; il palco
+   resta sticky e conserva esattamente il rettangolo 100svh che la macchina
+   del menu sa trasformare. Nessun `pin:true`: niente spacer o fixed che
+   possano contendere a Motion la finestra. */
+.hero-scroll-track {
+  height: 440svh;
+}
+
+.hero-scroll-stage {
+  z-index: 70;
+  overflow: hidden;
+}
+
+.hero-sequenza,
+.hero-sequenza-poster,
+.hero-frame-canvas,
+.hero-frame-finale {
+  display: block;
+}
+
+.hero-frame-canvas {
+  contain: strict;
+  transform: translateZ(0);
+}
+
+/* La still finale non dissolve: una maschera laterale la svela quando il
+   playhead ha esaurito tutti i frame utili del filmato. */
+.hero-frame-finale {
+  clip-path: inset(0 100% 0 0);
+}
+
+/* Stati iniziali delle caption. Le maschere sono gli `overflow-hidden` nel
+   markup; GSAP anima solo transform, mai opacity. */
+[data-hero-caption-logo],
+[data-hero-caption-copy] {
+  transform: translateY(115%);
+}
+
+[data-hero-caption] {
+  transform: translateY(165%);
+}
+
+[data-hero-caption-cta] {
+  transform: translateX(-110%);
+}
+
+.hero-scroll-cue,
+[data-hero-caption-logo],
+[data-hero-caption],
+[data-hero-caption-copy],
+[data-hero-caption-cta],
+[data-hero-progress] {
+  will-change: transform;
+}
+
+.hero-frame-finale {
+  will-change: clip-path;
+}
+
+@media (max-aspect-ratio: 5/4) {
+  .hero-scroll-track {
+    height: 400svh;
+  }
+}
+
 /* Il ritaglio dello scatto. Il grosso non si fa più qui: sotto il 5/4 il
    `<picture>` serve un file già ritagliato 3:4 sul soggetto (vedi la nota
    in Hero.tsx), quindi in tutte e due le forme l'immagine è inquadrata e
@@ -438,6 +503,15 @@
   box-shadow: 0 24px 70px rgb(43 29 22 / 0.28);
 }
 
+/* Durante il volo del menu non si rialloca il canvas. La still, che supporta
+   `object-fit`, prende il suo posto e segue senza deformarsi il rettangolo. */
+.hero-finestra:is([data-compatta], [data-libera]) .hero-sequenza {
+  visibility: hidden;
+}
+.hero-finestra:is([data-compatta], [data-libera]) .hero-frame-finale {
+  clip-path: inset(0 0 0 0) !important;
+}
+
 /* Il ritaglio si riadatta senza deformarsi: `cover` mantiene le
    proporzioni e il punto di fuoco segue il prodotto principale. */
 .hero-foto {
@@ -572,6 +646,76 @@
   }
 }
 
+/* Dopo la prima apertura, ogni ritorno alla Home e una composizione statica:
+   la still approvata sostituisce la sequenza e non resta scroll morto. Il
+   selettore sull'html agisce gia prima dell'idratazione dopo un refresh; il
+   data attribute sulla track mantiene React e CSS allineati subito dopo. */
+.hero-scroll-track[data-hero-static],
+[data-hero-di-ritorno] .hero-scroll-track {
+  height: 100svh;
+}
+
+.hero-scroll-track[data-hero-static] .hero-scroll-stage,
+[data-hero-di-ritorno] .hero-scroll-stage {
+  position: relative;
+  top: auto;
+}
+
+.hero-scroll-track[data-hero-static] .hero-sequenza,
+.hero-scroll-track[data-hero-static] .hero-scroll-cue,
+.hero-scroll-track[data-hero-static] .hero-scroll-progress,
+[data-hero-di-ritorno] .hero-sequenza,
+[data-hero-di-ritorno] .hero-scroll-cue,
+[data-hero-di-ritorno] .hero-scroll-progress {
+  display: none;
+}
+
+.hero-scroll-track[data-hero-static] .hero-frame-finale,
+[data-hero-di-ritorno] .hero-frame-finale {
+  clip-path: inset(0 0 0 0) !important;
+}
+
+.hero-scroll-track[data-hero-static] [data-hero-caption-logo],
+.hero-scroll-track[data-hero-static] [data-hero-caption],
+.hero-scroll-track[data-hero-static] [data-hero-caption-copy],
+.hero-scroll-track[data-hero-static] [data-hero-caption-cta],
+[data-hero-di-ritorno] [data-hero-caption-logo],
+[data-hero-di-ritorno] [data-hero-caption],
+[data-hero-di-ritorno] [data-hero-caption-copy],
+[data-hero-di-ritorno] [data-hero-caption-cta] {
+  transform: none !important;
+}
+
+/* Senza script o con movimento ridotto la hero torna a un solo viewport:
+   still e copy sono subito disponibili, sequenza e istruzione spariscono. */
+@media (scripting: none), (prefers-reduced-motion: reduce) {
+  .hero-scroll-track {
+    height: 100svh;
+  }
+
+  .hero-scroll-stage {
+    position: relative;
+    top: auto;
+  }
+
+  .hero-sequenza,
+  .hero-scroll-cue,
+  .hero-scroll-progress {
+    display: none;
+  }
+
+  .hero-frame-finale {
+    clip-path: inset(0 0 0 0) !important;
+  }
+
+  [data-hero-caption-logo],
+  [data-hero-caption],
+  [data-hero-caption-copy],
+  [data-hero-caption-cta] {
+    transform: none !important;
+  }
+}
+
 /* Etichetta tecnica mono: usata con parsimonia (max una ogni tre sezioni) */
 @utility type-label {
   font-family: var(--font-mono), monospace;
@@ -579,6 +723,12 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.32em;
+}
+
+/* Contratto condiviso delle caption Home: il wrapper ritaglia, il figlio
+   viene mosso da GSAP o Motion. L'opacità non fa parte della grammatica. */
+[data-home-caption-mask] {
+  overflow: hidden;
 }
 
 /* Seconda hero della Home. Hero e storia si susseguono con un taglio netto:
@@ -712,9 +862,8 @@
 }
 
 @media (scripting: none), (prefers-reduced-motion: reduce) {
-  [data-scene-story-item],
+  [data-home-caption],
   [data-scene-story-media],
-  [data-scene-heading-item],
   [data-scene-card] {
     visibility: visible !important;
     opacity: 1 !important;

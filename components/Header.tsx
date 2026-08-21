@@ -40,7 +40,7 @@ function rottaAttiva(percorso: string, rotta: string) {
  * mentre il burger apre il livello esteso con ancore e percorsi secondari.
  */
 export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
-  const { aperto, commuta, chiudi } = useMenu();
+  const { aperto, commuta, chiudi, preparaRitornoHome } = useMenu();
   const percorso = usePathname();
   const riduciMovimento = useReducedMotion();
   const { scrollY } = useScroll();
@@ -142,6 +142,7 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
         >
           <Link
             href="/"
+            onNavigate={preparaRitornoHome}
             aria-label="Delsigel, home"
             className="site-nav-logo col-start-1 flex h-12 items-center rounded-full px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fucsia sm:px-[18px]"
           >
@@ -153,7 +154,11 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
             />
           </Link>
 
-          <DesktopNavigation percorso={percorso} inert={aperto} />
+          <DesktopNavigation
+            percorso={percorso}
+            inert={aperto}
+            preparaRitornoHome={preparaRitornoHome}
+          />
 
           <button
             ref={comando}
@@ -238,6 +243,9 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
                         <Link
                           href={rotta}
                           onClick={chiudi}
+                          onNavigate={
+                            rotta === "/" ? preparaRitornoHome : undefined
+                          }
                           aria-current={attiva ? "page" : undefined}
                           data-active={attiva || undefined}
                           className="hero-menu-voce type-hero block w-fit py-[0.055em] text-[clamp(2rem,9.3vw,4.1rem)] sm:text-[clamp(2.35rem,9vw,4.1rem)] lg:text-[clamp(3rem,5vw,5.4rem)]"
@@ -316,9 +324,11 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
 function DesktopNavigation({
   percorso,
   inert,
+  preparaRitornoHome,
 }: {
   percorso: string;
   inert: boolean;
+  preparaRitornoHome: () => void;
 }) {
   return (
     <nav
@@ -332,6 +342,7 @@ function DesktopNavigation({
           <Link
             key={voce}
             href={rotta}
+            onNavigate={rotta === "/" ? preparaRitornoHome : undefined}
             aria-current={attiva ? "page" : undefined}
             data-active={attiva || undefined}
             className="site-nav-link font-ui inline-flex h-10 items-center whitespace-nowrap rounded-full px-[clamp(0.7rem,1.15vw,1.2rem)] text-[11px] font-bold uppercase tracking-[0.045em] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-fucsia"

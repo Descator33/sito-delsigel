@@ -5,12 +5,19 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
 import { usePathname } from "next/navigation";
 import { lenisAttivo } from "@/components/SmoothScroll";
+import {
+  heroGiaVisitata,
+  marcaDocumentoDiRitorno,
+  ricordaHeroVisitata,
+} from "@/lib/hero-visita";
 
 /**
  * Lo stato del menu, sopra tutta l'applicazione (2026-08-12).
@@ -32,6 +39,8 @@ type Menu = {
   aperto: boolean;
   commuta: () => void;
   chiudi: () => void;
+  heroDiRitorno: boolean;
+  preparaRitornoHome: () => void;
 };
 
 const Contesto = createContext<Menu | null>(null);
@@ -44,6 +53,83 @@ export function useMenu(): Menu {
 
 export function MenuProvider({ children }: { children: ReactNode }) {
   const percorso = usePathname();
+  const [heroDiRitorno, setHeroDiRitorno] = useState(false);
+  const homeVisitata = useRef(false);
+  const percorsoIniziale = useRef(percorso);
+  const percorsoPrecedente = useRef(percorso);
+  const visitataPrimaDelDocumento = useRef<boolean | null>(null);
+
+  const attivaHeroDiRitorno = useCallback(() => {
+    homeVisitata.current = true;
+    ricordaHeroVisitata();
+    marcaDocumentoDiRitorno();
+    setHeroDiRitorno(true);
+  }, []);
+
+  /* Sul caricamento completo lo script nel layout ha gia corretto il CSS
+     prima del paint; qui si riallinea lo stato React. Il ref conserva il
+     valore letto all'avvio anche nel doppio giro degli effect in StrictMode:
+     la scrittura della prima visita non puo trasformarla subito in ritorno. */
+  useLayoutEffect(() => {
+    if (visitataPrimaDelDocumento.current === null) {
+      visitataPrimaDelDocumento.current = heroGiaVisitata();
+    }
+
+    if (visitataPrimaDelDocumento.current) {
+      attivaHeroDiRitorno();
+    } else if (percorsoIniziale.current === "/") {
+      homeVisitata.current = true;
+      ricordaHeroVisitata();
+    }
+  }, [attivaHeroDiRitorno]);
+
+  /* Il provider vive nel root layout: vede la Home andare via prima che
+     torni. Se invece la prima pagina della scheda e una route interna, la
+     prima vera apertura della Home conserva regolarmente la moviescroller. */
+  useLayoutEffect(() => {
+    const precedente = percorsoPrecedente.current;
+
+    if (percorso === "/") {
+      if (!homeVisitata.current) {
+        homeVisitata.current = true;
+        ricordaHeroVisitata();
+      } else if (precedente !== "/") {
+        attivaHeroDiRitorno();
+      }
+    } else if (precedente === "/" && homeVisitata.current) {
+      attivaHeroDiRitorno();
+    }
+
+    percorsoPrecedente.current = percorso;
+  }, [attivaHeroDiRitorno, percorso]);
+
+  /* Catalogo e le altre ancore vivono dentro `/`: usePathname non vede il
+     fragmento e la Hero non si rimonta. I link Home chiamano questa azione
+     soltanto quando stanno davvero riportando l'utente all'inizio. */
+  const preparaRitornoHome = useCallback(() => {
+    if (!homeVisitata.current) return;
+    const staTornando =
+      window.location.pathname !== "/" ||
+      window.location.hash !== "" ||
+      window.scrollY > 1;
+    if (staTornando) attivaHeroDiRitorno();
+  }, [attivaHeroDiRitorno]);
+
+  /* Copre anche Indietro del browser da /#catalogo a `/`, dove non passa
+     alcun Link e il pathname resta invariato. */
+  useEffect(() => {
+    const dallaCronologia = () => {
+      if (
+        homeVisitata.current &&
+        window.location.pathname === "/" &&
+        window.location.hash === ""
+      ) {
+        attivaHeroDiRitorno();
+      }
+    };
+    window.addEventListener("popstate", dallaCronologia);
+    return () => window.removeEventListener("popstate", dallaCronologia);
+  }, [attivaHeroDiRitorno]);
 
   /* Lo stato non è "aperto sì/no" ma "su quale pagina è stato aperto".
      Costa una riga in più e ne risparmia un effetto: il provider vive nel
@@ -95,7 +181,10 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     };
   }, [aperto]);
 
-  const valore = useMemo(() => ({ aperto, commuta, chiudi }), [aperto, commuta, chiudi]);
+  const valore = useMemo(
+    () => ({ aperto, commuta, chiudi, heroDiRitorno, preparaRitornoHome }),
+    [aperto, commuta, chiudi, heroDiRitorno, preparaRitornoHome],
+  );
 
   return <Contesto.Provider value={valore}>{children}</Contesto.Provider>;
 }

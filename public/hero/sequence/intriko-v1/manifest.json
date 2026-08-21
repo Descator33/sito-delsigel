@@ -1,0 +1,23 @@
+{
+  "version": "intriko-v1",
+  "source": "kling_20260821_VIDEO_8_second_p_4720_0.mp4",
+  "sourceFrames": 145,
+  "excludedSourceFrame": 144,
+  "endFrame": "/hero/hero-intriko-vortice.webp",
+  "variants": {
+    "desktop": {
+      "frames": 90,
+      "fps": 15,
+      "width": 1920,
+      "height": 1080,
+      "format": "webp"
+    },
+    "mobile": {
+      "frames": 72,
+      "fps": 12,
+      "width": 810,
+      "height": 1440,
+      "format": "webp"
+    }
+  }
+}

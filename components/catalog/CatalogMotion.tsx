@@ -11,10 +11,9 @@ import {
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const ELEMENTO: Variants = {
-  nascosta: { opacity: 0, y: 28 },
+  nascosta: { y: "115%" },
   visibile: {
-    opacity: 1,
-    y: 0,
+    y: "0%",
     transition: { duration: 0.72, ease: EASE },
   },
 };
@@ -57,14 +56,15 @@ export function CatalogRevealSequence({
       viewport={{ once: true, amount: 0.24 }}
     >
       {elementi.map((elemento, indice) => (
-        <motion.div
+        <div
           key={indice}
-          data-catalog-motion="reveal"
-          className={classiElementi[indice]}
-          variants={ELEMENTO}
+          data-home-caption-mask
+          className={`overflow-hidden ${classiElementi[indice] ?? ""}`}
         >
-          {elemento}
-        </motion.div>
+          <motion.div data-catalog-motion="reveal" variants={ELEMENTO}>
+            {elemento}
+          </motion.div>
+        </div>
       ))}
     </motion.div>
   );
@@ -88,8 +88,8 @@ export function CatalogSurfaceReveal({
     <motion.div
       className={className}
       data-catalog-motion="surface"
-      initial={{ opacity: 0, x, y: 18 }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      initial={{ x, y: 18 }}
+      whileInView={{ x: 0, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}
       transition={{ duration: 0.78, delay: ritardo, ease: EASE }}
     >

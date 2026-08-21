@@ -7,8 +7,13 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight } from "lucide-react";
-import { Reveal } from "@/components/Reveal";
 import { useScatto } from "@/lib/useScatto";
+import {
+  abilitaInterattiviCaption,
+  aggiungiCaptionHome,
+  preparaCaptionHome,
+  raccogliCaptionHome,
+} from "@/lib/home-caption-reveal";
 import { Scintilla } from "@/components/catalog/salati/DecorativeDoodles";
 import { ConveyorBelt } from "./ConveyorBelt";
 import {
@@ -78,104 +83,141 @@ export function ConfiguratorTeaser({
 
       const mm = gsap.matchMedia();
       mm.add(
-        "(prefers-reduced-motion: no-preference) and (min-height: 700px)",
-        () => {
-          const banco = scope.querySelector<HTMLElement>(
-            "[data-teaser-banco]",
+        {
+          movimento: "(prefers-reduced-motion: no-preference)",
+          alto: "(min-height: 700px)",
+        },
+        (contesto) => {
+          const condizioni = contesto.conditions as {
+            movimento: boolean;
+            alto: boolean;
+          };
+          const testa = scope.querySelector<HTMLElement>(
+            "[data-teaser-caption-header]",
           );
-          const pezzi = gsap.utils.toArray<HTMLElement>(
-            "[data-teaser-pezzo]",
-            scope,
+          const coda = scope.querySelector<HTMLElement>(
+            "[data-teaser-caption-tail]",
           );
-          const scintille = gsap.utils.toArray<HTMLElement>(
-            "[data-teaser-scintilla]",
-            scope,
-          );
+          const captionTesta = testa ? raccogliCaptionHome(testa) : null;
+          const captionCoda = coda ? raccogliCaptionHome(coda) : null;
 
-          if (banco && pezzi.length) {
-            /* Lo scrub non è agganciato al banco ma al BLOCCO: parte
-               quando la scena si ferma a schermo pieno (top top). */
-            const tl = gsap.timeline({
-              defaults: { ease: "none" },
-              scrollTrigger: {
-                trigger: scope,
-                start: "top top",
-                /* 55% della sosta al racconto, il resto alla scena
-                   compiuta: l'ultimo stato resta leggibile. */
-                end: "+=55%",
-                scrub: 0.5,
-                invalidateOnRefresh: true,
-              },
-            });
+          if (!captionTesta || !captionCoda) return;
+          if (!condizioni.movimento) {
+            abilitaInterattiviCaption(captionCoda, true);
+            return;
+          }
 
-            /* I pezzi si posano uno dopo l'altro: il dolce finito arriva
-               per ultimo, nel verso del racconto. */
-            pezzi.forEach((pezzo, i) => {
-              const arrivo = ARRIVI[i % ARRIVI.length];
-              tl.fromTo(
-                pezzo,
-                {
-                  x: arrivo.x,
-                  y: arrivo.y,
-                  rotation: arrivo.rotazione,
-                  scale: 0.9,
-                  autoAlpha: 0,
-                },
-                {
-                  x: 0,
-                  y: 0,
-                  rotation: 0,
-                  scale: 1,
-                  autoAlpha: 1,
-                  duration: 0.62,
-                  ease: "power2.out",
-                },
-                i * 0.14,
-              );
-            });
+          preparaCaptionHome(captionTesta);
+          preparaCaptionHome(captionCoda);
+          abilitaInterattiviCaption(captionCoda, false);
 
-            if (scintille.length) {
-              tl.fromTo(
-                scintille,
-                { scale: 0.3, autoAlpha: 0 },
-                {
-                  scale: 1,
-                  autoAlpha: 1,
-                  duration: 0.2,
-                  stagger: 0.06,
-                  ease: "back.out(2)",
+          const timelineTesta = gsap.timeline({
+            scrollTrigger: {
+              trigger: scope,
+              start: "top 88%",
+              end: "top 28%",
+              scrub: window.matchMedia("(pointer: coarse)").matches
+                ? true
+                : 0.45,
+              invalidateOnRefresh: true,
+            },
+          });
+          aggiungiCaptionHome(timelineTesta, captionTesta);
+
+          const timelineCoda = gsap.timeline({
+            scrollTrigger: {
+              trigger: scope,
+              start: "top 48%",
+              end: "top 8%",
+              scrub: window.matchMedia("(pointer: coarse)").matches
+                ? true
+                : 0.42,
+              invalidateOnRefresh: true,
+              onUpdate: ({ progress }) =>
+                abilitaInterattiviCaption(captionCoda, progress >= 0.72),
+            },
+          });
+          aggiungiCaptionHome(timelineCoda, captionCoda);
+
+          if (condizioni.alto) {
+            const banco = scope.querySelector<HTMLElement>(
+              "[data-teaser-banco]",
+            );
+            const pezzi = gsap.utils.toArray<HTMLElement>(
+              "[data-teaser-pezzo]",
+              scope,
+            );
+            const scintille = gsap.utils.toArray<HTMLElement>(
+              "[data-teaser-scintilla]",
+              scope,
+            );
+
+            if (banco && pezzi.length) {
+              /* Lo scrub non è agganciato al banco ma al BLOCCO: parte
+                 quando la scena si ferma a schermo pieno (top top). */
+              const tl = gsap.timeline({
+                defaults: { ease: "none" },
+                scrollTrigger: {
+                  trigger: scope,
+                  start: "top top",
+                  /* 55% della sosta al racconto, il resto alla scena
+                     compiuta: l'ultimo stato resta leggibile. */
+                  end: "+=55%",
+                  scrub: 0.5,
+                  invalidateOnRefresh: true,
                 },
-                0.78,
-              );
+              });
+
+              /* I pezzi si posano uno dopo l'altro: il dolce finito arriva
+                 per ultimo, nel verso del racconto. */
+              pezzi.forEach((pezzo, i) => {
+                const arrivo = ARRIVI[i % ARRIVI.length];
+                tl.fromTo(
+                  pezzo,
+                  {
+                    x: arrivo.x,
+                    y: arrivo.y,
+                    rotation: arrivo.rotazione,
+                    scale: 0.9,
+                    autoAlpha: 0,
+                  },
+                  {
+                    x: 0,
+                    y: 0,
+                    rotation: 0,
+                    scale: 1,
+                    autoAlpha: 1,
+                    duration: 0.62,
+                    ease: "power2.out",
+                  },
+                  i * 0.14,
+                );
+              });
+
+              if (scintille.length) {
+                tl.fromTo(
+                  scintille,
+                  { scale: 0.3, autoAlpha: 0 },
+                  {
+                    scale: 1,
+                    autoAlpha: 1,
+                    duration: 0.2,
+                    stagger: 0.06,
+                    ease: "back.out(2)",
+                  },
+                  0.78,
+                );
+              }
             }
           }
 
-          /* Tappe e CTA: un'entrata sola, non in scrub. */
-          const coda = gsap.utils.toArray<HTMLElement>(
-            "[data-teaser-coda]",
-            scope,
-          );
-          if (coda.length) {
-            gsap.from(coda, {
-              autoAlpha: 0,
-              y: 20,
-              duration: 0.6,
-              stagger: 0.08,
-              ease: "power2.out",
-              /* La coda entra quando la scena è arrivata in campo. */
-              scrollTrigger: {
-                trigger: scope,
-                start: "top 45%",
-                once: true,
-              },
-            });
-          }
+          return () => abilitaInterattiviCaption(captionCoda, true);
         },
       );
 
       return () => mm.revert();
     },
-    { scope: radice }
+    { scope: radice },
   );
 
   return (
@@ -193,25 +235,47 @@ export function ConfiguratorTeaser({
         className="teaser-quinta sticky top-0 mx-auto flex h-svh max-w-[1800px] flex-col items-center justify-center overflow-x-clip px-6 py-[clamp(2rem,4vh,4rem)] md:px-12"
       >
         {/* ------------------------------ INSEGNA ------------------------------ */}
-        <header className="mx-auto max-w-[60rem] text-center">
-          <p className="text-[clamp(11px,0.8vw,13px)] font-bold uppercase tracking-[0.3em] text-mandarino">
-            Il configuratore
-          </p>
+        <header
+          data-teaser-caption-header
+          className="mx-auto max-w-[60rem] text-center"
+        >
+          <div data-home-caption-mask className="overflow-hidden">
+            <p
+              data-home-caption="eyebrow"
+              className="text-[clamp(11px,0.8vw,13px)] font-bold uppercase tracking-[0.3em] text-mandarino"
+            >
+              Il configuratore
+            </p>
+          </div>
           <h2
             id={titoloId}
             className="font-pop mt-[clamp(0.8rem,2vh,1.6rem)] text-[clamp(3.2rem,min(11vw,15vh),9rem)] font-normal uppercase leading-[0.87] tracking-[-0.02em]"
           >
-            <Reveal className="text-cacao">Crea il tuo</Reveal>
-            <Reveal delay={0.08} className="text-mandarino">
-              dolce.
-            </Reveal>
+            <span
+              data-home-caption-mask
+              className="block overflow-hidden pb-[0.05em] text-cacao"
+            >
+              <span data-home-caption="title" className="block">
+                Crea il tuo
+              </span>
+            </span>
+            <span
+              data-home-caption-mask
+              className="block overflow-hidden pb-[0.05em] text-mandarino"
+            >
+              <span data-home-caption="title" className="block">
+                dolce.
+              </span>
+            </span>
           </h2>
           <p className="mx-auto mt-[clamp(1rem,2.4vh,2rem)] max-w-[46ch] text-[clamp(1rem,1.25vw,1.35rem)] font-medium leading-[1.55] text-cacao/80">
-            <Reveal delay={0.18}>
-              Scegli base, crema, topping e dettagli. Con il nostro configuratore
-              componi il tuo dolce ideale in pochi step. Tutto online, tutto su
-              misura, tutto tuo.
-            </Reveal>
+            <span data-home-caption-mask className="block overflow-hidden">
+              <span data-home-caption="copy" className="block">
+                Scegli base, crema, topping e dettagli. Con il nostro
+                configuratore componi il tuo dolce ideale in pochi step. Tutto
+                online, tutto su misura, tutto tuo.
+              </span>
+            </span>
           </p>
         </header>
 
@@ -298,44 +362,56 @@ export function ConfiguratorTeaser({
         </div>
 
         {/* ------------------------- LE TAPPE, IN BREVE ------------------------ */}
-        <ol
-          id={ANCORA_PERCORSO}
-          className="mx-auto mt-[clamp(1.8rem,4vh,3.4rem)] grid w-full max-w-[72rem] scroll-mt-28 grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4"
-        >
-          {PERCORSO.map((tappa) => (
-            <li
-              key={tappa.numero}
-              data-teaser-coda
-              className="flex items-start gap-3"
-            >
-              <span
-                aria-hidden
-                className="mt-[3px] h-2.5 w-2.5 flex-none rounded-full"
-                style={{ background: tappa.colore }}
-              />
-              <p className="text-[clamp(13px,0.95vw,15px)] font-medium leading-snug text-cacao/80">
-                <span className="font-bold text-cacao">{tappa.numero}</span>
-                <span className="mx-2 text-cacao/35">·</span>
-                {tappa.titolo}
-              </p>
-            </li>
-          ))}
-        </ol>
-
-        {/* -------------------------------- CTA -------------------------------- */}
-        <div data-teaser-coda className="mt-[clamp(1.8rem,3.6vh,3rem)] flex justify-center">
-          <Link
-            href={DESTINAZIONE_CONFIGURATORE}
-            className="cta-azione teaser-cta group flex min-h-[3.6rem] items-center justify-between gap-4 rounded-full bg-inchiostro py-[0.3rem] pl-[clamp(1.4rem,1.8vw,2rem)] pr-[0.3rem] text-[clamp(10px,0.75vw,12px)] font-bold uppercase leading-none tracking-[0.08em] text-panna"
+        <div data-teaser-caption-tail className="w-full">
+          <ol
+            id={ANCORA_PERCORSO}
+            className="mx-auto mt-[clamp(1.8rem,4vh,3.4rem)] grid w-full max-w-[72rem] scroll-mt-28 grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4"
           >
-            Configura il tuo dolce
-            <span
-              aria-hidden
-              className="grid h-[clamp(2.5rem,2.7vw,2.9rem)] w-[clamp(2.5rem,2.7vw,2.9rem)] flex-none place-items-center rounded-full bg-panna text-inchiostro"
-            >
-              <ArrowRight strokeWidth={1.8} className="h-[1.05rem] w-[1.05rem]" />
-            </span>
-          </Link>
+            {PERCORSO.map((tappa) => (
+              <li
+                key={tappa.numero}
+                data-home-caption-mask
+                className="overflow-hidden"
+              >
+                <div data-home-caption="copy" className="flex items-start gap-3">
+                  <span
+                    aria-hidden
+                    className="mt-[3px] h-2.5 w-2.5 flex-none rounded-full"
+                    style={{ background: tappa.colore }}
+                  />
+                  <p className="text-[clamp(13px,0.95vw,15px)] font-medium leading-snug text-cacao/80">
+                    <span className="font-bold text-cacao">{tappa.numero}</span>
+                    <span className="mx-2 text-cacao/35">·</span>
+                    {tappa.titolo}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* -------------------------------- CTA -------------------------------- */}
+          <div
+            data-home-caption-mask
+            className="mt-[clamp(1.8rem,3.6vh,3rem)] flex justify-center overflow-hidden"
+          >
+            <div data-home-caption="cta">
+              <Link
+                href={DESTINAZIONE_CONFIGURATORE}
+                className="cta-azione teaser-cta group flex min-h-[3.6rem] items-center justify-between gap-4 rounded-full bg-inchiostro py-[0.3rem] pl-[clamp(1.4rem,1.8vw,2rem)] pr-[0.3rem] text-[clamp(10px,0.75vw,12px)] font-bold uppercase leading-none tracking-[0.08em] text-panna"
+              >
+                Configura il tuo dolce
+                <span
+                  aria-hidden
+                  className="grid h-[clamp(2.5rem,2.7vw,2.9rem)] w-[clamp(2.5rem,2.7vw,2.9rem)] flex-none place-items-center rounded-full bg-panna text-inchiostro"
+                >
+                  <ArrowRight
+                    strokeWidth={1.8}
+                    className="h-[1.05rem] w-[1.05rem]"
+                  />
+                </span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>

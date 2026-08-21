@@ -71,3 +71,14 @@ next-env.d.ts
 # sono ~4,5 MB che nella storia del repo non tornerebbero mai utili —
 # stessa regola del footage in public/.
 /assets/hero/
+
+# Frame sorgente 4K della moviescroller: nessun import lo tocca, i webp
+# serviti stanno in public/hero/sequence/. Stessa regola di /assets/hero/.
+/public/hero/hero-intriko-video-start-4k.png
+
+# Footage e stati di lavorazione della hero (master Kling ecc.): si
+# rigenerano dal footage originale, non da git.
+/tmp/
+
+# Script usa-e-getta di diagnosi: vivono solo il tempo di un'indagine.
+/scripts/tmp-*.mjs

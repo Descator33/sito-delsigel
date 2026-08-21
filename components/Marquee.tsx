@@ -1,5 +1,5 @@
 const STRIP =
-  "Delsigel / L'industria artigianale / Innovativa e buona per tutti / Dal 2011 / ";
+  "Delsigel / L'industria artigianale / Innovazione e Tradizione / Dal 2011 / ";
 
 /** L'unica fascia a scorrimento infinito della pagina: acido, bordata d'inchiostro. */
 export function Marquee() {

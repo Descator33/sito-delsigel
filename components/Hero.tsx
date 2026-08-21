@@ -1,8 +1,15 @@
 "use client";
 
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useCallback, useEffect, useRef, type ReactNode } from "react";
 import { animate, motion, useMotionValue, useReducedMotion } from "motion/react";
 import { ArrowDown } from "lucide-react";
+import {
+  HeroFrameSequence,
+  type HeroFrameSequenceHandle,
+} from "@/components/HeroFrameSequence";
 import { LogoStorico } from "@/components/LogoStorico";
 import { useMenu } from "@/components/MenuStato";
 import { lenisAttivo } from "@/components/SmoothScroll";
@@ -13,6 +20,8 @@ import {
   finestraHero,
 } from "@/lib/hero-finestra";
 
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 /**
  * Hero "Vortice Intriko" (2026-08-20).
  *
@@ -22,67 +31,48 @@ import {
  * Delsigel sopra l'insegna, poi copy e invito — tutti in HTML, mai
  * stampati nel raster, così marchio e parole restano esatti.
  *
- * Anche il telefono ha una regia propria: il prodotto vive nella metà alta
- * e il set scende nel cacao per lasciare un campo leggibile alla copy. Non
- * è il ritaglio del desktop. Il `<picture>` sceglie quattro esportazioni:
+ * La prima visita è una moviescroller: 90 WebP desktop o 72 mobile, sempre
+ * con una finestra decodificata piccola in memoria. Lo scroll allarga la
+ * macro fino al set completo; l'ultimo frame del video non viene servito.
+ * Al suo posto entra, con una maschera, il `<picture>` approvato:
  *
  *   orizzontale  1920×1080 (148 KB)  ·  3840×2160 (382 KB)
  *   verticale    1080×1920 (107 KB)  ·  2160×3840 (279 KB)
  *
- * Per questo qui c'è un `<picture>` e non `next/image`: ritaglio per
- * media query e `srcSet` a densità, che `next/image` non lascia scrivere
- * (genera il suo, per larghezze). Non serve nemmeno l'ottimizzatore — i
- * quattro webp sono già tarati a mano, e ripassarli vorrebbe dire
- * ricomprimerli. `fetchPriority="high"` perché è l'elemento LCP: sta in
- * cima all'HTML, il preload scanner lo trova subito.
+ * Il frame iniziale della sequenza è l'LCP. Il picture finale usa ritaglio
+ * e `srcSet` a densità; i quattro WebP sono già tarati a mano e non vanno
+ * ricompressi dall'ottimizzatore.
  */
 export const HERO_IMAGE = "/hero/hero-intriko-vortice.webp";
 export const HERO_IMAGE_2X = "/hero/hero-intriko-vortice@2x.webp";
 export const HERO_IMAGE_VERT = "/hero/hero-intriko-vortice-mobile.webp";
 export const HERO_IMAGE_VERT_2X = "/hero/hero-intriko-vortice-mobile@2x.webp";
 
-const MOLLA = [0.22, 1, 0.36, 1] as const;
-
 /** dove porta l'invito: il primo capitolo della gamma, in Home */
 const DESTINAZIONE = "catalogo";
 
-/* Le quattro righe entrano scaglionate da sotto una finestra ritagliata;
-   descrizione e invito le seguono a distanza fissa. */
-const ATTESA_RIGA = 0.12;
-const PASSO_RIGA = 0.075;
-const ATTESA_DESCRIZIONE = ATTESA_RIGA + 3 * PASSO_RIGA + 0.15;
-const ATTESA_INVITO = ATTESA_DESCRIZIONE + 0.1;
-
 /** riga dell'insegna: la maschera sta sul blocco, il testo ci sale dentro.
  *  `data-hero-uscita` resta sulla maschera come aggancio stabile per
- *  eventuali regie esterne, senza contendere a Motion il nodo animato. */
+ *  la timeline scroll-driven. Nessuna riga usa dissolvenze. */
 function Riga({
   indice,
   accento,
-  ridotto,
   children,
 }: {
   indice: number;
   accento?: boolean;
-  ridotto: boolean | null;
   children: ReactNode;
 }) {
   return (
     <span className="block overflow-hidden pb-[0.06em]" data-hero-uscita={indice}>
-      <motion.span
+      <span
+        data-hero-caption
         className={`block ${
           accento ? "text-corallo" : "text-hero-panna orizzontale:text-cacao"
         }`}
-        initial={ridotto ? false : { y: "45%", opacity: 0 }}
-        animate={{ y: "0%", opacity: 1 }}
-        transition={{
-          duration: 0.8,
-          delay: ATTESA_RIGA + indice * PASSO_RIGA,
-          ease: MOLLA,
-        }}
       >
         {children}
-      </motion.span>
+      </span>
     </span>
   );
 }
@@ -132,10 +122,16 @@ function inQuadro(r: DOMRect) {
 
 export function Hero() {
   const ridotto = useReducedMotion();
-  const { aperto } = useMenu();
+  const { aperto, heroDiRitorno } = useMenu();
+  const heroStatica = Boolean(ridotto) || heroDiRitorno;
 
-  const sezione = useRef<HTMLElement>(null);
+  const racconto = useRef<HTMLElement>(null);
+  const palco = useRef<HTMLDivElement>(null);
   const finestra = useRef<HTMLDivElement>(null);
+  const sequenza = useRef<HeroFrameSequenceHandle>(null);
+  const frameFinale = useRef<HTMLDivElement>(null);
+  const invito = useRef<HTMLButtonElement>(null);
+  const progressoScroll = useRef(0);
 
   /* IL RETTANGOLO DELLA FINESTRA, come quattro valori animati.
      Non si anima il nodo con `animate(elemento, …)`: Motion terrebbe quei
@@ -156,8 +152,155 @@ export function Hero() {
   /** serve solo alla comparsa e alla sparizione fuori campo */
   const trasparenza = useMotionValue(1);
 
+  /* La timeline possiede soltanto il playhead, le maschere della still e
+     le trasformazioni delle caption. Motion resta l'unico proprietario
+     del rettangolo della finestra usato dal menu. */
+  useGSAP(
+    () => {
+      const track = racconto.current;
+      const finale = frameFinale.current;
+      if (!track || !finale) return;
+
+      const righe = gsap.utils.toArray<HTMLElement>("[data-hero-caption]", track);
+      const logo = track.querySelector<HTMLElement>("[data-hero-caption-logo]");
+      const descrizione = gsap.utils.toArray<HTMLElement>(
+        "[data-hero-caption-copy]",
+        track,
+      );
+      const cta = track.querySelector<HTMLElement>("[data-hero-caption-cta]");
+      const cue = track.querySelector<HTMLElement>("[data-hero-scroll-cue]");
+      const barra = track.querySelector<HTMLElement>("[data-hero-progress]");
+
+      if (heroStatica) {
+        progressoScroll.current = 1;
+        gsap.set(finale, { clipPath: "inset(0 0 0 0)" });
+        gsap.set([logo, ...righe, ...descrizione, cta].filter(Boolean), {
+          transform: "none",
+        });
+        if (barra) gsap.set(barra, { scaleX: 1 });
+        if (invito.current) invito.current.tabIndex = 0;
+        return;
+      }
+
+      const playhead = { valore: 0 };
+      gsap.set(finale, { clipPath: "inset(0 100% 0 0)" });
+      if (logo) gsap.set(logo, { transform: "translateY(115%)" });
+      gsap.set(righe, { transform: "translateY(165%)" });
+      gsap.set(descrizione, { transform: "translateY(115%)" });
+      if (cta) gsap.set(cta, { transform: "translateX(-110%)" });
+      if (barra) gsap.set(barra, { scaleX: 0, transformOrigin: "left center" });
+
+      const timeline = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: track,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.12,
+          invalidateOnRefresh: true,
+          onUpdate: ({ progress }) => {
+            progressoScroll.current = progress;
+            if (invito.current) {
+              invito.current.tabIndex = progress >= 0.93 ? 0 : -1;
+            }
+          },
+        },
+      });
+
+      timeline
+        .to(
+          playhead,
+          {
+            valore: 1,
+            duration: 0.7,
+            onUpdate: () => sequenza.current?.mostra(playhead.valore),
+          },
+          0,
+        )
+        .to(
+          cue,
+          { yPercent: 155, duration: 0.055, ease: "power3.in" },
+          0.025,
+        )
+        .to(barra, { scaleX: 1, duration: 1 }, 0)
+        /* È la still approvata a chiudere il film. Entra a tendina: nessuna
+           dissolvenza e nessun uso dell'ultimo frame Kling. */
+        .to(
+          finale,
+          {
+            clipPath: "inset(0 0% 0 0)",
+            duration: 0.045,
+            ease: "power2.inOut",
+          },
+          0.7,
+        );
+
+      if (logo) {
+        timeline.to(
+          logo,
+          { transform: "translateY(0%)", duration: 0.055, ease: "power3.out" },
+          0.755,
+        );
+      }
+      timeline.to(
+        righe,
+        {
+          transform: "translateY(0%)",
+          duration: 0.06,
+          stagger: 0.02,
+          ease: "power3.out",
+        },
+        0.79,
+      );
+      timeline.to(
+        descrizione,
+        {
+          transform: "translateY(0%)",
+          duration: 0.055,
+          stagger: 0.018,
+          ease: "power3.out",
+        },
+        0.89,
+      );
+      if (cta) {
+        timeline.to(
+          cta,
+          { transform: "translateX(0%)", duration: 0.06, ease: "power3.out" },
+          0.94,
+        );
+      }
+
+      sequenza.current?.mostra(0);
+    },
+    { scope: racconto, dependencies: [heroStatica], revertOnUpdate: true },
+  );
+
+  /* Quando il ritorno avviene dentro la stessa pagina (Catalogo -> Home),
+     la track passa da 440/400svh a un viewport. Le scene successive devono
+     ricalcolare i propri punti dopo che layout e scroll si sono assestati. */
   useEffect(() => {
-    const sez = sezione.current;
+    if (!heroDiRitorno) return;
+    let secondoFrame = 0;
+    const primoFrame = requestAnimationFrame(() => {
+      secondoFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+    return () => {
+      cancelAnimationFrame(primoFrame);
+      cancelAnimationFrame(secondoFrame);
+    };
+  }, [heroDiRitorno]);
+
+  /* Il CTA non deve ricevere focus mentre è ancora sotto la maschera; il
+     menu può aprirsi e chiudersi senza muovere lo scroll, quindi riallinea
+     qui il tabindex anche in assenza di un nuovo update di ScrollTrigger. */
+  useEffect(() => {
+    if (!invito.current) return;
+    invito.current.tabIndex =
+      aperto || (!heroStatica && progressoScroll.current < 0.93) ? -1 : 0;
+  }, [aperto, heroStatica]);
+
+  useEffect(() => {
+    const sez = palco.current;
     const fin = finestra.current;
     if (!sez || !fin) return;
 
@@ -333,47 +476,60 @@ export function Hero() {
 
   return (
     <section
-      ref={sezione}
+      ref={racconto}
+      data-hero-static={heroDiRitorno || undefined}
       /* niente `isolate`: creerebbe un contesto di impilamento e la
          finestra fissa, per quanto alta, resterebbe sotto il pannello del
          menu. Il z-index se lo prende lei quando serve. */
-      className="relative min-h-[100svh] w-full overflow-hidden bg-cacao"
+      className="hero-scroll-track relative w-full bg-cacao"
     >
-      <motion.div
-        ref={finestra}
-        data-compatta={aperto || undefined}
-        /* `absolute` senza `inset-0`: il rettangolo lo dicono i quattro
-           valori qui sotto, che a riposo valgono per l'appunto inset 0 */
-        style={{
-          opacity: trasparenza,
-          top: alto,
-          left: sinistra,
-          width: larghezza,
-          height: altezza,
-        }}
-        className="hero-finestra absolute overflow-hidden"
-      >
+      <div ref={palco} className="hero-scroll-stage sticky top-0 h-[100svh] w-full">
+        <motion.div
+          ref={finestra}
+          data-compatta={aperto || undefined}
+          /* `absolute` senza `inset-0`: il rettangolo lo dicono i quattro
+             valori qui sotto, che a riposo valgono per l'appunto inset 0 */
+          style={{
+            opacity: trasparenza,
+            top: alto,
+            left: sinistra,
+            width: larghezza,
+            height: altezza,
+          }}
+          className="hero-finestra absolute overflow-hidden"
+        >
         {/* Lo scatto. Il ritaglio non è uno solo: su schermi larghi sta al
             centro (la fotografia è 16:9, il taglio è minimo), in verticale
             si sposta sul soggetto — vedi `.hero-scatto` in globals.css. */}
-        <div className="hero-scatto">
-          <picture>
-            {/* la stessa soglia 5/4 delle varianti `verticale:`/`orizzontale:` */}
-            <source
-              media="(max-aspect-ratio: 5/4)"
-              srcSet={`${HERO_IMAGE_VERT} 1x, ${HERO_IMAGE_VERT_2X} 2x`}
-            />
-            <img
-              src={HERO_IMAGE}
-              srcSet={`${HERO_IMAGE} 1x, ${HERO_IMAGE_2X} 2x`}
-              alt="Intriko, il dolce di punta Delsigel, tra un nastro corallo e un set color cacao."
-              fetchPriority="high"
-              decoding="async"
-              draggable={false}
-              className="hero-foto absolute inset-0 h-full w-full object-cover"
-            />
-          </picture>
-        </div>
+          <div className="hero-scatto">
+            {!heroDiRitorno && (
+              <HeroFrameSequence
+                ref={sequenza}
+                disabilitata={Boolean(ridotto)}
+              />
+            )}
+
+            {/* Non è il frame 145 del video: è il key visual 4K approvato,
+                art-directed anche in verticale. La timeline lo svela a
+                tendina prima di far entrare qualsiasi caption. */}
+            <div ref={frameFinale} className="hero-frame-finale absolute inset-0">
+              <picture>
+                <source
+                  media="(max-aspect-ratio: 5/4)"
+                  srcSet={`${HERO_IMAGE_VERT} 1x, ${HERO_IMAGE_VERT_2X} 2x`}
+                />
+                <img
+                  src={HERO_IMAGE}
+                  srcSet={`${HERO_IMAGE} 1x, ${HERO_IMAGE_2X} 2x`}
+                  alt="Intriko, il dolce di punta Delsigel, tra un nastro corallo e un set color cacao."
+                  fetchPriority={heroDiRitorno ? "high" : "low"}
+                  decoding="async"
+                  draggable={false}
+                  className="hero-foto absolute inset-0 h-full w-full object-cover"
+                />
+              </picture>
+            </div>
+          </div>
 
         {/* velo quasi impercettibile sulla sola colonna del testo */}
         <div
@@ -413,68 +569,53 @@ export function Hero() {
             className="w-full"
             style={{ scale: scala, opacity: velo, transformOrigin: "left bottom" }}
           >
-            <div className="w-fit orizzontale:-translate-y-[7vh]">
-              {/* il marchio apre il blocco: entra per primo, con la stessa
-                  molla delle righe. Bruno storico sul campo crema, panna
-                  quando la copy poggia sul cacao (telefono in piedi). */}
-              <motion.div
-                initial={ridotto ? false : { y: 18, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.7, delay: ATTESA_RIGA * 0.5, ease: MOLLA }}
-                className="mb-6 sm:mb-7"
-              >
-                <LogoStorico
-                  variant="horizontal"
-                  className="h-[26px] text-hero-panna sm:h-[30px] lg:h-[34px] orizzontale:text-bruno"
-                />
-              </motion.div>
+            <div className="w-fit orizzontale:-translate-y-[2vh]">
+              {/* Ogni elemento entra da una maschera: nessuna opacity e
+                  quindi nessuna dissolvenza tipografica. */}
+              <div className="mb-6 overflow-hidden sm:mb-7">
+                <div data-hero-caption-logo>
+                  <LogoStorico
+                    variant="horizontal"
+                    className="h-[26px] text-hero-panna sm:h-[30px] lg:h-[34px] orizzontale:text-bruno"
+                  />
+                </div>
+              </div>
               <h1 className="type-hero text-[clamp(2.3rem,9.6vw,3.4rem)] sm:text-[clamp(2.8rem,6.6vw,4.4rem)] lg:text-[clamp(3.2rem,4.62vw,6rem)]">
-                <Riga indice={0} ridotto={ridotto}>
-                  L&rsquo;industria
+                <Riga indice={0}>L&rsquo;industria</Riga>
+                <Riga indice={1}>artigianale.</Riga>
+                <Riga indice={2} accento>
+                  Innovazione e
                 </Riga>
-                <Riga indice={1} ridotto={ridotto}>
-                  artigianale.
-                </Riga>
-                <Riga indice={2} accento ridotto={ridotto}>
-                  Innovativa e
-                </Riga>
-                <Riga indice={3} accento ridotto={ridotto}>
-                  Buona per{" "}
-                  <br className="sm:hidden" />
-                  tutti.
+                <Riga indice={3} accento>
+                  Tradizione.
                 </Riga>
               </h1>
 
-              {/* i due involucri `data-hero-uscita` (4 e 5): stessi motivi
-                  della maschera delle righe — l'uscita in scrub lavora sul
-                  contenitore, l'entrata di Motion resta sul figlio */}
+              {/* Descrizione e invito arrivano solo dopo la still. */}
               <div data-hero-uscita={4}>
-                <motion.p
-                  initial={ridotto ? false : { y: 18, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{
-                    duration: 0.7,
-                    delay: ATTESA_DESCRIZIONE,
-                    ease: MOLLA,
-                  }}
-                  className="font-ui mt-6 max-w-[320px] text-[15px] font-medium leading-[1.3] tracking-[-0.015em] text-hero-panna sm:mt-7 sm:text-[16px] orizzontale:text-hero-nero"
-                >
-                  Dolci e salati da laboratorio,
-                  <br />
-                  prodotti su scala.
-                  <br />
-                  Catalogo 2026/27.
-                </motion.p>
+                <p className="font-ui mt-6 max-w-[320px] text-[15px] font-medium leading-[1.3] tracking-[-0.015em] text-hero-panna sm:mt-7 sm:text-[16px] orizzontale:text-hero-nero">
+                  <span className="block overflow-hidden">
+                    <span className="block" data-hero-caption-copy>
+                      Dolci e salati da laboratorio,
+                    </span>
+                  </span>
+                  <span className="block overflow-hidden">
+                    <span className="block" data-hero-caption-copy>
+                      prodotti su scala.
+                    </span>
+                  </span>
+                  <span className="block overflow-hidden">
+                    <span className="block" data-hero-caption-copy>
+                      Catalogo 2026/27.
+                    </span>
+                  </span>
+                </p>
               </div>
 
-              <div data-hero-uscita={5}>
-                <motion.div
-                  initial={ridotto ? false : { y: 18, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.7, delay: ATTESA_INVITO, ease: MOLLA }}
-                  className="mt-7 sm:mt-8"
-                >
+              <div className="overflow-hidden" data-hero-uscita={5}>
+                <div data-hero-caption-cta className="mt-7 sm:mt-8">
                   <button
+                    ref={invito}
                     type="button"
                     onClick={scorriAlCatalogo}
                     /* a menu aperto la hero è un'anteprima, non una
@@ -506,12 +647,52 @@ export function Hero() {
                       <ArrowDown size={16} strokeWidth={2.6} />
                     </motion.span>
                   </button>
-                </motion.div>
+                </div>
               </div>
             </div>
           </motion.div>
         </div>
-      </motion.div>
+
+          {/* L'istruzione è letterale, non affidata alla sola icona. Esce
+              scorrendo verso il basso; la barra resta a mostrare quanto
+              manca alla composizione finale. */}
+          <div
+            className="pointer-events-none absolute bottom-[clamp(28px,4vh,52px)] left-1/2 z-20 -translate-x-1/2"
+            aria-hidden="true"
+          >
+            <div
+              data-hero-scroll-cue
+              className="hero-scroll-cue font-ui flex items-center gap-3 whitespace-nowrap rounded-full bg-cacao px-5 py-3 text-[11px] font-extrabold uppercase tracking-[0.11em] text-panna shadow-[0_16px_44px_rgb(43_29_22/0.3)] sm:px-6 sm:text-[12px]"
+            >
+              Scorri fino alla fine
+              <motion.span
+                className="flex"
+                animate={heroStatica ? { y: 0 } : { y: [0, 4, 0] }}
+                transition={
+                  heroStatica
+                    ? { duration: 0 }
+                    : { duration: 1.25, repeat: Infinity, ease: "easeInOut" }
+                }
+              >
+                <ArrowDown size={16} strokeWidth={2.7} />
+              </motion.span>
+            </div>
+          </div>
+          <span className="sr-only">
+            Scorri fino alla fine della sequenza per leggere la presentazione Delsigel.
+          </span>
+
+          <div
+            className="hero-scroll-progress pointer-events-none absolute inset-x-0 bottom-0 z-20 h-1 bg-[rgb(255_248_237/0.28)]"
+            aria-hidden="true"
+          >
+            <span
+              data-hero-progress
+              className="block h-full w-full origin-left scale-x-0 bg-corallo"
+            />
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }

@@ -12,6 +12,12 @@ import {
   type SchedaCatalogo,
 } from "@/components/catalog/ProductBentoGrid";
 import { ProductQuickView } from "@/components/catalog/ProductQuickView";
+import {
+  abilitaInterattiviCaption,
+  aggiungiCaptionHome,
+  preparaCaptionHome,
+  raccogliCaptionHome,
+} from "@/lib/home-caption-reveal";
 
 type ModalitaScena = "desktop" | "mobile" | "compact" | "static";
 
@@ -57,32 +63,29 @@ export function StorySweetsScene({
       const mediaStoria = scope.querySelector<HTMLElement>(
         "[data-scene-story-media]",
       );
-      const elementiStoria = gsap.utils.toArray<HTMLElement>(
-        "[data-scene-story-item]",
-        scope,
-      );
       const trackCatalogo = scope.querySelector<HTMLElement>(
         "[data-scene-catalog-track]",
       );
       const catalogo = scope.querySelector<HTMLElement>(
         "[data-scene-catalog]",
       );
-      const elementiHeading = gsap.utils.toArray<HTMLElement>(
-        "[data-scene-heading-item]",
-        scope,
-      );
       const cards = gsap.utils.toArray<HTMLElement>(
         "[data-scene-card]",
         scope,
       );
+
+      const captionStoria = storia ? raccogliCaptionHome(storia) : null;
+      const captionCatalogo = catalogo ? raccogliCaptionHome(catalogo) : null;
 
       if (
         !trackStoria ||
         !storia ||
         !trackCatalogo ||
         !catalogo ||
-        elementiStoria.length === 0 ||
-        elementiHeading.length === 0 ||
+        !captionStoria ||
+        !captionCatalogo ||
+        captionStoria.tutti.length === 0 ||
+        captionCatalogo.tutti.length === 0 ||
         cards.length !== 7
       ) {
         return;
@@ -113,7 +116,14 @@ export function StorySweetsScene({
 
           scope.dataset.sceneMode = modo;
 
-          if (!condizioni.movimento) return;
+          if (!condizioni.movimento) {
+            abilitaInterattiviCaption(captionStoria, true);
+            return;
+          }
+
+          preparaCaptionHome(captionStoria);
+          preparaCaptionHome(captionCatalogo);
+          abilitaInterattiviCaption(captionStoria, false);
 
           const timelineStoria = gsap.timeline({
             scrollTrigger: {
@@ -125,21 +135,12 @@ export function StorySweetsScene({
                   : "bottom 28%",
               scrub: window.matchMedia("(pointer: coarse)").matches ? true : 0.55,
               invalidateOnRefresh: true,
+              onUpdate: ({ progress }) =>
+                abilitaInterattiviCaption(captionStoria, progress >= 0.28),
             },
           });
 
-          gsap.set(elementiStoria, { autoAlpha: 0, y: 34 });
-          timelineStoria.to(
-            elementiStoria,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.24,
-              stagger: 0.025,
-              ease: "power3.out",
-            },
-            0.03,
-          );
+          aggiungiCaptionHome(timelineStoria, captionStoria, 0.03);
 
           if (mediaStoria) {
             timelineStoria.fromTo(
@@ -156,7 +157,6 @@ export function StorySweetsScene({
           }
 
           if (condizioni.desktop) {
-            gsap.set(elementiHeading, { autoAlpha: 0, y: 32 });
             gsap.set(cards, {
               autoAlpha: 0,
               x: (_indice, card: HTMLElement) => distanzaFuoriSchermo(card),
@@ -167,29 +167,18 @@ export function StorySweetsScene({
             /* L'intestazione appartiene all'ingresso del foglio panna: quando
                il catalogo arriva a coprire la Storia è già leggibile, ma le
                card non sono ancora comparse. */
-            gsap
-              .timeline({
-                scrollTrigger: {
-                  trigger: catalogo,
-                  start: "top bottom",
-                  end: "top top",
-                  scrub: window.matchMedia("(pointer: coarse)").matches
-                    ? true
-                    : 0.5,
-                  invalidateOnRefresh: true,
-                },
-              })
-              .to(
-                elementiHeading,
-                {
-                  autoAlpha: 1,
-                  y: 0,
-                  duration: 0.55,
-                  stagger: 0.08,
-                  ease: "power3.out",
-                },
-                0.25,
-              );
+            const ingressoCatalogo = gsap.timeline({
+              scrollTrigger: {
+                trigger: catalogo,
+                start: "top bottom",
+                end: "top top",
+                scrub: window.matchMedia("(pointer: coarse)").matches
+                  ? true
+                  : 0.5,
+                invalidateOnRefresh: true,
+              },
+            });
+            aggiungiCaptionHome(ingressoCatalogo, captionCatalogo, 0.12);
 
             const timelineCatalogo = gsap.timeline({
               scrollTrigger: {
@@ -257,23 +246,16 @@ export function StorySweetsScene({
               6.15,
             );
           } else {
-            gsap.set(elementiHeading, { autoAlpha: 0, y: 28 });
-            gsap.to(
-              elementiHeading,
-              {
-                autoAlpha: 1,
-                y: 0,
-                stagger: 0.08,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: catalogo,
-                  start: "top 88%",
-                  end: "top 42%",
-                  scrub: 0.45,
-                  invalidateOnRefresh: true,
-                },
+            const ingressoCatalogo = gsap.timeline({
+              scrollTrigger: {
+                trigger: catalogo,
+                start: "top 88%",
+                end: "top 42%",
+                scrub: 0.45,
+                invalidateOnRefresh: true,
               },
-            );
+            });
+            aggiungiCaptionHome(ingressoCatalogo, captionCatalogo);
 
             cards.forEach((card) => {
               const segno = segnoDi(card);
@@ -327,6 +309,7 @@ export function StorySweetsScene({
           ScrollTrigger.refresh();
 
           return () => {
+            abilitaInterattiviCaption(captionStoria, true);
             scope.dataset.sceneMode = "static";
           };
         },
