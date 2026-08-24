@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Marquee } from "@/components/Marquee";
@@ -10,12 +11,22 @@ import { Squadra } from "@/components/chi-siamo/Squadra";
 import { Linea } from "@/components/chi-siamo/Linea";
 import { HistoryJourney } from "@/components/chi-siamo/history/HistoryJourney";
 import type { TeamMember } from "@/components/TeamCard";
+import { dizionario } from "@/lib/i18n/dizionario";
+import { haLingua } from "@/lib/i18n/lingue";
+import { alternatesPer } from "@/lib/i18n/sito";
 
-export const metadata: Metadata = {
-  title: "Chi siamo · Delsigel Italia",
-  description:
-    "Il team Delsigel e la linea produttiva: l'industria artigianale di Sermoneta, dal 2011.",
-};
+export async function generateMetadata({
+  params,
+}: PageProps<"/[lang]/chi-siamo">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!haLingua(lang)) return {};
+  const metadata = dizionario(lang).metadata.chiSiamo;
+  return {
+    title: metadata.titolo,
+    description: metadata.descrizione,
+    alternates: alternatesPer(lang, "/chi-siamo"),
+  };
+}
 
 /* Ritratti reali dei dipendenti (da public/dipendenti, uniformati con
    Higgsfield: sfondo panna, quadrato, mezzobusto). Nomi e ruoli sono
@@ -47,30 +58,31 @@ const PERSONE = [
   { name: "Andrea Bellotti", role: "Commerciale", reparto: "Uffici", anni: 9, slug: "andrea" },
 ];
 
-const TEAM: TeamMember[] = PERSONE.map(({ slug, ...p }, i) => ({
-  ...p,
-  accent: ACCENTI[i % ACCENTI.length],
-  image: `/chi-siamo/squadra/${slug}.webp`,
-}));
-
 /* La narrazione completa vive qui; la Home ne mostra soltanto un'anteprima. */
-export default function ChiSiamoPage() {
+export default async function ChiSiamoPage({
+  params,
+}: PageProps<"/[lang]/chi-siamo">) {
+  const { lang } = await params;
+  if (!haLingua(lang)) notFound();
+  const testi = dizionario(lang).chiSiamo;
+  const team: TeamMember[] = PERSONE.map(({ slug, ...persona }, i) => ({
+    ...persona,
+    role: testi.squadra.ruoli[persona.role] ?? persona.role,
+    reparto: testi.squadra.reparti[persona.reparto] ?? persona.reparto,
+    accent: ACCENTI[i % ACCENTI.length],
+    image: `/chi-siamo/squadra/${slug}.webp`,
+  }));
+
   return (
     <div className="bg-panna text-inchiostro">
       <SmoothScroll />
       <Header />
       <Intro />
       <HistoryJourney />
-      <Biglietti />
-      <Marquee />
-      <Squadra team={TEAM} />
-      <Nastri
-        voci={[
-          "Dal sacco di farina al sigillo",
-          "Cinque stazioni · un solo standard",
-          "Nessuna scorciatoia ★★★★★",
-        ]}
-      />
+      <Biglietti etichetta={testi.album} />
+      <Marquee testo={testi.marquee} />
+      <Squadra team={team} />
+      <Nastri voci={testi.nastri} />
       <Linea />
       <Footer />
     </div>

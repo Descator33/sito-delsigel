@@ -1,12 +1,13 @@
 "use client";
 
 import {
-  fmtKg,
-  fmtNumero,
   quantita,
   type Base,
   type Combinazione,
 } from "@/lib/configuratore";
+import { useLingua } from "@/components/LinguaProvider";
+import { conta, interpola } from "@/lib/i18n/interpola";
+import { fmtKg, fmtNumero } from "@/lib/i18n/lingue";
 
 const INPUT_CLS =
   "w-24 rounded-2xl border border-linea bg-carta px-4 py-3 text-center font-mono text-lg font-bold text-inchiostro outline-none transition-colors focus:border-corallo-scena focus:ring-2 focus:ring-corallo-scena/25";
@@ -33,6 +34,8 @@ export function CampoPedane({
   pedane: number | "";
   onCambia: (v: number | "") => void;
 }) {
+  const { lingua, testi: tuttiTesti } = useLingua();
+  const testi = tuttiTesti.configuratore;
   const minimo = comb.ordine_minimo_pedane;
   const valida = typeof pedane === "number" && Number.isInteger(pedane) && pedane >= 1;
   const q = valida ? quantita(comb.base, comb.farcitura, pedane) : null;
@@ -40,11 +43,11 @@ export function CampoPedane({
 
   return (
     <div>
-      <h3 className="type-label text-inchiostro/45">La quantità</h3>
+      <h3 className="type-label text-inchiostro/45">{testi.quantita.titolo}</h3>
 
       <div className="mt-3 flex flex-wrap items-center gap-4">
         <label htmlFor="pedane" className="text-sm font-semibold">
-          Pedane
+          {testi.quantita.pedane}
         </label>
         <input
           id="pedane"
@@ -65,16 +68,26 @@ export function CampoPedane({
             funzione quantita() che comporrà il payload */}
         <p aria-live="polite" className="font-mono text-[13px] text-inchiostro/75">
           {q
-            ? `= ${fmtNumero(q.cartoni)} cartoni · ${fmtNumero(q.pezzi)} pezzi · ${fmtKg(q.peso_kg)}`
-            : "Indica un numero intero di pedane: è l'unità con cui viaggia il prodotto."}
+            ? interpola(testi.quantita.equivale, {
+                cartoni: conta(testi.scala.cartoni, q.cartoni, lingua),
+                pezzi: conta(testi.scala.pezzi, q.pezzi, lingua),
+                peso: fmtKg(q.peso_kg, lingua),
+              })
+            : testi.quantita.indicaIntero}
         </p>
       </div>
 
       {minimo != null && (
         <p id="vincolo-minimo" className="mt-3 text-[13px] text-inchiostro/65">
-          Questa referenza si ordina da <strong>{minimo} pedane</strong>
+          <strong>
+            {interpola(testi.quantita.minimoDichiarato, {
+              min: fmtNumero(minimo, lingua),
+            })}
+          </strong>
           {comb.ordine_minimo_pezzi != null &&
-            `, pari a ${fmtNumero(comb.ordine_minimo_pezzi)} pezzi`}
+            interpola(testi.quantita.minimoPezzi, {
+              pezzi: fmtNumero(comb.ordine_minimo_pezzi, lingua),
+            })}
           .
         </p>
       )}
@@ -85,28 +98,35 @@ export function CampoPedane({
           className="mt-4 rounded-[18px] border border-linea border-l-[4px] border-l-oro bg-carta px-5 py-4 text-[13px] leading-relaxed"
         >
           <p>
-            Con {pedane} {pedane === 1 ? "pedana sei" : "pedane sei"} sotto il
-            minimo di {minimo}.{" "}
+            {interpola(testi.quantita.sottoMinimo, {
+              pedane: conta(testi.scala.pedane, pedane, lingua),
+              min: fmtNumero(minimo, lingua),
+            })}{" "}
             <button
               type="button"
               onClick={() => onCambia(minimo)}
               className="font-semibold underline decoration-2 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
             >
-              Porta a {minimo} pedane
+              {interpola(testi.quantita.portaA, {
+                min: fmtNumero(minimo, lingua),
+              })}
             </button>{" "}
-            oppure, se ti serve un quantitativo più piccolo,{" "}
+            {testi.quantita.oppureScrivi}{" "}
             <a
               href={`mailto:info@delsigel.it?subject=${encodeURIComponent(
-                `Quantitativo sotto il minimo — ${base.nome}`
+                interpola(testi.quantita.mailOggetto, { base: base.nome })
               )}&body=${encodeURIComponent(
-                `Sarei interessato a ${base.nome} (${comb.sku}) per un quantitativo` +
-                  ` inferiore alle ${minimo} pedane di ordine minimo. È possibile parlarne?`
+                interpola(testi.quantita.mailCorpo, {
+                  base: base.nome,
+                  sku: comb.sku,
+                  min: fmtNumero(minimo, lingua),
+                })
               )}`}
               className="font-semibold underline decoration-2 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
             >
-              scrivi al commerciale
+              {testi.quantita.scriviCommerciale}
             </a>
-            : un contatto vale più di un rifiuto.
+            {testi.quantita.contattoValeDiPiu}
           </p>
         </div>
       )}

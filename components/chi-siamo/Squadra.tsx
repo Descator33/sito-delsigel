@@ -3,6 +3,7 @@
 import { useRef, type RefObject } from "react";
 import { TeamCard, type TeamMember } from "@/components/TeamCard";
 import { Reveal } from "@/components/Reveal";
+import { useTesti } from "@/components/LinguaProvider";
 import { useCardTilt } from "@/lib/useCardTilt";
 
 /** lo stesso still del catalogo, scontornato: il Golosone come decoro */
@@ -22,6 +23,7 @@ const ARROW =
 export function Squadra({ team }: { team: TeamMember[] }) {
   const section = useRef<HTMLElement>(null);
   const row = useRef<HTMLDivElement>(null);
+  const testi = useTesti().chiSiamo.squadra;
 
   useCardTilt(section);
 
@@ -60,20 +62,19 @@ export function Squadra({ team }: { team: TeamMember[] }) {
       <div className="mx-auto flex max-w-[1800px] flex-wrap items-end justify-between gap-6 px-6 pb-12 md:px-12">
         <div>
           <h2 className="type-display text-[clamp(2.4rem,5.5vw,4.4rem)] leading-none">
-            <Reveal>La squadra.</Reveal>
+            <Reveal>{testi.titolo}</Reveal>
           </h2>
           <p className="mt-4 max-w-sm text-base leading-relaxed text-panna/70">
-            Ventuno volti, un solo laboratorio: l&apos;industria artigianale al
-            completo, dal 2011.
+            {testi.testo}
           </p>
         </div>
         <div className="flex items-center gap-4">
           <p className="type-scritta hidden -rotate-3 text-3xl leading-none text-acido sm:block">
-            una squadra coi fiocchi!
+            {testi.scritta}
           </p>
           <button
             type="button"
-            aria-label="Scorri la squadra indietro"
+            aria-label={testi.indietro}
             onClick={() => scrollRow(row, -1)}
             className={ARROW}
           >
@@ -81,7 +82,7 @@ export function Squadra({ team }: { team: TeamMember[] }) {
           </button>
           <button
             type="button"
-            aria-label="Scorri la squadra avanti"
+            aria-label={testi.avanti}
             onClick={() => scrollRow(row, 1)}
             className={ARROW}
           >
@@ -98,7 +99,12 @@ export function Squadra({ team }: { team: TeamMember[] }) {
           <div key={m.name} className="w-[min(88vw,560px)] shrink-0 snap-start">
             <div data-tilt className="h-full">
               <div data-tilt-inner className="h-full">
-                <TeamCard m={m} />
+                <TeamCard
+                  m={m}
+                  anniIn={testi.anniIn}
+                  reparto={testi.reparto}
+                  ritratto={testi.ritratto}
+                />
               </div>
             </div>
           </div>

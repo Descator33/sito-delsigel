@@ -6,6 +6,9 @@ import { useState, type ElementType } from "react";
 import { gustoColor, type Tipologia } from "@/lib/catalog";
 import { TEMI, type TemaCard } from "@/lib/catalog-bento";
 import { schedaDi } from "@/lib/catalog-scheda";
+import { useLingua } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import type { Testi } from "@/lib/i18n/tipi";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import {
   Dialog,
@@ -46,6 +49,7 @@ export function ProductQuickView({
   tema?: TemaCard;
   onChiudi: () => void;
 }) {
+  const { testi } = useLingua();
   const [ultimo, setUltimo] = useState<Tipologia | null>(null);
   if (aperto && aperto !== ultimo) setUltimo(aperto); // stato derivato da prop
   const t = aperto ?? ultimo;
@@ -60,7 +64,9 @@ export function ProductQuickView({
   if (desktop) {
     return (
       <Dialog open={!!aperto} onOpenChange={chiudi}>
-        <DialogContent chiudiLabel={`Chiudi la scheda di ${t.name}`}>
+        <DialogContent
+          chiudiLabel={interpola(testi.catalogo.chiudiScheda, { nome: t.name })}
+        >
           <Scheda
             key={t.slug}
             t={t}
@@ -101,7 +107,9 @@ function Scheda({
   Titolo: ElementType;
   Descrizione: ElementType;
 }) {
-  const s = schedaDi(t);
+  const { lingua, testi, percorso } = useLingua();
+  const s = schedaDi(t, lingua, testi);
+  const nota = testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]];
   const [mostrato, setMostrato] = useState<string | null>(null);
   const variante = s.gamma
     .flatMap((g) => g.varianti)
@@ -112,15 +120,15 @@ function Scheda({
       : variante && t.variants?.[variante.chiave]) ?? t.image;
 
   const specifiche = [
-    s.formato && { voce: "Formato", valore: s.formato },
+    s.formato && { voce: testi.catalogo.scheda.formato, valore: s.formato },
     /* scelto un prodotto finito, il peso è il suo, non più l'intervallo */
     (variante?.peso ?? s.peso) && {
-      voce: "Peso",
+      voce: testi.catalogo.scheda.peso,
       valore: variante?.peso ?? s.peso!,
     },
     s.pezziPerCartone && {
-      voce: "Per cartone",
-      valore: `${s.pezziPerCartone} pz`,
+      voce: testi.catalogo.scheda.perCartone,
+      valore: interpola(testi.catalogo.scheda.pezzi, { n: s.pezziPerCartone }),
     },
   ].filter(Boolean) as { voce: string; valore: string }[];
 
@@ -139,8 +147,10 @@ function Scheda({
               variante
                 ? `${t.name} ${variante.nome.toLowerCase()}`
                 : mostrato === "spaccato"
-                  ? `${t.name} tagliato a metà`
-                  : `${t.name}: ${t.note ?? "scatto di prodotto"}`
+                  ? interpola(testi.catalogo.scheda.spaccatoAlt, {
+                      nome: t.name,
+                    })
+                  : `${t.name}: ${nota ?? testi.prodotti.scattoProdotto}`
             }
             fill
             sizes="(max-width: 767px) 92vw, 30vw"
@@ -178,7 +188,9 @@ function Scheda({
                   }
             }
           >
-            {mostrato === "spaccato" ? "Vedi intero" : "Vedi lo spaccato"}
+            {mostrato === "spaccato"
+              ? testi.catalogo.scheda.vediIntero
+              : testi.catalogo.scheda.vediSpaccato}
           </button>
         )}
       </div>
@@ -195,15 +207,17 @@ function Scheda({
           </h2>
         </Titolo>
 
-        {t.note ? (
+        {nota ? (
           <Descrizione asChild>
             <p className="mt-3 max-w-md text-[0.95rem] leading-relaxed text-inchiostro/70">
-              {t.note}
+              {nota}
             </p>
           </Descrizione>
         ) : (
           <Descrizione className="sr-only">
-            Scheda della tipologia {t.name}.
+            {interpola(testi.catalogo.scheda.fallbackDescrizione, {
+              nome: t.name,
+            })}
           </Descrizione>
         )}
 
@@ -269,10 +283,10 @@ function Scheda({
 
         <div className="mt-8 flex flex-wrap gap-2.5">
           <Link
-            href="/contatti"
+            href={percorso("/contatti")}
             className="font-tecnico inline-flex min-h-11 items-center gap-2.5 rounded-full border border-inchiostro/25 px-5 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors hover:border-inchiostro hover:bg-inchiostro hover:text-panna focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fucsia"
           >
-            Richiedi informazioni
+            {testi.catalogo.scheda.richiedi}
           </Link>
         </div>
       </div>

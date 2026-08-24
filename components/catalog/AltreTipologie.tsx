@@ -6,6 +6,9 @@ import type { CSSProperties } from "react";
 import type { Tipologia } from "@/lib/catalog";
 import { RESTO_DOLCI, TEMI, varianti } from "@/lib/catalog-bento";
 import { CircleArrowButton } from "./CircleArrowButton";
+import { useLingua } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import type { Testi } from "@/lib/i18n/tipi";
 
 /**
  * La coda del catalogo, dietro alla CTA: i dolci che la vetrina non
@@ -13,27 +16,31 @@ import { CircleArrowButton } from "./CircleArrowButton";
  * chiara, foto piccola, niente claim. La gerarchia la fa la misura,
  * quindi queste non competono con le sette di punta.
  *
- * Rev 05/08 — la coda era divisa in due gruppi, «dolci» e «salati»:
- * adesso la linea salata ha la sua sezione più in basso e qui resta un
- * elenco solo, che è quello che i dati dicono (`RESTO_DOLCI`). Le tessere
- * aprono la stessa scheda prodotto delle card grandi.
+ * La lista è parametrica: di default mostra `RESTO_DOLCI`, mentre la
+ * sezione salata le passa il proprio resto. Le tessere aprono la stessa
+ * scheda prodotto delle card grandi in entrambi i capitoli.
  */
 export function AltreTipologie({
   onApri,
+  tipologie = RESTO_DOLCI,
+  titolo,
 }: {
   onApri: (t: Tipologia) => void;
+  tipologie?: Tipologia[];
+  titolo?: string;
 }) {
-  if (RESTO_DOLCI.length === 0) return null;
+  const { testi } = useLingua();
+  if (tipologie.length === 0) return null;
 
   return (
     <section className="scroll-mt-28">
       <h3 className="font-tecnico mb-3 mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-inchiostro/45">
-        Altri dolci
+        {titolo ?? testi.catalogo.altriDolci}
         <span className="mx-2.5 text-inchiostro/25">/</span>
-        {RESTO_DOLCI.length} tipologie
+        {interpola(testi.catalogo.tipologieCoda, { n: tipologie.length })}
       </h3>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {RESTO_DOLCI.map((t) => (
+        {tipologie.map((t) => (
           <Tessera key={t.code} t={t} onApri={() => onApri(t)} />
         ))}
       </div>
@@ -42,7 +49,11 @@ export function AltreTipologie({
 }
 
 function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
+  const { testi } = useLingua();
   const n = varianti(t);
+  const nota =
+    testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]] ??
+    testi.prodotti.scattoProdotto;
   return (
     <motion.article
       onClick={onApri}
@@ -71,7 +82,7 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
         >
           <Image
             src={t.image}
-            alt={`${t.name}: ${t.note ?? "scatto di prodotto"}`}
+            alt={`${t.name}: ${nota}`}
             fill
             sizes="(max-width: 640px) 45vw, (max-width: 1279px) 22vw, 12vw"
             className="object-contain object-bottom"
@@ -90,11 +101,13 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
           {t.name}
         </h4>
         <p className="font-tecnico mt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-inchiostro/45">
-          {n > 1 ? `${n} varianti` : "formato unico"}
+          {n > 1
+            ? interpola(testi.catalogo.varianti, { n })
+            : testi.catalogo.formatoUnico}
         </p>
         <CircleArrowButton
           misura="piccola"
-          label={`Apri la scheda di ${t.name}`}
+          label={interpola(testi.catalogo.apriScheda, { nome: t.name })}
           className="mt-auto pt-4"
         />
       </div>

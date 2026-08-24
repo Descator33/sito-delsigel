@@ -1,6 +1,8 @@
 "use client";
 
 import { DATASET, farcitureDi, type FotoStati } from "@/lib/configuratore";
+import { useLingua } from "@/components/LinguaProvider";
+import { conta } from "@/lib/i18n/interpola";
 import { ImmagineProdotto } from "./ImmagineProdotto";
 import { GrigliaTessere } from "./Selettore";
 import { TesseraScelta, type Punto, type VoloTessera } from "./TesseraScelta";
@@ -31,6 +33,7 @@ export function PassoBase({
   onScegli: (id: string, volo?: VoloTessera) => void;
   drag?: DragPasso;
 }) {
+  const { lingua, testi } = useLingua();
   return (
     <GrigliaTessere>
       {DATASET.basi.map((b) => {
@@ -39,7 +42,11 @@ export function PassoBase({
           <li key={b.id}>
             <TesseraScelta
               titolo={b.nome}
-              descrizione={`${b.nome} — ${n === 1 ? "1 farcitura" : `${n} farciture`} a listino`}
+              descrizione={`${b.nome} — ${conta(
+                testi.configuratore.tessera.farciture,
+                n,
+                lingua,
+              )}`}
               selezionata={selezionata === b.id}
               onScegli={(quadro) =>
                 onScegli(

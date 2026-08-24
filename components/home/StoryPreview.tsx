@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { STORIA } from "@/data/history";
+import { dizionario } from "@/lib/i18n/dizionario";
+import { localizza, type Lingua } from "@/lib/i18n/lingue";
 import { StoryPreviewMedia } from "./StoryPreviewMedia";
 
 const ORIGINI = STORIA[0];
@@ -8,8 +10,12 @@ const ORIGINI = STORIA[0];
 /**
  * Un assaggio della storia, non la sua cronologia. Il racconto completo
  * resta su /chi-siamo; qui dati e fotografia arrivano dalla stessa fonte.
+ * Server Component: la lingua arriva come prop dalla pagina.
  */
-export function StoryPreview() {
+export function StoryPreview({ lingua }: { lingua: Lingua }) {
+  const testi = dizionario(lingua);
+  const storia = testi.home.storia;
+
   return (
     <section
       id="storia"
@@ -21,7 +27,7 @@ export function StoryPreview() {
         srcVertical={ORIGINI.immagineVertical}
         videoSrc="/storia-generated/01-origini-home-lenta.mp4"
         videoSrcMobile="/storia-generated/01-origini-home-lenta-mobile.mp4"
-        alt={ORIGINI.alt}
+        alt={testi.chiSiamo.storia.tappe[ORIGINI.id].alt}
       />
       <span
         aria-hidden
@@ -35,7 +41,7 @@ export function StoryPreview() {
               data-home-caption="eyebrow"
               className="font-mono text-[10px] font-bold uppercase tracking-[0.28em] text-panna/80"
             >
-              La nostra storia
+              {storia.eyebrow}
             </p>
           </div>
           <div
@@ -47,7 +53,7 @@ export function StoryPreview() {
               data-home-caption="eyebrow"
               className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-panna/55"
             >
-              Delsigel · Sermoneta
+              {storia.luogo}
             </p>
           </div>
         </div>
@@ -58,22 +64,17 @@ export function StoryPreview() {
               id="storia-preview-titolo"
               className="max-w-[10.5ch] text-balance font-insegna text-[clamp(3.45rem,8.1vw,9.4rem)] font-semibold leading-[0.82] tracking-[-0.065em]"
             >
-              <span
-                data-home-caption-mask
-                className="block overflow-hidden pb-[0.06em]"
-              >
-                <span data-home-caption="title" className="block">
-                  Un forno acceso,
+              {storia.titolo.map((riga) => (
+                <span
+                  key={riga}
+                  data-home-caption-mask
+                  className="block overflow-hidden pb-[0.06em]"
+                >
+                  <span data-home-caption="title" className="block">
+                    {riga}
+                  </span>
                 </span>
-              </span>
-              <span
-                data-home-caption-mask
-                className="block overflow-hidden pb-[0.06em]"
-              >
-                <span data-home-caption="title" className="block">
-                  13 milioni di dolci dopo.
-                </span>
-              </span>
+              ))}
             </h2>
             <div
               data-home-caption-mask
@@ -83,10 +84,7 @@ export function StoryPreview() {
                 data-home-caption="copy"
                 className="max-w-[46ch] text-pretty text-[clamp(1rem,1.18vw,1.2rem)] leading-[1.55] text-panna/78"
               >
-                Nel 2011 l&apos;incontro tra Del Monte e Siani. Oggi
-                un&apos;industria artigianale certificata IFS Food, Rainforest
-                Alliance e RSPO, una nuova generazione al banco e un piano per
-                raddoppiare.
+                {storia.testo}
               </p>
             </div>
             <div
@@ -95,10 +93,10 @@ export function StoryPreview() {
             >
               <div data-home-caption="cta">
                 <Link
-                  href="/chi-siamo#storia"
+                  href={localizza(lingua, "/chi-siamo#storia")}
                   className="story-preview__cta group inline-flex min-h-12 items-center gap-5 rounded-full bg-fucsia px-6 text-[11px] font-bold uppercase tracking-[0.12em] text-panna focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-panna"
                 >
-                  Scopri la nostra storia
+                  {storia.cta}
                   <ArrowRight
                     aria-hidden
                     strokeWidth={1.8}
@@ -116,15 +114,15 @@ export function StoryPreview() {
             <div data-home-caption="cta">
               <Link
                 href="#catalogo"
-                aria-label="Continua al catalogo 2026/27"
+                aria-label={storia.continuaAria}
                 className="story-preview__catalog-cue group flex w-fit items-center gap-4 text-panna"
               >
                 <span>
                   <span className="block font-mono text-[9px] font-semibold uppercase tracking-[0.24em] text-panna/55">
-                    Prossimo capitolo
+                    {storia.prossimoLabel}
                   </span>
                   <span className="mt-1.5 block text-sm font-semibold tracking-[-0.01em]">
-                    Catalogo 2026/27
+                    {storia.prossimoNome}
                   </span>
                 </span>
                 <span className="story-preview__catalog-arrow flex h-11 w-11 items-center justify-center rounded-full border border-panna/45">

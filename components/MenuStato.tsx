@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from "react";
 import { usePathname } from "next/navigation";
+import { èHome } from "@/lib/i18n/lingue";
 import { lenisAttivo } from "@/components/SmoothScroll";
 import {
   heroGiaVisitata,
@@ -77,7 +78,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
     if (visitataPrimaDelDocumento.current) {
       attivaHeroDiRitorno();
-    } else if (percorsoIniziale.current === "/") {
+    } else if (èHome(percorsoIniziale.current)) {
       homeVisitata.current = true;
       ricordaHeroVisitata();
     }
@@ -89,14 +90,14 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   useLayoutEffect(() => {
     const precedente = percorsoPrecedente.current;
 
-    if (percorso === "/") {
+    if (èHome(percorso)) {
       if (!homeVisitata.current) {
         homeVisitata.current = true;
         ricordaHeroVisitata();
-      } else if (precedente !== "/") {
+      } else if (!èHome(precedente)) {
         attivaHeroDiRitorno();
       }
-    } else if (precedente === "/" && homeVisitata.current) {
+    } else if (èHome(precedente) && homeVisitata.current) {
       attivaHeroDiRitorno();
     }
 
@@ -109,7 +110,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   const preparaRitornoHome = useCallback(() => {
     if (!homeVisitata.current) return;
     const staTornando =
-      window.location.pathname !== "/" ||
+      !èHome(window.location.pathname) ||
       window.location.hash !== "" ||
       window.scrollY > 1;
     if (staTornando) attivaHeroDiRitorno();
@@ -121,7 +122,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     const dallaCronologia = () => {
       if (
         homeVisitata.current &&
-        window.location.pathname === "/" &&
+        èHome(window.location.pathname) &&
         window.location.hash === ""
       ) {
         attivaHeroDiRitorno();

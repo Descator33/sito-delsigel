@@ -8,6 +8,8 @@ import {
   useSyncExternalStore,
 } from "react";
 import { usePathname } from "next/navigation";
+import { useLingua } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   statoDaPathname,
@@ -20,6 +22,7 @@ import { Intro } from "./Intro";
 import { PassoBase, type DragPasso } from "./PassoBase";
 import { PassoFarcitura } from "./PassoFarcitura";
 import { PassoFinitura } from "./PassoFinitura";
+import { Riepilogo } from "./Riepilogo";
 import { Selettore } from "./Selettore";
 import { SegnaPosto, type Punto, type VoloTessera } from "./TesseraScelta";
 
@@ -47,12 +50,16 @@ import { SegnaPosto, type Punto, type VoloTessera } from "./TesseraScelta";
  * il comportamento voluto.
  *
  * IMPAGINATO (redesign 2026-08-04) — tre aree, come la reference:
- * l'insegna a sinistra, il palco al centro (l'elemento dominante) e la
- * colonna delle scelte a destra. Sotto xl le tre colonne diventano due
- * (insegna a tutta larghezza, poi palco e scelte), e sotto lg una sola
- * pila: insegna, palco, prodotti. Quando il dolce è finito e restano
- * solo i numeri, la terza colonna si allarga a spese del palco: lì il
- * contenuto è un modulo, non una griglia di tessere.
+ * l'insegna a sinistra, il palco al centro e la colonna delle scelte a
+ * destra. Sotto xl le tre colonne diventano due (insegna a tutta
+ * larghezza, poi palco e scelte), e sotto lg una sola pila: insegna,
+ * palco, prodotti. Le MISURE sono uniche per tutte le fasi
+ * (2026-08-21): prima il palco dominava nei passi 1–3 e si stringeva
+ * solo a dolce finito, così proprio mentre si componeva la cornice
+ * usciva dal viewport. Ora tutta la scena tiene la misura della fase
+ * finale — quella che sta in pagina senza scrollare — e su xl il palco
+ * è sempre sticky: se la colonna delle tessere scorre, la scena (che è
+ * anche il bersaglio del drag) resta davanti agli occhi.
  *
  * Con un puntatore fine le tessere si possono anche TRASCINARE sul
  * palco — il rilascio riuscito chiama le stesse scegliBase /
@@ -90,6 +97,7 @@ export function Configuratore({
   fotoTopping: FotoTopping;
 }) {
   const pathname = usePathname();
+  const { testi, percorso } = useLingua();
   const { base, comb } = useMemo(() => statoDaPathname(pathname), [pathname]);
   const passo = comb ? 3 : base ? 2 : 1;
   const riduci = useReducedMotion();
@@ -124,11 +132,12 @@ export function Configuratore({
     const nd = new URLSearchParams(window.location.search).get("nd");
     if (nd) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAvviso(
-        "La farcitura del link che hai aperto non è più disponibile per questa base: scegline una tra quelle a listino."
-      );
+      setAvviso(testi.configuratore.avvisoFarcituraSparita);
       window.history.replaceState(null, "", window.location.pathname);
     }
+    /* il testo dell'avviso si legge una volta sola all'arrivo: cambiarlo
+       al cambio lingua non serve, l'avviso muore col primo gesto */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* il drag è un'aggiunta per puntatori fini: sul touch litigherebbe con
@@ -147,7 +156,9 @@ export function Configuratore({
     return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
   };
 
-  const vaiA = (path: string) => window.history.pushState(null, "", path);
+  /* i percorsi si spingono già localizzati: /fi/configuratore/… */
+  const vaiA = (path: string) =>
+    window.history.pushState(null, "", percorso(path));
 
   const scegliBase = (id: string) => vaiA(`/configuratore/${id}`);
 
@@ -252,8 +263,9 @@ export function Configuratore({
   };
 
   /* la fase «numeri» è l'unica in cui la colonna delle scelte non è una
-     griglia di tessere ma un modulo: prende spazio al palco, che qui ha
-     finito il suo lavoro e resta come conferma di quel che si ordina */
+     griglia di tessere ma un modulo. Cambia il contenuto, non più
+     l'impaginato (2026-08-21): la griglia ha una misura sola per tutte
+     le fasi, e la scena non salta quando il dolce si completa */
   const numeri = passo === 3 && finituraApplicata;
 
   /* quando la fase cambia il focus raggiunge il titolo del passo:
@@ -273,29 +285,39 @@ export function Configuratore({
 
   const titoloSelettore =
     passo === 1
-      ? "Scegli la tua base"
+      ? testi.configuratore.titoli.passo1
       : passo === 2
-        ? "Scegli la farcitura"
+        ? testi.configuratore.titoli.passo2
         : numeri
-          ? "Formato e quantità"
-          : "Metti la finitura";
+          ? testi.configuratore.titoli.completo
+          : testi.configuratore.titoli.passo3;
 
   return (
-    <section className="mx-auto max-w-[1800px] px-6 pb-28 pt-28 md:px-12 md:pb-40 md:pt-32">
-      {/* chi naviga con lo screen reader deve sapere che il contenuto
-          sotto è cambiato senza che la pagina sia stata ricaricata */}
-      <p aria-live="polite" className="sr-only">
-        Passo {passo} di 3 — {titoloSelettore}
-      </p>
+    <section
+      data-livello={passo}
+      data-completo={numeri ? "true" : "false"}
+      className="configuratore-playground relative isolate overflow-hidden"
+    >
+      <ScenografiaCandy />
 
-      {avviso && (
-        <p
-          role="status"
-          className="mb-10 rounded-[18px] border border-linea border-l-[4px] border-l-corallo-scena bg-carta px-5 py-4 text-[13px] leading-relaxed"
-        >
-          {avviso}
+      <div className="configurator-frame relative z-10 mx-auto">
+        {/* chi naviga con lo screen reader deve sapere che il contenuto
+            sotto è cambiato senza che la pagina sia stata ricaricata */}
+        <p aria-live="polite" className="sr-only">
+          {interpola(testi.configuratore.passoDi, {
+            n: passo,
+            titolo: titoloSelettore,
+          })}
         </p>
-      )}
+
+        {avviso && (
+          <p
+            role="status"
+            className="mb-10 rounded-[18px] border-2 border-inchiostro bg-carta px-5 py-4 text-[13px] font-semibold leading-relaxed shadow-[5px_6px_0_var(--oro)]"
+          >
+            {avviso}
+          </p>
+        )}
 
       {/* grid-cols-1 esplicito e min-w-0 sulle colonne: il palco ha
           aspect-ratio E min-height, quindi la sua larghezza intrinseca
@@ -303,46 +325,41 @@ export function Configuratore({
           sopra e sul telefono la colonna dei prodotti finisce tagliata
           dall'overflow-x-clip della pagina. minmax(0,1fr) toglie il
           minimo automatico e il palco torna a seguire la colonna. */}
-      <div
-        className={`grid grid-cols-1 items-start gap-x-8 gap-y-16 ${
-          numeri
-            ? "lg:grid-cols-2 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.7fr)_minmax(0,1.9fr)]"
-            : "lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,1fr)_minmax(0,2.15fr)_minmax(0,1.3fr)]"
-        }`}
-      >
-        <div className="min-w-0 lg:col-span-2 xl:col-span-1">
-          <Intro />
-        </div>
+        <div className="configurator-shell">
+          <div className="configurator-intro min-w-0">
+            <Intro />
+          </div>
+
+          <div className="configurator-progress min-w-0">
+            <Riepilogo
+              base={base}
+              comb={comb}
+              finituraApplicata={finituraApplicata}
+              apriPasso={apriPasso}
+            />
+          </div>
 
         {/* impilato (sotto lg) il palco si tiene una misura da vetrina e
             resta centrato: a tutta larghezza su un tablet diventerebbe
             un quadrato di 900px, dominante fino a essere ingombrante */}
-        <div
-          className={`mx-auto w-full min-w-0 max-w-[620px] lg:max-w-none ${
-            numeri ? "xl:sticky xl:top-24" : ""
-          }`}
-        >
-          <Banco
-            ref={palcoRef}
-            base={base}
-            comb={comb}
-            foto={foto}
-            finituraApplicata={finituraApplicata}
-            sopra={sopraPalco}
-            passo={passo}
-            apriPasso={apriPasso}
-            onRicomincia={ricomincia}
-          />
-        </div>
+          <div className="configurator-stage mx-auto w-full min-w-0">
+            <Banco
+              ref={palcoRef}
+              base={base}
+              comb={comb}
+              foto={foto}
+              finituraApplicata={finituraApplicata}
+              sopra={sopraPalco}
+              passo={passo}
+              apriPasso={apriPasso}
+              onRicomincia={ricomincia}
+            />
+          </div>
 
-        <Selettore
-          titolo={titoloSelettore}
-          titoloRef={titoloRef}
-          base={base}
-          comb={comb}
-          finituraApplicata={finituraApplicata}
-          apriPasso={apriPasso}
-        >
+          <Selettore
+            titolo={titoloSelettore}
+            titoloRef={titoloRef}
+          >
           {passo === 1 && (
             <PassoBase
               foto={foto}
@@ -376,7 +393,13 @@ export function Configuratore({
               onApriModulo={() => setModuloAperto(true)}
             />
           )}
-        </Selettore>
+          </Selettore>
+
+          <BarraSalvataggio
+            completo={numeri}
+            onCompleta={() => titoloRef.current?.focus({ preventScroll: true })}
+          />
+        </div>
       </div>
 
       {/* --- il clone in volo ------------------------------------------
@@ -431,6 +454,81 @@ export function Configuratore({
         )}
       </AnimatePresence>
     </section>
+  );
+}
+
+/** Macro-forme e sticker del mondo Candy. Sono un fondale puro: il
+ *  livello corrente cambia solo le variabili CSS della sezione, mentre
+ *  questo markup resta stabile e non entra mai nell'albero accessibile. */
+function ScenografiaCandy() {
+  return (
+    <div aria-hidden className="candy-scenografia pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <span className="candy-blob candy-blob--giallo" />
+      <span className="candy-blob candy-blob--rosa-alto" />
+      <span className="candy-blob candy-blob--arancio" />
+      <span className="candy-blob candy-blob--rosa-basso" />
+      <span className="candy-blob candy-blob--viola" />
+      <span className="candy-caramella candy-caramella--1" />
+      <span className="candy-caramella candy-caramella--2" />
+      <span className="candy-caramella candy-caramella--3" />
+      <span className="candy-caramella candy-caramella--4" />
+      <span className="candy-caramella candy-caramella--5" />
+      <span className="candy-pallina candy-pallina--1" />
+      <span className="candy-pallina candy-pallina--2" />
+      <span className="candy-pallina candy-pallina--3" />
+      <span className="candy-pallina candy-pallina--4" />
+    </div>
+  );
+}
+
+function BarraSalvataggio({
+  completo,
+  onCompleta,
+}: {
+  completo: boolean;
+  onCompleta: () => void;
+}) {
+  const { testi } = useLingua();
+  const [salvato, setSalvato] = useState(false);
+
+  const salva = async () => {
+    if (!completo) {
+      onCompleta();
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(
+        window.location.origin + window.location.pathname
+      );
+      setSalvato(true);
+    } catch {
+      window.location.hash = "salva-il-tuo-dolce";
+    }
+  };
+
+  return (
+    <div className="configurator-savebar" id="salva-il-tuo-dolce">
+      <div>
+        <strong>{testi.configuratore.salvataggio.haiIdea}</strong>
+        <span>{testi.configuratore.salvataggio.condividi}</span>
+      </div>
+      <span aria-hidden className="configurator-savebar__heart">♥</span>
+      <button type="button" onClick={salva}>
+        {salvato
+          ? testi.configuratore.salvataggio.copiato
+          : testi.configuratore.salvataggio.salva}
+        <span aria-hidden>★</span>
+      </button>
+      <span aria-hidden className="configurator-savebar__smile">
+        <i />
+        <i />
+        <b />
+      </span>
+      <span aria-live="polite" className="sr-only">
+        {salvato ? testi.configuratore.salvataggio.copiatoAria : ""}
+      </span>
+    </div>
   );
 }
 

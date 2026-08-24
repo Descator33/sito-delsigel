@@ -1,28 +1,30 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import { useTesti } from "@/components/LinguaProvider";
 
 /**
  * La CTA sotto la griglia. Nel riferimento è una pillola sola: qui è anche
- * un interruttore, perché la vetrina mostra sette dolci su nove e gli
- * altri due — Stella e Klejner — non possono uscire dalla home. Aperta,
- * la coda scorre sotto la griglia; chiusa, la sezione è esattamente il
- * riferimento.
+ * un interruttore, perché la vetrina mostra tre dolci su nove e gli altri
+ * sei non possono uscire dalla home. Aperta, la coda scorre sotto la
+ * griglia; chiusa, la sezione è esattamente il riferimento.
  *
- * Rev 05/08 — dietro a questa CTA non c'è più la linea salata: ha una
- * sezione sua, subito dopo il catalogo stampato. Perciò l'etichetta dice
- * «dolci» e non «tipologie», che adesso sarebbe una promessa falsa.
+ * L'etichetta chiusa è parametrica: «dolci» resta il valore predefinito,
+ * mentre la sezione gemella la riusa per «salati».
  */
 export function CatalogFooterCTA({
   aperto,
   onToggle,
   controlla,
+  etichettaChiusa,
 }: {
   aperto: boolean;
   onToggle: () => void;
   /** id del pannello che apre, per aria-controls */
   controlla: string;
+  etichettaChiusa?: string;
 }) {
+  const testi = useTesti();
   return (
     <div className="mt-6 flex justify-center xl:mt-7">
       <button
@@ -32,7 +34,9 @@ export function CatalogFooterCTA({
         aria-controls={controlla}
         className="font-tecnico group inline-flex min-h-11 items-center gap-8 rounded-full border border-fucsia px-7 text-[10px] font-semibold uppercase tracking-[0.18em] text-fucsia transition-colors hover:bg-fucsia hover:text-panna focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-fucsia"
       >
-        {aperto ? "Mostra solo la vetrina" : "Scopri tutti i dolci"}
+        {aperto
+          ? testi.catalogo.mostraVetrina
+          : (etichettaChiusa ?? testi.catalogo.scopriDolci)}
         <ArrowRight
           aria-hidden
           strokeWidth={1.5}

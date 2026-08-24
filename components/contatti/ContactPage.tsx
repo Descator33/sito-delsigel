@@ -2,13 +2,13 @@ import { ContactForm } from "@/components/contatti/ContactForm";
 import { ContactGrid } from "@/components/contatti/ContactGrid";
 import { ContactHero } from "@/components/contatti/ContactHero";
 import { PopDecorations } from "@/components/contatti/PopDecorations";
-import { VisitUsBanner } from "@/components/contatti/VisitUsBanner";
+import type { Testi } from "@/lib/i18n/tipi";
 
 /**
  * L'impaginato della sub-page Contatti.
  *
  * Due colonne da `lg` in su e una sola sotto, con l'ordine del sorgente
- * già giusto per il telefono — titolo, promessa, recapiti, invito, form —
+ * già giusto per il telefono — titolo, promessa, recapiti, form —
  * quindi nessun `order` da riordinare e nessuna divergenza fra l'ordine
  * visivo e quello di tabulazione.
  *
@@ -27,9 +27,9 @@ import { VisitUsBanner } from "@/components/contatti/VisitUsBanner";
  * scollerebbero di un centinaio di pixel, e l'allineamento con la nav vale
  * più della larghezza.
  */
-export function ContactPage() {
+export function ContactPage({ testi }: { testi: Testi["contatti"] }) {
   return (
-    <main className="contatti font-pop-testo relative bg-panna text-inchiostro">
+    <main className="contatti font-ui relative bg-panna text-inchiostro">
       {/* Lo spazio della nav flottante, poi il filo nero che nel
           riferimento corre da un bordo all'altro sotto di essa. */}
       <div aria-hidden className="h-[76px] md:h-[92px]" />
@@ -45,9 +45,8 @@ export function ContactPage() {
 
         <div className="relative mx-auto grid max-w-[1800px] items-start gap-y-14 px-6 md:px-12 xl:grid-cols-[minmax(0,1fr)_minmax(520px,0.86fr)] xl:gap-x-[clamp(2.5rem,4.5vw,5.5rem)]">
           <div className="flex flex-col gap-y-10 sm:gap-y-12">
-            <ContactHero />
-            <ContactGrid />
-            <VisitUsBanner />
+            <ContactHero testi={testi} />
+            <ContactGrid testi={testi} />
           </div>
 
           <ContactForm />

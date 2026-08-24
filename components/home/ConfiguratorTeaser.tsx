@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight } from "lucide-react";
 import { useScatto } from "@/lib/useScatto";
+import { useLingua } from "@/components/LinguaProvider";
 import {
   abilitaInterattiviCaption,
   aggiungiCaptionHome,
@@ -69,6 +70,7 @@ export function ConfiguratorTeaser({
   dolci: DolceConFoto[];
   titoloId: string;
 }) {
+  const { testi, percorso } = useLingua();
   const radice = useRef<HTMLDivElement>(null);
 
   /* la schivata al cursore sui tre dolci: solo desktop e solo senza
@@ -244,36 +246,31 @@ export function ConfiguratorTeaser({
               data-home-caption="eyebrow"
               className="text-[clamp(11px,0.8vw,13px)] font-bold uppercase tracking-[0.3em] text-mandarino"
             >
-              Il configuratore
+              {testi.home.teaser.eyebrow}
             </p>
           </div>
           <h2
             id={titoloId}
             className="font-pop mt-[clamp(0.8rem,2vh,1.6rem)] text-[clamp(3.2rem,min(11vw,15vh),9rem)] font-normal uppercase leading-[0.87] tracking-[-0.02em]"
           >
-            <span
-              data-home-caption-mask
-              className="block overflow-hidden pb-[0.05em] text-cacao"
-            >
-              <span data-home-caption="title" className="block">
-                Crea il tuo
+            {testi.home.teaser.titolo.map((riga) => (
+              <span
+                key={riga.testo}
+                data-home-caption-mask
+                className={`block overflow-hidden pb-[0.05em] ${
+                  riga.accento ? "text-mandarino" : "text-cacao"
+                }`}
+              >
+                <span data-home-caption="title" className="block">
+                  {riga.testo}
+                </span>
               </span>
-            </span>
-            <span
-              data-home-caption-mask
-              className="block overflow-hidden pb-[0.05em] text-mandarino"
-            >
-              <span data-home-caption="title" className="block">
-                dolce.
-              </span>
-            </span>
+            ))}
           </h2>
           <p className="mx-auto mt-[clamp(1rem,2.4vh,2rem)] max-w-[46ch] text-[clamp(1rem,1.25vw,1.35rem)] font-medium leading-[1.55] text-cacao/80">
             <span data-home-caption-mask className="block overflow-hidden">
               <span data-home-caption="copy" className="block">
-                Scegli base, crema, topping e dettagli. Con il nostro
-                configuratore componi il tuo dolce ideale in pochi step. Tutto
-                online, tutto su misura, tutto tuo.
+                {testi.home.teaser.copy}
               </span>
             </span>
           </p>
@@ -320,7 +317,7 @@ export function ConfiguratorTeaser({
                       <Image
                         src={dolce.foto}
                         alt=""
-                        title={dolce.alt}
+                        title={testi.configuratore.statiNastro[i]}
                         fill
                         /* molto sotto la piega: nessun preload, resta pigra */
                         sizes="(max-width: 1279px) 180px, 13vw"
@@ -367,7 +364,7 @@ export function ConfiguratorTeaser({
             id={ANCORA_PERCORSO}
             className="mx-auto mt-[clamp(1.8rem,4vh,3.4rem)] grid w-full max-w-[72rem] scroll-mt-28 grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4"
           >
-            {PERCORSO.map((tappa) => (
+            {PERCORSO.map((tappa, indice) => (
               <li
                 key={tappa.numero}
                 data-home-caption-mask
@@ -382,7 +379,7 @@ export function ConfiguratorTeaser({
                   <p className="text-[clamp(13px,0.95vw,15px)] font-medium leading-snug text-cacao/80">
                     <span className="font-bold text-cacao">{tappa.numero}</span>
                     <span className="mx-2 text-cacao/35">·</span>
-                    {tappa.titolo}
+                    {testi.configuratore.percorso[indice].titolo}
                   </p>
                 </div>
               </li>
@@ -396,10 +393,10 @@ export function ConfiguratorTeaser({
           >
             <div data-home-caption="cta">
               <Link
-                href={DESTINAZIONE_CONFIGURATORE}
+                href={percorso(DESTINAZIONE_CONFIGURATORE)}
                 className="cta-azione teaser-cta group flex min-h-[3.6rem] items-center justify-between gap-4 rounded-full bg-inchiostro py-[0.3rem] pl-[clamp(1.4rem,1.8vw,2rem)] pr-[0.3rem] text-[clamp(10px,0.75vw,12px)] font-bold uppercase leading-none tracking-[0.08em] text-panna"
               >
-                Configura il tuo dolce
+                {testi.home.teaser.cta}
                 <span
                   aria-hidden
                   className="grid h-[clamp(2.5rem,2.7vw,2.9rem)] w-[clamp(2.5rem,2.7vw,2.9rem)] flex-none place-items-center rounded-full bg-panna text-inchiostro"

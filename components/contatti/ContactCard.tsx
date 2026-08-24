@@ -59,7 +59,7 @@ export function ContactCard({
       </span>
 
       <span className="min-w-0 flex-1">
-        <span className="font-pop block text-[clamp(1.15rem,1.7vw,1.55rem)] uppercase leading-none tracking-[0.005em]">
+        <span className="font-display block text-[clamp(1.05rem,1.45vw,1.35rem)] font-extrabold uppercase leading-none tracking-[-0.015em]">
           {recapito.label}
         </span>
         <span className="relative mt-1.5 block">

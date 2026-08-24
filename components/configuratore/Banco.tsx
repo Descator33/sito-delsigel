@@ -3,12 +3,15 @@
 import type { Ref } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
-  farcituraVoce,
   nomeCommerciale,
   type Base,
   type Combinazione,
   type FotoStati,
 } from "@/lib/configuratore";
+import { useLingua } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import { minuscola } from "@/lib/i18n/lingue";
+import type { IdFarcitura } from "@/lib/i18n/tipi";
 import {
   Asterisco,
   FrecciaGiu,
@@ -88,7 +91,11 @@ export function Banco({
   ref?: Ref<HTMLDivElement>;
 }) {
   const riduci = useReducedMotion();
-  const farcitura = comb ? farcituraVoce(comb.farcitura) : null;
+  const { lingua, testi } = useLingua();
+  const banco = testi.configuratore.banco;
+  const farcitura = comb
+    ? (testi.prodotti.farciture[comb.farcitura as IdFarcitura] ?? comb.farcitura)
+    : null;
   const completato = Boolean(comb) && finituraApplicata;
   const vuoto = !base;
 
@@ -111,11 +118,26 @@ export function Banco({
      una base, una farcitura o la finitura */
   const dropAttivo = !completato;
 
-  const cosaManca =
-    passo === 1 ? "la tua base" : passo === 2 ? "la farcitura" : "la finitura";
+  const umoreMascotte = completato
+    ? "festa"
+      : sopra
+      ? "wow"
+      : base
+        ? "felice"
+        : "felice";
+
+  /* niente frasi incastrate nel codice: ogni passo ha le sue, intere,
+     nel dizionario — il finlandese declina l'oggetto, il tedesco lo
+     tiene maiuscolo, e nessuna delle due cose si può comporre */
+  const manca =
+    passo === 1
+      ? banco.mancaPasso1
+      : passo === 2
+        ? banco.mancaPasso2
+        : banco.mancaPasso3;
 
   const nomeInScena = comb
-    ? `${nomeCommerciale(comb)} · ${farcitura!.nome.toLowerCase()}`
+    ? `${nomeCommerciale(comb)} · ${minuscola(farcitura!, lingua)}`
     : (base?.nome ?? "");
 
   const immagineDolce = base && (
@@ -129,13 +151,11 @@ export function Banco({
       }
       alt={
         comb
-          ? `${nomeCommerciale(comb)} con ${farcitura!.nome.toLowerCase()}`
+          ? `${nomeCommerciale(comb)} · ${minuscola(farcitura!, lingua)}`
           : base.nome
       }
       iniziale={base.nome.charAt(0)}
-      notaRipiego={
-        completato ? "Foto senza finitura — descritta accanto" : undefined
-      }
+      notaRipiego={completato ? banco.fotoSenzaFinitura : undefined}
       classe="absolute inset-0 h-full w-full object-contain object-bottom"
     />
   );
@@ -146,13 +166,15 @@ export function Banco({
       role="region"
       aria-label={
         vuoto
-          ? "Palco del configuratore, vuoto: trascina o tocca una base per posarla sul palco"
-          : `Palco del configuratore: ${nomeInScena}${
-              dropAttivo ? `. Manca ${cosaManca}` : ". Il dolce è completo"
-            }`
+          ? banco.ariaVuoto
+          : interpola(banco.ariaConDolce, {
+              nome: nomeInScena,
+              stato: dropAttivo ? manca : banco.completoAria,
+            })
       }
       data-sopra={dropAttivo && sopra ? "true" : "false"}
-      className="palco ombra-pop aspect-[93/100] min-h-[500px] w-full sm:min-h-[560px]"
+      data-fase={vuoto ? "vuoto" : completato ? "completo" : `passo-${passo}`}
+      className="palco w-full"
       animate={
         riduci ? undefined : dropAttivo && sopra ? { scale: 1.012, y: -4 } : { scale: 1, y: 0 }
       }
@@ -160,14 +182,25 @@ export function Banco({
     >
       <span aria-hidden className="palco-cornice" />
 
+      <span aria-hidden className="candy-ribbon">Drag &amp; Drop</span>
+
       {/* --- i decori: leggeri, mai sopra a qualcosa da leggere -----
           Sfoltiti il 2026-08-19: restano i due segni agli angoli, fermi.
           L'adesivo «il tuo dolce, la tua storia», il fumetto col cuore e
           le scintille immobili sono usciti di scena — il centro del
           palco è del dolce. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <Smile className="absolute -right-[3%] -top-[3.5%] w-[11%] min-w-[58px]" />
-        <Asterisco className="absolute -bottom-[2%] -left-[1.5%] w-[9%] min-w-[46px] text-corallo-scena" />
+        <Smile
+          umore={umoreMascotte}
+          className="mascotte-candy absolute -right-[1.5%] top-[1.5%] w-[14%] min-w-[68px]"
+        />
+        <Asterisco className="absolute -bottom-[6%] left-[70%] w-[9%] min-w-[48px] text-oro" />
+        <span className="palco-amico">
+          <i />
+          <i />
+          <b />
+        </span>
+        <span className="palco-lecca" />
 
         {/* queste tre esistono solo durante il sorvolo */}
         <Scintilla className="scintilla-drag absolute left-[30%] top-[36%] w-[3%] min-w-[13px] text-oro" />
@@ -195,19 +228,25 @@ export function Banco({
         <>
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-[45%] flex -translate-y-[calc(100%+12px)] flex-col items-center gap-1 px-[12%] text-center"
+            className="palco-invito pointer-events-none absolute inset-x-0 top-[49%] flex -translate-y-[calc(100%+12px)] flex-col items-center gap-1 px-[12%] text-center"
           >
             <span
-              className={`type-scritta -rotate-2 text-[22px] leading-tight transition-colors duration-200 sm:text-[28px] ${
-                sopra ? "text-corallo-scena" : "text-inchiostro/85"
+              className={`drop-copy leading-tight transition-colors duration-200 ${
+                sopra ? "text-fucsia" : "text-viola"
               }`}
             >
               {sopra ? (
-                "Perfetto, lascia qui!"
+                <strong>{banco.mollaQui}</strong>
               ) : (
                 <>
-                  <span className="invito-mouse">Trascina qui la tua base</span>
-                  <span className="invito-touch">Tocca una base per iniziare</span>
+                  <span className="invito-mouse">
+                    {banco.trascinaVuoto[0]}
+                    <strong>{banco.trascinaVuoto[1]}</strong>
+                  </span>
+                  <span className="invito-touch">
+                    {banco.toccaVuoto[0]}
+                    <strong>{banco.toccaVuoto[1]}</strong>
+                  </span>
                 </>
               )}
             </span>
@@ -215,25 +254,33 @@ export function Banco({
                 mentre la tessera è in volo sarebbe un consiglio dato
                 troppo tardi */}
             {!sopra && (
-              <span className="flex items-center gap-1.5 text-inchiostro/45">
+              <span className="sr-only">
                 <IconaMano className="h-3.5 w-3.5" />
-                <span className="type-label text-[9px] sm:text-[10px]">
-                  <span className="invito-mouse">o toccala nella lista</span>
-                  <span className="invito-touch">o trascinala fin qui</span>
-                </span>
+                {banco.oppureLista}
               </span>
             )}
           </div>
 
           <motion.span
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[45%] block w-[5.85%] min-w-[32px] -translate-x-1/2 text-corallo-scena"
+            className="pointer-events-none absolute left-1/2 top-[51%] block w-[6%] min-w-[32px] -translate-x-1/2 text-viola"
             animate={riduci || sopra ? { y: 0 } : { y: [0, 5, 0] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
           >
             <FrecciaGiu className="w-full" />
           </motion.span>
         </>
+      )}
+
+      {dropAttivo && !vuoto && !sopra && (
+        <div aria-hidden className="candy-tray-task pointer-events-none absolute inset-x-[9%] top-[7%] text-center">
+          <span className="invito-mouse">
+            {passo === 3 ? banco.trascinaPasso3 : banco.trascinaPasso2}
+          </span>
+          <span className="invito-touch">
+            {passo === 3 ? banco.toccaPasso3 : banco.toccaPasso2}
+          </span>
+        </div>
       )}
 
       {/* --- l'ombra a terra e il dolce -------------------------------
@@ -245,6 +292,21 @@ export function Banco({
         aria-hidden
         className="palco-ombra absolute inset-x-0 bottom-[15%] mx-auto h-[4%] w-[46%]"
       />
+
+      <AnimatePresence>
+        {dropAttivo && sopra && (
+          <motion.span
+            aria-hidden
+            className="candy-drop-badge pointer-events-none absolute left-1/2 top-[9%] z-20 -translate-x-1/2"
+            initial={riduci ? { opacity: 0 } : { opacity: 0, scale: 0.55, rotate: -10 }}
+            animate={{ opacity: 1, scale: 1, rotate: -3 }}
+            exit={{ opacity: 0, scale: 0.7 }}
+            transition={{ type: "spring", stiffness: 430, damping: 21 }}
+          >
+            Drop!
+          </motion.span>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         {base && (
@@ -322,8 +384,18 @@ export function Banco({
         <div className="pointer-events-none absolute inset-x-0 top-[4.5%] z-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 px-[6%]">
           {(
             [
-              { testo: "Cambia farcitura", azione: () => apriPasso(2), ritardo: 1.1 },
-              { testo: "Ricomincia", azione: onRicomincia, ritardo: 1.25 },
+              {
+                testo: banco.cambiaFarcitura,
+                ricomincia: false,
+                azione: () => apriPasso(2),
+                ritardo: 1.1,
+              },
+              {
+                testo: banco.ricomincia,
+                ricomincia: true,
+                azione: onRicomincia,
+                ritardo: 1.25,
+              },
             ] as const
           ).map((cta) => (
             <motion.div
@@ -341,7 +413,7 @@ export function Banco({
                 onClick={cta.azione}
                 className="ombra-pop-piccola pointer-events-auto inline-flex items-center gap-2 rounded-full bg-inchiostro px-5 py-3 text-[11px] font-bold uppercase tracking-[0.1em] text-panna transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-corallo-scena motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
-                {cta.testo === "Ricomincia" && (
+                {cta.ricomincia && (
                   <FrecciaRicomincia className="h-[14px] w-[14px] text-oro" />
                 )}
                 {cta.testo}
@@ -375,14 +447,14 @@ export function Banco({
                   onClick={() => apriPasso(passo === 3 ? 2 : 1)}
                   className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
                 >
-                  {passo === 3 ? "Cambia farcitura" : "Cambia base"}
+                  {passo === 3 ? banco.cambiaFarcitura : banco.cambiaBase}
                 </button>
                 <button
                   type="button"
                   onClick={onRicomincia}
                   className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
                 >
-                  Ricomincia
+                  {banco.ricomincia}
                 </button>
               </>
             )}

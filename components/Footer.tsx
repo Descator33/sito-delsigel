@@ -4,8 +4,10 @@ import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { LogoStorico } from "@/components/LogoStorico";
+import { useLingua } from "@/components/LinguaProvider";
 import { DESTINAZIONE_CONFIGURATORE } from "@/lib/percorso-configuratore";
 import { useScatto } from "@/lib/useScatto";
+import type { Testi } from "@/lib/i18n/tipi";
 
 /* la fascia pop sotto il wordmark, con la palette in sequenza */
 const COLORI = ["#fbc50a", "#eb186b", "#a05cd5", "#f76f0b", "#e8442e"];
@@ -17,35 +19,41 @@ const COLORI = ["#fbc50a", "#eb186b", "#a05cd5", "#f76f0b", "#e8442e"];
  * colonna «Servizi» con voci che aprirebbero il vuoto. Dove il
  * riferimento mostrava quattro colonne di navigazione, qui la terza è il
  * configuratore: è ciò che la home adesso chiede di fare.
+ *
+ * Etichette dal dizionario, percorsi senza prefisso: la lingua si
+ * aggiunge al render con `percorso()`.
  */
-const COLONNE: { titolo: string; voci: [string, string][] }[] = [
-  {
-    titolo: "Delsigel",
-    voci: [
-      ["Chi siamo", "/chi-siamo"],
-      /* la storia vive in homepage dal refactor 12/08 */
-      ["La nostra storia", "/#storia"],
-      ["Contatti", "/contatti"],
-    ],
-  },
-  {
-    titolo: "Prodotti",
-    voci: [
-      /* Gamma e catalogo stampato sono capitoli della home. */
-      ["I nostri dolci", "/#dolci"],
-      ["I nostri salati", "/#salati"],
-      ["Catalogo 2026/27", "/#catalogo-fisico"],
-    ],
-  },
-  {
-    titolo: "Configuratore",
-    voci: [
-      ["Crea il tuo dolce", DESTINAZIONE_CONFIGURATORE],
-      ["Come funziona", "/#come-si-crea"],
-      ["Richiedi una quotazione", "/contatti"],
-    ],
-  },
-];
+function colonne(testi: Testi): { titolo: string; voci: [string, string][] }[] {
+  const f = testi.footer.colonne;
+  return [
+    {
+      titolo: f.delsigel.titolo,
+      voci: [
+        [f.delsigel.chiSiamo, "/chi-siamo"],
+        /* la storia vive in homepage dal refactor 12/08 */
+        [f.delsigel.storia, "/#storia"],
+        [f.delsigel.contatti, "/contatti"],
+      ],
+    },
+    {
+      titolo: f.prodotti.titolo,
+      voci: [
+        /* Gamma e catalogo stampato sono capitoli della home. */
+        [f.prodotti.dolci, "/#dolci"],
+        [f.prodotti.salati, "/#salati"],
+        [f.prodotti.catalogo, "/#catalogo-fisico"],
+      ],
+    },
+    {
+      titolo: f.configuratore.titolo,
+      voci: [
+        [f.configuratore.crea, DESTINAZIONE_CONFIGURATORE],
+        [f.configuratore.comeFunziona, "/#come-si-crea"],
+        [f.configuratore.quotazione, "/contatti"],
+      ],
+    },
+  ];
+}
 
 /**
  * Chiusura del sito: campitura cacao, wordmark con la fascia pop, le
@@ -68,6 +76,7 @@ const COLONNE: { titolo: string; voci: [string, string][] }[] = [
  */
 export function Footer() {
   const ref = useRef<HTMLElement>(null);
+  const { testi, percorso } = useLingua();
 
   useScatto(ref);
 
@@ -88,18 +97,18 @@ export function Footer() {
               ))}
             </div>
             <p className="mt-4 max-w-[240px] text-[13px] leading-relaxed text-panna/55">
-              L&apos;industria artigianale di Sermoneta, dal 2011.
+              {testi.footer.tagline}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-x-8 gap-y-11 sm:grid-cols-2 lg:grid-cols-4">
-            {COLONNE.map((col) => (
+            {colonne(testi).map((col) => (
               <div key={col.titolo}>
                 <ColumnHeading>{col.titolo}</ColumnHeading>
                 <ul className="mt-6 space-y-3.5">
                   {col.voci.map(([label, href]) => (
                     <li key={label}>
-                      <Link href={href} className="voce-footer">
+                      <Link href={percorso(href)} className="voce-footer">
                         {label}
                       </Link>
                     </li>
@@ -109,7 +118,7 @@ export function Footer() {
             ))}
 
             <div>
-              <ColumnHeading>Contatti</ColumnHeading>
+              <ColumnHeading>{testi.footer.colonne.contatti.titolo}</ColumnHeading>
               <ul className="mt-6 space-y-3.5 text-[13px] leading-relaxed text-panna/70">
                 <li>
                   Via della Meccanica, 1
@@ -137,7 +146,7 @@ export function Footer() {
                   href="https://instagram.com/delsigel_official"
                   target="_blank"
                   rel="noreferrer"
-                  aria-label="Delsigel su Instagram"
+                  aria-label={testi.footer.instagram}
                   className="flex h-10 w-10 items-center justify-center rounded-lg border border-panna/35 transition-colors hover:border-panna hover:bg-panna hover:text-cacao focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panna"
                 >
                   <svg
@@ -168,19 +177,19 @@ export function Footer() {
 
         {/* barra finale a tre zone */}
         <div className="mt-14 flex flex-col items-center gap-4 border-t border-panna/20 pt-6 text-[12px] text-panna/50 md:mt-16 md:flex-row md:justify-between">
-          <p>© 2026 Delsigel Italia S.r.l. · P.IVA 02241670591</p>
+          <p>{testi.footer.legale}</p>
           <div className="flex gap-8">
             <a href="#" className="voce-footer">
-              Termini
+              {testi.footer.termini}
             </a>
             <a href="#" className="voce-footer">
-              Privacy
+              {testi.footer.privacy}
             </a>
             <a href="#" className="voce-footer">
-              Cookie
+              {testi.footer.cookie}
             </a>
           </div>
-          <p>Design &amp; Development · Hoverture</p>
+          <p>{testi.footer.credito}</p>
         </div>
       </div>
     </footer>
@@ -217,13 +226,15 @@ const SEDE = "Delsigel, Via della Meccanica 1, 04013 Sermoneta LT";
  * collage, non su una mappa che si guarda e si trascina.
  */
 function MappaSede() {
+  const { testi } = useLingua();
+
   return (
     <div className="w-full max-w-[26rem] justify-self-start xl:w-[22rem]">
-      <ColumnHeading>Dove siamo</ColumnHeading>
+      <ColumnHeading>{testi.footer.dove}</ColumnHeading>
 
       <div className="mappa-sede mt-6 overflow-hidden rounded-[18px] border border-panna/25">
         <iframe
-          title="Mappa: sede Delsigel in via della Meccanica 1, Sermoneta"
+          title={testi.footer.mappaTitolo}
           src={`https://www.google.com/maps?q=${encodeURIComponent(SEDE)}&z=15&output=embed`}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

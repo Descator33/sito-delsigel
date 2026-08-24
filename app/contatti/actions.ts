@@ -22,6 +22,11 @@ import {
   type StatoContatto,
 } from "@/lib/contatti";
 import { spedisci } from "@/lib/contatti/consegna";
+import { dizionario } from "@/lib/i18n/dizionario";
+import {
+  LINGUA_PREDEFINITA,
+  haLingua,
+} from "@/lib/i18n/lingue";
 
 /* Un client onesto impiega qualche secondo a compilare quattro campi;
    uno script no. Sotto questa soglia la richiesta è quasi certamente
@@ -73,12 +78,22 @@ export async function inviaRichiesta(
   dati: FormData
 ): Promise<StatoContatto> {
   const testo = (campo: string) => String(dati.get(campo) ?? "");
+  const linguaRichiesta = testo("lingua");
+  const lingua = haLingua(linguaRichiesta)
+    ? linguaRichiesta
+    : LINGUA_PREDEFINITA;
+  const testi = dizionario(lingua).contatti;
 
   const bozza: BozzaContatto = {
     nome: testo("nome"),
-    azienda: testo("azienda"),
+    cognome: testo("cognome"),
+    telefono: testo("telefono"),
     email: testo("email"),
+    azienda: testo("azienda"),
+    ruolo: testo("ruolo"),
+    reparto: testo("reparto"),
     messaggio: testo("messaggio"),
+    privacy: dati.get("privacy") === "on",
   };
 
   /* L'honeypot: un campo che nessun essere umano vede e che i compilatori
@@ -87,7 +102,7 @@ export async function inviaRichiesta(
   if (testo("sito_web").trim() !== "") {
     return {
       stato: "ok",
-      messaggio: "Messaggio ricevuto. Ti rispondiamo entro un giorno lavorativo.",
+      messaggio: testi.esiti.ricevuto,
     };
   }
 
@@ -101,19 +116,18 @@ export async function inviaRichiesta(
       return {
         stato: "errore",
         campi: {},
-        messaggio:
-          "Richiesta inviata troppo in fretta. Riprova fra qualche secondo.",
+        messaggio: testi.esiti.troppoInFretta,
         valori: bozza,
       };
     }
   }
 
-  const campi = validaContatto(bozza);
+  const campi = validaContatto(bozza, testi);
   if (Object.keys(campi).length > 0) {
     return {
       stato: "errore",
       campi,
-      messaggio: "Controlla i campi segnalati: manca qualcosa per risponderti.",
+      messaggio: testi.esiti.controllaCampi,
       valori: bozza,
     };
   }
@@ -123,8 +137,7 @@ export async function inviaRichiesta(
     return {
       stato: "errore",
       campi: {},
-      messaggio:
-        "Hai già inviato più richieste di fila. Aspetta qualche minuto, oppure chiamaci: +39 0773 319437.",
+      messaggio: testi.esiti.troppiInvii,
       valori: bozza,
     };
   }
@@ -134,8 +147,7 @@ export async function inviaRichiesta(
   if (esito.ok) {
     return {
       stato: "ok",
-      messaggio:
-        "Messaggio ricevuto. Ti rispondiamo entro un giorno lavorativo.",
+      messaggio: testi.esiti.ricevuto,
     };
   }
 
@@ -147,9 +159,9 @@ export async function inviaRichiesta(
     campi: {},
     messaggio:
       esito.motivo === "NON_CONFIGURATO"
-        ? "L'invio dal sito non è ancora attivo. Apri il messaggio nel tuo programma di posta: è già compilato."
-        : "Non siamo riusciti a inviare il messaggio. Riprova, oppure aprilo nel tuo programma di posta: è già compilato.",
-    ripiego: mailtoDiRipiego(bozza),
+        ? testi.esiti.canaleAssente
+        : testi.esiti.invioFallito,
+    ripiego: mailtoDiRipiego(bozza, testi),
     valori: bozza,
   };
 }

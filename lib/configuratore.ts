@@ -259,15 +259,16 @@ export function parseScelta(scelta: string[] | undefined): EsitoParse {
 }
 
 /** Parsing tollerante per il client: dal pathname allo stato, senza
- *  redirect (il client naviga solo verso URL canonici). */
+ *  redirect (il client naviga solo verso URL canonici). Il pathname
+ *  arriva col prefisso lingua (/fi/configuratore/…): si parte dal
+ *  segmento "configuratore", ovunque stia. */
 export function statoDaPathname(pathname: string): {
   base: Base | null;
   comb: Combinazione | null;
 } {
-  const segmenti = pathname
-    .split("/")
-    .filter(Boolean)
-    .slice(1); /* scarta "configuratore" */
+  const tutti = pathname.split("/").filter(Boolean);
+  const daConfiguratore = tutti.indexOf("configuratore");
+  const segmenti = daConfiguratore >= 0 ? tutti.slice(daConfiguratore + 1) : [];
   const [idBase, idFarcitura] = segmenti;
   const base = idBase ? (BASI.get(idBase) ?? null) : null;
   const comb =
@@ -324,14 +325,6 @@ export type FotoFarciture = Record<string, string>;
  *  completo (foto sku--topping) compare sul banco dopo il rilascio. */
 export type FotoTopping = Record<string, string>;
 
-/* ------------------------------ formattazione ---------------------------- */
-
-/* useGrouping "always": il default it-IT è "min2", che scriverebbe "3360"
-   invece di "3.360" — e la scala del formato vive di questi separatori */
-const fmtIt = new Intl.NumberFormat("it-IT", { useGrouping: "always" });
-
-/** 3360 → "3.360": stessa resa su server e client, niente mismatch. */
-export const fmtNumero = (n: number): string => fmtIt.format(n);
-
-export const fmtKg = (n: number): string =>
-  `${fmtIt.format(Math.round(n * 10) / 10)} kg`;
+/* La formattazione dei numeri (3.360 / 3,360 / 3 360) è passata a
+   lib/i18n/lingue.ts: cambia con la lingua della pagina, e questo
+   modulo resta neutro. */

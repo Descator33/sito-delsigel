@@ -13,8 +13,10 @@ import { ConfiguratorTeaser } from "./ConfiguratorTeaser";
  * tre stati della Nuvola in scrub sta nel teaser (client); qui resta il
  * guscio.
  *
- * Una curva crema sale dentro il fucsia della sezione precedente e prepara
- * il cambio di ritmo senza introdurre un blocco narrativo autonomo.
+ * Il fondo non ha più la fascia con la curva crema: la transizione È il
+ * ponte narrativo che sta sopra (components/home/PonteFuturo, «Il
+ * prossimo sei tu»), il cui sipario crema consegna direttamente a questo
+ * crema — una fascia qui sotto tornerebbe a essere un secondo confine.
  *
  * Server Component, e deve restarlo: le foto degli stati del dolce si
  * leggono qui, dal filesystem, con la stessa funzione che usa la pagina
@@ -31,17 +33,12 @@ export function ConfiguratorClosingSection() {
   }));
 
   return (
-    <div
+    <section
       id="crea-il-tuo-dolce"
+      aria-labelledby={TITOLO_ID}
       className="font-pop-testo scroll-mt-24 bg-crema text-cacao"
     >
-      <div
-        aria-hidden
-        className="configurator-bridge relative h-[clamp(7rem,16vw,14rem)] overflow-hidden bg-fucsia"
-      >
-        <span className="configurator-bridge__surface absolute -bottom-px left-[-10%] h-[92%] w-[120%] bg-crema" />
-      </div>
       <ConfiguratorTeaser dolci={dolci} titoloId={TITOLO_ID} />
-    </div>
+    </section>
   );
 }

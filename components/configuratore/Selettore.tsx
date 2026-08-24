@@ -1,8 +1,6 @@
 "use client";
 
 import type { ReactNode, Ref } from "react";
-import type { Base, Combinazione } from "@/lib/configuratore";
-import { Riepilogo } from "./Riepilogo";
 
 /**
  * La colonna delle scelte: rail dei passi, titolo sottolineato d'oro,
@@ -22,18 +20,10 @@ import { Riepilogo } from "./Riepilogo";
 export function Selettore({
   titolo,
   titoloRef,
-  base,
-  comb,
-  finituraApplicata,
-  apriPasso,
   children,
 }: {
   titolo: string;
   titoloRef?: Ref<HTMLHeadingElement>;
-  base: Base | null;
-  comb: Combinazione | null;
-  finituraApplicata: boolean;
-  apriPasso: (passo: 1 | 2) => void;
   children: ReactNode;
 }) {
   return (
@@ -53,25 +43,17 @@ export function Selettore({
         <path d="M34 26l4-18" />
       </svg>
 
-      <Riepilogo
-        base={base}
-        comb={comb}
-        finituraApplicata={finituraApplicata}
-        apriPasso={apriPasso}
-      />
-
       <h2
         ref={titoloRef}
         tabIndex={-1}
-        className="mt-5 inline-block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-corallo-scena"
+        className="configurator-selector-title inline-block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-inchiostro"
       >
-        <span className="block text-[14px] font-extrabold uppercase leading-none tracking-[0.05em] text-inchiostro sm:text-[15px]">
+        <span className="block font-display font-extrabold uppercase leading-[0.95] tracking-[-0.025em] text-inchiostro">
           {titolo}
         </span>
-        <span aria-hidden className="mt-2 block h-[5px] w-full rounded-full bg-oro" />
       </h2>
 
-      <div className="mt-6">{children}</div>
+      <div className="configurator-inventory">{children}</div>
     </div>
   );
 }
@@ -80,6 +62,8 @@ export function Selettore({
  *  su — la misura della reference. */
 export function GrigliaTessere({ children }: { children: ReactNode }) {
   return (
-    <ul className="grid list-none grid-cols-2 gap-2.5 sm:grid-cols-3">{children}</ul>
+    <ul className="candy-inventory grid list-none grid-cols-2 gap-3 sm:grid-cols-3">
+      {children}
+    </ul>
   );
 }

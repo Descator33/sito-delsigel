@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { lenisAttivo } from "@/components/SmoothScroll";
+import { useTesti } from "@/components/LinguaProvider";
 import {
   CatalogContinuation,
   CatalogFeaturedGrid,
@@ -37,7 +38,7 @@ function distanzaFuoriSchermo(card: HTMLElement) {
  * Story e heading arrivano come slot: restano Server Components anche se la
  * regia che li circonda vive sul client. Il palco usa due track distinti:
  * prima la Storia sticky, poi il catalogo che le sale sopra e si ferma mentre
- * le sette card atterrano. La coda espandibile resta fuori dal pin.
+ * le tre card atterrano. La coda espandibile resta fuori dal pin.
  */
 export function StorySweetsScene({
   story,
@@ -46,6 +47,7 @@ export function StorySweetsScene({
   story: ReactNode;
   heading: ReactNode;
 }) {
+  const testi = useTesti();
   const radice = useRef<HTMLDivElement>(null);
   const [scheda, setScheda] = useState<SchedaCatalogo | null>(null);
   const [coda, setCoda] = useState(false);
@@ -86,7 +88,7 @@ export function StorySweetsScene({
         !captionCatalogo ||
         captionStoria.tutti.length === 0 ||
         captionCatalogo.tutti.length === 0 ||
-        cards.length !== 7
+        cards.length !== 3
       ) {
         return;
       }
@@ -239,11 +241,12 @@ export function StorySweetsScene({
             });
 
             /* Un ultimo tratto senza nuovi ingressi lascia leggere la griglia
-               completa prima che il palco si liberi. */
+               completa prima che il palco si liberi. Parte appena l'ultima
+               card ha chiuso il suo assestamento (terza card: 3.36). */
             timelineCatalogo.to(
               catalogo,
               { duration: 1.05, ease: "none" },
-              6.15,
+              3.43,
             );
           } else {
             const ingressoCatalogo = gsap.timeline({
@@ -345,7 +348,9 @@ export function StorySweetsScene({
       const modo = scope.dataset.sceneMode;
       const offset =
         hash === "#storia" && modo === "desktop"
-          ? window.innerHeight * 0.78
+          ? /* col track a 240svh il tratto utile è 140svh: 0.42 atterra
+               a copy rivelata, prima che il foglio panna entri */
+            window.innerHeight * 0.42
           : hash === "#storia" && modo === "mobile"
             ? window.innerHeight * 0.36
             : 0;
@@ -444,7 +449,7 @@ export function StorySweetsScene({
         <section
           id="catalogo"
           data-scene-catalog
-          aria-label="Catalogo dolci Delsigel"
+          aria-label={testi.home.catalogoAria}
           className="story-sweets-scene__catalog relative z-20 bg-panna text-inchiostro"
         >
           <div

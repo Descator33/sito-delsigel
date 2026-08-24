@@ -14,7 +14,17 @@ export type TeamMember = {
  * panna con doppia cornice, nome a insegna, fascia a scacchi nell'accento
  * della card sopra il ritratto, due dati e la fascia ruolo scritta a mano.
  */
-export function TeamCard({ m }: { m: TeamMember }) {
+export function TeamCard({
+  m,
+  anniIn,
+  reparto,
+  ritratto,
+}: {
+  m: TeamMember;
+  anniIn: string;
+  reparto: string;
+  ritratto: string;
+}) {
   return (
     <article className="border-[3px] border-inchiostro bg-panna p-3 text-inchiostro shadow-[0_24px_60px_rgba(22,6,1,0.45)]">
       <div className="border-2 border-inchiostro/50 p-4 md:p-5">
@@ -33,7 +43,7 @@ export function TeamCard({ m }: { m: TeamMember }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={m.image}
-            alt={`${m.name}, ${m.role} Delsigel`}
+            alt={interpola(ritratto, { nome: m.name, ruolo: m.role })}
             loading="lazy"
             className="aspect-square w-full border-2 border-inchiostro/60 object-cover"
             draggable={false}
@@ -43,14 +53,14 @@ export function TeamCard({ m }: { m: TeamMember }) {
           <div className="text-center">
             <p className="type-display text-4xl leading-none">{m.anni}</p>
             <p className="mt-1.5 text-xs font-semibold text-inchiostro/60">
-              anni in Delsigel
+              {anniIn}
             </p>
           </div>
           <div className="h-12 w-px bg-inchiostro/20" />
           <div className="text-center">
             <p className="type-display text-4xl leading-none">{m.reparto}</p>
             <p className="mt-1.5 text-xs font-semibold text-inchiostro/60">
-              reparto
+              {reparto}
             </p>
           </div>
         </div>
@@ -63,3 +73,4 @@ export function TeamCard({ m }: { m: TeamMember }) {
     </article>
   );
 }
+import { interpola } from "@/lib/i18n/interpola";

@@ -3,6 +3,9 @@
 import { motion } from "motion/react";
 import type { CSSProperties } from "react";
 import { TEMI, type CardCatalogo, type VarianteCard } from "@/lib/catalog-bento";
+import { useTesti } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import type { Testi } from "@/lib/i18n/tipi";
 import { CircleArrowButton } from "./CircleArrowButton";
 import { ProductBadge } from "./ProductBadge";
 import { ProductImage } from "./ProductImage";
@@ -87,9 +90,16 @@ export function ProductCard({
   card: CardCatalogo;
   onApri: () => void;
 }) {
-  const { t, indice, claim, variante, tema, badge, foto } = card;
+  const testi = useTesti();
+  const { t, indice, variante, tema, badge, foto } = card;
   const m = MISURE[variante];
   const colori = TEMI[tema];
+  /* la vetrina cita solo slug che hanno il claim nel dizionario */
+  const claim =
+    testi.catalogo.claims[t.slug as keyof Testi["catalogo"]["claims"]];
+  const nota =
+    testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]] ??
+    testi.prodotti.scattoProdotto;
 
   return (
     <motion.article
@@ -114,14 +124,14 @@ export function ProductCard({
       {t.image && (
         <ProductImage
           src={t.image}
-          alt={`${t.name}: ${t.note ?? "scatto di prodotto"}`}
+          alt={`${t.name}: ${nota}`}
           riquadro={`z-0 ${m.foto} ${foto}`}
         />
       )}
 
       {badge && (
         <ProductBadge
-          righe={["BEST", "SELLER"]}
+          righe={testi.catalogo.badge}
           className="right-[5%] top-[7%] z-[1] h-[clamp(3.2rem,4.6vw,5.1rem)] w-[clamp(3.2rem,4.6vw,5.1rem)]"
         />
       )}
@@ -157,7 +167,7 @@ export function ProductCard({
             così il comando resta uno solo e non si sdoppia */}
         <CircleArrowButton
           misura={m.freccia}
-          label={`Apri la scheda di ${t.name}`}
+          label={interpola(testi.catalogo.apriScheda, { nome: t.name })}
           className={m.spazio}
         />
       </div>

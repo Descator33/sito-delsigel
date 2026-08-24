@@ -1,14 +1,14 @@
 /**
  * «Crea da solo il tuo dolce custom» — le quattro tappe raccontate in home
- * e i tre stati del dolce che scorrono sul nastro.
+ * e i tre stati del dolce che scorrono sul nastro. Qui la sola STRUTTURA:
+ * numeri, colori e chiavi delle foto. Titoli, testi e alt vivono nei
+ * dizionari (`configuratore.percorso` e `configuratore.statiNastro`),
+ * allineati per indice a questi due elenchi.
  *
  * Non è una copia del configuratore: è la sua vetrina. Il configuratore
- * vero (app/configuratore) chiede base, farcitura, finitura, formato e
- * quantità; qui si racconta il gesto, non il modulo, e si porta l'utente
- * dentro.
- *
- * Rev 05/08 — via la tappa «Personalizza il look»: prometteva colori e
- * scritte che il configuratore non fa.
+ * vero (app/[lang]/configuratore) chiede base, farcitura, finitura,
+ * formato e quantità; qui si racconta il gesto, non il modulo, e si porta
+ * l'utente dentro.
  *
  * Tappe e dolci sono DUE elenchi separati, e non è una svista: le tappe
  * sono quattro (tre scelte più l'esito), gli stati del dolce sono tre —
@@ -31,8 +31,6 @@
 
 export type TappaPercorso = {
   numero: string;
-  titolo: string;
-  testo: string;
   /** colore del pallino e del segno pop: variabile CSS della palette */
   colore: string;
 };
@@ -40,46 +38,19 @@ export type TappaPercorso = {
 export type StatoDolce = {
   /** cartella di public/img/configuratore/prodotti/ da cui esce la foto */
   stato: string;
-  alt: string;
 };
 
 export const PERCORSO: readonly TappaPercorso[] = [
-  {
-    numero: "01",
-    titolo: "Scegli la base",
-    testo: "Seleziona la base che preferisci e dai forma al tuo dolce.",
-    colore: "var(--fucsia)",
-  },
-  {
-    numero: "02",
-    titolo: "Aggiungi la farcitura",
-    testo: "Scegli la crema o il ripieno che più ti ispira.",
-    colore: "var(--acido)",
-  },
-  {
-    numero: "03",
-    titolo: "Completa con il topping",
-    testo: "Aggiungi croccantezze, frutta, golosità e decorazioni.",
-    colore: "var(--viola)",
-  },
-  {
-    numero: "04",
-    titolo: "Ottieni il tuo dolce",
-    testo: "Visualizza il risultato e completa la tua creazione.",
-    colore: "var(--mandarino)",
-  },
+  { numero: "01", colore: "var(--fucsia)" },
+  { numero: "02", colore: "var(--acido)" },
+  { numero: "03", colore: "var(--viola)" },
+  { numero: "04", colore: "var(--mandarino)" },
 ] as const;
 
 export const DOLCI: readonly StatoDolce[] = [
-  { stato: "nuvola", alt: "Nuvola vuota, la base senza farcitura" },
-  {
-    stato: "nuvola--crema-e-fragola",
-    alt: "Nuvola farcita con crema e fragola",
-  },
-  {
-    stato: "nuvola--crema-e-fragola--zucchero-a-velo-idrorepellente",
-    alt: "Nuvola alla crema e fragola con zucchero a velo",
-  },
+  { stato: "nuvola" },
+  { stato: "nuvola--crema-e-fragola" },
+  { stato: "nuvola--crema-e-fragola--zucchero-a-velo-idrorepellente" },
 ] as const;
 
 /** Lo stato con l'URL della foto già risolto (o senza, se non c'è). */

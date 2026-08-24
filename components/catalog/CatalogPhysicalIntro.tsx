@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { MotionConfig, motion, type Variants } from "motion/react";
 import { DESTINAZIONE_CATALOGO } from "@/lib/catalogo-fisico";
+import { useLingua } from "@/components/LinguaProvider";
 import { STELLA } from "./ProductBadge";
 
 /**
@@ -32,6 +33,8 @@ const CAPTION_CTA: Variants = {
 };
 
 export function CatalogPhysicalIntro({ titoloId }: { titoloId: string }) {
+  const { testi, percorso } = useLingua();
+  const sezione = testi.home.catalogoFisico;
   return (
     <MotionConfig reducedMotion="user">
       <div className="relative flex flex-col justify-center px-6 py-16 sm:px-10 lg:py-[clamp(3rem,4.6vw,5rem)] lg:pl-[clamp(2rem,3.8vw,4.6rem)] lg:pr-[clamp(2rem,3.4vw,4rem)]">
@@ -54,7 +57,7 @@ export function CatalogPhysicalIntro({ titoloId }: { titoloId: string }) {
               transition={{ duration: 0.7, ease: EASE_CAPTION }}
               className="font-tecnico text-[10px] font-semibold uppercase tracking-[0.22em] text-fucsia"
             >
-              Catalogo fisico 2026/27
+              {sezione.eyebrow}
             </motion.p>
           </motion.div>
           <div aria-hidden className="mt-3 h-[2px] w-10 bg-fucsia" />
@@ -63,57 +66,35 @@ export function CatalogPhysicalIntro({ titoloId }: { titoloId: string }) {
             id={titoloId}
             className="font-insegna mt-4 text-[clamp(2.7rem,9vw,5rem)] font-extrabold uppercase leading-[0.86] tracking-[-0.045em] lg:mt-6 lg:text-[clamp(3rem,5.2vw,6.6rem)]"
           >
-            <motion.span
-              data-home-caption-mask
-              initial="nascosta"
-              whileInView="visibile"
-              viewport={{ once: true, amount: 0.6 }}
-              className="block overflow-hidden pb-[0.05em]"
-            >
+            {sezione.titolo.map((riga, indice) => (
               <motion.span
-                data-catalog-motion="reveal"
-                variants={CAPTION_TITOLO}
-                transition={{ duration: 0.72, delay: 0.06, ease: EASE_CAPTION }}
-                className="block"
+                key={riga.testo}
+                data-home-caption-mask
+                initial="nascosta"
+                whileInView="visibile"
+                viewport={{ once: true, amount: 0.6 }}
+                className="block overflow-hidden pb-[0.05em]"
               >
-                Il catalogo
+                <motion.span
+                  data-catalog-motion="reveal"
+                  variants={CAPTION_TITOLO}
+                  transition={{
+                    duration: 0.72,
+                    delay: 0.06 + indice * 0.04,
+                    ease: EASE_CAPTION,
+                  }}
+                  className={`block ${riga.accento ? "text-fucsia" : ""}`}
+                >
+                  {riga.testo}
+                  {indice === sezione.titolo.length - 1 && (
+                    <span className="text-fucsia">.</span>
+                  )}
+                </motion.span>
               </motion.span>
-            </motion.span>
-            <motion.span
-              data-home-caption-mask
-              initial="nascosta"
-              whileInView="visibile"
-              viewport={{ once: true, amount: 0.6 }}
-              className="block overflow-hidden pb-[0.05em]"
-            >
-              <motion.span
-                data-catalog-motion="reveal"
-                variants={CAPTION_TITOLO}
-                transition={{ duration: 0.72, delay: 0.1, ease: EASE_CAPTION }}
-                className="block text-fucsia"
-              >
-                2026/2027
-              </motion.span>
-            </motion.span>
-            <motion.span
-              data-home-caption-mask
-              initial="nascosta"
-              whileInView="visibile"
-              viewport={{ once: true, amount: 0.6 }}
-              className="block overflow-hidden pb-[0.05em]"
-            >
-              <motion.span
-                data-catalog-motion="reveal"
-                variants={CAPTION_TITOLO}
-                transition={{ duration: 0.72, delay: 0.14, ease: EASE_CAPTION }}
-                className="block"
-              >
-                Da sfogliare<span className="text-fucsia">.</span>
-              </motion.span>
-            </motion.span>
+            ))}
           </h2>
 
-          <SigilloNovita />
+          <SigilloNovita testo={sezione.novita} />
         </div>
 
         <motion.div
@@ -129,9 +110,8 @@ export function CatalogPhysicalIntro({ titoloId }: { titoloId: string }) {
             transition={{ duration: 0.68, delay: 0.2, ease: EASE_CAPTION }}
             className="max-w-[38ch] text-[clamp(0.95rem,1.05vw,1.15rem)] leading-[1.6] text-inchiostro/85"
           >
-            Ispirazioni, tendenze e tutte le novità Delsigel.
-            <br className="hidden sm:inline" /> Un mondo di dolcezza, tutto da
-            scoprire.
+            {sezione.promessa[0]}
+            <br className="hidden sm:inline" /> {sezione.promessa[1]}
           </motion.p>
         </motion.div>
 
@@ -148,10 +128,10 @@ export function CatalogPhysicalIntro({ titoloId }: { titoloId: string }) {
             transition={{ duration: 0.7, delay: 0.28, ease: EASE_CAPTION }}
           >
             <Link
-              href={DESTINAZIONE_CATALOGO}
+              href={percorso(DESTINAZIONE_CATALOGO)}
               className="cf-cta font-tecnico group inline-flex w-full max-w-[24rem] items-center justify-between gap-6 rounded-full bg-fucsia py-[0.45rem] pl-[clamp(1.4rem,2.1vw,2.2rem)] pr-[0.45rem] text-[11px] font-semibold uppercase tracking-[0.18em] text-panna sm:w-auto"
             >
-              Scopri la nuova edizione
+              {sezione.cta}
               <span
                 aria-hidden
                 className="grid h-11 w-11 flex-none place-items-center rounded-full border border-panna/55 lg:h-[clamp(2.5rem,3vw,3.1rem)] lg:w-[clamp(2.5rem,3vw,3.1rem)]"
@@ -173,7 +153,7 @@ export function CatalogPhysicalIntro({ titoloId }: { titoloId: string }) {
  * inchiostro — e inclinata come nel riferimento. Sta fermo: la sezione ha
  * già la galleria che si muove.
  */
-function SigilloNovita() {
+function SigilloNovita({ testo }: { testo: string }) {
   return (
     <motion.div
       aria-hidden
@@ -195,7 +175,7 @@ function SigilloNovita() {
           fontWeight="600"
           letterSpacing="0.6"
         >
-          NOVITÀ
+          {testo}
         </text>
         <text
           x="50"

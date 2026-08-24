@@ -290,8 +290,11 @@ function creaDeposito(
     pompaPrecaricamento();
   };
 
-  /* Dopo il load si scaldano soltanto gli anchor. Il resto parte al primo
-     scroll reale: così LCP, font e still finale non competono con 90 fetch. */
+  /* Il film riceve il via dal preloader mentre la porta e ancora visibile:
+     niente attese dopo il reveal. Gli anchor — uno ogni otto frame, più il
+     primo e l'ultimo — escono subito e garantiscono una copertura minima;
+     il set completo segue un attimo dopo. Il poster del frame 1 e gia
+     inline nell'HTML, quindi resta lui l'LCP. */
   const anchor = Array.from(
     { length: Math.ceil(variante.frames / 8) },
     (_, indice) => Math.min(variante.frames - 1, indice * 8),
@@ -301,14 +304,6 @@ function creaDeposito(
     variante.frames - 1,
     ...anchor,
   ].filter((indice, posizione, tutti) => tutti.indexOf(indice) === posizione);
-
-  const pianificaAnchor = () => {
-    window.clearTimeout(timerPrecaricamento);
-    timerPrecaricamento = window.setTimeout(
-      () => accodaPrecaricamento(ordineAnchor),
-      450,
-    );
-  };
 
   const avviaPrecaricamentoCompleto = () => {
     if (precaricamentoAvviato || risparmioDati) return;
@@ -361,9 +356,10 @@ function creaDeposito(
   };
 
   const alCambioVisibilita = () => pompaPrecaricamento();
-  if (document.readyState === "complete") pianificaAnchor();
-  else window.addEventListener("load", pianificaAnchor, { once: true });
   document.addEventListener("visibilitychange", alCambioVisibilita);
+
+  accodaPrecaricamento(ordineAnchor);
+  timerPrecaricamento = window.setTimeout(avviaPrecaricamentoCompleto, 250);
 
   mostra(0);
 
@@ -372,7 +368,6 @@ function creaDeposito(
     distruggi: () => {
       distrutto = true;
       window.clearTimeout(timerPrecaricamento);
-      window.removeEventListener("load", pianificaAnchor);
       document.removeEventListener("visibilitychange", alCambioVisibilita);
       controller.abort();
       codaDecodifica = [];
@@ -418,6 +413,7 @@ export const HeroFrameSequence = forwardRef<
       deposito.current = creaDeposito(variante, (frame, indice) => {
         if (!canvas.current) return;
         ultimo.current = { frame, indice };
+        canvas.current.dataset.frame = String(indice);
         disegnaCover(canvas.current, frame);
       });
       deposito.current.mostra(progresso.current);

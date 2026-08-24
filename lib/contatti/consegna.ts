@@ -28,7 +28,13 @@
  * altrove, aggiungere il guardiano prima di farlo.
  */
 
-import { EMAIL, type BozzaContatto } from "@/lib/contatti";
+import {
+  EMAIL,
+  etichettaReparto,
+  type BozzaContatto,
+} from "@/lib/contatti";
+import { dizionario } from "@/lib/i18n/dizionario";
+import { LINGUA_PREDEFINITA } from "@/lib/i18n/lingue";
 
 export type EsitoConsegna =
   | { ok: true }
@@ -63,9 +69,16 @@ function corpo(b: Busta): string {
   return [
     "Nuova richiesta dal form contatti del sito.",
     "",
-    `Nome e cognome: ${b.nome.trim()}`,
-    `Azienda: ${b.azienda.trim() || "—"}`,
+    `Nome: ${b.nome.trim()}`,
+    `Cognome: ${b.cognome.trim()}`,
+    `Telefono: ${b.telefono.trim()}`,
     `Email: ${b.email.trim()}`,
+    `Azienda: ${b.azienda.trim()}`,
+    `Ruolo: ${b.ruolo.trim()}`,
+    `Reparto di interesse: ${etichettaReparto(
+      b.reparto,
+      dizionario(LINGUA_PREDEFINITA).contatti,
+    )}`,
     "",
     "Messaggio:",
     b.messaggio.trim(),
@@ -97,7 +110,7 @@ export async function spedisci(busta: Busta): Promise<EsitoConsegna> {
         /* la risposta del commerciale torna al cliente, non al mittente
            tecnico: è il motivo per cui reply_to non è un dettaglio */
         reply_to: busta.email.trim(),
-        subject: `Richiesta dal sito — ${busta.nome.trim()}${
+        subject: `Richiesta dal sito — ${busta.nome.trim()} ${busta.cognome.trim()}${
           busta.azienda.trim() ? ` · ${busta.azienda.trim()}` : ""
         }`,
         text: corpo(busta),

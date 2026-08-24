@@ -20,11 +20,11 @@ const SCATTI = [
  * Carosello lento di card-biglietto tra l'hero e la lettera: l'album dello
  * stabilimento, uno scatto per biglietto. Scorrimento continuo, senza fine.
  */
-export function Biglietti() {
+export function Biglietti({ etichetta }: { etichetta: string }) {
   return (
     <div className="bg-panna py-16 md:py-20">
       <p className="text-center font-mono text-[13px] font-bold text-inchiostro/55">
-        L&apos;album dello stabilimento:
+        {etichetta}
       </p>
       <div aria-hidden className="marquee mt-9">
         <div className="marquee-track" style={{ animationDuration: "55s" }}>
