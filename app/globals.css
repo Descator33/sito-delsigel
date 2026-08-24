@@ -60,6 +60,192 @@
   --raggio-tessera: 22px;
 }
 
+/* ---------------------------------------------------------------- */
+/* Porta d'ingresso                                                   */
+/*                                                                    */
+/* Il documento nasce gia bloccato dal root layout: nessun frame della */
+/* pagina puo scorrere prima che React monti il preloader. Il provider */
+/* rimuove l'attributo soltanto dopo l'uscita della campitura panna.   */
+/* ---------------------------------------------------------------- */
+
+html[data-preloader-attivo],
+html[data-preloader-attivo] body {
+  overflow: hidden;
+}
+
+/* Porta gia attraversata in questa scheda (script prima del paint): l'HTML
+   server la contiene ancora, ma non deve comparire nemmeno per un frame
+   mentre React idrata e la congeda. */
+html[data-porta-di-ritorno] .preloader-porta {
+  display: none;
+}
+
+.preloader-porta {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--panna);
+  color: var(--bruno);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.preloader-grana {
+  position: absolute;
+  inset: -18%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image:
+    repeating-radial-gradient(
+      circle at 18% 32%,
+      rgb(86 52 15 / 0.09) 0 0.5px,
+      transparent 0.8px 3.5px
+    ),
+    repeating-radial-gradient(
+      circle at 78% 68%,
+      rgb(255 255 255 / 0.75) 0 0.7px,
+      transparent 1px 4px
+    );
+  background-size: 7px 7px, 9px 9px;
+  transform: rotate(0.001deg);
+}
+
+.preloader-contenuto {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 4vw, 64px);
+  transform: translateY(-1.8vh);
+}
+
+.preloader-modello {
+  position: relative;
+  width: clamp(320px, 45vw, 730px);
+  height: clamp(190px, 24vw, 340px);
+}
+
+.preloader-modello-canvas,
+.preloader-modello-ripiego {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.preloader-modello-canvas {
+  opacity: 0;
+  transition: opacity 0.38s ease-out;
+}
+
+.preloader-modello-ripiego {
+  object-fit: contain;
+  padding: 9% 12%;
+  filter: drop-shadow(0 18px 12px rgb(43 29 22 / 0.22));
+  transition: opacity 0.28s ease-out;
+}
+
+.preloader-modello[data-pronto] .preloader-modello-canvas {
+  opacity: 1;
+}
+
+.preloader-modello[data-pronto] .preloader-modello-ripiego {
+  opacity: 0;
+}
+
+.preloader-wordmark {
+  display: block;
+  width: clamp(235px, 25vw, 405px);
+  height: auto;
+  margin-top: clamp(-38px, -2.2vw, -22px);
+  object-fit: contain;
+  user-select: none;
+}
+
+.preloader-avanzamento {
+  width: min(52vw, 820px);
+  min-width: 320px;
+  margin-top: clamp(48px, 7vh, 78px);
+}
+
+.preloader-barra {
+  height: clamp(13px, 1.05vw, 17px);
+  overflow: hidden;
+  border: 2px solid var(--bruno);
+  border-radius: 999px;
+  background: rgb(255 244 230 / 0.54);
+}
+
+.preloader-barra > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--corallo);
+  transform-origin: left center;
+  transition: transform 90ms linear;
+}
+
+.preloader-stato {
+  margin-top: clamp(17px, 2.2vh, 24px);
+  font-family: var(--font-space-mono), monospace;
+  font-size: clamp(12px, 0.92vw, 15px);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.045em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.preloader-porta[data-fase="uscita"] {
+  transform: translate3d(0, -101%, 0);
+  transition: transform 0.72s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@media (max-aspect-ratio: 5/4) {
+  .preloader-contenuto {
+    padding-inline: 20px;
+    transform: translateY(-2.5vh);
+  }
+
+  .preloader-modello {
+    width: min(92vw, 620px);
+    height: clamp(190px, 46vw, 310px);
+  }
+
+  .preloader-wordmark {
+    width: clamp(220px, 53vw, 350px);
+    margin-top: clamp(-34px, -5vw, -18px);
+  }
+
+  .preloader-avanzamento {
+    width: min(84vw, 610px);
+    min-width: 0;
+    margin-top: clamp(42px, 7vh, 70px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-modello-canvas,
+  .preloader-modello-ripiego,
+  .preloader-barra > span {
+    transition-duration: 0.01ms;
+  }
+
+  .preloader-porta[data-fase="uscita"] {
+    opacity: 0;
+    transform: none;
+    transition: opacity 0.18s linear;
+  }
+}
+
 @theme inline {
   --color-inchiostro: var(--inchiostro);
   --color-fucsia: var(--fucsia);

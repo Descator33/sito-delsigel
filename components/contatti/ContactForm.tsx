@@ -7,11 +7,12 @@ import { FormField } from "@/components/contatti/FormField";
 import { SubmitButton } from "@/components/contatti/SubmitButton";
 import { FrecciaCurva } from "@/components/contatti/PopDecorations";
 import { Scintilla } from "@/components/catalog/salati/DecorativeDoodles";
+import { useLingua } from "@/components/LinguaProvider";
 import {
   BOZZA_VUOTA,
   LIMITI,
-  REPARTI_INTERESSE,
   STATO_INIZIALE,
+  repartiInteresse,
   validaContatto,
   type BozzaContatto,
   type ErroriContatto,
@@ -41,6 +42,9 @@ import {
  * corrente, e il testo appena scritto resta dov'è.
  */
 export function ContactForm() {
+  const { lingua, testi: tuttiTesti } = useLingua();
+  const testi = tuttiTesti.contatti;
+  const form = testi.form;
   const [stato, azione, inCorso] = useActionState(
     inviaRichiesta,
     STATO_INIZIALE
@@ -87,7 +91,7 @@ export function ContactForm() {
       privacy: dati.get("privacy") === "on",
     };
 
-    const trovati = validaContatto(bozza);
+    const trovati = validaContatto(bozza, testi);
     setErroriClient(trovati);
 
     /* `preventDefault` in `onSubmit` impedisce a React di far partire
@@ -130,7 +134,7 @@ export function ContactForm() {
       <div className="relative z-10 p-6 pb-8 sm:p-9 sm:pb-10 lg:p-11 lg:pb-12">
         <div className="relative">
           <h2 className="font-hero text-[clamp(2.35rem,4vw,4.25rem)] font-normal uppercase leading-[0.94] tracking-[-0.045em]">
-            Scrivici
+            {form.titolo}
           </h2>
           {/* i tre raggi del riferimento, appoggiati in alto a destra */}
           <Scintilla className="absolute -top-2 right-0 hidden h-9 w-9 text-inchiostro sm:block" />
@@ -151,7 +155,7 @@ export function ContactForm() {
             aria-hidden
             className="pointer-events-none absolute left-[-9999px] h-px w-px overflow-hidden opacity-0"
           >
-            <label htmlFor="sito_web">Sito web</label>
+            <label htmlFor="sito_web">{form.honeypot}</label>
             <input
               id="sito_web"
               name="sito_web"
@@ -162,81 +166,88 @@ export function ContactForm() {
             />
           </div>
           <input ref={apertura} type="hidden" name="aperto_il" defaultValue="" />
+          <input type="hidden" name="lingua" value={lingua} />
 
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-5">
             <FormField
               id="nome"
               nome="nome"
-              etichetta="Nome"
-              segnaposto="Es. Piera"
+              etichetta={form.nome}
+              segnaposto={form.nomePh}
               autoComplete="given-name"
               maxLength={LIMITI.nome.max}
               richiesto
               errore={errori.nome}
               defaultValue={precedenti.nome}
               onInput={() => ripulisci("nome")}
+              facoltativo={form.facoltativo}
             />
             <FormField
               id="cognome"
               nome="cognome"
-              etichetta="Cognome"
-              segnaposto="Es. Ollearo"
+              etichetta={form.cognome}
+              segnaposto={form.cognomePh}
               autoComplete="family-name"
               maxLength={LIMITI.cognome.max}
               richiesto
               errore={errori.cognome}
               defaultValue={precedenti.cognome}
               onInput={() => ripulisci("cognome")}
+              facoltativo={form.facoltativo}
             />
             <FormField
               id="telefono"
               nome="telefono"
               tipo="tel"
-              etichetta="Telefono"
-              segnaposto="+39 000 0000000"
+              etichetta={form.telefono}
+              segnaposto={form.telefonoPh}
               autoComplete="tel"
               maxLength={LIMITI.telefono.max}
               richiesto
               errore={errori.telefono}
               defaultValue={precedenti.telefono}
               onInput={() => ripulisci("telefono")}
+              facoltativo={form.facoltativo}
             />
             <FormField
               id="email"
               nome="email"
               tipo="email"
-              etichetta="Email"
-              segnaposto="nome@azienda.it"
+              etichetta={form.email}
+              segnaposto={form.emailPh}
               autoComplete="email"
               maxLength={LIMITI.email.max}
               richiesto
               errore={errori.email}
               defaultValue={precedenti.email}
               onInput={() => ripulisci("email")}
+              facoltativo={form.facoltativo}
             />
             <FormField
               id="azienda"
               nome="azienda"
-              etichetta="Azienda"
-              segnaposto="Ragione sociale"
+              etichetta={form.azienda}
+              segnaposto={form.aziendaPh}
               autoComplete="organization"
               maxLength={LIMITI.azienda.max}
               richiesto
               errore={errori.azienda}
               defaultValue={precedenti.azienda}
               onInput={() => ripulisci("azienda")}
+              facoltativo={form.facoltativo}
             />
             <FormField
               id="ruolo"
               nome="ruolo"
-              etichetta="Ruolo"
-              segnaposto="Es. Buyer, titolare, R&D"
+              etichetta={form.ruolo}
+              segnaposto={form.ruoloPh}
               autoComplete="organization-title"
               maxLength={LIMITI.ruolo.max}
               richiesto
               errore={errori.ruolo}
               defaultValue={precedenti.ruolo}
               onInput={() => ripulisci("ruolo")}
+              facoltativo={form.facoltativo}
             />
           </div>
 
@@ -245,14 +256,15 @@ export function ContactForm() {
               id="reparto"
               nome="reparto"
               select
-              etichetta="Reparto di interesse"
-              segnaposto="Seleziona un reparto"
+              etichetta={form.reparto}
+              segnaposto={form.repartoPh}
               autoComplete="off"
-              opzioni={REPARTI_INTERESSE}
+              opzioni={repartiInteresse(testi)}
               richiesto
               errore={errori.reparto}
               defaultValue={precedenti.reparto}
               onInput={() => ripulisci("reparto")}
+              facoltativo={form.facoltativo}
             />
           </div>
 
@@ -262,13 +274,14 @@ export function ContactForm() {
               nome="messaggio"
               multiriga
               righe={3}
-              etichetta="Messaggio"
-              segnaposto="Raccontaci cosa ti serve: referenze, quantità, zona di consegna..."
+              etichetta={form.messaggio}
+              segnaposto={form.messaggioPh}
               maxLength={LIMITI.messaggio.max}
               richiesto
               errore={errori.messaggio}
               defaultValue={precedenti.messaggio}
               onInput={() => ripulisci("messaggio")}
+              facoltativo={form.facoltativo}
             />
           </div>
 
@@ -289,9 +302,7 @@ export function ContactForm() {
                 className="mt-0.5 h-5 w-5 flex-none accent-rosso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosso"
               />
               <span>
-                Dichiaro di aver letto l&apos;Informativa Privacy e acconsento al
-                trattamento dei miei dati personali ai sensi del Regolamento UE
-                2016/679 (GDPR).
+                {form.privacy}
                 <span aria-hidden className="ml-0.5 font-bold text-rosso">
                   *
                 </span>
@@ -307,10 +318,14 @@ export function ContactForm() {
             )}
           </div>
 
-          <Esito stato={stato} />
+          <Esito stato={stato} apriPosta={form.apriPosta} />
 
           <div className="mt-7">
-            <SubmitButton inCorso={inCorso} riuscito={stato.stato === "ok"} />
+            <SubmitButton
+              inCorso={inCorso}
+              riuscito={stato.stato === "ok"}
+              testi={form}
+            />
           </div>
         </form>
       </div>
@@ -334,7 +349,13 @@ export function ContactForm() {
  * `polite` e non `assertive`: la persona ha appena premuto un pulsante e
  * sta aspettando: non serve interrompere ciò che sta leggendo.
  */
-function Esito({ stato }: { stato: StatoContatto }) {
+function Esito({
+  stato,
+  apriPosta,
+}: {
+  stato: StatoContatto;
+  apriPosta: string;
+}) {
   return (
     <div role="status" aria-live="polite" className="empty:hidden">
       {stato.stato === "ok" && (
@@ -365,7 +386,7 @@ function Esito({ stato }: { stato: StatoContatto }) {
               className="mt-3 inline-flex min-h-[44px] items-center gap-2 border-2 border-inchiostro bg-crema px-4 text-[14px] font-bold uppercase tracking-[0.04em] transition-colors hover:bg-inchiostro hover:text-panna focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inchiostro"
             >
               <Mail aria-hidden strokeWidth={2.3} className="h-4 w-4" />
-              Apri nel programma di posta
+              {apriPosta}
             </a>
           )}
         </div>

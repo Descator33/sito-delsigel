@@ -19,6 +19,7 @@ import { AltreTipologie } from "@/components/catalog/AltreTipologie";
 import { CatalogFooterCTA } from "@/components/catalog/CatalogFooterCTA";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { ProductQuickView } from "@/components/catalog/ProductQuickView";
+import { useTesti } from "@/components/LinguaProvider";
 
 type SchedaSalata = { t: Tipologia; tema: TemaCard };
 
@@ -30,6 +31,7 @@ const ID_CODA = "altri-salati";
  * La coda mantiene lo stesso modello di tessera, transizione e quick view.
  */
 export function SavoryBentoGrid() {
+  const testi = useTesti();
   const [scheda, setScheda] = useState<SchedaSalata | null>(null);
   const [coda, setCoda] = useState(false);
   const riduciMovimento = useReducedMotion();
@@ -104,7 +106,7 @@ export function SavoryBentoGrid() {
               >
                 <AltreTipologie
                   tipologie={RESTO_SALATI}
-                  titolo="Altri salati"
+                  titolo={testi.catalogo.altriSalati}
                   onApri={(t) => setScheda({ t, tema: "sabbia" })}
                 />
               </motion.div>
@@ -125,7 +127,7 @@ export function SavoryBentoGrid() {
             aperto={coda}
             onToggle={() => setCoda((stato) => !stato)}
             controlla={ID_CODA}
-            etichettaChiusa="Scopri tutti i salati"
+            etichettaChiusa={testi.catalogo.scopriSalati}
           />
         </motion.div>
       </LayoutGroup>

@@ -5,9 +5,19 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { FINALE, INTESTAZIONE, STORIA, type TappaStoria } from "@/data/history";
+import { useTesti } from "@/components/LinguaProvider";
+import {
+  STORIA,
+  type Certificazione,
+  type TappaStoria,
+} from "@/data/history";
+import type { Testi } from "@/lib/i18n/tipi";
 
-const PAROLE_MARQUEE = ["mani", "tempo", "cura", "materia", "futuro"];
+type TestoTappa = Testi["chiSiamo"]["storia"]["tappe"][keyof Testi["chiSiamo"]["storia"]["tappe"]];
+type TappaLocalizzata = Omit<TappaStoria, "certificazioni"> &
+  TestoTappa & {
+    certificazioni?: (Certificazione & { alt: string })[];
+  };
 const SFONDI_CAPITOLI = [
   "var(--panna)",
   "color-mix(in srgb, var(--viola) 18%, var(--panna))",
@@ -22,7 +32,7 @@ function StoryPicture({
   className,
   loading = "lazy",
 }: {
-  tappa: TappaStoria;
+  tappa: TappaLocalizzata;
   className?: string;
   loading?: "eager" | "lazy";
 }) {
@@ -57,7 +67,7 @@ function StoryPicture({
   );
 }
 
-function Certificazioni({ tappa }: { tappa: TappaStoria }) {
+function Certificazioni({ tappa }: { tappa: TappaLocalizzata }) {
   if (!tappa.certificazioni) return null;
   return (
     <ul className="mt-6 flex flex-wrap items-center gap-3">
@@ -81,10 +91,10 @@ function Certificazioni({ tappa }: { tappa: TappaStoria }) {
   );
 }
 
-function HistoryReduced() {
+function HistoryReduced({ tappe }: { tappe: TappaLocalizzata[] }) {
   return (
     <ol className="hidden border-t border-cacao/15 px-5 text-cacao motion-reduce:block md:px-10">
-      {STORIA.map((tappa) => (
+      {tappe.map((tappa) => (
         <li key={tappa.id} className="mx-auto max-w-5xl border-b border-cacao/15 py-16">
           <figure className="relative aspect-[3/4] overflow-clip md:aspect-[16/10]">
             <StoryPicture
@@ -117,6 +127,15 @@ export function HistoryJourney() {
   const sezione = useRef<HTMLElement>(null);
   const [attiva, setAttiva] = useState(0);
   const attivaRef = useRef(0);
+  const testi = useTesti().chiSiamo.storia;
+  const tappe: TappaLocalizzata[] = STORIA.map((tappa) => ({
+    ...tappa,
+    ...testi.tappe[tappa.id],
+    certificazioni: tappa.certificazioni?.map((certificazione) => ({
+      ...certificazione,
+      alt: testi.certificazioni[certificazione.chiave],
+    })),
+  }));
 
   useGSAP(
     () => {
@@ -283,25 +302,25 @@ export function HistoryJourney() {
         <div className="relative z-10 flex items-center px-5 py-28 md:px-10 lg:px-14">
           <div data-intro-titolo className="w-full max-w-6xl">
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-cacao/70">
-              {INTESTAZIONE.eyebrow}
+              {testi.eyebrow}
             </p>
             <h2
               id="storia-titolo"
               className="mt-7 max-w-6xl font-insegna text-[clamp(4rem,9.4vw,10.5rem)] font-semibold leading-[0.79] tracking-[-0.07em]"
             >
-              <span className="block">La nostra</span>
+              <span className="block">{testi.titolo[0]}</span>
               <span className="flex items-center gap-[0.11em]">
                 <span className="relative inline-block h-[0.42em] w-[0.92em] shrink-0 overflow-hidden rounded-[999px] align-middle">
                   <StoryPicture
-                    tappa={STORIA[2]}
+                    tappa={tappe[2]}
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </span>
-                storia
+                {testi.titolo[1]}
               </span>
             </h2>
             <p className="mt-9 max-w-[34ch] text-pretty text-base leading-7 text-cacao/68 md:text-lg">
-              {INTESTAZIONE.testo[0]} {INTESTAZIONE.testo[1]}
+              {testi.testo}
             </p>
           </div>
         </div>
@@ -309,7 +328,7 @@ export function HistoryJourney() {
         <figure className="relative min-h-[56svh] overflow-clip md:min-h-[100svh]">
           <div data-intro-foto className="absolute inset-0 origin-center">
             <StoryPicture
-              tappa={STORIA[0]}
+              tappa={tappe[0]}
               /* È la prima immagine del capitolo e diventa LCP quando si
                  entra direttamente da /#storia: non deve aspettare il
                  margine del lazy loader. Tutte le tappe successive restano
@@ -330,7 +349,7 @@ export function HistoryJourney() {
             aria-hidden
             className="flex w-max whitespace-nowrap font-insegna text-[clamp(1.25rem,2.2vw,2.5rem)] font-medium uppercase leading-none tracking-[-0.03em] text-panna"
           >
-            {[...PAROLE_MARQUEE, ...PAROLE_MARQUEE, ...PAROLE_MARQUEE].map(
+            {[...testi.marquee, ...testi.marquee, ...testi.marquee].map(
               (parola, index) => (
                 <span key={`${parola}-${index}`} className="flex items-center">
                   <span className="px-5 md:px-8">{parola}</span>
@@ -359,7 +378,7 @@ export function HistoryJourney() {
           </div>
 
           <div className="absolute inset-x-0 top-0 z-10 h-[52svh] md:inset-y-0 md:left-[39%] md:h-auto">
-            {STORIA.map((tappa, index) => (
+            {tappe.map((tappa, index) => (
               <figure
                 key={tappa.id}
                 data-story-media
@@ -389,12 +408,12 @@ export function HistoryJourney() {
               <span data-story-progress className="block h-full w-full bg-mandarino" />
             </div>
             <p className="hidden font-mono text-[9px] uppercase tracking-[0.22em] text-cacao/70 md:block">
-              scorri per continuare
+              {testi.progressoScorri}
             </p>
           </div>
 
           <ol className="absolute inset-0 z-20">
-            {STORIA.map((tappa, index) => (
+            {tappe.map((tappa, index) => (
               <li
                 key={tappa.id}
                 data-story-copy
@@ -422,25 +441,25 @@ export function HistoryJourney() {
         </div>
       </div>
 
-      <HistoryReduced />
+      <HistoryReduced tappe={tappe} />
 
       <footer className="relative flex min-h-[92svh] items-center border-t border-cacao/12 bg-[color-mix(in_srgb,var(--viola)_22%,var(--panna))] px-5 py-28 text-cacao md:px-10 lg:px-14">
         <div className="mx-auto w-full max-w-[1480px]">
           <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-cacao/70">
-            {FINALE.eyebrow}
+            {testi.finale.eyebrow}
           </p>
           <p className="mt-6 max-w-[15ch] text-balance font-insegna text-[clamp(3.4rem,8vw,9.5rem)] font-semibold leading-[0.83] tracking-[-0.068em]">
-            {FINALE.frase[0]} {FINALE.frase[1]}
+            {testi.finale.frase[0]} {testi.finale.frase[1]}
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-7">
             <a
-              href={INTESTAZIONE.azione.href}
+              href="#squadra"
               className="inline-flex min-h-12 items-center justify-center bg-mandarino px-6 text-xs font-bold uppercase tracking-[0.16em] text-white transition-transform duration-300 hover:-translate-y-1 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cacao"
             >
-              {INTESTAZIONE.azione.testo}
+              {testi.azione}
             </a>
             <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-cacao/70">
-              {FINALE.coda}
+              {testi.finale.coda}
             </p>
           </div>
         </div>

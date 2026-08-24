@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import { useTesti } from "@/components/LinguaProvider";
 
 /**
  * La CTA sotto la griglia. Nel riferimento è una pillola sola: qui è anche
@@ -15,7 +16,7 @@ export function CatalogFooterCTA({
   aperto,
   onToggle,
   controlla,
-  etichettaChiusa = "Scopri tutti i dolci",
+  etichettaChiusa,
 }: {
   aperto: boolean;
   onToggle: () => void;
@@ -23,6 +24,7 @@ export function CatalogFooterCTA({
   controlla: string;
   etichettaChiusa?: string;
 }) {
+  const testi = useTesti();
   return (
     <div className="mt-6 flex justify-center xl:mt-7">
       <button
@@ -32,7 +34,9 @@ export function CatalogFooterCTA({
         aria-controls={controlla}
         className="font-tecnico group inline-flex min-h-11 items-center gap-8 rounded-full border border-fucsia px-7 text-[10px] font-semibold uppercase tracking-[0.18em] text-fucsia transition-colors hover:bg-fucsia hover:text-panna focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-fucsia"
       >
-        {aperto ? "Mostra solo la vetrina" : etichettaChiusa}
+        {aperto
+          ? testi.catalogo.mostraVetrina
+          : (etichettaChiusa ?? testi.catalogo.scopriDolci)}
         <ArrowRight
           aria-hidden
           strokeWidth={1.5}

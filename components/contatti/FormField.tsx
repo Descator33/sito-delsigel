@@ -30,6 +30,7 @@ type Comune = {
    * controllati appena l'action finisce — vedi `ContactForm`.
    */
   defaultValue?: string;
+  facoltativo?: string;
   /** per spegnere l'errore appena la persona ricomincia a scrivere */
   onInput?: () => void;
 };
@@ -58,6 +59,7 @@ export function FormField(props: Props) {
     autoComplete,
     maxLength,
     defaultValue,
+    facoltativo,
     onInput,
   } = props;
   const idErrore = `${id}-errore`;
@@ -90,7 +92,7 @@ export function FormField(props: Props) {
           </span>
         ) : (
           <span className="ml-1.5 font-normal normal-case tracking-normal text-inchiostro/45">
-            (facoltativo)
+            {facoltativo}
           </span>
         )}
       </label>

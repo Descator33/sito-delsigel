@@ -1,6 +1,8 @@
 /**
  * Il catalogo stampato 2026/2027: le foto della campagna e la destinazione
- * della CTA.
+ * della CTA. Qui la sola STRUTTURA — file, ordine, ritagli. Didascalie e
+ * testi alternativi vivono nei dizionari (`slideCatalogo`), agganciati
+ * per `id`: le cinque lingue raccontano le stesse fotografie.
  *
  * I file stanno in `public/Foto catalogo fisico` con il nome che avevano
  * all'arrivo — spazi e parentesi compresi. Non sono stati rinominati: il
@@ -14,13 +16,14 @@
  * `objectPosition`.
  */
 
+import type { IdSlideCatalogo } from "@/lib/i18n/tipi";
+
 const CARTELLA = "/Foto catalogo fisico";
 
 export type CatalogSlide = {
+  /** chiave di didascalia e alt nel dizionario (`slideCatalogo`) */
+  id: IdSlideCatalogo;
   src: string;
-  alt: string;
-  /** didascalia breve, stampata in basso sulla foto */
-  label: string;
   /** solo dove il taglio 4:5 centrato perde qualcosa: default `center` */
   objectPosition?: string;
 };
@@ -31,75 +34,22 @@ export type CatalogSlide = {
  * still life senza mai mettere in fila due fondi dello stesso colore.
  */
 export const CATALOG_SLIDES: readonly CatalogSlide[] = [
+  { id: "orecchini", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51.jpeg` },
+  { id: "gioielli", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.52.jpeg` },
+  { id: "borsa", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (5).jpeg` },
+  { id: "linea-salata", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.49.jpeg` },
+  { id: "condividere", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (2).jpeg` },
+  { id: "collezione", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (3).jpeg` },
+  { id: "finger-food", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.50.jpeg` },
+  { id: "pennello", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (4).jpeg` },
+  { id: "morso", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.49 (1).jpeg` },
+  { id: "san-valentino", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.52 (1).jpeg` },
+  { id: "scacchiera", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.50 (2).jpeg` },
+  { id: "coppette", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (1).jpeg` },
+  { id: "vaso", src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.50 (1).jpeg` },
   {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51.jpeg`,
-    alt: "Modella con cappello leopardato indossa due dolci Delsigel come orecchini, su fondo giallo",
-    label: "Dolci da indossare",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.52.jpeg`,
-    alt: "Due bignè in scatoline regalo blu circondati da perle, orecchini e un orologio dorato, su fondo arancione",
-    label: "Piccoli gioielli",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (5).jpeg`,
-    alt: "Borsa lilla all'uncinetto con dentro due dolci ripieni di confettura, su fondo rosso",
-    label: "Moda e pasticceria",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.49.jpeg`,
-    alt: "Ragazzo appoggiato a un piano arancione circondato da pizzette Delsigel",
-    label: "La linea salata",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (2).jpeg`,
-    alt: "Quattro mani prendono girelle e sfogliatine da piatti colorati, su fondo fucsia",
-    label: "Da condividere",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (3).jpeg`,
-    alt: "Due bomboloni su alzatine di cristallo con perle e papillon nero, su fondo rosso",
-    label: "Da collezione",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.50.jpeg`,
-    alt: "Bocconcini salati farciti in equilibrio su vasi scultorei, su fondo blu",
-    label: "Finger food",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (4).jpeg`,
-    alt: "Una mano rifinisce con un pennello un dolce a forma di fiore, accanto a una tavolozza di colori",
-    label: "Rifiniti a mano",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.49 (1).jpeg`,
-    alt: "Ragazza con cerchietto di perle morde un bombolone alla confettura, su fondo arancione",
-    label: "Un morso alla volta",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.52 (1).jpeg`,
-    alt: "Due bomboloni a forma di cuore su fondo blu disegnato a cuoricini",
-    label: "Edizione San Valentino",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.50 (2).jpeg`,
-    alt: "Bomboloni disposti come pedine su una scacchiera rosa e arancione",
-    label: "Gioco di gusto",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.51 (1).jpeg`,
-    alt: "Tre bignè salati farciti in coppette a fantasia, su fondo giallo",
-    label: "Bocconcini salati",
-  },
-  {
-    src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.50 (1).jpeg`,
-    alt: "Sfogliatine salate raccolte in un vaso di vetro fumé, su fondo verde",
-    label: "Sfoglia salata",
-  },
-  {
+    id: "vassoio",
     src: `${CARTELLA}/WhatsApp Image 2026-07-25 at 19.19.53.jpeg`,
-    alt: "Una mano prende uno di due bomboloni farciti da un vassoio ovale, su fondo giallo",
-    label: "Il classico",
     // il vassoio arriva quasi al bordo destro: la finestra si sposta di lì
     objectPosition: "60% 50%",
   },

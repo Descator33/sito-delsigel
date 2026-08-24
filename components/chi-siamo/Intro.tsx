@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTesti } from "@/components/LinguaProvider";
 import { useScatto } from "@/lib/useScatto";
 
 /* targa esagonale centrale, come l'emblema del riferimento */
@@ -23,6 +24,7 @@ const CHECKER = "repeating-conic-gradient(#160601 0% 25%, transparent 0% 50%)";
  */
 export function Intro() {
   const ref = useRef<HTMLElement>(null);
+  const testi = useTesti().chiSiamo.intro;
 
   useScatto(ref);
 
@@ -32,7 +34,7 @@ export function Intro() {
       <div className="relative h-[52vh] min-h-[400px] w-full overflow-hidden md:h-[64vh]">
         <Image
           src="/chi-siamo/hero-team.webp"
-          alt="Quattro colleghe Delsigel abbracciate e sorridenti in laboratorio"
+          alt={testi.fotoAlt}
           fill
           priority
           quality={90}
@@ -66,17 +68,20 @@ export function Intro() {
               <span aria-hidden className="absolute left-[5%] top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-inchiostro" />
               <span aria-hidden className="absolute right-[5%] top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-inchiostro" />
               <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-inchiostro/70">
-                Chi siamo · Delsigel Italia
+                {testi.eyebrow}
               </p>
               <h1 className="type-display text-[clamp(2rem,4.2vw,3.4rem)] leading-[0.95] text-inchiostro">
-                L&apos;industria
-                <br />
-                artigianale
-                <br />
-                di Sermoneta<span className="text-fucsia">.</span>
+                {testi.titolo.map((riga, indice) => (
+                  <span key={riga.testo} className="block">
+                    {riga.testo}
+                    {indice === testi.titolo.length - 1 && (
+                      <span className="text-fucsia">.</span>
+                    )}
+                  </span>
+                ))}
               </h1>
               <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-inchiostro/70">
-                dal 1960 · IFS Food · Rainforest Alliance · RSPO
+                {testi.sigillo}
               </p>
             </div>
           </div>
@@ -89,10 +94,7 @@ export function Intro() {
         >
           <div className="bg-acido p-6 text-inchiostro shadow-[0_18px_40px_rgba(22,6,1,0.3)] md:p-7">
             <p className="font-mono text-[13px] leading-relaxed">
-              Nati nel 2011 dall&apos;incontro tra Del Monte e Siani: i fritti
-              dolci da una parte, la pasta sfoglia dall&apos;altra. Oggi 13
-              milioni di dolci l&apos;anno e tre certificazioni, con la regola
-              di sempre: fai il tuo lavoro con passione.
+              {testi.card}
             </p>
             {/* Il racconto completo prosegue nella sezione successiva. */}
             <Link
@@ -101,7 +103,7 @@ export function Intro() {
               style={{ clipPath: TICKET }}
             >
               <span className="type-scritta text-2xl leading-none text-panna">
-                Scopri la storia
+                {testi.cta}
               </span>
             </Link>
           </div>

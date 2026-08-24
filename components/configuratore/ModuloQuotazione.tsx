@@ -2,12 +2,10 @@
 
 import { useActionState } from "react";
 import { richiediQuotazione, type StatoInvio } from "@/app/configuratore/actions";
-import {
-  DATASET,
-  fmtKg,
-  fmtNumero,
-  type Combinazione,
-} from "@/lib/configuratore";
+import { useLingua } from "@/components/LinguaProvider";
+import { DATASET, type Combinazione } from "@/lib/configuratore";
+import { conta, interpola } from "@/lib/i18n/interpola";
+import { fmtKg } from "@/lib/i18n/lingue";
 
 const INPUT_CLS =
   "w-full rounded-2xl border border-linea bg-carta px-4 py-3 text-base text-inchiostro outline-none transition-colors placeholder:text-inchiostro/40 focus:border-corallo-scena focus:ring-2 focus:ring-corallo-scena/25";
@@ -29,6 +27,9 @@ export function ModuloQuotazione({
   comb: Combinazione;
   pedane: number | "";
 }) {
+  const { lingua, testi: tuttiTesti } = useLingua();
+  const testi = tuttiTesti.configuratore;
+  const modulo = testi.modulo;
   const [stato, invia, pending] = useActionState<StatoInvio, FormData>(
     richiediQuotazione,
     null
@@ -38,21 +39,22 @@ export function ModuloQuotazione({
     return (
       <div className="rounded-[28px] border-2 border-inchiostro bg-crema p-7 md:p-9">
         <h3 className="font-display text-[clamp(1.5rem,2.4vw,2rem)] font-extrabold leading-[0.95] tracking-[-0.03em]">
-          Richiesta pronta<span className="text-corallo-scena">.</span>
+          {modulo.prontaTitolo}<span className="text-corallo-scena">.</span>
         </h3>
         <p className="mt-4 max-w-lg text-base leading-relaxed text-inchiostro/70">
-          Configurazione verificata sul listino {DATASET.versione}:{" "}
-          <strong>{stato.quantita.pedane} pedane</strong> ={" "}
-          {fmtNumero(stato.quantita.cartoni)} cartoni ·{" "}
-          {fmtNumero(stato.quantita.pezzi)} pezzi ·{" "}
-          {fmtKg(stato.quantita.peso_kg)}. Manca solo l&apos;invio: parte dal
-          tuo programma di posta, con tutti i dati già scritti.
+          {interpola(modulo.prontaTesto, {
+            versione: DATASET.versione,
+            pedane: conta(testi.scala.pedane, stato.quantita.pedane, lingua),
+            cartoni: conta(testi.scala.cartoni, stato.quantita.cartoni, lingua),
+            pezzi: conta(testi.scala.pezzi, stato.quantita.pezzi, lingua),
+            peso: fmtKg(stato.quantita.peso_kg, lingua),
+          })}
         </p>
         <a
           href={stato.mailto}
           className="ombra-pop-piccola mt-8 inline-block rounded-full bg-inchiostro px-8 py-3.5 text-[11.5px] font-bold uppercase tracking-[0.12em] text-panna transition-colors hover:bg-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-corallo-scena"
         >
-          Invia la richiesta →
+          {modulo.inviaRichiesta}
         </a>
       </div>
     );
@@ -61,7 +63,7 @@ export function ModuloQuotazione({
   return (
     <form action={invia} className="rounded-[28px] border-2 border-inchiostro bg-crema p-7 md:p-9">
       <h3 className="font-display text-[clamp(1.5rem,2.4vw,2rem)] font-extrabold leading-[0.95] tracking-[-0.03em]">
-        Richiedi la quotazione<span className="text-corallo-scena">.</span>
+        {modulo.titolo}<span className="text-corallo-scena">.</span>
       </h3>
 
       {/* lo stato prodotto viaggia con il form e viene rivalidato server-side */}
@@ -69,11 +71,12 @@ export function ModuloQuotazione({
       <input type="hidden" name="farcitura" value={comb.farcitura} />
       <input type="hidden" name="pedane" value={pedane} />
       <input type="hidden" name="versione_listino" value={DATASET.versione} />
+      <input type="hidden" name="lingua" value={lingua} />
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <div className="grid gap-2">
           <label htmlFor="ragione_sociale" className="text-sm font-semibold">
-            Ragione sociale
+            {modulo.ragioneSociale}
           </label>
           <input
             id="ragione_sociale"
@@ -81,21 +84,21 @@ export function ModuloQuotazione({
             type="text"
             required
             autoComplete="organization"
-            placeholder="La tua azienda"
+            placeholder={modulo.ragioneSocialePh}
             className={INPUT_CLS}
           />
         </div>
         <div className="grid gap-2">
           <label htmlFor="canale" className="text-sm font-semibold">
-            Canale
+            {modulo.canale}
           </label>
           <select id="canale" name="canale" required defaultValue="" className={INPUT_CLS}>
             <option value="" disabled>
-              Scegli il canale…
+              {modulo.canalePh}
             </option>
             {CANALI.map((c) => (
               <option key={c} value={c}>
-                {c}
+                {modulo.canali[c]}
               </option>
             ))}
           </select>
@@ -105,7 +108,7 @@ export function ModuloQuotazione({
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
         <div className="grid gap-2">
           <label htmlFor="email" className="text-sm font-semibold">
-            Email
+            {modulo.email}
           </label>
           <input
             id="email"
@@ -113,20 +116,21 @@ export function ModuloQuotazione({
             type="email"
             required
             autoComplete="email"
-            placeholder="nome@azienda.it"
+            placeholder={modulo.emailPh}
             className={INPUT_CLS}
           />
         </div>
         <div className="grid gap-2">
           <label htmlFor="telefono" className="text-sm font-semibold">
-            Telefono <span className="font-normal text-inchiostro/45">(facoltativo)</span>
+            {modulo.telefono}{" "}
+            <span className="font-normal text-inchiostro/45">{modulo.facoltativo}</span>
           </label>
           <input
             id="telefono"
             name="telefono"
             type="tel"
             autoComplete="tel"
-            placeholder="+39 …"
+            placeholder={modulo.telefonoPh}
             className={INPUT_CLS}
           />
         </div>
@@ -134,13 +138,14 @@ export function ModuloQuotazione({
 
       <div className="mt-6 grid gap-2">
         <label htmlFor="note" className="text-sm font-semibold">
-          Note <span className="font-normal text-inchiostro/45">(facoltativo)</span>
+          {modulo.note}{" "}
+          <span className="font-normal text-inchiostro/45">{modulo.facoltativo}</span>
         </label>
         <textarea
           id="note"
           name="note"
           rows={3}
-          placeholder="Zona di consegna, tempi, altre referenze…"
+          placeholder={modulo.notePh}
           className={`${INPUT_CLS} resize-y`}
         />
       </div>
@@ -153,14 +158,14 @@ export function ModuloQuotazione({
           <p>{stato.messaggio}</p>
           {stato.errore === "SOTTO_ORDINE_MINIMO" && (
             <p className="mt-1">
-              Puoi alzare la quantità qui sopra, oppure{" "}
+              {modulo.alzaOppure}{" "}
               <a
                 href="mailto:info@delsigel.it?subject=Quantitativo%20sotto%20il%20minimo"
                 className="font-semibold underline decoration-2 underline-offset-2 hover:text-corallo-scena"
               >
-                scrivere al commerciale
+                {modulo.scriviCommerciale}
               </a>{" "}
-              per un quantitativo su misura.
+              {modulo.surMisura}
             </p>
           )}
         </div>
@@ -171,7 +176,7 @@ export function ModuloQuotazione({
         disabled={pending}
         className="ombra-pop-piccola mt-8 rounded-full bg-inchiostro px-8 py-3.5 text-[11.5px] font-bold uppercase tracking-[0.12em] text-panna transition-colors hover:bg-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-corallo-scena disabled:opacity-50"
       >
-        {pending ? "Verifica in corso…" : "Verifica e prepara →"}
+        {pending ? modulo.verificaInCorso : modulo.verifica}
       </button>
     </form>
   );

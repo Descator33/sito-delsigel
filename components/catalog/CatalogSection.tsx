@@ -1,5 +1,6 @@
 import { CatalogHeading } from "./CatalogHeading";
 import { ProductBentoGrid } from "./ProductBentoGrid";
+import type { Lingua } from "@/lib/i18n/lingue";
 
 /**
  * Il capitolo dolce del catalogo editoriale.
@@ -15,7 +16,7 @@ import { ProductBentoGrid } from "./ProductBentoGrid";
  * default è Inter Tight, e insegna e tecnico si chiedono per classe.
  * Server Component: solo la griglia, che ha stato, è client.
  */
-export function CatalogSection() {
+export function CatalogSection({ lingua }: { lingua: Lingua }) {
   return (
     <section
       id="catalogo"
@@ -23,7 +24,7 @@ export function CatalogSection() {
     >
       <div className="mx-auto max-w-[1800px] px-6 pb-16 pt-14 md:px-12 md:pb-24 md:pt-20">
         <div id="dolci" className="scroll-mt-24">
-          <CatalogHeading />
+          <CatalogHeading lingua={lingua} />
           <ProductBentoGrid />
         </div>
       </div>

@@ -33,6 +33,8 @@ import {
   etichettaReparto,
   type BozzaContatto,
 } from "@/lib/contatti";
+import { dizionario } from "@/lib/i18n/dizionario";
+import { LINGUA_PREDEFINITA } from "@/lib/i18n/lingue";
 
 export type EsitoConsegna =
   | { ok: true }
@@ -73,7 +75,10 @@ function corpo(b: Busta): string {
     `Email: ${b.email.trim()}`,
     `Azienda: ${b.azienda.trim()}`,
     `Ruolo: ${b.ruolo.trim()}`,
-    `Reparto di interesse: ${etichettaReparto(b.reparto)}`,
+    `Reparto di interesse: ${etichettaReparto(
+      b.reparto,
+      dizionario(LINGUA_PREDEFINITA).contatti,
+    )}`,
     "",
     "Messaggio:",
     b.messaggio.trim(),

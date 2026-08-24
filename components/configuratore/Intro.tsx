@@ -2,6 +2,7 @@
 
 import { SottolineaturaOro } from "./Decori";
 import { ComeFunziona } from "./ComeFunziona";
+import { useTesti } from "@/components/LinguaProvider";
 
 /**
  * La colonna introduttiva: l'insegna della pagina. Titolo su tre
@@ -16,6 +17,9 @@ import { ComeFunziona } from "./ComeFunziona";
  * essa il resto del marchio.
  */
 export function Intro() {
+  const testi = useTesti();
+  const intro = testi.configuratore.intro;
+  const ultima = intro.titolo.length - 1;
   return (
     <div className="configurator-intro__inner relative">
       <span role="img" aria-label="Delsigel" className="config-play-logo">
@@ -29,23 +33,29 @@ export function Intro() {
         <i aria-hidden />
       </span>
 
+      {/* le righe (e i loro a-capo) sono della lingua: l'ultima porta
+          la sottolineatura disegnata */}
       <h1 className="configurator-title">
-        Crea
-        <br />
-        il tuo
-        <br />
-        <span className="relative inline-block">
-          <span>dolce!</span>
-          <SottolineaturaOro className="absolute -bottom-[0.12em] left-0 h-[0.14em] w-full text-viola" />
-        </span>
+        {intro.titolo.map((riga, indice) =>
+          indice === ultima ? (
+            <span key={riga.testo} className="relative inline-block">
+              <span>{riga.testo}</span>
+              <SottolineaturaOro className="absolute -bottom-[0.12em] left-0 h-[0.14em] w-full text-viola" />
+            </span>
+          ) : (
+            <span key={riga.testo} className="block">
+              {riga.testo}
+            </span>
+          ),
+        )}
       </h1>
 
       <p className="configurator-intro-copy">
-        Gioca, combina, personalizza.
-        <br />
-        Il dolce che immagini,
-        <br />
-        lo crei tu!
+        {intro.copy.map((riga, indice) => (
+          <span key={riga} className={indice > 0 ? "block" : undefined}>
+            {riga}
+          </span>
+        ))}
       </p>
 
       <div aria-hidden className="configurator-play-burst">

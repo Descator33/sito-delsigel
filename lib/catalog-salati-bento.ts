@@ -18,7 +18,6 @@ import {
 const VETRINA = [
   {
     slug: "pizzetta-al-pomodoro",
-    claim: ["La classica.", "Sempre irresistibile."],
     variante: "hero",
     tema: "arancio",
     posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
@@ -26,7 +25,6 @@ const VETRINA = [
   },
   {
     slug: "pizzetta-fritta",
-    claim: ["Soffice, dorata,", "tutta da gustare."],
     variante: "grande",
     tema: "cacao",
     posto: "xl:col-span-4 xl:row-span-2",
@@ -34,7 +32,6 @@ const VETRINA = [
   },
   {
     slug: "montanarina",
-    claim: ["Napoletana.", "Semplicemente buona."],
     variante: "grande",
     tema: "fucsia",
     posto: "xl:col-span-3 xl:row-span-2",
@@ -42,7 +39,6 @@ const VETRINA = [
   },
 ] as const satisfies readonly {
   slug: string;
-  claim: readonly [string, string];
   variante: VarianteCard;
   tema: TemaCard;
   posto: string;

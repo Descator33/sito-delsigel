@@ -11,6 +11,8 @@ import {
 } from "@/components/HeroFrameSequence";
 import { LogoStorico } from "@/components/LogoStorico";
 import { useMenu } from "@/components/MenuStato";
+import { usePreloader } from "@/components/Preloader";
+import { useTesti } from "@/components/LinguaProvider";
 import { lenisAttivo } from "@/components/SmoothScroll";
 import {
   DURATA_MENU,
@@ -50,10 +52,6 @@ export const HERO_IMAGE_VERT_2X = "/hero/hero-intriko-vortice-mobile@2x.webp";
 
 /** dove porta l'invito: il primo capitolo della gamma, in Home */
 const DESTINAZIONE = "catalogo";
-
-/** Un respiro prima del primo movimento: il poster (frame 1) è già in
- *  pagina e in questo mezzo secondo partono i fetch dei frame. */
-const ATTESA_FILM = 0.45;
 
 /** Durata totale della regia, in secondi. I 90 frame occupano il 70% della
  *  corsa: 5.4s × 0.7 ≈ 3.8s, cioè il passo nativo dei ~24 fps del girato.
@@ -130,8 +128,10 @@ function inQuadro(r: DOMRect) {
 }
 
 export function Hero() {
+  const testi = useTesti();
   const ridotto = useReducedMotion();
   const { aperto, heroDiRitorno } = useMenu();
+  const { pronto: preloaderPronto } = usePreloader();
   const heroStatica = Boolean(ridotto) || heroDiRitorno;
 
   const racconto = useRef<HTMLElement>(null);
@@ -165,14 +165,16 @@ export function Hero() {
      le trasformazioni delle caption. Motion resta l'unico proprietario
      del rettangolo della finestra usato dal menu.
 
-     La regia è a TEMPO, non a scroll: parte da sola dopo `ATTESA_FILM` e
-     dura `DURATA_FILM`. I tween qui sotto restano scritti in unità
+     La regia è a TEMPO, non a scroll: parte dietro la porta di caricamento
+     appena tutti gli asset sono pronti e dura `DURATA_FILM`. I tween qui
+     sotto restano scritti in unità
      relative (sommano a 1) e la `duration()` finale le riporta in secondi:
      così i rapporti della vecchia partitura non cambiano. La pagina sotto
      scorre normalmente — chi scende durante il film se lo lascia alle
      spalle, e lo ritrova concluso risalendo. */
   useGSAP(
     () => {
+      if (!preloaderPronto) return;
       const track = racconto.current;
       const finale = frameFinale.current;
       if (!track || !finale) return;
@@ -207,7 +209,6 @@ export function Hero() {
 
       const timeline = gsap.timeline({
         defaults: { ease: "none" },
-        delay: ATTESA_FILM,
         onUpdate: () => {
           const progresso = timeline.progress();
           progressoFilm.current = progresso;
@@ -279,7 +280,11 @@ export function Hero() {
 
       sequenza.current?.mostra(0);
     },
-    { scope: racconto, dependencies: [heroStatica], revertOnUpdate: true },
+    {
+      scope: racconto,
+      dependencies: [heroStatica, preloaderPronto],
+      revertOnUpdate: true,
+    },
   );
 
   /* Il CTA non deve ricevere focus mentre è ancora sotto la maschera; il
@@ -500,7 +505,7 @@ export function Hero() {
             {!heroDiRitorno && (
               <HeroFrameSequence
                 ref={sequenza}
-                disabilitata={Boolean(ridotto)}
+                disabilitata={Boolean(ridotto) || !preloaderPronto}
               />
             )}
 
@@ -516,7 +521,7 @@ export function Hero() {
                 <img
                   src={HERO_IMAGE}
                   srcSet={`${HERO_IMAGE} 1x, ${HERO_IMAGE_2X} 2x`}
-                  alt="Intriko, il dolce di punta Delsigel, tra un nastro corallo e un set color cacao."
+                  alt={testi.hero.alt}
                   fetchPriority={heroDiRitorno ? "high" : "low"}
                   decoding="async"
                   draggable={false}
@@ -578,35 +583,26 @@ export function Hero() {
                   />
                 </div>
               </div>
+              {/* Le righe vengono dal dizionario: ogni lingua decide i
+                  propri a-capo, la maschera resta per riga. */}
               <h1 className="type-hero text-[clamp(2.3rem,9.6vw,3.4rem)] sm:text-[clamp(2.8rem,6.6vw,4.4rem)] lg:text-[clamp(3.2rem,4.62vw,6rem)]">
-                <Riga indice={0}>L&rsquo;industria</Riga>
-                <Riga indice={1}>artigianale.</Riga>
-                <Riga indice={2} accento>
-                  Innovazione e
-                </Riga>
-                <Riga indice={3} accento>
-                  Tradizione.
-                </Riga>
+                {testi.hero.insegna.map((riga, indice) => (
+                  <Riga key={riga.testo} indice={indice} accento={riga.accento}>
+                    {riga.testo}
+                  </Riga>
+                ))}
               </h1>
 
               {/* Descrizione e invito arrivano solo dopo la still. */}
               <div data-hero-uscita={4}>
                 <p className="font-ui mt-6 max-w-[320px] text-[15px] font-medium leading-[1.3] tracking-[-0.015em] text-hero-panna sm:mt-7 sm:text-[16px] orizzontale:text-hero-nero">
-                  <span className="block overflow-hidden">
-                    <span className="block" data-hero-caption-copy>
-                      Dolci e salati da laboratorio,
+                  {testi.hero.descrizione.map((riga) => (
+                    <span key={riga} className="block overflow-hidden">
+                      <span className="block" data-hero-caption-copy>
+                        {riga}
+                      </span>
                     </span>
-                  </span>
-                  <span className="block overflow-hidden">
-                    <span className="block" data-hero-caption-copy>
-                      prodotti su scala.
-                    </span>
-                  </span>
-                  <span className="block overflow-hidden">
-                    <span className="block" data-hero-caption-copy>
-                      Catalogo 2026/27.
-                    </span>
-                  </span>
+                  ))}
                 </p>
               </div>
 
@@ -622,7 +618,7 @@ export function Hero() {
                     tabIndex={aperto ? -1 : undefined}
                     className="hero-cta font-ui inline-flex h-[52px] w-[220px] items-center justify-between rounded-full border border-[rgb(23_21_18/0.08)] bg-hero-panna pl-[26px] pr-[22px] text-[13px] font-extrabold uppercase tracking-[0.03em] text-hero-nero"
                   >
-                    Esplora il catalogo
+                    {testi.hero.cta}
                     {/* la freccia respira in giù: è il verso dello scroll,
                         non quello di un link. Il rimbalzo sta su questo
                         involucro e l'hover sull'icona (globals.css) —

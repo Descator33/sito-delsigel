@@ -10,6 +10,8 @@ import { CarouselArrows } from "./CarouselArrows";
 import { CarouselPagination } from "./CarouselPagination";
 import { DecorativeDoodles } from "./DecorativeDoodles";
 import { SavoryProductsCarousel } from "./SavoryProductsCarousel";
+import { useTesti } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
 
 /**
  * La metà crema del quadro: la vetrina della linea salata.
@@ -33,6 +35,7 @@ import { SavoryProductsCarousel } from "./SavoryProductsCarousel";
  */
 
 export function SavoryProductShowcase() {
+  const testi = useTesti().catalogo.a11y;
   const { carosello, attivo, scatti, puoiPrima, puoiDopo, prima, dopo, vaiA } =
     useCarosello();
   const [scheda, setScheda] = useState<Tipologia | null>(null);
@@ -62,7 +65,7 @@ export function SavoryProductShowcase() {
             legge con lo schermo: questo è l'unico modo di sapere dove si è
             arrivati usando le frecce da tastiera. */}
         <p className="sr-only" aria-live="polite">
-          Gruppo {attivo + 1} di {scatti}
+          {interpola(testi.gruppoDi, { i: attivo + 1, tot: scatti })}
         </p>
 
         <DecorativeDoodles zona="vetrina" />

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import type { VoceSalata } from "@/lib/catalog-salati";
+import { useTesti } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
 import { ProductHalo } from "./ProductHalo";
 
 /**
@@ -47,18 +49,22 @@ export function SavoryProductItem({
   onApri: () => void;
 }) {
   const { t, indice, alt } = voce;
+  const testi = useTesti();
 
   return (
     <div
       className={`${MISURA_SLIDE} min-w-0 px-[clamp(0.5rem,0.9vw,1rem)]`}
       role="group"
-      aria-roledescription="diapositiva"
-      aria-label={`${posizione} di ${totale}`}
+      aria-roledescription={testi.catalogo.a11y.diapositiva}
+      aria-label={interpola(testi.home.catalogoFisico.slideDi, {
+        i: posizione,
+        tot: totale,
+      })}
     >
       <motion.button
         type="button"
         onClick={onApri}
-        aria-label={`Apri la scheda di ${t.name}`}
+        aria-label={interpola(testi.catalogo.apriScheda, { nome: t.name })}
         initial="riposo"
         animate="riposo"
         whileHover="attiva"

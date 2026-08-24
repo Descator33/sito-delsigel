@@ -2,6 +2,7 @@
 
 import { useRef, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { useTesti } from "@/components/LinguaProvider";
 
 /** Coordinate di pagina del puntatore durante il trascinamento. */
 export type Punto = { x: number; y: number };
@@ -94,6 +95,7 @@ export function TesseraScelta({
   /** contenuto del quadro: immagine scontornata o resa tipografica */
   children: ReactNode;
 }) {
+  const testi = useTesti();
   const clickDaDrag = useRef(false);
   const quadroRef = useRef<HTMLSpanElement | null>(null);
   const [inDrag, setInDrag] = useState(false);
@@ -115,7 +117,9 @@ export function TesseraScelta({
       } ${inDrag ? "z-[60]" : ""}`}
     >
       <span aria-hidden className="tessera-invito">
-        {inDrag ? "In volo!" : "Prendimi!"}
+        {inDrag
+          ? testi.configuratore.tessera.inVolo
+          : testi.configuratore.tessera.prendimi}
       </span>
 
       <span ref={quadroRef} className="tessera-quadro relative block w-full @container">

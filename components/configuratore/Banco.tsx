@@ -3,12 +3,15 @@
 import type { Ref } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
-  farcituraVoce,
   nomeCommerciale,
   type Base,
   type Combinazione,
   type FotoStati,
 } from "@/lib/configuratore";
+import { useLingua } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import { minuscola } from "@/lib/i18n/lingue";
+import type { IdFarcitura } from "@/lib/i18n/tipi";
 import {
   Asterisco,
   FrecciaGiu,
@@ -88,7 +91,11 @@ export function Banco({
   ref?: Ref<HTMLDivElement>;
 }) {
   const riduci = useReducedMotion();
-  const farcitura = comb ? farcituraVoce(comb.farcitura) : null;
+  const { lingua, testi } = useLingua();
+  const banco = testi.configuratore.banco;
+  const farcitura = comb
+    ? (testi.prodotti.farciture[comb.farcitura as IdFarcitura] ?? comb.farcitura)
+    : null;
   const completato = Boolean(comb) && finituraApplicata;
   const vuoto = !base;
 
@@ -119,11 +126,18 @@ export function Banco({
         ? "felice"
         : "felice";
 
-  const cosaManca =
-    passo === 1 ? "la tua base" : passo === 2 ? "la farcitura" : "la finitura";
+  /* niente frasi incastrate nel codice: ogni passo ha le sue, intere,
+     nel dizionario — il finlandese declina l'oggetto, il tedesco lo
+     tiene maiuscolo, e nessuna delle due cose si può comporre */
+  const manca =
+    passo === 1
+      ? banco.mancaPasso1
+      : passo === 2
+        ? banco.mancaPasso2
+        : banco.mancaPasso3;
 
   const nomeInScena = comb
-    ? `${nomeCommerciale(comb)} · ${farcitura!.nome.toLowerCase()}`
+    ? `${nomeCommerciale(comb)} · ${minuscola(farcitura!, lingua)}`
     : (base?.nome ?? "");
 
   const immagineDolce = base && (
@@ -137,13 +151,11 @@ export function Banco({
       }
       alt={
         comb
-          ? `${nomeCommerciale(comb)} con ${farcitura!.nome.toLowerCase()}`
+          ? `${nomeCommerciale(comb)} · ${minuscola(farcitura!, lingua)}`
           : base.nome
       }
       iniziale={base.nome.charAt(0)}
-      notaRipiego={
-        completato ? "Foto senza finitura — descritta accanto" : undefined
-      }
+      notaRipiego={completato ? banco.fotoSenzaFinitura : undefined}
       classe="absolute inset-0 h-full w-full object-contain object-bottom"
     />
   );
@@ -154,10 +166,11 @@ export function Banco({
       role="region"
       aria-label={
         vuoto
-          ? "Palco del configuratore, vuoto: trascina o tocca una base per posarla sul palco"
-          : `Palco del configuratore: ${nomeInScena}${
-              dropAttivo ? `. Manca ${cosaManca}` : ". Il dolce è completo"
-            }`
+          ? banco.ariaVuoto
+          : interpola(banco.ariaConDolce, {
+              nome: nomeInScena,
+              stato: dropAttivo ? manca : banco.completoAria,
+            })
       }
       data-sopra={dropAttivo && sopra ? "true" : "false"}
       data-fase={vuoto ? "vuoto" : completato ? "completo" : `passo-${passo}`}
@@ -223,16 +236,16 @@ export function Banco({
               }`}
             >
               {sopra ? (
-                <strong>Sì! Molla qui!</strong>
+                <strong>{banco.mollaQui}</strong>
               ) : (
                 <>
                   <span className="invito-mouse">
-                    Trascina qui
-                    <strong>la tua base</strong>
+                    {banco.trascinaVuoto[0]}
+                    <strong>{banco.trascinaVuoto[1]}</strong>
                   </span>
                   <span className="invito-touch">
-                    Tocca qui
-                    <strong>la tua base</strong>
+                    {banco.toccaVuoto[0]}
+                    <strong>{banco.toccaVuoto[1]}</strong>
                   </span>
                 </>
               )}
@@ -243,7 +256,7 @@ export function Banco({
             {!sopra && (
               <span className="sr-only">
                 <IconaMano className="h-3.5 w-3.5" />
-                oppure sceglila nella lista
+                {banco.oppureLista}
               </span>
             )}
           </div>
@@ -261,8 +274,12 @@ export function Banco({
 
       {dropAttivo && !vuoto && !sopra && (
         <div aria-hidden className="candy-tray-task pointer-events-none absolute inset-x-[9%] top-[7%] text-center">
-          <span className="invito-mouse">Trascina qui {cosaManca}</span>
-          <span className="invito-touch">Tocca {cosaManca} per lanciarla</span>
+          <span className="invito-mouse">
+            {passo === 3 ? banco.trascinaPasso3 : banco.trascinaPasso2}
+          </span>
+          <span className="invito-touch">
+            {passo === 3 ? banco.toccaPasso3 : banco.toccaPasso2}
+          </span>
         </div>
       )}
 
@@ -367,8 +384,18 @@ export function Banco({
         <div className="pointer-events-none absolute inset-x-0 top-[4.5%] z-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 px-[6%]">
           {(
             [
-              { testo: "Cambia farcitura", azione: () => apriPasso(2), ritardo: 1.1 },
-              { testo: "Ricomincia", azione: onRicomincia, ritardo: 1.25 },
+              {
+                testo: banco.cambiaFarcitura,
+                ricomincia: false,
+                azione: () => apriPasso(2),
+                ritardo: 1.1,
+              },
+              {
+                testo: banco.ricomincia,
+                ricomincia: true,
+                azione: onRicomincia,
+                ritardo: 1.25,
+              },
             ] as const
           ).map((cta) => (
             <motion.div
@@ -386,7 +413,7 @@ export function Banco({
                 onClick={cta.azione}
                 className="ombra-pop-piccola pointer-events-auto inline-flex items-center gap-2 rounded-full bg-inchiostro px-5 py-3 text-[11px] font-bold uppercase tracking-[0.1em] text-panna transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-corallo-scena motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
-                {cta.testo === "Ricomincia" && (
+                {cta.ricomincia && (
                   <FrecciaRicomincia className="h-[14px] w-[14px] text-oro" />
                 )}
                 {cta.testo}
@@ -420,14 +447,14 @@ export function Banco({
                   onClick={() => apriPasso(passo === 3 ? 2 : 1)}
                   className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
                 >
-                  {passo === 3 ? "Cambia farcitura" : "Cambia base"}
+                  {passo === 3 ? banco.cambiaFarcitura : banco.cambiaBase}
                 </button>
                 <button
                   type="button"
                   onClick={onRicomincia}
                   className="rounded-full text-[12px] text-inchiostro/60 underline decoration-inchiostro/25 underline-offset-2 transition-colors hover:text-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
                 >
-                  Ricomincia
+                  {banco.ricomincia}
                 </button>
               </>
             )}

@@ -1,5 +1,6 @@
 import { SavoryBentoGrid } from "./SavoryBentoGrid";
 import { SavoryCatalogHeading } from "./SavoryCatalogHeading";
+import type { Lingua } from "@/lib/i18n/lingue";
 
 /**
  * «I nostri salati», secondo capitolo della gamma prodotti.
@@ -11,7 +12,7 @@ import { SavoryCatalogHeading } from "./SavoryCatalogHeading";
 
 const TITOLO_ID = "salati-titolo";
 
-export function SavoryCatalogSection() {
+export function SavoryCatalogSection({ lingua }: { lingua: Lingua }) {
   return (
     <section
       id="salati"
@@ -19,7 +20,7 @@ export function SavoryCatalogSection() {
       className="font-testo scroll-mt-24 bg-panna text-inchiostro"
     >
       <div className="mx-auto max-w-[1800px] px-6 pb-16 pt-14 md:px-12 md:pb-24 md:pt-20">
-        <SavoryCatalogHeading titoloId={TITOLO_ID} />
+        <SavoryCatalogHeading titoloId={TITOLO_ID} lingua={lingua} />
         <SavoryBentoGrid />
       </div>
     </section>

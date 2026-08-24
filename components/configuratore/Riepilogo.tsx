@@ -1,12 +1,10 @@
 "use client";
 
-import {
-  farcituraVoce,
-  toppingVoce,
-  type Base,
-  type Combinazione,
-} from "@/lib/configuratore";
+import { type Base, type Combinazione } from "@/lib/configuratore";
 import { IconaSpunta } from "./Decori";
+import { useTesti } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import type { IdFarcitura, IdTopping } from "@/lib/i18n/tipi";
 
 /**
  * Il rail dei tre passi, in testa alla colonna delle scelte: discreto
@@ -34,8 +32,15 @@ export function Riepilogo({
   finituraApplicata: boolean;
   apriPasso: (passo: 1 | 2) => void;
 }) {
-  const farcitura = comb ? farcituraVoce(comb.farcitura) : null;
-  const topping = comb && finituraApplicata ? toppingVoce(comb.topping) : null;
+  const testi = useTesti();
+  const nomi = testi.prodotti;
+  const farcitura = comb
+    ? (nomi.farciture[comb.farcitura as IdFarcitura] ?? comb.farcitura)
+    : null;
+  const topping =
+    comb && finituraApplicata
+      ? (nomi.topping[comb.topping as IdTopping] ?? comb.topping)
+      : null;
   const corrente = comb ? 3 : base ? 2 : 1;
 
   const voci: {
@@ -44,19 +49,29 @@ export function Riepilogo({
     valore: string | null;
     apribile: boolean;
   }[] = [
-    { n: 1, etichetta: "Base", valore: base?.nome ?? null, apribile: corrente > 1 },
+    {
+      n: 1,
+      etichetta: testi.configuratore.riepilogo.base,
+      valore: base?.nome ?? null,
+      apribile: corrente > 1,
+    },
     {
       n: 2,
-      etichetta: "Farcitura",
-      valore: farcitura?.nome ?? null,
+      etichetta: testi.configuratore.riepilogo.farcitura,
+      valore: farcitura,
       apribile: corrente > 2,
     },
-    { n: 3, etichetta: "Finitura", valore: topping?.nome ?? null, apribile: false },
+    {
+      n: 3,
+      etichetta: testi.configuratore.riepilogo.finitura,
+      valore: topping,
+      apribile: false,
+    },
   ];
 
   return (
     <ol
-      aria-label="Avanzamento del configuratore"
+      aria-label={testi.configuratore.riepilogo.avanzamento}
       className="candy-livelli grid list-none grid-cols-3 gap-2"
     >
       {voci.map((v) => {
@@ -84,7 +99,11 @@ export function Riepilogo({
               <button
                 type="button"
                 onClick={() => apriPasso(v.n as 1 | 2)}
-                aria-label={`Torna al passo ${v.n}, ${v.etichetta}: ${v.valore}`}
+                aria-label={interpola(testi.configuratore.riepilogo.tornaAlPasso, {
+                  n: v.n,
+                  etichetta: v.etichetta,
+                  valore: v.valore ?? "",
+                })}
                 data-stato="completato"
                 className="candy-livello group relative flex h-full w-full flex-col items-center justify-center text-inchiostro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inchiostro"
               >
@@ -93,7 +112,7 @@ export function Riepilogo({
                   aria-hidden
                   className="candy-livello__cambia"
                 >
-                  cambia
+                  {testi.configuratore.riepilogo.cambia}
                 </span>
               </button>
             </li>

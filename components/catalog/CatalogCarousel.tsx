@@ -6,6 +6,9 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft, ArrowRight, Pointer } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { CATALOG_SLIDES, type CatalogSlide } from "@/lib/catalogo-fisico";
+import { useTesti } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import type { Testi } from "@/lib/i18n/tipi";
 
 /**
  * Il set fotografico: le pagine del catalogo stampato, da trascinare.
@@ -39,6 +42,7 @@ const SCARTO_FRECCE = {
 const NUMERO = (i: number) => String(i + 1).padStart(2, "0");
 
 export function CatalogCarousel() {
+  const testi = useTesti();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "center",
     loop: true,
@@ -82,9 +86,9 @@ export function CatalogCarousel() {
       <div className="pl-6 pt-10 sm:pl-10 lg:pl-[clamp(1rem,1.6vw,2.25rem)] lg:pt-[clamp(2.5rem,3.6vw,4rem)]">
         <div className="ml-auto w-[clamp(11rem,16vw,16.5rem)]">
           <p className="font-tecnico pr-6 text-[10px] font-semibold uppercase leading-[1.7] tracking-[0.2em] sm:pr-10 lg:pr-[clamp(1.5rem,2.6vw,3rem)]">
-            Edizione stampata
+            {testi.home.catalogoFisico.edizione[0]}
             <br />
-            da collezione
+            {testi.home.catalogoFisico.edizione[1]}
           </p>
           <div aria-hidden className="mt-3 h-px w-full bg-inchiostro/20" />
         </div>
@@ -102,8 +106,8 @@ export function CatalogCarousel() {
             className="cf-viewport"
             ref={emblaRef}
             role="group"
-            aria-roledescription="carosello"
-            aria-label="Fotografie del catalogo stampato 2026/2027"
+            aria-roledescription={testi.catalogo.a11y.carosello}
+            aria-label={testi.home.catalogoFisico.carosello}
           >
             <div className="cf-track">
               {CATALOG_SLIDES.map((slide, i) => (
@@ -113,6 +117,7 @@ export function CatalogCarousel() {
                   indice={i}
                   totale={totale}
                   attiva={i === attiva}
+                  testi={testi}
                 />
               ))}
             </div>
@@ -120,13 +125,13 @@ export function CatalogCarousel() {
         </motion.div>
 
         <BottoneTondo
-          label="Fotografia precedente"
+          label={testi.home.catalogoFisico.precedente}
           onClick={prima}
           icona="prima"
           className={SCARTO_FRECCE.prima}
         />
         <BottoneTondo
-          label="Fotografia successiva"
+          label={testi.home.catalogoFisico.successiva}
           onClick={dopo}
           icona="dopo"
           className={SCARTO_FRECCE.dopo}
@@ -155,14 +160,18 @@ export function CatalogCarousel() {
 
         <p className="font-tecnico mt-6 flex items-center justify-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-inchiostro/70">
           <Pointer aria-hidden strokeWidth={1.5} className="h-[18px] w-[18px]" />
-          Trascina per esplorare
+          {testi.home.catalogoFisico.trascina}
         </p>
 
         {/* Il conto visibile è decorativo: l'annuncio è questo, ed è
             l'unico modo per sapere dove si è arrivati usando le frecce
             da tastiera. */}
         <p className="sr-only" aria-live="polite">
-          Fotografia {attiva + 1} di {totale}: {CATALOG_SLIDES[attiva].label}
+          {interpola(testi.home.catalogoFisico.fotoDi, {
+            i: attiva + 1,
+            tot: totale,
+            label: testi.slideCatalogo[CATALOG_SLIDES[attiva].id].label,
+          })}
         </p>
       </div>
     </div>
@@ -183,24 +192,30 @@ function Diapositiva({
   indice,
   totale,
   attiva,
+  testi,
 }: {
   slide: CatalogSlide;
   indice: number;
   totale: number;
   attiva: boolean;
+  testi: Testi;
 }) {
+  const voce = testi.slideCatalogo[slide.id];
   return (
     <div
       className={`cf-slide ${MISURA_SLIDE}`}
       data-attiva={attiva}
       role="group"
-      aria-roledescription="diapositiva"
-      aria-label={`${indice + 1} di ${totale}`}
+      aria-roledescription={testi.catalogo.a11y.diapositiva}
+      aria-label={interpola(testi.home.catalogoFisico.slideDi, {
+        i: indice + 1,
+        tot: totale,
+      })}
     >
       <div className="cf-card relative aspect-[4/5] w-full overflow-hidden rounded-[18px] bg-tortora">
         <Image
           src={slide.src}
-          alt={slide.alt}
+          alt={voce.alt}
           fill
           /* La sezione è ben sotto la piega: caricarle avide toglierebbe
              banda all'hero. Restano pigre — la prima con priorità alta
@@ -219,7 +234,7 @@ function Diapositiva({
         <p className="font-tecnico absolute bottom-4 left-4 right-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-panna">
           <span className="text-panna/65">{NUMERO(indice)}</span>
           <span className="mx-2 text-panna/45">/</span>
-          {slide.label}
+          {voce.label}
         </p>
       </div>
     </div>

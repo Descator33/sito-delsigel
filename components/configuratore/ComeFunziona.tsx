@@ -2,27 +2,9 @@
 
 import { useRef } from "react";
 import { FrecciaCerchio, IconaChiudi } from "./Decori";
+import { useTesti } from "@/components/LinguaProvider";
 
-const PASSI = [
-  {
-    n: "01",
-    titolo: "Level 01 — scegli il player",
-    testo:
-      "Dieci basi, tutte disponibili. Trascinala sul palco con il mouse, oppure toccala: il risultato è identico.",
-  },
-  {
-    n: "02",
-    titolo: "Level 02 — carica la farcitura",
-    testo:
-      "Compaiono solo le farciture che esistono davvero per quella base: niente scelte che poi non si possono fare.",
-  },
-  {
-    n: "03",
-    titolo: "Level 03 — chiudi la combo",
-    testo:
-      "La finitura la decide la ricetta, ma la posi tu. Poi arrivano formato, ordine minimo e quantità in pedane, e la richiesta parte già completa.",
-  },
-];
+const NUMERI = ["01", "02", "03"];
 
 /**
  * Il pulsante «come funziona» della colonna introduttiva e il dialogo
@@ -32,6 +14,7 @@ const PASSI = [
  * uno stato di apertura da tenere in React.
  */
 export function ComeFunziona() {
+  const testi = useTesti().configuratore.comeFunziona;
   const dialogo = useRef<HTMLDialogElement>(null);
 
   return (
@@ -42,7 +25,7 @@ export function ComeFunziona() {
         className="configurator-how-button group inline-flex items-center rounded-full transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-inchiostro motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       >
         <span className="font-bold uppercase">
-          Come funziona
+          {testi.titolo}
         </span>
         <FrecciaCerchio className="h-8 w-8 shrink-0 text-inchiostro transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
       </button>
@@ -61,7 +44,7 @@ export function ComeFunziona() {
           <button
             type="button"
             onClick={() => dialogo.current?.close()}
-            aria-label="Chiudi"
+            aria-label={testi.chiudi}
             className="absolute right-5 top-5 rounded-full border border-linea bg-carta p-1.5 text-inchiostro/60 transition-colors hover:border-inchiostro hover:text-inchiostro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
           >
             <IconaChiudi className="h-4 w-4" />
@@ -71,14 +54,14 @@ export function ComeFunziona() {
             id="come-funziona-titolo"
             className="font-display text-[clamp(1.7rem,4vw,2.3rem)] font-extrabold leading-[0.95] tracking-[-0.03em]"
           >
-            Come funziona<span className="text-corallo-scena">.</span>
+            {testi.titolo}<span className="text-corallo-scena">.</span>
           </h2>
 
           <ol className="mt-7 list-none space-y-6">
-            {PASSI.map((p) => (
-              <li key={p.n} className="flex gap-4">
+            {testi.passi.map((p, indice) => (
+              <li key={NUMERI[indice]} className="flex gap-4">
                 <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-oro font-mono text-[11px] font-bold text-inchiostro">
-                  {p.n}
+                  {NUMERI[indice]}
                 </span>
                 <div>
                   <h3 className="text-[15px] font-bold">{p.titolo}</h3>
@@ -95,7 +78,7 @@ export function ComeFunziona() {
             onClick={() => dialogo.current?.close()}
             className="mt-8 w-full rounded-full bg-inchiostro py-3.5 text-[11.5px] font-bold uppercase tracking-[0.12em] text-panna transition-colors hover:bg-corallo-scena focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-corallo-scena"
           >
-            Ho capito, si comincia
+            {testi.ok}
           </button>
         </div>
       </dialog>

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTesti } from "@/components/LinguaProvider";
 
 /**
  * «Il prossimo sei tu» — il ponte tra i salati e il configuratore.
@@ -16,8 +17,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
  * Rev 21/08, secondo passaggio: anche l'INGRESSO è un sipario. Il
  * fucsia non arriva più con un taglio netto sotto i salati: la sezione
  * risale di uno schermo (margine negativo in `.ponte-futuro`) e la
- * quinta — trasparente, `pointer-events-none`, così i salati sotto
- * restano cliccabili — si pinna sull'ultima schermata dei salati.
+ * quinta — trasparente e inerte, così i salati sotto restano cliccabili —
+ * sale sopra l'ultima schermata dei salati, che resta pinnata fino alla
+ * chiusura della transizione.
  * Da lì il fondo fucsia salta dentro dal basso con la stessa curva
  * del sipario crema in uscita: due sipari, una sola lingua.
  *
@@ -36,6 +38,7 @@ const SIPARIO_GIU = "ellipse(85% 0% at 50% 102%)";
 const SIPARIO_SU = "ellipse(145% 125% at 50% 102%)";
 
 export function PonteFuturo() {
+  const testi = useTesti();
   const radice = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -46,11 +49,14 @@ export function PonteFuturo() {
 
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const salati = document.getElementById("salati");
         const fondo = scope.querySelector<HTMLElement>("[data-ponte-fondo]");
         const frase = scope.querySelector<HTMLElement>("[data-ponte-frase]");
         const sipario = scope.querySelector<HTMLElement>(
           "[data-ponte-sipario]"
         );
+
+        if (!salati) return;
 
         const tl = gsap.timeline({
           defaults: { ease: "none" },
@@ -59,13 +65,16 @@ export function PonteFuturo() {
             start: "top top",
             end: "bottom bottom",
             scrub: 0.5,
+            pin: salati,
+            pinSpacing: false,
+            anticipatePin: 1,
             invalidateOnRefresh: true,
           },
         });
 
         /* il fucsia salta dentro: sale sopra l'ultima schermata dei
-           salati — che intanto continua a scorrere via — con la stessa
-           andatura del sipario crema in uscita */
+           salati, che resta ferma sotto la quinta, con la stessa andatura
+           del sipario crema in uscita */
         if (fondo) {
           tl.fromTo(
             fondo,
@@ -113,7 +122,10 @@ export function PonteFuturo() {
   return (
     /* niente bg sulla radice: il fucsia vive nel fondo-sipario, così la
        quinta resta trasparente finché non sale sopra i salati */
-    <section ref={radice} className="ponte-futuro relative">
+    <section
+      ref={radice}
+      className="ponte-futuro pointer-events-none relative"
+    >
       <div className="ponte-quinta pointer-events-none sticky top-0 flex min-h-[100svh] items-center justify-center overflow-clip">
         {/* il fondo fucsia: nasce chiuso via CSS (.ponte-fondo), lo alza
             solo lo scrub — è l'ingresso del ponte */}
@@ -129,9 +141,11 @@ export function PonteFuturo() {
               data-ponte-frase
               className="ponte-frase font-pop block text-[clamp(3rem,10vw,9rem)] font-normal uppercase leading-[0.87] tracking-[-0.02em] text-panna"
             >
-              Il prossimo
-              <br />
-              sei tu.
+              {testi.home.ponte.map((riga) => (
+                <span key={riga} className="block">
+                  {riga}
+                </span>
+              ))}
             </span>
           </p>
         </div>

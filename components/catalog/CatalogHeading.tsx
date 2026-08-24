@@ -1,4 +1,7 @@
 import { TOTALE_TIPOLOGIE, TOTALE_VARIANTI } from "@/lib/catalog-bento";
+import { dizionario } from "@/lib/i18n/dizionario";
+import { interpola } from "@/lib/i18n/interpola";
+import { fmtNumero, type Lingua } from "@/lib/i18n/lingue";
 
 /**
  * L'intestazione del catalogo: tre aree appoggiate alla stessa linea di
@@ -13,7 +16,8 @@ import { TOTALE_TIPOLOGIE, TOTALE_VARIANTI } from "@/lib/catalog-bento";
  * Resta un Server Component. I tre wrapper dichiarano alla scena della Home
  * quali blocchi rivelare; fuori da quella scena sono normali elementi statici.
  */
-export function CatalogHeading() {
+export function CatalogHeading({ lingua }: { lingua: Lingua }) {
+  const testi = dizionario(lingua).home.dolci;
   return (
     <header>
       <div className="grid gap-x-8 gap-y-7 xl:grid-cols-[minmax(0,6fr)_minmax(180px,2fr)_minmax(240px,3fr)] xl:items-end xl:gap-y-0">
@@ -23,7 +27,7 @@ export function CatalogHeading() {
               data-home-caption="eyebrow"
               className="font-tecnico text-[10px] font-semibold uppercase tracking-[0.22em] text-fucsia"
             >
-              Catalogo 2026/27
+              {testi.eyebrow}
             </p>
           </div>
           <h2 className="font-insegna mt-4 text-[clamp(3rem,7vw,8.6rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.055em]">
@@ -32,7 +36,7 @@ export function CatalogHeading() {
               className="block overflow-hidden pb-[0.06em]"
             >
               <span data-home-caption="title" className="block">
-                I nostri <span className="text-fucsia">dolci.</span>
+                {testi.titolo} <span className="text-fucsia">{testi.titoloAccento}</span>
               </span>
             </span>
           </h2>
@@ -43,8 +47,7 @@ export function CatalogHeading() {
             data-home-caption="copy"
             className="max-w-[34ch] text-[0.82rem] leading-[1.6] text-inchiostro/85 xl:max-w-[15rem]"
           >
-            Ricette semplici, ingredienti selezionati e tanta passione. Ogni
-            giorno, dolci buoni per davvero.
+            {testi.promessa}
           </p>
         </div>
 
@@ -58,9 +61,9 @@ export function CatalogHeading() {
               data-home-caption="copy"
               className="font-tecnico text-[11px] font-semibold uppercase tracking-[0.16em] xl:text-right"
             >
-              {TOTALE_TIPOLOGIE} tipologie
+              {interpola(testi.tipologie, { n: fmtNumero(TOTALE_TIPOLOGIE, lingua) })}
               <span className="mx-2.5 text-inchiostro/35">/</span>
-              {TOTALE_VARIANTI} varianti
+              {interpola(testi.varianti, { n: fmtNumero(TOTALE_VARIANTI, lingua) })}
             </p>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { ContactCard } from "@/components/contatti/ContactCard";
-import { RECAPITI } from "@/lib/contatti";
+import { recapiti } from "@/lib/contatti";
+import type { Testi } from "@/lib/i18n/tipi";
 
 /**
  * La scacchiera dei recapiti: 2×2 quando c'è spazio, una colonna quando
@@ -24,7 +25,7 @@ import { RECAPITI } from "@/lib/contatti";
  * Il `gap` tiene conto dell'ombra: 6px di sbalzo più il respiro, altrimenti
  * l'ombra di una tessera tocca il bordo di quella accanto.
  */
-export function ContactGrid() {
+export function ContactGrid({ testi }: { testi: Testi["contatti"] }) {
   return (
     /* Il contenitore di query è il `div`, non la `ul`: una container query
        interroga sempre un ANTENATO, mai l'elemento su cui è dichiarata —
@@ -32,7 +33,7 @@ export function ContactGrid() {
        griglia resterebbe a una colonna per sempre. */
     <div className="@container">
       <ul className="grid auto-rows-fr grid-cols-1 gap-5 @min-[500px]:grid-cols-2 @min-[860px]:gap-6">
-        {RECAPITI.map((recapito, i) => (
+        {recapiti(testi).map((recapito, i) => (
           /* la voce di lista resta la casella della griglia (niente
              `display: contents`, che su alcuni browser toglie l'elemento
              dall'albero di accessibilità): è la tessera dentro a

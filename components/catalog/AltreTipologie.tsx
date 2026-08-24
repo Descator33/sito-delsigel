@@ -6,6 +6,9 @@ import type { CSSProperties } from "react";
 import type { Tipologia } from "@/lib/catalog";
 import { RESTO_DOLCI, TEMI, varianti } from "@/lib/catalog-bento";
 import { CircleArrowButton } from "./CircleArrowButton";
+import { useLingua } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import type { Testi } from "@/lib/i18n/tipi";
 
 /**
  * La coda del catalogo, dietro alla CTA: i dolci che la vetrina non
@@ -20,20 +23,21 @@ import { CircleArrowButton } from "./CircleArrowButton";
 export function AltreTipologie({
   onApri,
   tipologie = RESTO_DOLCI,
-  titolo = "Altri dolci",
+  titolo,
 }: {
   onApri: (t: Tipologia) => void;
   tipologie?: Tipologia[];
   titolo?: string;
 }) {
+  const { testi } = useLingua();
   if (tipologie.length === 0) return null;
 
   return (
     <section className="scroll-mt-28">
       <h3 className="font-tecnico mb-3 mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-inchiostro/45">
-        {titolo}
+        {titolo ?? testi.catalogo.altriDolci}
         <span className="mx-2.5 text-inchiostro/25">/</span>
-        {tipologie.length} tipologie
+        {interpola(testi.catalogo.tipologieCoda, { n: tipologie.length })}
       </h3>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {tipologie.map((t) => (
@@ -45,7 +49,11 @@ export function AltreTipologie({
 }
 
 function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
+  const { testi } = useLingua();
   const n = varianti(t);
+  const nota =
+    testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]] ??
+    testi.prodotti.scattoProdotto;
   return (
     <motion.article
       onClick={onApri}
@@ -74,7 +82,7 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
         >
           <Image
             src={t.image}
-            alt={`${t.name}: ${t.note ?? "scatto di prodotto"}`}
+            alt={`${t.name}: ${nota}`}
             fill
             sizes="(max-width: 640px) 45vw, (max-width: 1279px) 22vw, 12vw"
             className="object-contain object-bottom"
@@ -93,11 +101,13 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
           {t.name}
         </h4>
         <p className="font-tecnico mt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-inchiostro/45">
-          {n > 1 ? `${n} varianti` : "formato unico"}
+          {n > 1
+            ? interpola(testi.catalogo.varianti, { n })
+            : testi.catalogo.formatoUnico}
         </p>
         <CircleArrowButton
           misura="piccola"
-          label={`Apri la scheda di ${t.name}`}
+          label={interpola(testi.catalogo.apriScheda, { nome: t.name })}
           className="mt-auto pt-4"
         />
       </div>

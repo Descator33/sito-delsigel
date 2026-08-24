@@ -3,6 +3,7 @@
 import type { EmblaViewportRefType } from "embla-carousel-react";
 import type { Tipologia } from "@/lib/catalog";
 import type { VoceSalata } from "@/lib/catalog-salati";
+import { useTesti } from "@/components/LinguaProvider";
 import { SavoryProductItem } from "./SavoryProductItem";
 
 /**
@@ -28,13 +29,14 @@ export function SavoryProductsCarousel({
   voci: VoceSalata[];
   onApri: (t: Tipologia) => void;
 }) {
+  const testi = useTesti();
   return (
     <div
       ref={carosello}
       className="salati-viewport"
       role="group"
-      aria-roledescription="carosello"
-      aria-label="I prodotti della linea salata"
+      aria-roledescription={testi.catalogo.a11y.carosello}
+      aria-label={testi.catalogo.a11y.prodottiSalati}
     >
       <div className="salati-binario">
         {voci.map((voce, i) => (

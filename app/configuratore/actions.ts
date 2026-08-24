@@ -19,14 +19,20 @@ import {
   DATASET,
   baseDi,
   combinazione,
-  farcituraVoce,
-  fmtKg,
-  fmtNumero,
   nomeCommerciale,
-  toppingVoce,
   validaStato,
   type Quantita,
 } from "@/lib/configuratore";
+import { dizionario } from "@/lib/i18n/dizionario";
+import { conta, interpola } from "@/lib/i18n/interpola";
+import {
+  LINGUA_PREDEFINITA,
+  fmtKg,
+  fmtNumero,
+  haLingua,
+  localizza,
+} from "@/lib/i18n/lingue";
+import type { IdFarcitura, IdTopping } from "@/lib/i18n/tipi";
 
 const DESTINATARIO = "info@delsigel.it";
 
@@ -56,6 +62,12 @@ export async function richiediQuotazione(
   formData: FormData
 ): Promise<StatoInvio> {
   const testo = (campo: string) => String(formData.get(campo) ?? "").trim();
+  const linguaRichiesta = testo("lingua");
+  const lingua = haLingua(linguaRichiesta)
+    ? linguaRichiesta
+    : LINGUA_PREDEFINITA;
+  const testi = dizionario(lingua);
+  const modulo = testi.configuratore.modulo;
 
   const base = testo("base");
   const farcitura = testo("farcitura");
@@ -73,8 +85,7 @@ export async function richiediQuotazione(
     return {
       ok: false,
       errore: "CAMPI_MANCANTI",
-      messaggio:
-        "Per rispondere con il listino giusto servono ragione sociale, canale ed email.",
+      messaggio: modulo.errori.campiMancanti,
     };
   }
 
@@ -86,8 +97,7 @@ export async function richiediQuotazione(
     return {
       ok: false,
       errore: "VERSIONE_OBSOLETA",
-      messaggio:
-        "Il listino è stato aggiornato mentre la pagina era aperta. Ricarica la pagina e riconferma la configurazione.",
+      messaggio: modulo.errori.versioneObsoleta,
     };
   }
 
@@ -98,26 +108,28 @@ export async function richiediQuotazione(
       return {
         ok: false,
         errore: esito.errore,
-        messaggio:
-          "Questa combinazione non è più a listino. Torna alla scelta della farcitura per vedere quelle disponibili.",
+        messaggio: modulo.errori.combinazioneInesistente,
       };
     if (esito.errore === "QUANTITA_NON_VALIDA")
       return {
         ok: false,
         errore: esito.errore,
-        messaggio:
-          "La quantità va espressa in pedane intere, almeno una: è l'unità con cui viaggia il prodotto.",
+        messaggio: modulo.errori.quantitaNonValida,
       };
     /* SOTTO_ORDINE_MINIMO: non un rifiuto ma una deviazione — il client
        propone la correzione o il contatto con il commerciale. */
     return {
       ok: false,
       errore: esito.errore,
-      messaggio:
-        `Questa referenza si ordina da ${esito.minimo_pedane} pedane` +
-        (esito.minimo_pezzi != null
-          ? `, pari a ${fmtNumero(esito.minimo_pezzi)} pezzi.`
-          : "."),
+      messaggio: interpola(modulo.errori.sottoMinimo, {
+        min: fmtNumero(esito.minimo_pedane, lingua),
+        pezzi:
+          esito.minimo_pezzi != null
+            ? interpola(modulo.errori.sottoMinimoPezzi, {
+                n: fmtNumero(esito.minimo_pezzi, lingua),
+              })
+            : "",
+      }),
       minimoPedane: esito.minimo_pedane,
       minimoPezzi: esito.minimo_pezzi,
     };
@@ -125,8 +137,10 @@ export async function richiediQuotazione(
 
   const comb = combinazione(base, farcitura)!;
   const laBase = baseDi(base)!;
-  const laFarcitura = farcituraVoce(farcitura)!;
-  const ilTopping = toppingVoce(comb.topping)!;
+  const laFarcitura =
+    testi.prodotti.farciture[farcitura as IdFarcitura] ?? farcitura;
+  const ilTopping =
+    testi.prodotti.topping[comb.topping as IdTopping] ?? comb.topping;
   const nomeProdotto = nomeCommerciale(comb);
   const p = laBase.packaging;
   const q = esito.quantita;
@@ -155,27 +169,57 @@ export async function richiediQuotazione(
     versione_listino: DATASET.versione,
   };
 
-  const oggetto = `Richiesta quotazione — ${nomeProdotto} · ${laFarcitura.nome} — ${q.pedane} pedane`;
+  const canale =
+    cliente.canale in modulo.canali
+      ? modulo.canali[cliente.canale as keyof typeof modulo.canali]
+      : cliente.canale;
+  const pedaneTesto = conta(
+    testi.configuratore.scala.pedane,
+    q.pedane,
+    lingua,
+  );
+  const cartoni = conta(testi.configuratore.scala.cartoni, q.cartoni, lingua);
+  const pezzi = conta(testi.configuratore.scala.pezzi, q.pezzi, lingua);
+  const peso = fmtKg(q.peso_kg, lingua);
+  const mail = modulo.mail;
+  const oggetto = interpola(mail.oggetto, {
+    nome: nomeProdotto,
+    farcitura: laFarcitura,
+    pedane: pedaneTesto,
+  });
   const corpo = [
-    "Richiesta di quotazione dal configuratore Delsigel",
+    mail.intestazione,
     "",
-    `Prodotto: ${nomeProdotto} · ${laFarcitura.nome}`,
-    `Finitura: ${ilTopping.nome}`,
+    interpola(mail.prodotto, { nome: nomeProdotto, farcitura: laFarcitura }),
+    interpola(mail.finitura, { topping: ilTopping }),
     `SKU: ${comb.sku}`,
-    `Grammatura: ${comb.grammatura_gr} g · Diametro: ${laBase.diametro_cm} cm`,
+    interpola(mail.grammaturaDiametro, {
+      g: fmtNumero(comb.grammatura_gr, lingua),
+      cm: fmtNumero(laBase.diametro_cm, lingua),
+    }),
     "",
-    `Quantità richiesta: ${q.pedane} pedane`,
-    `= ${fmtNumero(q.cartoni)} cartoni · ${fmtNumero(q.pezzi)} pezzi · ${fmtKg(q.peso_kg)}`,
+    interpola(mail.quantitaRichiesta, { pedane: pedaneTesto }),
+    interpola(mail.equivale, { cartoni, pezzi, peso }),
     comb.ordine_minimo_pedane != null
-      ? `Ordine minimo: ${comb.ordine_minimo_pedane} pedane — rispettato`
-      : "Ordine minimo: non previsto per questa referenza",
+      ? interpola(mail.minimoRispettato, {
+          min: fmtNumero(comb.ordine_minimo_pedane, lingua),
+        })
+      : mail.minimoNonPrevisto,
     "",
-    `Cliente: ${cliente.ragione_sociale} (${cliente.canale})`,
-    `Email: ${cliente.email}${cliente.telefono ? ` · Telefono: ${cliente.telefono}` : ""}`,
-    cliente.note ? `Note: ${cliente.note}` : null,
+    interpola(mail.cliente, { nome: cliente.ragione_sociale, canale }),
+    interpola(mail.email, { email: cliente.email }) +
+      (cliente.telefono
+        ? ` · ${interpola(mail.telefono, { telefono: cliente.telefono })}`
+        : ""),
+    cliente.note ? interpola(mail.note, { note: cliente.note }) : null,
     "",
-    `Versione listino: ${payload.versione_listino}`,
-    `Riferimento: /configuratore/${comb.base}/${comb.farcitura}`,
+    interpola(mail.versione, { versione: payload.versione_listino }),
+    interpola(mail.riferimento, {
+      url: localizza(
+        lingua,
+        `/configuratore/${comb.base}/${comb.farcitura}`,
+      ),
+    }),
   ]
     .filter((r): r is string => r !== null)
     .join("\n");

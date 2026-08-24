@@ -8,6 +8,8 @@ import {
   useSyncExternalStore,
 } from "react";
 import { usePathname } from "next/navigation";
+import { useLingua } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   statoDaPathname,
@@ -95,6 +97,7 @@ export function Configuratore({
   fotoTopping: FotoTopping;
 }) {
   const pathname = usePathname();
+  const { testi, percorso } = useLingua();
   const { base, comb } = useMemo(() => statoDaPathname(pathname), [pathname]);
   const passo = comb ? 3 : base ? 2 : 1;
   const riduci = useReducedMotion();
@@ -129,11 +132,12 @@ export function Configuratore({
     const nd = new URLSearchParams(window.location.search).get("nd");
     if (nd) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAvviso(
-        "La farcitura del link che hai aperto non è più disponibile per questa base: scegline una tra quelle a listino."
-      );
+      setAvviso(testi.configuratore.avvisoFarcituraSparita);
       window.history.replaceState(null, "", window.location.pathname);
     }
+    /* il testo dell'avviso si legge una volta sola all'arrivo: cambiarlo
+       al cambio lingua non serve, l'avviso muore col primo gesto */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* il drag è un'aggiunta per puntatori fini: sul touch litigherebbe con
@@ -152,7 +156,9 @@ export function Configuratore({
     return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
   };
 
-  const vaiA = (path: string) => window.history.pushState(null, "", path);
+  /* i percorsi si spingono già localizzati: /fi/configuratore/… */
+  const vaiA = (path: string) =>
+    window.history.pushState(null, "", percorso(path));
 
   const scegliBase = (id: string) => vaiA(`/configuratore/${id}`);
 
@@ -279,12 +285,12 @@ export function Configuratore({
 
   const titoloSelettore =
     passo === 1
-      ? "Scegli la tua base"
+      ? testi.configuratore.titoli.passo1
       : passo === 2
-        ? "Ora riempiamolo"
+        ? testi.configuratore.titoli.passo2
         : numeri
-          ? "Boom. È pronto!"
-          : "Il tocco finale";
+          ? testi.configuratore.titoli.completo
+          : testi.configuratore.titoli.passo3;
 
   return (
     <section
@@ -298,7 +304,10 @@ export function Configuratore({
         {/* chi naviga con lo screen reader deve sapere che il contenuto
             sotto è cambiato senza che la pagina sia stata ricaricata */}
         <p aria-live="polite" className="sr-only">
-          Passo {passo} di 3 — {titoloSelettore}
+          {interpola(testi.configuratore.passoDi, {
+            n: passo,
+            titolo: titoloSelettore,
+          })}
         </p>
 
         {avviso && (
@@ -479,6 +488,7 @@ function BarraSalvataggio({
   completo: boolean;
   onCompleta: () => void;
 }) {
+  const { testi } = useLingua();
   const [salvato, setSalvato] = useState(false);
 
   const salva = async () => {
@@ -500,14 +510,14 @@ function BarraSalvataggio({
   return (
     <div className="configurator-savebar" id="salva-il-tuo-dolce">
       <div>
-        <strong>Hai già un&apos;idea?</strong>
-        <span>Salva la tua creazione e condividila!</span>
+        <strong>{testi.configuratore.salvataggio.haiIdea}</strong>
+        <span>{testi.configuratore.salvataggio.condividi}</span>
       </div>
       <span aria-hidden className="configurator-savebar__heart">♥</span>
       <button type="button" onClick={salva}>
         {salvato
-          ? "Link copiato!"
-          : "Salva il tuo dolce"}
+          ? testi.configuratore.salvataggio.copiato
+          : testi.configuratore.salvataggio.salva}
         <span aria-hidden>★</span>
       </button>
       <span aria-hidden className="configurator-savebar__smile">
@@ -516,7 +526,7 @@ function BarraSalvataggio({
         <b />
       </span>
       <span aria-live="polite" className="sr-only">
-        {salvato ? "Link del dolce copiato negli appunti" : ""}
+        {salvato ? testi.configuratore.salvataggio.copiatoAria : ""}
       </span>
     </div>
   );

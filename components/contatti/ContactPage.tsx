@@ -2,6 +2,7 @@ import { ContactForm } from "@/components/contatti/ContactForm";
 import { ContactGrid } from "@/components/contatti/ContactGrid";
 import { ContactHero } from "@/components/contatti/ContactHero";
 import { PopDecorations } from "@/components/contatti/PopDecorations";
+import type { Testi } from "@/lib/i18n/tipi";
 
 /**
  * L'impaginato della sub-page Contatti.
@@ -26,7 +27,7 @@ import { PopDecorations } from "@/components/contatti/PopDecorations";
  * scollerebbero di un centinaio di pixel, e l'allineamento con la nav vale
  * più della larghezza.
  */
-export function ContactPage() {
+export function ContactPage({ testi }: { testi: Testi["contatti"] }) {
   return (
     <main className="contatti font-ui relative bg-panna text-inchiostro">
       {/* Lo spazio della nav flottante, poi il filo nero che nel
@@ -44,8 +45,8 @@ export function ContactPage() {
 
         <div className="relative mx-auto grid max-w-[1800px] items-start gap-y-14 px-6 md:px-12 xl:grid-cols-[minmax(0,1fr)_minmax(520px,0.86fr)] xl:gap-x-[clamp(2.5rem,4.5vw,5.5rem)]">
           <div className="flex flex-col gap-y-10 sm:gap-y-12">
-            <ContactHero />
-            <ContactGrid />
+            <ContactHero testi={testi} />
+            <ContactGrid testi={testi} />
           </div>
 
           <ContactForm />

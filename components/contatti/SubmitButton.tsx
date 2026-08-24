@@ -1,4 +1,5 @@
 import { ArrowRight, Check, LoaderCircle } from "lucide-react";
+import type { Testi } from "@/lib/i18n/tipi";
 
 /**
  * Il comando del form, nei suoi tre volti visibili: riposo, invio in
@@ -16,9 +17,11 @@ import { ArrowRight, Check, LoaderCircle } from "lucide-react";
 export function SubmitButton({
   inCorso,
   riuscito,
+  testi,
 }: {
   inCorso: boolean;
   riuscito: boolean;
+  testi: Testi["contatti"]["form"];
 }) {
   return (
     <button
@@ -28,10 +31,10 @@ export function SubmitButton({
     >
       <span>
         {inCorso
-          ? "Invio in corso..."
+          ? testi.invioInCorso
           : riuscito
-            ? "Richiesta inviata"
-            : "Invia la richiesta"}
+            ? testi.inviata
+            : testi.invia}
       </span>
 
       {inCorso ? (

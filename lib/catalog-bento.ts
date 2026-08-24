@@ -42,12 +42,12 @@ export type CardCatalogo = {
   t: Tipologia;
   /** «01.» — il posto in vetrina, contato dalla lista */
   indice: string;
-  /** claim di card, due righe: è copy di vetrina, non la descrizione
-   *  (quella è `t.note` e vive nella scheda prodotto) */
-  claim: readonly [string, string];
+  /* il claim di card (due righe) vive nei dizionari, chiave = slug:
+     è copy di vetrina e cambia lingua con la pagina */
   variante: VarianteCard;
   tema: TemaCard;
-  badge?: string;
+  /** vero = sigillo «best seller» sulla card */
+  badge?: boolean;
   /** posto nella griglia a 12 colonne, da xl in su */
   posto: string;
   /** ritaglio della foto dentro la card, da xl in su: la sagoma esce dai
@@ -111,10 +111,9 @@ export const TEMI: Record<
 const VETRINA = [
   {
     slug: "intriko",
-    claim: ["Intrecciata", "alla perfezione."],
     variante: "hero",
     tema: "fucsia",
-    badge: "Best seller",
+    badge: true,
     posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
     /* la treccia è la sagoma più larga della vetrina (1,32:1) e attraversa
        la card in diagonale: esce dallo spigolo in basso a destra */
@@ -122,7 +121,6 @@ const VETRINA = [
   },
   {
     slug: "bomba-fritta",
-    claim: ["Classica.", "Senza tempo."],
     variante: "grande",
     tema: "cacao",
     posto: "xl:col-span-4 xl:row-span-2",
@@ -133,7 +131,6 @@ const VETRINA = [
   },
   {
     slug: "nuvola",
-    claim: ["Leggera come", "una nuvola."],
     variante: "grande",
     tema: "sabbia",
     posto: "xl:col-span-3 xl:row-span-2",
@@ -143,10 +140,9 @@ const VETRINA = [
   },
 ] as const satisfies readonly {
   slug: string;
-  claim: readonly [string, string];
   variante: VarianteCard;
   tema: TemaCard;
-  badge?: string;
+  badge?: boolean;
   posto: string;
   foto: string;
 }[];

@@ -14,6 +14,9 @@
  * controllo che conta). Un modulo neutro, importabile da entrambi.
  */
 
+import { interpola } from "@/lib/i18n/interpola";
+import type { Testi } from "@/lib/i18n/tipi";
+
 /* Le coordinate reali dello stabilimento. Il link Maps è costruito sulla
    query testuale e non su un place-id: sopravvive a un cambio di scheda
    dell'attività, che il place-id non farebbe. */
@@ -52,52 +55,59 @@ export type Recapito = {
 /* L'alternanza rosso/acido non è casuale: segue la lettura a Z della
    griglia 2×2, così le due campiture non finiscono mai adiacenti in
    diagonale e la scacchiera si legge. */
-export const RECAPITI: readonly Recapito[] = [
-  {
-    id: "email",
-    label: "Email",
-    righe: [EMAIL],
-    href: `mailto:${EMAIL}`,
-    accento: "rosso",
-    azione: "Scrivi a Delsigel",
-  },
-  {
-    id: "telefono",
-    label: "Telefono",
-    righe: [TELEFONO],
-    href: TELEFONO_HREF,
-    accento: "acido",
-    azione: "Chiama Delsigel",
-  },
-  {
-    id: "pec",
-    label: "PEC",
-    righe: [PEC],
-    href: `mailto:${PEC}`,
-    accento: "rosso",
-    azione: "Scrivi alla PEC Delsigel",
-  },
-  {
-    id: "stabilimento",
-    label: "Stabilimento",
-    righe: [INDIRIZZO.via, INDIRIZZO.citta],
-    href: MAPPA,
-    esterno: true,
-    accento: "acido",
-    azione: "Apri lo stabilimento su Google Maps",
-  },
-] as const;
+export function recapiti(testi: Testi["contatti"]): readonly Recapito[] {
+  return [
+    {
+      id: "email",
+      ...testi.recapiti.email,
+      righe: [EMAIL],
+      href: `mailto:${EMAIL}`,
+      accento: "rosso",
+    },
+    {
+      id: "telefono",
+      ...testi.recapiti.telefono,
+      righe: [TELEFONO],
+      href: TELEFONO_HREF,
+      accento: "acido",
+    },
+    {
+      id: "pec",
+      ...testi.recapiti.pec,
+      righe: [PEC],
+      href: `mailto:${PEC}`,
+      accento: "rosso",
+    },
+    {
+      id: "stabilimento",
+      ...testi.recapiti.stabilimento,
+      righe: [INDIRIZZO.via, INDIRIZZO.citta],
+      href: MAPPA,
+      esterno: true,
+      accento: "acido",
+    },
+  ];
+}
 
 /* ------------------------------ il form ------------------------------ */
 
-export const REPARTI_INTERESSE = [
-  { valore: "commerciale-distribuzione", etichetta: "Commerciale / Distribuzione" },
-  { valore: "prodotti-personalizzazioni", etichetta: "Prodotti / Personalizzazioni" },
-  { valore: "qualita-certificazioni", etichetta: "Qualità / Certificazioni" },
-  { valore: "amministrazione-contabilita", etichetta: "Amministrazione / Contabilità" },
-  { valore: "lavora-con-noi", etichetta: "Lavora con noi" },
-  { valore: "altro", etichetta: "Altro" },
+export const ID_REPARTI_INTERESSE = [
+  "commerciale-distribuzione",
+  "prodotti-personalizzazioni",
+  "qualita-certificazioni",
+  "amministrazione-contabilita",
+  "lavora-con-noi",
+  "altro",
 ] as const;
+
+export type IdRepartoInteresse = (typeof ID_REPARTI_INTERESSE)[number];
+
+export function repartiInteresse(testi: Testi["contatti"]) {
+  return ID_REPARTI_INTERESSE.map((valore) => ({
+    valore,
+    etichetta: testi.reparti[valore],
+  }));
+}
 
 export type CampoTestoContatto =
   | "nome"
@@ -139,7 +149,10 @@ const FORMA_TELEFONO = /^\+?[\d\s()./-]+$/;
  * Valida la bozza e restituisce SOLO i campi in errore.
  * Un oggetto vuoto significa che si può inviare.
  */
-export function validaContatto(bozza: BozzaContatto): ErroriContatto {
+export function validaContatto(
+  bozza: BozzaContatto,
+  testi: Testi["contatti"],
+): ErroriContatto {
   const errori: ErroriContatto = {};
   const nome = bozza.nome.trim();
   const cognome = bozza.cognome.trim();
@@ -151,59 +164,68 @@ export function validaContatto(bozza: BozzaContatto): ErroriContatto {
   const messaggio = bozza.messaggio.trim();
 
   if (nome.length < LIMITI.nome.min)
-    errori.nome = "Serve un nome per sapere con chi stiamo parlando.";
+    errori.nome = testi.errori.nomeCorto;
   else if (nome.length > LIMITI.nome.max)
-    errori.nome = `Il nome non può superare i ${LIMITI.nome.max} caratteri.`;
+    errori.nome = interpola(testi.errori.nomeLungo, { max: LIMITI.nome.max });
 
   if (cognome.length < LIMITI.cognome.min)
-    errori.cognome = "Inserisci il cognome.";
+    errori.cognome = testi.errori.cognomeCorto;
   else if (cognome.length > LIMITI.cognome.max)
-    errori.cognome = `Il cognome non può superare i ${LIMITI.cognome.max} caratteri.`;
+    errori.cognome = interpola(testi.errori.cognomeLungo, {
+      max: LIMITI.cognome.max,
+    });
 
   const cifreTelefono = telefono.replace(/\D/g, "");
-  if (!telefono) errori.telefono = "Inserisci un numero di telefono.";
+  if (!telefono) errori.telefono = testi.errori.telefonoMancante;
   else if (
     !FORMA_TELEFONO.test(telefono) ||
     cifreTelefono.length < LIMITI.telefono.minCifre ||
     telefono.length > LIMITI.telefono.max
   )
-    errori.telefono = "Controlla il numero di telefono e il prefisso.";
+    errori.telefono = testi.errori.telefonoErrato;
 
-  if (!email) errori.email = "Senza un'email non possiamo risponderti.";
+  if (!email) errori.email = testi.errori.emailMancante;
   else if (email.length > LIMITI.email.max)
-    errori.email = `L'email non può superare i ${LIMITI.email.max} caratteri.`;
+    errori.email = interpola(testi.errori.emailLunga, { max: LIMITI.email.max });
   else if (!FORMA_EMAIL.test(email))
-    errori.email = "Controlla l'indirizzo: manca la chiocciola o il dominio.";
+    errori.email = testi.errori.emailErrata;
 
   if (azienda.length < LIMITI.azienda.min)
-    errori.azienda = "Inserisci il nome dell'azienda.";
+    errori.azienda = testi.errori.aziendaCorta;
   else if (azienda.length > LIMITI.azienda.max)
-    errori.azienda = `L'azienda non può superare i ${LIMITI.azienda.max} caratteri.`;
+    errori.azienda = interpola(testi.errori.aziendaLunga, {
+      max: LIMITI.azienda.max,
+    });
 
   if (ruolo.length < LIMITI.ruolo.min)
-    errori.ruolo = "Inserisci il tuo ruolo in azienda.";
+    errori.ruolo = testi.errori.ruoloCorto;
   else if (ruolo.length > LIMITI.ruolo.max)
-    errori.ruolo = `Il ruolo non può superare i ${LIMITI.ruolo.max} caratteri.`;
+    errori.ruolo = interpola(testi.errori.ruoloLungo, { max: LIMITI.ruolo.max });
 
-  if (!REPARTI_INTERESSE.some((opzione) => opzione.valore === reparto))
-    errori.reparto = "Seleziona il reparto a cui vuoi inviare la richiesta.";
+  if (!ID_REPARTI_INTERESSE.some((valore) => valore === reparto))
+    errori.reparto = testi.errori.repartoMancante;
 
   if (messaggio.length < LIMITI.messaggio.min)
-    errori.messaggio = `Scrivi almeno ${LIMITI.messaggio.min} caratteri: cosa ti serve, e in che quantità.`;
+    errori.messaggio = interpola(testi.errori.messaggioCorto, {
+      min: LIMITI.messaggio.min,
+    });
   else if (messaggio.length > LIMITI.messaggio.max)
-    errori.messaggio = `Il messaggio non può superare i ${LIMITI.messaggio.max} caratteri.`;
+    errori.messaggio = interpola(testi.errori.messaggioLungo, {
+      max: LIMITI.messaggio.max,
+    });
 
-  if (!bozza.privacy)
-    errori.privacy = "Devi accettare l'informativa privacy per inviare la richiesta.";
+  if (!bozza.privacy) errori.privacy = testi.errori.privacyMancante;
 
   return errori;
 }
 
-export function etichettaReparto(valore: string): string {
-  return (
-    REPARTI_INTERESSE.find((opzione) => opzione.valore === valore)?.etichetta ??
-    valore
-  );
+export function etichettaReparto(
+  valore: string,
+  testi: Testi["contatti"],
+): string {
+  return ID_REPARTI_INTERESSE.includes(valore as IdRepartoInteresse)
+    ? testi.reparti[valore as IdRepartoInteresse]
+    : valore;
 }
 
 /**
@@ -211,17 +233,23 @@ export function etichettaReparto(valore: string): string {
  * server-side non è disponibile. Non è un invio riuscito travestito —
  * la UI lo presenta come tale, cioè come «apri il tuo client di posta».
  */
-export function mailtoDiRipiego(bozza: BozzaContatto): string {
+export function mailtoDiRipiego(
+  bozza: BozzaContatto,
+  testi: Testi["contatti"],
+): string {
+  const mail = testi.mailRipiego;
   const nominativo = `${bozza.nome.trim()} ${bozza.cognome.trim()}`.trim();
-  const oggetto = `Richiesta dal sito — ${nominativo || "contatto"}`;
+  const oggetto = interpola(mail.oggetto, {
+    nome: nominativo || mail.contatto,
+  });
   const corpo = [
-    `Nome: ${bozza.nome.trim()}`,
-    `Cognome: ${bozza.cognome.trim()}`,
-    `Telefono: ${bozza.telefono.trim()}`,
-    `Email: ${bozza.email.trim()}`,
-    `Azienda: ${bozza.azienda.trim()}`,
-    `Ruolo: ${bozza.ruolo.trim()}`,
-    `Reparto di interesse: ${etichettaReparto(bozza.reparto)}`,
+    `${mail.nome}: ${bozza.nome.trim()}`,
+    `${mail.cognome}: ${bozza.cognome.trim()}`,
+    `${mail.telefono}: ${bozza.telefono.trim()}`,
+    `${mail.email}: ${bozza.email.trim()}`,
+    `${mail.azienda}: ${bozza.azienda.trim()}`,
+    `${mail.ruolo}: ${bozza.ruolo.trim()}`,
+    `${mail.reparto}: ${etichettaReparto(bozza.reparto, testi)}`,
     "",
     bozza.messaggio.trim(),
   ].join("\n");

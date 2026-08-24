@@ -290,11 +290,11 @@ function creaDeposito(
     pompaPrecaricamento();
   };
 
-  /* Il film parte da solo mezzo secondo dopo il mount (vedi ATTESA_FILM in
-     Hero.tsx): niente attese sul load. Gli anchor — uno ogni otto frame,
-     più il primo e l'ultimo — escono subito e garantiscono una copertura
-     minima anche su rete lenta; il set completo segue un attimo dopo. Il
-     poster del frame 1 è già inline nell'HTML, quindi resta lui l'LCP. */
+  /* Il film riceve il via dal preloader mentre la porta e ancora visibile:
+     niente attese dopo il reveal. Gli anchor — uno ogni otto frame, più il
+     primo e l'ultimo — escono subito e garantiscono una copertura minima;
+     il set completo segue un attimo dopo. Il poster del frame 1 e gia
+     inline nell'HTML, quindi resta lui l'LCP. */
   const anchor = Array.from(
     { length: Math.ceil(variante.frames / 8) },
     (_, indice) => Math.min(variante.frames - 1, indice * 8),
@@ -413,6 +413,7 @@ export const HeroFrameSequence = forwardRef<
       deposito.current = creaDeposito(variante, (frame, indice) => {
         if (!canvas.current) return;
         ultimo.current = { frame, indice };
+        canvas.current.dataset.frame = String(indice);
         disegnaCover(canvas.current, frame);
       });
       deposito.current.mostra(progresso.current);

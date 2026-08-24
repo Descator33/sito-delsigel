@@ -1,5 +1,8 @@
 "use client";
 
+import { useTesti } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+
 /**
  * I pallini sotto la vetrina.
  *
@@ -23,6 +26,7 @@ export function CarouselPagination({
   attivo: number;
   vaiA: (i: number) => void;
 }) {
+  const testi = useTesti().catalogo.a11y;
   if (scatti < 2) return null;
 
   return (
@@ -33,7 +37,7 @@ export function CarouselPagination({
           type="button"
           onClick={() => vaiA(i)}
           aria-current={i === attivo}
-          aria-label={`Vai al gruppo ${i + 1} di ${scatti}`}
+          aria-label={interpola(testi.vaiGruppo, { i: i + 1, tot: scatti })}
           className="salati-pallino grid h-11 w-5 place-items-center"
         >
           <span aria-hidden className="salati-punto" />

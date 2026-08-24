@@ -10,6 +10,9 @@ import { ImmagineProdotto } from "./ImmagineProdotto";
 import { GrigliaTessere } from "./Selettore";
 import { SegnaPosto, TesseraScelta, type VoloTessera } from "./TesseraScelta";
 import type { DragPasso } from "./PassoBase";
+import { useTesti } from "@/components/LinguaProvider";
+import { interpola } from "@/lib/i18n/interpola";
+import type { IdFarcitura } from "@/lib/i18n/tipi";
 
 /**
  * Passo 2 — la farcitura. L'unico passo dove la matrice sparsa si
@@ -44,11 +47,13 @@ export function PassoFarcitura({
   onScegli: (id: string, volo?: VoloTessera) => void;
   drag?: DragPasso;
 }) {
+  const testi = useTesti();
   const farciture = farcitureDi(base.id);
 
   return (
     <GrigliaTessere>
       {farciture.map((f) => {
+        const nome = testi.prodotti.farciture[f.id as IdFarcitura] ?? f.nome;
         /* se la combinazione ha un nome commerciale proprio (Bomba +
            crema → Bomba Super), lo si annuncia sulla tessera: il
            cambio di nome è parte della scelta, non una sorpresa al
@@ -58,8 +63,14 @@ export function PassoFarcitura({
         return (
           <li key={f.id}>
             <TesseraScelta
-              titolo={f.nome}
-              sotto={nomeComb ? `diventa ${nomeComb}` : undefined}
+              titolo={nome}
+              sotto={
+                nomeComb
+                  ? interpola(testi.configuratore.tessera.diventa, {
+                      nome: nomeComb,
+                    })
+                  : undefined
+              }
               selezionata={selezionata === f.id}
               onScegli={(quadro) =>
                 onScegli(
@@ -67,7 +78,7 @@ export function PassoFarcitura({
                   quadro && {
                     quadro,
                     foto: fotoF ?? null,
-                    iniziale: f.nome.charAt(0),
+                    iniziale: nome.charAt(0),
                   }
                 )
               }
@@ -83,11 +94,11 @@ export function PassoFarcitura({
               {fotoF ? (
                 <ImmagineProdotto
                   sorgenti={[fotoF]}
-                  alt={f.nome}
-                  iniziale={f.nome.charAt(0)}
+                  alt={nome}
+                  iniziale={nome.charAt(0)}
                 />
               ) : (
-                <SegnaPosto testo={f.nome} />
+                <SegnaPosto testo={nome} />
               )}
             </TesseraScelta>
           </li>

@@ -15,6 +15,11 @@
  * le scelte che si fanno solo nel configuratore — la finitura, il topping
  * derivato dalla coppia, l'elenco astratto delle farciture — perché in
  * scheda darebbero per acquistabile qualcosa che a catalogo non esiste.
+ *
+ * Dal 2026-08-24 la scheda parla la lingua della pagina: etichette,
+ * valori d'asse e nomi delle farciture passano dal dizionario, mentre
+ * `chiave` resta la chiave FOTOGRAFICA del catalogo (still e pallini
+ * colorati) e gli id restano quelli del dataset — mai tradotti.
  */
 
 import type { Tipologia } from "@/lib/catalog";
@@ -24,12 +29,15 @@ import {
   combinazione,
   farcitureDi,
 } from "@/lib/configuratore";
+import type { Lingua } from "@/lib/i18n/lingue";
+import type { IdFarcitura, Testi, ValoreAsse } from "@/lib/i18n/tipi";
 
 /** Un prodotto finito della gamma: una riga del listino, non una scelta. */
 export type Variante = {
   /** id farcitura del dataset (o valore d'asse, per le tessere senza base) */
   id: string;
-  /** nome commerciale a listino, es. «Ciock e lampone», «Bomba Super» */
+  /** nome mostrato, già nella lingua della pagina (i nomi commerciali
+   *  propri come «Bomba Super» restano uguali ovunque) */
   nome: string;
   /** chiave del catalogo: sceglie lo still (`variants`) e il pallino colorato */
   chiave: string;
@@ -75,28 +83,51 @@ const FARCITURA_A_CHIAVE: Record<string, string> = {
   "senza-farcitura": "semplice",
 };
 
-const numero = (n: number) =>
-  n.toLocaleString("it-IT", { maximumFractionDigits: 1 });
+/** Etichetta d'asse del catalogo (italiano) → chiave del dizionario. */
+const ASSE_A_CHIAVE: Record<string, keyof Testi["prodotti"]["assi"]> = {
+  Gusto: "gusto",
+  Farcitura: "farcitura",
+  Finitura: "finitura",
+  Formato: "formato",
+};
 
-export function schedaDi(t: Tipologia): Scheda {
+const LOCALE_NUMERI: Record<Lingua, string> = {
+  it: "it-IT",
+  en: "en-GB",
+  fr: "fr-FR",
+  de: "de-DE",
+  fi: "fi-FI",
+};
+
+export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
+  const numero = (n: number) =>
+    n.toLocaleString(LOCALE_NUMERI[lingua], { maximumFractionDigits: 1 });
+  const valore = (v: string) =>
+    testi.prodotti.valori[v as ValoreAsse] ?? v;
+
   /* fallback per le tessere senza base nel dataset (tutta la linea salata):
      la gamma dichiarata dal catalogo è l'unica cosa che si sa */
   const gammaCatalogo = t.axes?.length
     ? t.axes.map((a) => ({
-        label: a.label,
-        varianti: a.values.map((v) => ({ id: v, nome: v, chiave: v })),
+        label: ASSE_A_CHIAVE[a.label]
+          ? testi.prodotti.assi[ASSE_A_CHIAVE[a.label]]
+          : a.label,
+        varianti: a.values.map((v) => ({ id: v, nome: valore(v), chiave: v })),
       }))
     : t.set?.length
       ? [
           {
-            label: "Set",
-            varianti: t.set.map((v) => ({ id: v, nome: v, chiave: v })),
+            label: testi.catalogo.scheda.set,
+            varianti: t.set.map((v) => ({ id: v, nome: valore(v), chiave: v })),
           },
         ]
       : [];
 
   const scheda: Scheda = {
-    linea: t.macro === "dolci" ? "Dolci" : "Salati",
+    linea:
+      t.macro === "dolci"
+        ? testi.catalogo.scheda.lineaDolci
+        : testi.catalogo.scheda.lineaSalati,
     gamma: gammaCatalogo,
   };
 
@@ -106,7 +137,7 @@ export function schedaDi(t: Tipologia): Scheda {
 
   scheda.formato = `Ø ${numero(base.diametro_cm)} cm`;
   scheda.pezziPerCartone = base.packaging.pezzi_per_cartone;
-  scheda.modalitaUso = base.modalita_uso;
+  scheda.modalitaUso = testi.prodotti.modalitaUso;
   const varianti: Variante[] = [];
   const grammature: number[] = [];
   for (const f of farcitureDi(base.id)) {
@@ -117,7 +148,7 @@ export function schedaDi(t: Tipologia): Scheda {
       id: f.id,
       /* il nome proprio della combinazione vince sul nome della farcitura:
          bomba + crema si vende come «Bomba Super», non come «Crema» */
-      nome: c.nome ?? f.nome,
+      nome: c.nome ?? testi.prodotti.farciture[f.id as IdFarcitura] ?? f.nome,
       chiave: FARCITURA_A_CHIAVE[f.id] ?? f.id,
       peso: `${c.grammatura_gr} g`,
     });
@@ -129,7 +160,9 @@ export function schedaDi(t: Tipologia): Scheda {
      Sotto le due varianti non c'è gamma da sfogliare — il Lussekatt è un
      prodotto solo, e un elenco di una voce sola direbbe il contrario */
   scheda.gamma =
-    varianti.length > 1 ? [{ label: "Varianti a catalogo", varianti }] : [];
+    varianti.length > 1
+      ? [{ label: testi.catalogo.scheda.variantiCatalogo, varianti }]
+      : [];
 
   if (grammature.length) {
     const min = Math.min(...grammature);

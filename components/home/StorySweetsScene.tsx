@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { lenisAttivo } from "@/components/SmoothScroll";
+import { useTesti } from "@/components/LinguaProvider";
 import {
   CatalogContinuation,
   CatalogFeaturedGrid,
@@ -46,6 +47,7 @@ export function StorySweetsScene({
   story: ReactNode;
   heading: ReactNode;
 }) {
+  const testi = useTesti();
   const radice = useRef<HTMLDivElement>(null);
   const [scheda, setScheda] = useState<SchedaCatalogo | null>(null);
   const [coda, setCoda] = useState(false);
@@ -447,7 +449,7 @@ export function StorySweetsScene({
         <section
           id="catalogo"
           data-scene-catalog
-          aria-label="Catalogo dolci Delsigel"
+          aria-label={testi.home.catalogoAria}
           className="story-sweets-scene__catalog relative z-20 bg-panna text-inchiostro"
         >
           <div
