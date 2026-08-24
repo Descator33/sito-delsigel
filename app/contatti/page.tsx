@@ -6,7 +6,7 @@ import { ContactPage } from "@/components/contatti/ContactPage";
 export const metadata: Metadata = {
   title: "Contatti · Delsigel Italia",
   description:
-    "Richiedi il listino, prenota una visita in stabilimento o scrivi a Delsigel. Sermoneta (LT), dal 2011.",
+    "Richiedi il listino, prenota una visita in stabilimento o scrivi a Delsigel. Sermoneta (LT), dal 1960.",
 };
 
 /**

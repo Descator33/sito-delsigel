@@ -43,7 +43,7 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: "Delsigel Italia · L'industria artigianale",
   description:
-    "Delsigel, l'industria artigianale: innovativa e buona per tutti. Dolci e salati da laboratorio, prodotti su scala, dal 2011. Scopri il catalogo 2026/27.",
+    "Delsigel, l'industria artigianale: innovativa e buona per tutti. Dolci e salati da laboratorio, prodotti su scala, dal 1960. Scopri il catalogo 2026/27.",
 };
 
 export default function RootLayout({

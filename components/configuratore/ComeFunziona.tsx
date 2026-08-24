@@ -6,19 +6,19 @@ import { FrecciaCerchio, IconaChiudi } from "./Decori";
 const PASSI = [
   {
     n: "01",
-    titolo: "Scegli la base",
+    titolo: "Level 01 — scegli il player",
     testo:
       "Dieci basi, tutte disponibili. Trascinala sul palco con il mouse, oppure toccala: il risultato è identico.",
   },
   {
     n: "02",
-    titolo: "Aggiungi la farcitura",
+    titolo: "Level 02 — carica la farcitura",
     testo:
       "Compaiono solo le farciture che esistono davvero per quella base: niente scelte che poi non si possono fare.",
   },
   {
     n: "03",
-    titolo: "Metti la finitura, poi i numeri",
+    titolo: "Level 03 — chiudi la combo",
     testo:
       "La finitura la decide la ricetta, ma la posi tu. Poi arrivano formato, ordine minimo e quantità in pedane, e la richiesta parte già completa.",
   },
@@ -39,12 +39,12 @@ export function ComeFunziona() {
       <button
         type="button"
         onClick={() => dialogo.current?.showModal()}
-        className="ombra-pop-piccola group mt-8 inline-flex items-center gap-4 rounded-full bg-inchiostro py-2.5 pl-7 pr-2.5 transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-corallo-scena motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+        className="configurator-how-button group inline-flex items-center rounded-full transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-inchiostro motion-reduce:transition-none motion-reduce:hover:translate-y-0"
       >
-        <span className="text-[11.5px] font-bold uppercase tracking-[0.12em] text-panna">
+        <span className="font-bold uppercase">
           Come funziona
         </span>
-        <FrecciaCerchio className="h-8 w-8 shrink-0 text-panna transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+        <FrecciaCerchio className="h-8 w-8 shrink-0 text-inchiostro transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
       </button>
 
       <dialog

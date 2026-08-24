@@ -80,7 +80,7 @@ export default async function ConfiguratorePage({ params }: Props) {
      qui ma dentro l'isola: dal redesign 2026-08-04 è la prima delle
      tre colonne, e deve stare nella stessa griglia del palco. */
   return (
-    <div className="overflow-x-clip bg-panna text-inchiostro">
+    <div className="configuratore-page overflow-x-clip bg-panna text-inchiostro">
       <Header />
 
       {/* le mappe delle foto si leggono dal filesystem qui, lato server:

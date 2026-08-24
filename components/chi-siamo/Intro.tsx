@@ -76,7 +76,7 @@ export function Intro() {
                 di Sermoneta<span className="text-fucsia">.</span>
               </h1>
               <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-inchiostro/70">
-                dal 2011 · IFS Food · Rainforest Alliance · RSPO
+                dal 1960 · IFS Food · Rainforest Alliance · RSPO
               </p>
             </div>
           </div>

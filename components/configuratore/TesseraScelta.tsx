@@ -109,11 +109,16 @@ export function TesseraScelta({
       aria-pressed={selezionata ?? false}
       aria-label={descrizione}
       data-vola={inDrag ? "true" : "false"}
-      className={`tessera relative block w-full select-none p-2.5 pb-2.5 text-center focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-corallo-scena ${
+      data-drag={drag ? "true" : "false"}
+      className={`tessera relative block w-full select-none text-center focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-viola ${
         drag ? "cursor-grab active:cursor-grabbing" : ""
       } ${inDrag ? "z-[60]" : ""}`}
     >
-      <span ref={quadroRef} className="relative block aspect-square w-full @container">
+      <span aria-hidden className="tessera-invito">
+        {inDrag ? "In volo!" : "Prendimi!"}
+      </span>
+
+      <span ref={quadroRef} className="tessera-quadro relative block w-full @container">
         {drag ? (
           <motion.span
             className="absolute inset-0 block"
@@ -122,10 +127,19 @@ export function TesseraScelta({
             dragMomentum={false}
             whileDrag={riduci ? undefined : { scale: 1.14, rotate: -3 }}
             onDragStart={() => {
-              clickDaDrag.current = true;
+              /* Motion apre una sessione drag già al pointerdown. Il
+                 click resta valido finché il puntatore non si è mosso
+                 davvero: così mouse e trackpad possono ancora scegliere
+                 con un tap breve, oltre che trascinare. */
+              clickDaDrag.current = false;
               setInDrag(true);
             }}
-            onDrag={(_e, info) => drag.onSposta(info.point)}
+            onDrag={(_e, info) => {
+              if (Math.hypot(info.offset.x, info.offset.y) > 6) {
+                clickDaDrag.current = true;
+              }
+              drag.onSposta(info.point);
+            }}
             onDragEnd={(_e, info) => {
               drag.onRilascia(info.point);
               setInDrag(false);
@@ -141,8 +155,8 @@ export function TesseraScelta({
         )}
       </span>
 
-      <span className="tessera-nome mt-1 block">
-        <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase leading-tight tracking-[0.03em] text-inchiostro">
+      <span className="tessera-nome block">
+        <span className="inline-flex items-center gap-1.5 font-bold uppercase leading-tight tracking-[0.03em] text-inchiostro">
           {selezionata && (
             <span
               aria-hidden

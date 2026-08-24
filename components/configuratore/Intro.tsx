@@ -1,6 +1,6 @@
 "use client";
 
-import { Asterisco, GhirigoroFreccia, Scintilla, SottolineaturaOro } from "./Decori";
+import { SottolineaturaOro } from "./Decori";
 import { ComeFunziona } from "./ComeFunziona";
 
 /**
@@ -17,35 +17,43 @@ import { ComeFunziona } from "./ComeFunziona";
  */
 export function Intro() {
   return (
-    <div className="relative xl:pt-8">
-      <Asterisco className="mb-3 w-8 text-oro sm:mb-4 sm:w-9" />
+    <div className="configurator-intro__inner relative">
+      <span role="img" aria-label="Delsigel" className="config-play-logo">
+        <svg aria-hidden viewBox="0 0 178 118" fill="none">
+          <path className="config-play-logo__burst" d="M15 71 0 55l31-3L15 29l33 10 4-31 21 24L92 4l9 33 29-12-11 29 37 2-28 18 25 21-37-2 4 25-27-19-17 18-8-24-31 17 8-29Z" />
+          <path className="config-play-logo__crown" d="m36 42 15-24 17 18 20-28 12 30 26-12-10 31H46L36 42Z" />
+          <circle cx="139" cy="22" r="10" fill="#f43f83" />
+          <path d="m134 15 9 13M145 16l-12 11" stroke="#fff" strokeWidth="3" strokeLinecap="round" opacity=".7" />
+        </svg>
+        <span>DELSIGEL</span>
+        <i aria-hidden />
+      </span>
 
-      <h1 className="font-display text-[clamp(3.1rem,5.6vw,5.6rem)] font-extrabold leading-[0.87] tracking-[-0.035em]">
+      <h1 className="configurator-title">
         Crea
         <br />
         il tuo
         <br />
         <span className="relative inline-block">
-          <span className="text-corallo-scena">dolce</span>
-          <SottolineaturaOro className="absolute -bottom-[0.05em] left-0 h-[0.13em] w-full" />
+          <span>dolce!</span>
+          <SottolineaturaOro className="absolute -bottom-[0.12em] left-0 h-[0.14em] w-full text-viola" />
         </span>
-        .
       </h1>
 
-      <p className="mt-8 max-w-[31ch] text-[15px] leading-[1.65] text-inchiostro/75 sm:text-base">
-        Libera la fantasia, noi lo rendiamo speciale. Scegli la base perfetta e
-        costruisci il tuo dolce, step dopo step: trascinalo sul palco, o
-        toccalo — fa lo stesso.
+      <p className="configurator-intro-copy">
+        Gioca, combina, personalizza.
+        <br />
+        Il dolce che immagini,
+        <br />
+        lo crei tu!
       </p>
 
-      <ComeFunziona />
-
-      {/* i segni finali: il ghirigoro punta al palco, la stellina
-          chiude il blocco in basso */}
-      <div aria-hidden className="pointer-events-none relative mt-8 h-16">
-        <GhirigoroFreccia className="absolute left-[38%] top-0 w-[150px] text-inchiostro xl:left-[46%]" />
-        <Scintilla className="absolute left-[26%] top-10 w-4 text-corallo-scena" />
+      <div aria-hidden className="configurator-play-burst">
+        <span>LET&apos;S</span>
+        <strong>PLAY!</strong>
       </div>
+
+      <ComeFunziona />
     </div>
   );
 }

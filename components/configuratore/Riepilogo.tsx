@@ -6,6 +6,7 @@ import {
   type Base,
   type Combinazione,
 } from "@/lib/configuratore";
+import { IconaSpunta } from "./Decori";
 
 /**
  * Il rail dei tre passi, in testa alla colonna delle scelte: discreto
@@ -54,21 +55,25 @@ export function Riepilogo({
   ];
 
   return (
-    <ol className="flex list-none flex-wrap items-center gap-2">
+    <ol
+      aria-label="Avanzamento del configuratore"
+      className="candy-livelli grid list-none grid-cols-3 gap-2"
+    >
       {voci.map((v) => {
         const attivo = v.n === corrente;
+        const completato = v.n < corrente || (v.n === 3 && finituraApplicata);
         const numero = String(v.n).padStart(2, "0");
         const testo = (
           <>
-            <span
-              className={
-                attivo ? "font-mono text-[10px] text-panna/60" : "font-mono text-[10px] text-inchiostro/40"
-              }
-            >
-              {numero}
+            <span className="candy-livello__numero">
+              {completato ? (
+                <IconaSpunta className="h-4 w-4" />
+              ) : (
+                numero
+              )}
             </span>
-            <span className="text-[11.5px] font-bold uppercase tracking-[0.04em]">
-              {v.valore ?? v.etichetta}
+            <span className="min-w-0 text-left">
+              <span className="candy-livello__nome">{v.valore ?? v.etichetta}</span>
             </span>
           </>
         );
@@ -80,12 +85,13 @@ export function Riepilogo({
                 type="button"
                 onClick={() => apriPasso(v.n as 1 | 2)}
                 aria-label={`Torna al passo ${v.n}, ${v.etichetta}: ${v.valore}`}
-                className="group flex items-center gap-1.5 rounded-full border border-linea bg-carta px-3 py-2 text-inchiostro transition-colors hover:border-inchiostro hover:bg-panna-dim/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-corallo-scena"
+                data-stato="completato"
+                className="candy-livello group relative flex h-full w-full flex-col items-center justify-center text-inchiostro focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inchiostro"
               >
                 {testo}
                 <span
                   aria-hidden
-                  className="text-[9.5px] font-bold uppercase tracking-[0.06em] text-corallo-scena underline decoration-corallo-scena/35 underline-offset-2 transition-colors group-hover:decoration-corallo-scena"
+                  className="candy-livello__cambia"
                 >
                   cambia
                 </span>
@@ -98,11 +104,8 @@ export function Riepilogo({
           <li key={v.n}>
             <span
               aria-current={attivo ? "step" : undefined}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-2 ${
-                attivo
-                  ? "bg-inchiostro text-panna"
-                  : "border border-dashed border-linea text-inchiostro/40"
-              }`}
+              data-stato={completato ? "completato" : attivo ? "attivo" : "futuro"}
+              className="candy-livello flex flex-col items-center justify-center"
             >
               {testo}
             </span>

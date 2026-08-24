@@ -8,9 +8,14 @@
  * sparisce dal catalogo il build si ferma qui (`vetrina()` lancia) invece
  * di renderizzare una card vuota.
  *
- * Le sette tipologie in vetrina sono i dolci di punta. Le altre due —
- * Stella e Klejner — non spariscono: stanno dietro alla CTA in fondo alla
- * griglia, che le apre in coda senza cambiare pagina.
+ * Le tre tipologie in vetrina sono i dolci di punta. Le altre sei non
+ * spariscono: stanno dietro alla CTA in fondo alla griglia, che le apre
+ * in coda senza cambiare pagina.
+ *
+ * Rev 21/08 — la vetrina scende da sette a tre: resta la sola riga alta
+ * (Intriko, Bomba Fritta, Nuvola) e tutto il resto passa in coda. La
+ * Nuvola sale dalla striscia bassa al posto da «grande»; la striscia
+ * bassa non esiste più.
  *
  * Rev 12/08 — l'Intriko prende la testa della vetrina: card grande in alto
  * a sinistra, campitura fucsia, sigillo «best seller» (che era del
@@ -99,10 +104,9 @@ export const TEMI: Record<
 /**
  * La vetrina, nell'ordine in cui si legge.
  *
- * Prima riga 5+4+3 su dodici colonne (≈41/33/25%): tre card della stessa
- * altezza che scendono di peso da sinistra a destra. Seconda riga quattro
- * card uguali, alte poco più della metà — la striscia che chiude
- * l'impaginato senza fargli concorrenza.
+ * Una riga sola, 5+4+3 su dodici colonne (≈41/33/25%): tre card della
+ * stessa altezza che scendono di peso da sinistra a destra — anche di
+ * campitura: fucsia piena, cacao scuro, sabbia chiara.
  */
 const VETRINA = [
   {
@@ -117,52 +121,25 @@ const VETRINA = [
     foto: "xl:w-[68%] xl:h-[87%] xl:right-[-4%] xl:bottom-[-14%]",
   },
   {
-    slug: "golosone",
-    claim: ["L'originale.", "Soffice e generoso."],
-    variante: "grande",
-    tema: "arancio",
-    posto: "xl:col-span-4 xl:row-span-2",
-    foto: "xl:w-[64%] xl:h-[76%] xl:right-[0%] xl:bottom-[-12%]",
-  },
-  {
     slug: "bomba-fritta",
     claim: ["Classica.", "Senza tempo."],
     variante: "grande",
     tema: "cacao",
-    posto: "xl:col-span-3 xl:row-span-2",
-    foto: "xl:w-[62%] xl:h-[58%] xl:right-[-2%] xl:bottom-[20%]",
-  },
-  {
-    slug: "cuore",
-    claim: ["Morbido dentro.", "Pieno di gusto."],
-    variante: "compatta",
-    tema: "fucsia",
-    posto: "xl:col-span-3",
-    foto: "xl:w-[62%] xl:h-[112%] xl:right-[-2%] xl:bottom-[-16%]",
-  },
-  {
-    slug: "frittella",
-    claim: ["Cremosa, dorata,", "irresistibile."],
-    variante: "compatta",
-    tema: "acido",
-    posto: "xl:col-span-3",
-    foto: "xl:w-[58%] xl:h-[104%] xl:right-[-1%] xl:bottom-[-15%]",
-  },
-  {
-    slug: "lusekatt",
-    claim: ["La tradizione", "che scalda il cuore."],
-    variante: "compatta",
-    tema: "cacao",
-    posto: "xl:col-span-3",
-    foto: "xl:w-[52%] xl:h-[100%] xl:right-[-1%] xl:bottom-[-4%]",
+    posto: "xl:col-span-4 xl:row-span-2",
+    /* la card è più larga di quando stava sulle tre colonne: la larghezza
+       scende in proporzione (62%·3/4) così la sfera resta della stessa
+       misura, sospesa sopra il bordo come prima */
+    foto: "xl:w-[48%] xl:h-[58%] xl:right-[0%] xl:bottom-[20%]",
   },
   {
     slug: "nuvola",
     claim: ["Leggera come", "una nuvola."],
-    variante: "compatta",
+    variante: "grande",
     tema: "sabbia",
-    posto: "xl:col-span-3",
-    foto: "xl:w-[56%] xl:h-[100%] xl:right-[0%] xl:bottom-[-8%]",
+    posto: "xl:col-span-3 xl:row-span-2",
+    /* dalla striscia bassa al posto alto: il ciuffo cresce e torna a
+       sfiorare il bordo basso, come faceva da compatta */
+    foto: "xl:w-[60%] xl:h-[62%] xl:right-[-2%] xl:bottom-[-10%]",
   },
 ] as const satisfies readonly {
   slug: string;

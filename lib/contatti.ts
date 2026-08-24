@@ -90,17 +90,41 @@ export const RECAPITI: readonly Recapito[] = [
 
 /* ------------------------------ il form ------------------------------ */
 
-export type CampoContatto = "nome" | "azienda" | "email" | "messaggio";
+export const REPARTI_INTERESSE = [
+  { valore: "commerciale-distribuzione", etichetta: "Commerciale / Distribuzione" },
+  { valore: "prodotti-personalizzazioni", etichetta: "Prodotti / Personalizzazioni" },
+  { valore: "qualita-certificazioni", etichetta: "Qualità / Certificazioni" },
+  { valore: "amministrazione-contabilita", etichetta: "Amministrazione / Contabilità" },
+  { valore: "lavora-con-noi", etichetta: "Lavora con noi" },
+  { valore: "altro", etichetta: "Altro" },
+] as const;
 
-export type BozzaContatto = Record<CampoContatto, string>;
+export type CampoTestoContatto =
+  | "nome"
+  | "cognome"
+  | "telefono"
+  | "email"
+  | "azienda"
+  | "ruolo"
+  | "reparto"
+  | "messaggio";
+
+export type CampoContatto = CampoTestoContatto | "privacy";
+
+export type BozzaContatto = Record<CampoTestoContatto, string> & {
+  privacy: boolean;
+};
 
 export type ErroriContatto = Partial<Record<CampoContatto, string>>;
 
 /** limiti larghi: servono a fermare gli abusi, non a correggere le persone */
 export const LIMITI = {
-  nome: { min: 2, max: 120 },
-  azienda: { max: 140 },
+  nome: { min: 2, max: 70 },
+  cognome: { min: 2, max: 90 },
+  telefono: { minCifre: 7, max: 30 },
   email: { max: 180 },
+  azienda: { min: 2, max: 140 },
+  ruolo: { min: 2, max: 120 },
   messaggio: { min: 20, max: 4000 },
 } as const;
 
@@ -109,6 +133,7 @@ export const LIMITI = {
    (qualcosa @ qualcosa . qualcosa, senza spazi) e si lascia che sia la
    consegna a dire la verità. */
 const FORMA_EMAIL = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
+const FORMA_TELEFONO = /^\+?[\d\s()./-]+$/;
 
 /**
  * Valida la bozza e restituisce SOLO i campi in errore.
@@ -117,8 +142,12 @@ const FORMA_EMAIL = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
 export function validaContatto(bozza: BozzaContatto): ErroriContatto {
   const errori: ErroriContatto = {};
   const nome = bozza.nome.trim();
-  const azienda = bozza.azienda.trim();
+  const cognome = bozza.cognome.trim();
+  const telefono = bozza.telefono.trim();
   const email = bozza.email.trim();
+  const azienda = bozza.azienda.trim();
+  const ruolo = bozza.ruolo.trim();
+  const reparto = bozza.reparto.trim();
   const messaggio = bozza.messaggio.trim();
 
   if (nome.length < LIMITI.nome.min)
@@ -126,8 +155,19 @@ export function validaContatto(bozza: BozzaContatto): ErroriContatto {
   else if (nome.length > LIMITI.nome.max)
     errori.nome = `Il nome non può superare i ${LIMITI.nome.max} caratteri.`;
 
-  if (azienda.length > LIMITI.azienda.max)
-    errori.azienda = `L'azienda non può superare i ${LIMITI.azienda.max} caratteri.`;
+  if (cognome.length < LIMITI.cognome.min)
+    errori.cognome = "Inserisci il cognome.";
+  else if (cognome.length > LIMITI.cognome.max)
+    errori.cognome = `Il cognome non può superare i ${LIMITI.cognome.max} caratteri.`;
+
+  const cifreTelefono = telefono.replace(/\D/g, "");
+  if (!telefono) errori.telefono = "Inserisci un numero di telefono.";
+  else if (
+    !FORMA_TELEFONO.test(telefono) ||
+    cifreTelefono.length < LIMITI.telefono.minCifre ||
+    telefono.length > LIMITI.telefono.max
+  )
+    errori.telefono = "Controlla il numero di telefono e il prefisso.";
 
   if (!email) errori.email = "Senza un'email non possiamo risponderti.";
   else if (email.length > LIMITI.email.max)
@@ -135,12 +175,35 @@ export function validaContatto(bozza: BozzaContatto): ErroriContatto {
   else if (!FORMA_EMAIL.test(email))
     errori.email = "Controlla l'indirizzo: manca la chiocciola o il dominio.";
 
+  if (azienda.length < LIMITI.azienda.min)
+    errori.azienda = "Inserisci il nome dell'azienda.";
+  else if (azienda.length > LIMITI.azienda.max)
+    errori.azienda = `L'azienda non può superare i ${LIMITI.azienda.max} caratteri.`;
+
+  if (ruolo.length < LIMITI.ruolo.min)
+    errori.ruolo = "Inserisci il tuo ruolo in azienda.";
+  else if (ruolo.length > LIMITI.ruolo.max)
+    errori.ruolo = `Il ruolo non può superare i ${LIMITI.ruolo.max} caratteri.`;
+
+  if (!REPARTI_INTERESSE.some((opzione) => opzione.valore === reparto))
+    errori.reparto = "Seleziona il reparto a cui vuoi inviare la richiesta.";
+
   if (messaggio.length < LIMITI.messaggio.min)
     errori.messaggio = `Scrivi almeno ${LIMITI.messaggio.min} caratteri: cosa ti serve, e in che quantità.`;
   else if (messaggio.length > LIMITI.messaggio.max)
     errori.messaggio = `Il messaggio non può superare i ${LIMITI.messaggio.max} caratteri.`;
 
+  if (!bozza.privacy)
+    errori.privacy = "Devi accettare l'informativa privacy per inviare la richiesta.";
+
   return errori;
+}
+
+export function etichettaReparto(valore: string): string {
+  return (
+    REPARTI_INTERESSE.find((opzione) => opzione.valore === valore)?.etichetta ??
+    valore
+  );
 }
 
 /**
@@ -149,16 +212,19 @@ export function validaContatto(bozza: BozzaContatto): ErroriContatto {
  * la UI lo presenta come tale, cioè come «apri il tuo client di posta».
  */
 export function mailtoDiRipiego(bozza: BozzaContatto): string {
-  const oggetto = `Richiesta dal sito — ${bozza.nome.trim() || "contatto"}`;
+  const nominativo = `${bozza.nome.trim()} ${bozza.cognome.trim()}`.trim();
+  const oggetto = `Richiesta dal sito — ${nominativo || "contatto"}`;
   const corpo = [
-    `Nome e cognome: ${bozza.nome.trim()}`,
-    bozza.azienda.trim() ? `Azienda: ${bozza.azienda.trim()}` : null,
+    `Nome: ${bozza.nome.trim()}`,
+    `Cognome: ${bozza.cognome.trim()}`,
+    `Telefono: ${bozza.telefono.trim()}`,
     `Email: ${bozza.email.trim()}`,
+    `Azienda: ${bozza.azienda.trim()}`,
+    `Ruolo: ${bozza.ruolo.trim()}`,
+    `Reparto di interesse: ${etichettaReparto(bozza.reparto)}`,
     "",
     bozza.messaggio.trim(),
-  ]
-    .filter((riga): riga is string => riga !== null)
-    .join("\n");
+  ].join("\n");
 
   return `mailto:${EMAIL}?subject=${encodeURIComponent(oggetto)}&body=${encodeURIComponent(corpo)}`;
 }
@@ -201,7 +267,12 @@ export const STATO_INIZIALE: StatoContatto = { stato: "iniziale" };
 
 export const BOZZA_VUOTA: BozzaContatto = {
   nome: "",
-  azienda: "",
+  cognome: "",
+  telefono: "",
   email: "",
+  azienda: "",
+  ruolo: "",
+  reparto: "",
   messaggio: "",
+  privacy: false,
 };

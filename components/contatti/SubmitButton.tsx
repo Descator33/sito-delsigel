@@ -24,7 +24,7 @@ export function SubmitButton({
     <button
       type="submit"
       disabled={inCorso}
-      className="pop-invio font-pop text-[clamp(0.95rem,1.15vw,1.15rem)] uppercase tracking-[0.02em]"
+      className="pop-invio font-ui text-[clamp(0.85rem,1vw,1rem)] font-extrabold uppercase tracking-[0.055em]"
     >
       <span>
         {inCorso

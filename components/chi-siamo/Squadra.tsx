@@ -64,7 +64,7 @@ export function Squadra({ team }: { team: TeamMember[] }) {
           </h2>
           <p className="mt-4 max-w-sm text-base leading-relaxed text-panna/70">
             Ventuno volti, un solo laboratorio: l&apos;industria artigianale al
-            completo, dal 2011.
+            completo, dal 1960.
           </p>
         </div>
         <div className="flex items-center gap-4">

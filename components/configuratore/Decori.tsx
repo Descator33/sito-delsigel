@@ -44,11 +44,31 @@ export function Asterisco({ className }: { className?: string }) {
   );
 }
 
-/** Lo smile giallo che si appoggia sul bordo del palco come un
- *  adesivo: anello crema esterno per staccarsi dal profilo nero. */
-export function Smile({ className }: { className?: string }) {
+/** La mascotte del playground. Quattro espressioni, governate solo
+ *  dallo stato già noto al palco: segue il gesto senza introdurre una
+ *  nuova macchina a stati o cambiare la logica del configuratore. */
+export function Smile({
+  className,
+  umore = "felice",
+}: {
+  className?: string;
+  umore?: "curioso" | "felice" | "wow" | "festa";
+}) {
+  const festa = umore === "festa";
+  const wow = umore === "wow";
+  const curioso = umore === "curioso";
+
   return (
-    <svg aria-hidden viewBox="0 0 100 100" className={className}>
+    <svg aria-hidden data-umore={umore} viewBox="-12 -12 124 124" className={className}>
+      <g fill="var(--fucsia)" stroke="var(--corallo-scena)" strokeWidth="2.5">
+        <circle cx="50" cy="5" r="23" />
+        <circle cx="88" cy="23" r="23" />
+        <circle cx="95" cy="64" r="23" />
+        <circle cx="70" cy="94" r="23" />
+        <circle cx="29" cy="94" r="23" />
+        <circle cx="5" cy="63" r="23" />
+        <circle cx="12" cy="23" r="23" />
+      </g>
       <circle cx="50" cy="52" r="45" fill="#c99a12" opacity="0.35" />
       <circle
         cx="50"
@@ -58,15 +78,27 @@ export function Smile({ className }: { className?: string }) {
         stroke="var(--inchiostro)"
         strokeWidth="4"
       />
-      <rect x="31" y="33" width="8" height="15" rx="4" fill="var(--inchiostro)" />
-      <rect x="61" y="33" width="8" height="15" rx="4" fill="var(--inchiostro)" />
-      <path
-        d="M30 59q20 19 40 0"
-        fill="none"
-        stroke="var(--inchiostro)"
-        strokeWidth="5"
-        className="mano-libera"
-      />
+      {festa ? (
+        <>
+          <path d="M27 31l5 6 7-4-3 8 6 5-9-1-5 7-1-9-8-3 8-4Z" fill="var(--inchiostro)" />
+          <path d="M59 31l5 6 7-4-3 8 6 5-9-1-5 7-1-9-8-3 8-4Z" fill="var(--inchiostro)" />
+        </>
+      ) : (
+        <>
+          <rect x={curioso ? 29 : 31} y="33" width="8" height={wow ? 18 : 15} rx="4" fill="var(--inchiostro)" />
+          <rect x={curioso ? 63 : 61} y="33" width="8" height={wow ? 18 : 15} rx="4" fill="var(--inchiostro)" />
+        </>
+      )}
+      {wow ? (
+        <ellipse cx="50" cy="68" rx="10" ry="12" fill="var(--inchiostro)" />
+      ) : curioso ? (
+        <path d="M35 67q15-6 30 0" fill="none" stroke="var(--inchiostro)" strokeWidth="5" className="mano-libera" />
+      ) : (
+        <path d="M30 59q20 21 40 0" fill="none" stroke="var(--inchiostro)" strokeWidth="5" className="mano-libera" />
+      )}
+      {festa && (
+        <path d="M46 82q4 8 8 0" fill="var(--corallo-scena)" stroke="var(--inchiostro)" strokeWidth="3" className="mano-libera" />
+      )}
     </svg>
   );
 }
@@ -117,7 +149,7 @@ export function SottolineaturaOro({ className }: { className?: string }) {
       aria-hidden
       viewBox="0 0 240 16"
       fill="none"
-      stroke="var(--oro)"
+      stroke="currentColor"
       strokeWidth="8"
       className={`mano-libera ${className ?? ""}`}
       preserveAspectRatio="none"

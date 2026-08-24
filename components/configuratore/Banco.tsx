@@ -111,6 +111,14 @@ export function Banco({
      una base, una farcitura o la finitura */
   const dropAttivo = !completato;
 
+  const umoreMascotte = completato
+    ? "festa"
+      : sopra
+      ? "wow"
+      : base
+        ? "felice"
+        : "felice";
+
   const cosaManca =
     passo === 1 ? "la tua base" : passo === 2 ? "la farcitura" : "la finitura";
 
@@ -152,7 +160,8 @@ export function Banco({
             }`
       }
       data-sopra={dropAttivo && sopra ? "true" : "false"}
-      className="palco ombra-pop aspect-[93/100] min-h-[500px] w-full sm:min-h-[560px]"
+      data-fase={vuoto ? "vuoto" : completato ? "completo" : `passo-${passo}`}
+      className="palco w-full"
       animate={
         riduci ? undefined : dropAttivo && sopra ? { scale: 1.012, y: -4 } : { scale: 1, y: 0 }
       }
@@ -160,14 +169,25 @@ export function Banco({
     >
       <span aria-hidden className="palco-cornice" />
 
+      <span aria-hidden className="candy-ribbon">Drag &amp; Drop</span>
+
       {/* --- i decori: leggeri, mai sopra a qualcosa da leggere -----
           Sfoltiti il 2026-08-19: restano i due segni agli angoli, fermi.
           L'adesivo «il tuo dolce, la tua storia», il fumetto col cuore e
           le scintille immobili sono usciti di scena — il centro del
           palco è del dolce. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <Smile className="absolute -right-[3%] -top-[3.5%] w-[11%] min-w-[58px]" />
-        <Asterisco className="absolute -bottom-[2%] -left-[1.5%] w-[9%] min-w-[46px] text-corallo-scena" />
+        <Smile
+          umore={umoreMascotte}
+          className="mascotte-candy absolute -right-[1.5%] top-[1.5%] w-[14%] min-w-[68px]"
+        />
+        <Asterisco className="absolute -bottom-[6%] left-[70%] w-[9%] min-w-[48px] text-oro" />
+        <span className="palco-amico">
+          <i />
+          <i />
+          <b />
+        </span>
+        <span className="palco-lecca" />
 
         {/* queste tre esistono solo durante il sorvolo */}
         <Scintilla className="scintilla-drag absolute left-[30%] top-[36%] w-[3%] min-w-[13px] text-oro" />
@@ -195,19 +215,25 @@ export function Banco({
         <>
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-[45%] flex -translate-y-[calc(100%+12px)] flex-col items-center gap-1 px-[12%] text-center"
+            className="palco-invito pointer-events-none absolute inset-x-0 top-[49%] flex -translate-y-[calc(100%+12px)] flex-col items-center gap-1 px-[12%] text-center"
           >
             <span
-              className={`type-scritta -rotate-2 text-[22px] leading-tight transition-colors duration-200 sm:text-[28px] ${
-                sopra ? "text-corallo-scena" : "text-inchiostro/85"
+              className={`drop-copy leading-tight transition-colors duration-200 ${
+                sopra ? "text-fucsia" : "text-viola"
               }`}
             >
               {sopra ? (
-                "Perfetto, lascia qui!"
+                <strong>Sì! Molla qui!</strong>
               ) : (
                 <>
-                  <span className="invito-mouse">Trascina qui la tua base</span>
-                  <span className="invito-touch">Tocca una base per iniziare</span>
+                  <span className="invito-mouse">
+                    Trascina qui
+                    <strong>la tua base</strong>
+                  </span>
+                  <span className="invito-touch">
+                    Tocca qui
+                    <strong>la tua base</strong>
+                  </span>
                 </>
               )}
             </span>
@@ -215,25 +241,29 @@ export function Banco({
                 mentre la tessera è in volo sarebbe un consiglio dato
                 troppo tardi */}
             {!sopra && (
-              <span className="flex items-center gap-1.5 text-inchiostro/45">
+              <span className="sr-only">
                 <IconaMano className="h-3.5 w-3.5" />
-                <span className="type-label text-[9px] sm:text-[10px]">
-                  <span className="invito-mouse">o toccala nella lista</span>
-                  <span className="invito-touch">o trascinala fin qui</span>
-                </span>
+                oppure sceglila nella lista
               </span>
             )}
           </div>
 
           <motion.span
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[45%] block w-[5.85%] min-w-[32px] -translate-x-1/2 text-corallo-scena"
+            className="pointer-events-none absolute left-1/2 top-[51%] block w-[6%] min-w-[32px] -translate-x-1/2 text-viola"
             animate={riduci || sopra ? { y: 0 } : { y: [0, 5, 0] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
           >
             <FrecciaGiu className="w-full" />
           </motion.span>
         </>
+      )}
+
+      {dropAttivo && !vuoto && !sopra && (
+        <div aria-hidden className="candy-tray-task pointer-events-none absolute inset-x-[9%] top-[7%] text-center">
+          <span className="invito-mouse">Trascina qui {cosaManca}</span>
+          <span className="invito-touch">Tocca {cosaManca} per lanciarla</span>
+        </div>
       )}
 
       {/* --- l'ombra a terra e il dolce -------------------------------
@@ -245,6 +275,21 @@ export function Banco({
         aria-hidden
         className="palco-ombra absolute inset-x-0 bottom-[15%] mx-auto h-[4%] w-[46%]"
       />
+
+      <AnimatePresence>
+        {dropAttivo && sopra && (
+          <motion.span
+            aria-hidden
+            className="candy-drop-badge pointer-events-none absolute left-1/2 top-[9%] z-20 -translate-x-1/2"
+            initial={riduci ? { opacity: 0 } : { opacity: 0, scale: 0.55, rotate: -10 }}
+            animate={{ opacity: 1, scale: 1, rotate: -3 }}
+            exit={{ opacity: 0, scale: 0.7 }}
+            transition={{ type: "spring", stiffness: 430, damping: 21 }}
+          >
+            Drop!
+          </motion.span>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         {base && (

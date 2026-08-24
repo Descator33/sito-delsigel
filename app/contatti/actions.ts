@@ -76,9 +76,14 @@ export async function inviaRichiesta(
 
   const bozza: BozzaContatto = {
     nome: testo("nome"),
-    azienda: testo("azienda"),
+    cognome: testo("cognome"),
+    telefono: testo("telefono"),
     email: testo("email"),
+    azienda: testo("azienda"),
+    ruolo: testo("ruolo"),
+    reparto: testo("reparto"),
     messaggio: testo("messaggio"),
+    privacy: dati.get("privacy") === "on",
   };
 
   /* L'honeypot: un campo che nessun essere umano vede e che i compilatori

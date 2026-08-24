@@ -6,8 +6,8 @@ import { ProductBentoGrid } from "./ProductBentoGrid";
  *
  * Redesign 2026-08-04: sostituisce i due caroselli orizzontali su fondo
  * panna e la card ottagonale che si apriva a cerchio. La sezione non è
- * più un rullo ma un impaginato — sette campiture piene, sette misure
- * diverse — e ha una sua direzione tipografica (League Spartan, Inter
+ * più un rullo ma un impaginato — dal 21/08 tre campiture piene in una
+ * riga sola — e ha una sua direzione tipografica (League Spartan, Inter
  * Tight, IBM Plex Mono; vedi app/fonts.ts) che non tocca il resto del
  * sito, dove comanda Archivo.
  *

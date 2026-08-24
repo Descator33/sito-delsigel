@@ -43,7 +43,7 @@ di default di create-next-app.
 ## Fase 3 — Il nome in pagina (1 giorno)
 
 - **StoryPreview**: oggi contiene l'unica menzione visibile di "Delsigel" in
-  home, in un corpo testo. Alzarla: eyebrow "Delsigel · dal 2011" o wordmark
+  home, in un corpo testo. Alzarla: eyebrow "Delsigel · dal 1960" o wordmark
   nel titolo.
 - **Marquee brandizzato** (`components/Marquee.tsx`): esiste già, è montato
   solo su /chi-siamo. Portarlo in home tra catalogo e chiusura.

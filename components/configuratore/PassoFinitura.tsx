@@ -70,12 +70,11 @@ export function PassoFinitura({
   if (!finituraApplicata) {
     return (
       <div>
-        <p className="mb-6 max-w-[42ch] text-[14px] leading-relaxed text-inchiostro/70">
+        <p className="mb-6 max-w-[42ch] text-[14px] font-medium leading-relaxed text-inchiostro/75">
           {/* lo spazio esplicito: il testo che segue va a capo nel sorgente e
               il compilatore JSX lo mangerebbe, incollando «lamponeprevede» */}
-          La ricetta di {nome} · {farcitura.nome.toLowerCase()}{" "}
-          prevede una finitura precisa. Mettila tu: è l&apos;ultimo tocco del
-          dolce.
+          Boss level: {nome} · {farcitura.nome.toLowerCase()} vuole la sua
+          finitura. Mettila tu e chiudi la combo.
         </p>
         <GrigliaTessere>
           <li>
@@ -120,12 +119,12 @@ export function PassoFinitura({
     <div className="flex flex-col gap-9">
       <div>
         <p className="font-display text-[clamp(1.35rem,2.2vw,1.9rem)] font-extrabold leading-[1.05] tracking-[-0.02em]">
-          {nome} · {farcitura.nome} è completo, con{" "}
+          Boom! {nome} · {farcitura.nome} è completo, con{" "}
           <span className="text-corallo-scena">{topping.nome.toLowerCase()}</span>.
         </p>
         <p className="mt-3 max-w-[46ch] text-[14px] leading-relaxed text-inchiostro/70">
-          La finitura è quella che la ricetta prevede per questa combinazione:
-          l&apos;hai messa tu.
+          Tre livelli, tre mosse: la combo è pronta. Ora scegli la quantità e
+          mandala in quotazione.
         </p>
         <dl className="mt-5 flex flex-wrap gap-x-7 gap-y-2 font-mono text-[13px]">
           <div>

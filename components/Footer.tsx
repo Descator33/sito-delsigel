@@ -88,7 +88,7 @@ export function Footer() {
               ))}
             </div>
             <p className="mt-4 max-w-[240px] text-[13px] leading-relaxed text-panna/55">
-              L&apos;industria artigianale di Sermoneta, dal 2011.
+              L&apos;industria artigianale di Sermoneta, dal 1960.
             </p>
           </div>
 

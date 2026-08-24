@@ -2,13 +2,12 @@ import { ContactForm } from "@/components/contatti/ContactForm";
 import { ContactGrid } from "@/components/contatti/ContactGrid";
 import { ContactHero } from "@/components/contatti/ContactHero";
 import { PopDecorations } from "@/components/contatti/PopDecorations";
-import { VisitUsBanner } from "@/components/contatti/VisitUsBanner";
 
 /**
  * L'impaginato della sub-page Contatti.
  *
  * Due colonne da `lg` in su e una sola sotto, con l'ordine del sorgente
- * già giusto per il telefono — titolo, promessa, recapiti, invito, form —
+ * già giusto per il telefono — titolo, promessa, recapiti, form —
  * quindi nessun `order` da riordinare e nessuna divergenza fra l'ordine
  * visivo e quello di tabulazione.
  *
@@ -29,7 +28,7 @@ import { VisitUsBanner } from "@/components/contatti/VisitUsBanner";
  */
 export function ContactPage() {
   return (
-    <main className="contatti font-pop-testo relative bg-panna text-inchiostro">
+    <main className="contatti font-ui relative bg-panna text-inchiostro">
       {/* Lo spazio della nav flottante, poi il filo nero che nel
           riferimento corre da un bordo all'altro sotto di essa. */}
       <div aria-hidden className="h-[76px] md:h-[92px]" />
@@ -47,7 +46,6 @@ export function ContactPage() {
           <div className="flex flex-col gap-y-10 sm:gap-y-12">
             <ContactHero />
             <ContactGrid />
-            <VisitUsBanner />
           </div>
 
           <ContactForm />

@@ -1,9 +1,10 @@
 /**
- * Un campo del form: etichetta, controllo, errore.
+ * Un campo del form: etichetta, controllo, errore. Gestisce input,
+ * textarea e select con la stessa grammatica visiva e accessibile.
  *
- * Un componente solo per input e textarea, distinti da `multiriga`: due
- * componenti gemelli si sarebbero già disallineati sul primo ritocco agli
- * stati di errore, che è il punto in cui il disallineamento fa danno.
+ * Un componente solo per i tre controlli: componenti gemelli si
+ * disallineerebbero al primo ritocco degli stati di errore, che è il punto
+ * in cui il disallineamento fa danno.
  *
  * L'accessibilità è tutta qui dentro e non a carico di chi lo usa:
  * l'`htmlFor` è legato all'`id`, `aria-invalid` marca il controllo,
@@ -34,8 +35,17 @@ type Comune = {
 };
 
 type Props =
-  | (Comune & { multiriga?: false; tipo?: "text" | "email" })
-  | (Comune & { multiriga: true; righe?: number });
+  | (Comune & {
+      multiriga?: false;
+      select?: false;
+      tipo?: "text" | "email" | "tel";
+    })
+  | (Comune & { multiriga: true; select?: false; righe?: number })
+  | (Comune & {
+      multiriga?: false;
+      select: true;
+      opzioni: readonly { valore: string; etichetta: string }[];
+    });
 
 export function FormField(props: Props) {
   const {
@@ -52,14 +62,10 @@ export function FormField(props: Props) {
   } = props;
   const idErrore = `${id}-errore`;
 
-  const comuni = {
+  const accessibilita = {
     id,
     name: nome,
-    placeholder: segnaposto,
     required: richiesto,
-    autoComplete,
-    maxLength,
-    defaultValue,
     onInput,
     "aria-invalid": errore ? (true as const) : undefined,
     "aria-describedby": errore ? idErrore : undefined,
@@ -78,17 +84,50 @@ export function FormField(props: Props) {
         className="text-[14px] font-bold uppercase tracking-[0.06em] text-inchiostro md:text-[12px]"
       >
         {etichetta}
-        {!richiesto && (
+        {richiesto ? (
+          <span aria-hidden className="ml-0.5 text-rosso">
+            *
+          </span>
+        ) : (
           <span className="ml-1.5 font-normal normal-case tracking-normal text-inchiostro/45">
             (facoltativo)
           </span>
         )}
       </label>
 
-      {props.multiriga ? (
-        <textarea {...comuni} rows={props.righe ?? 5} />
+      {props.select ? (
+        <select
+          {...accessibilita}
+          defaultValue={defaultValue ?? ""}
+          autoComplete={autoComplete}
+        >
+          <option value="" disabled>
+            {segnaposto}
+          </option>
+          {props.opzioni.map((opzione) => (
+            <option key={opzione.valore} value={opzione.valore}>
+              {opzione.etichetta}
+            </option>
+          ))}
+        </select>
+      ) : props.multiriga ? (
+        <textarea
+          {...accessibilita}
+          placeholder={segnaposto}
+          autoComplete={autoComplete}
+          maxLength={maxLength}
+          defaultValue={defaultValue}
+          rows={props.righe ?? 5}
+        />
       ) : (
-        <input {...comuni} type={props.tipo ?? "text"} />
+        <input
+          {...accessibilita}
+          type={props.tipo ?? "text"}
+          placeholder={segnaposto}
+          autoComplete={autoComplete}
+          maxLength={maxLength}
+          defaultValue={defaultValue}
+        />
       )}
 
       {errore && (

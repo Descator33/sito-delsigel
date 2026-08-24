@@ -10,6 +10,7 @@ import { Scintilla } from "@/components/catalog/salati/DecorativeDoodles";
 import {
   BOZZA_VUOTA,
   LIMITI,
+  REPARTI_INTERESSE,
   STATO_INIZIALE,
   validaContatto,
   type BozzaContatto,
@@ -76,9 +77,14 @@ export function ContactForm() {
     const dati = new FormData(evento.currentTarget);
     const bozza: BozzaContatto = {
       nome: String(dati.get("nome") ?? ""),
-      azienda: String(dati.get("azienda") ?? ""),
+      cognome: String(dati.get("cognome") ?? ""),
+      telefono: String(dati.get("telefono") ?? ""),
       email: String(dati.get("email") ?? ""),
+      azienda: String(dati.get("azienda") ?? ""),
+      ruolo: String(dati.get("ruolo") ?? ""),
+      reparto: String(dati.get("reparto") ?? ""),
       messaggio: String(dati.get("messaggio") ?? ""),
+      privacy: dati.get("privacy") === "on",
     };
 
     const trovati = validaContatto(bozza);
@@ -92,7 +98,17 @@ export function ContactForm() {
          non deve andarselo a cercare, e chi usa uno screen reader sente
          subito il messaggio via `aria-describedby`. */
       const primo = (
-        ["nome", "azienda", "email", "messaggio"] as const
+        [
+          "nome",
+          "cognome",
+          "telefono",
+          "email",
+          "azienda",
+          "ruolo",
+          "reparto",
+          "messaggio",
+          "privacy",
+        ] as const
       ).find((campo) => trovati[campo]);
       if (primo) document.getElementById(primo)?.focus();
     }
@@ -113,8 +129,8 @@ export function ContactForm() {
           campitura crema), che sono pseudo-elementi a z-index 0 */}
       <div className="relative z-10 p-6 pb-8 sm:p-9 sm:pb-10 lg:p-11 lg:pb-12">
         <div className="relative">
-          <h2 className="font-pop text-[clamp(2.9rem,5vw,5.5rem)] font-normal uppercase leading-[0.9] tracking-[-0.02em]">
-            Scrivici<span className="-ml-[0.1em] text-rosso">.</span>
+          <h2 className="font-hero text-[clamp(2.35rem,4vw,4.25rem)] font-normal uppercase leading-[0.94] tracking-[-0.045em]">
+            Scrivici
           </h2>
           {/* i tre raggi del riferimento, appoggiati in alto a destra */}
           <Scintilla className="absolute -top-2 right-0 hidden h-9 w-9 text-inchiostro sm:block" />
@@ -147,13 +163,13 @@ export function ContactForm() {
           </div>
           <input ref={apertura} type="hidden" name="aperto_il" defaultValue="" />
 
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-5">
             <FormField
               id="nome"
               nome="nome"
-              etichetta="Nome e cognome"
-              segnaposto="Es. Piera Ollearo"
-              autoComplete="name"
+              etichetta="Nome"
+              segnaposto="Es. Piera"
+              autoComplete="given-name"
               maxLength={LIMITI.nome.max}
               richiesto
               errore={errori.nome}
@@ -161,19 +177,30 @@ export function ContactForm() {
               onInput={() => ripulisci("nome")}
             />
             <FormField
-              id="azienda"
-              nome="azienda"
-              etichetta="Azienda"
-              segnaposto="Panetteria, bar, distribuzione..."
-              autoComplete="organization"
-              maxLength={LIMITI.azienda.max}
-              errore={errori.azienda}
-              defaultValue={precedenti.azienda}
-              onInput={() => ripulisci("azienda")}
+              id="cognome"
+              nome="cognome"
+              etichetta="Cognome"
+              segnaposto="Es. Ollearo"
+              autoComplete="family-name"
+              maxLength={LIMITI.cognome.max}
+              richiesto
+              errore={errori.cognome}
+              defaultValue={precedenti.cognome}
+              onInput={() => ripulisci("cognome")}
             />
-          </div>
-
-          <div className="mt-5">
+            <FormField
+              id="telefono"
+              nome="telefono"
+              tipo="tel"
+              etichetta="Telefono"
+              segnaposto="+39 000 0000000"
+              autoComplete="tel"
+              maxLength={LIMITI.telefono.max}
+              richiesto
+              errore={errori.telefono}
+              defaultValue={precedenti.telefono}
+              onInput={() => ripulisci("telefono")}
+            />
             <FormField
               id="email"
               nome="email"
@@ -187,6 +214,46 @@ export function ContactForm() {
               defaultValue={precedenti.email}
               onInput={() => ripulisci("email")}
             />
+            <FormField
+              id="azienda"
+              nome="azienda"
+              etichetta="Azienda"
+              segnaposto="Ragione sociale"
+              autoComplete="organization"
+              maxLength={LIMITI.azienda.max}
+              richiesto
+              errore={errori.azienda}
+              defaultValue={precedenti.azienda}
+              onInput={() => ripulisci("azienda")}
+            />
+            <FormField
+              id="ruolo"
+              nome="ruolo"
+              etichetta="Ruolo"
+              segnaposto="Es. Buyer, titolare, R&D"
+              autoComplete="organization-title"
+              maxLength={LIMITI.ruolo.max}
+              richiesto
+              errore={errori.ruolo}
+              defaultValue={precedenti.ruolo}
+              onInput={() => ripulisci("ruolo")}
+            />
+          </div>
+
+          <div className="mt-5">
+            <FormField
+              id="reparto"
+              nome="reparto"
+              select
+              etichetta="Reparto di interesse"
+              segnaposto="Seleziona un reparto"
+              autoComplete="off"
+              opzioni={REPARTI_INTERESSE}
+              richiesto
+              errore={errori.reparto}
+              defaultValue={precedenti.reparto}
+              onInput={() => ripulisci("reparto")}
+            />
           </div>
 
           <div className="mt-5">
@@ -194,7 +261,7 @@ export function ContactForm() {
               id="messaggio"
               nome="messaggio"
               multiriga
-              righe={5}
+              righe={3}
               etichetta="Messaggio"
               segnaposto="Raccontaci cosa ti serve: referenze, quantità, zona di consegna..."
               maxLength={LIMITI.messaggio.max}
@@ -203,6 +270,41 @@ export function ContactForm() {
               defaultValue={precedenti.messaggio}
               onInput={() => ripulisci("messaggio")}
             />
+          </div>
+
+          <div className="mt-5">
+            <label
+              htmlFor="privacy"
+              className="flex min-h-11 cursor-pointer items-start gap-3 text-[13px] leading-relaxed text-inchiostro/75"
+            >
+              <input
+                id="privacy"
+                name="privacy"
+                type="checkbox"
+                required
+                defaultChecked={precedenti.privacy}
+                aria-invalid={errori.privacy ? true : undefined}
+                aria-describedby={errori.privacy ? "privacy-errore" : undefined}
+                onChange={() => ripulisci("privacy")}
+                className="mt-0.5 h-5 w-5 flex-none accent-rosso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rosso"
+              />
+              <span>
+                Dichiaro di aver letto l&apos;Informativa Privacy e acconsento al
+                trattamento dei miei dati personali ai sensi del Regolamento UE
+                2016/679 (GDPR).
+                <span aria-hidden className="ml-0.5 font-bold text-rosso">
+                  *
+                </span>
+              </span>
+            </label>
+            {errori.privacy && (
+              <p
+                id="privacy-errore"
+                className="mt-2 text-[14px] font-semibold leading-snug text-rosso"
+              >
+                {errori.privacy}
+              </p>
+            )}
           </div>
 
           <Esito stato={stato} />

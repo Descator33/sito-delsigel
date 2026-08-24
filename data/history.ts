@@ -132,7 +132,7 @@ export const STORIA: TappaStoria[] = [
 
 /** L'intestazione della scena: la parte che non cambia con lo scroll. */
 export const INTESTAZIONE = {
-  eyebrow: "Delsigel · dal 2011",
+  eyebrow: "Delsigel · dal 1960",
   titolo: ["La nostra", "storia"],
   sottotitolo: "Quindici anni, sei capitoli, tredici milioni di dolci.",
   testo: [

@@ -1,9 +1,11 @@
 import type { CSSProperties } from "react";
 
 /**
- * Marchio storico Delsigel (20/08/2026): l'emblema a mandorla con il
- * vortice e il wordmark "delsigel" del sigillo originale, ricostruiti a
- * 2K dall'unico sorgente esistente (il PNG 114px di delsigel.it).
+ * Marchio ufficiale Delsigel (21/08/2026): l'emblema a mandorla con il
+ * vortice e il wordmark "delsigel" sotto, rasterizzati a 600dpi dal
+ * vettoriale ufficiale (Logo_Delsigel_Vett.pdf). Il lockup ufficiale è
+ * solo quello impilato: la vecchia composizione orizzontale con la
+ * scritta a destra non esiste nel manuale ed è stata ritirata.
  *
  * Il PNG è monocromatico e qui fa da *maschera*: il colore lo mette
  * `currentColor`, così il marchio si adatta alla superficie come faceva
@@ -11,10 +13,10 @@ import type { CSSProperties } from "react";
  * trasparenti nel raster, quindi si campiscono da soli col fondo.
  *
  * Il colore d'elezione su superfici chiare è il bruno storico
- * (`--bruno`, #56340F), campionato dal PNG originale.
+ * (`--bruno`, #56340F).
  */
 type LogoStoricoProps = {
-  variant?: "stacked" | "horizontal" | "emblem";
+  variant?: "stacked" | "emblem";
   className?: string;
   title?: string;
 };
@@ -23,13 +25,12 @@ const VARIANTI: Record<
   NonNullable<LogoStoricoProps["variant"]>,
   { file: string; ratio: string }
 > = {
-  stacked: { file: "/brand/logo-storico.png", ratio: "1874 / 1009" },
-  horizontal: { file: "/brand/logo-storico-orizzontale.png", ratio: "3301 / 442" },
-  emblem: { file: "/brand/logo-storico-emblema.png", ratio: "1826 / 490" },
+  stacked: { file: "/brand/logo-storico.png", ratio: "2415 / 1264" },
+  emblem: { file: "/brand/logo-storico-emblema.png", ratio: "2415 / 663" },
 };
 
 export function LogoStorico({
-  variant = "horizontal",
+  variant = "stacked",
   className,
   title = "Delsigel",
 }: LogoStoricoProps) {

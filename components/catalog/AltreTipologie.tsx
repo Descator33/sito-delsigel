@@ -13,27 +13,30 @@ import { CircleArrowButton } from "./CircleArrowButton";
  * chiara, foto piccola, niente claim. La gerarchia la fa la misura,
  * quindi queste non competono con le sette di punta.
  *
- * Rev 05/08 — la coda era divisa in due gruppi, «dolci» e «salati»:
- * adesso la linea salata ha la sua sezione più in basso e qui resta un
- * elenco solo, che è quello che i dati dicono (`RESTO_DOLCI`). Le tessere
- * aprono la stessa scheda prodotto delle card grandi.
+ * La lista è parametrica: di default mostra `RESTO_DOLCI`, mentre la
+ * sezione salata le passa il proprio resto. Le tessere aprono la stessa
+ * scheda prodotto delle card grandi in entrambi i capitoli.
  */
 export function AltreTipologie({
   onApri,
+  tipologie = RESTO_DOLCI,
+  titolo = "Altri dolci",
 }: {
   onApri: (t: Tipologia) => void;
+  tipologie?: Tipologia[];
+  titolo?: string;
 }) {
-  if (RESTO_DOLCI.length === 0) return null;
+  if (tipologie.length === 0) return null;
 
   return (
     <section className="scroll-mt-28">
       <h3 className="font-tecnico mb-3 mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-inchiostro/45">
-        Altri dolci
+        {titolo}
         <span className="mx-2.5 text-inchiostro/25">/</span>
-        {RESTO_DOLCI.length} tipologie
+        {tipologie.length} tipologie
       </h3>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {RESTO_DOLCI.map((t) => (
+        {tipologie.map((t) => (
           <Tessera key={t.code} t={t} onApri={() => onApri(t)} />
         ))}
       </div>

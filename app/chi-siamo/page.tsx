@@ -14,7 +14,7 @@ import type { TeamMember } from "@/components/TeamCard";
 export const metadata: Metadata = {
   title: "Chi siamo · Delsigel Italia",
   description:
-    "Il team Delsigel e la linea produttiva: l'industria artigianale di Sermoneta, dal 2011.",
+    "Il team Delsigel e la linea produttiva: l'industria artigianale di Sermoneta, dal 1960.",
 };
 
 /* Ritratti reali dei dipendenti (da public/dipendenti, uniformati con

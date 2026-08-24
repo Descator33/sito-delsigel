@@ -17,27 +17,18 @@ import { ProductQuickView } from "./ProductQuickView";
 
 export type SchedaCatalogo = { t: Tipologia; tema: TemaCard };
 
-const LATI_INGRESSO = [
-  "left",
-  "right",
-  "right",
-  "left",
-  "left",
-  "right",
-  "right",
-] as const;
+const LATI_INGRESSO = ["left", "right", "right"] as const;
 
 /**
  * La griglia bento e i due stati che possiede: quale scheda è aperta e se
  * la coda del catalogo è distesa. È l'unico Client Component strutturale
  * della sezione — intestazione e involucro restano sul server.
  *
- * Le tre righe di xl sono dichiarate a mano e non con `auto-rows`: nel
- * riferimento la riga bassa NON è la metà di quella alta (le proporzioni
- * sono 24,6% e 13,2% della larghezza del contenitore), e con una traccia
- * sola non tornerebbero. Le misure sono in vw così la griglia scala per
- * proporzione, con un tetto in rem che la ferma quando il contenitore
- * smette di crescere.
+ * Da xl le tracce sono due, sempre dichiarate a mano: le tre card le
+ * attraversano entrambe (`row-span-2`), così la riga alta conserva la
+ * misura che aveva quando sotto c'era la striscia delle compatte. Le
+ * misure sono in vw così la griglia scala per proporzione, con un tetto
+ * in rem che la ferma quando il contenitore smette di crescere.
  *
  * Il wrapper d'ingresso è separato dall'article che possiede l'hover, così
  * la regia scroll-driven e l'interazione della card non si contendono lo
@@ -54,7 +45,7 @@ export function CatalogFeaturedGrid({
   return (
     <div
       data-scroll-catalog-grid
-      className="mt-8 grid grid-cols-1 gap-[13px] sm:grid-cols-2 xl:mt-9 xl:grid-cols-12 xl:grid-rows-[clamp(8.5rem,11.1vw,12.5rem)_clamp(8.5rem,11.1vw,12.5rem)_clamp(10rem,12.5vw,14.1rem)]"
+      className="mt-8 grid grid-cols-1 gap-[13px] sm:grid-cols-2 xl:mt-9 xl:grid-cols-12 xl:grid-rows-[clamp(8.5rem,11.1vw,12.5rem)_clamp(8.5rem,11.1vw,12.5rem)]"
     >
       {VETRINA_CATALOGO.map((card, indice) => (
         <div
