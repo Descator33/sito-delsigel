@@ -68,17 +68,11 @@ export const it: Testi = {
 
   hero: {
     insegna: [
-      { testo: "L'industria" },
+      { testo: "Industria" },
       { testo: "artigianale." },
-      { testo: "Innovazione e", accento: true },
-      { testo: "Tradizione.", accento: true },
+      { testo: "La tradizione", accento: true },
+      { testo: "è innovazione.", accento: true },
     ],
-    descrizione: [
-      "Dolci e salati da laboratorio,",
-      "prodotti su scala.",
-      "Catalogo 2026/27.",
-    ],
-    cta: "Esplora il catalogo",
     alt: "Intriko, il dolce di punta Delsigel, tra un nastro corallo e un set color cacao.",
   },
 
@@ -492,14 +486,11 @@ export const it: Testi = {
     intro: {
       eyebrow: "Chi siamo · Delsigel Italia",
       titolo: [
-        { testo: "L'industria" },
+        { testo: "Un'industria" },
         { testo: "artigianale" },
-        { testo: "di Sermoneta" },
+        { testo: "a Sermoneta" },
       ],
       sigillo: "dal 1960 · IFS Food · Rainforest Alliance · RSPO",
-      card:
-        "Nati nel 2011 dall'incontro tra Del Monte e Siani: i fritti dolci da una parte, la pasta sfoglia dall'altra. Oggi 13 milioni di dolci l'anno e tre certificazioni, con la regola di sempre: fai il tuo lavoro con passione.",
-      cta: "Scopri la storia",
       fotoAlt: "Quattro colleghe Delsigel abbracciate e sorridenti in laboratorio",
     },
     album: "L'album dello stabilimento:",
@@ -507,7 +498,7 @@ export const it: Testi = {
       eyebrow: "Delsigel · dal 1960",
       titolo: ["La nostra", "storia"],
       testo:
-        "Non una cronologia: sei capitoli con dentro numeri veri e mani vere. E una promessa che non cambia: fare del nostro meglio, ogni giorno.",
+        "Sei capitoli con dentro numeri veri e mani vere. E una promessa che non cambia: fare del nostro meglio, ogni giorno.",
       marquee: ["mani", "tempo", "cura", "materia", "futuro"],
       progressoScorri: "scorri per continuare",
       tappe: {
@@ -516,14 +507,14 @@ export const it: Testi = {
           sottotitolo: "L'incontro",
           descrizione:
             "Del Monte, maestra dei fritti dolci. Siani, casa della pasta sfoglia. Nel 2011 due aziende dolciarie affermate uniscono ricette e mestiere: nasce Delsigel, a Sermoneta.",
-          frase: "Due mestieri, un forno solo.",
+          frase: "Due passioni, un'unica grande eccellenza.",
           alt: "Composizione editoriale evocativa di un pasticcere che apre il forno all'alba",
         },
         unione: {
           titolo: "L'ossimoro",
           sottotitolo: "Industria artigianale",
           descrizione:
-            "Ricette tradizionali, lavorazione semi-artigianale, impianti di ultima generazione. Ci chiamano ossimoro; per noi è un pensiero: fare in grande ciò che pochi sanno ancora fare a mano.",
+            "Sembra una contraddizione, ma è il nostro segreto. Abbiamo unito il cuore e le ricette della pasticceria artigianale alla precisione delle tecnologie più avanzate. Il risultato? Prodotti che conservano l'amore e il gusto autentico del fatto a mano.",
           frase: "Mani d'artigiano, passo d'industria.",
           alt: "Composizione editoriale evocativa di due pasticceri che uniscono le mani sul banco",
         },
@@ -531,32 +522,32 @@ export const it: Testi = {
           titolo: "La qualità",
           sottotitolo: "Certificata, ogni giorno",
           descrizione:
-            "Materie prime selezionate e processi verificati da chi non fa sconti: IFS Food per la sicurezza alimentare, Rainforest Alliance e RSPO per ingredienti che rispettano chi li coltiva. Non promesse: verifiche.",
-          frase: "La cura, messa nero su bianco.",
+            "Materie prime selezionate e verifica di ogni processo produttivo attraverso i più rigidi standard internazionali: sicurezza alimentare, garantita dalla certificazione IFS Food; tutela dell'ambiente, sostenuta dagli standard Rainforest Alliance; etica e sostenibilità, certificata da RSPO per il rispetto di chi coltiva.",
+          frase: "Certificata da chi non fa sconti.",
           alt: "Composizione editoriale evocativa di mani che piegano la sfoglia sul banco infarinato",
         },
         traguardo: {
           titolo: "13 milioni",
           sottotitolo: "2025 · Intriko",
           descrizione:
-            "Nel 2025 firmiamo tredici milioni di Intriko e le linee toccano il loro limite. Un traguardo che diventa subito una domanda: come crescere senza perdere la mano?",
-          frase: "Tredici milioni di volte, lo stesso gesto.",
+            "Nel 2025 abbiamo raggiunto un traguardo straordinario: 13 milioni di Intriko nati dall'unione tra la forza delle nostre macchine e la cura del lavoro manuale.",
+          frase: "",
           alt: "Composizione editoriale evocativa di un pasticcere che controlla una linea moderna",
         },
         generazione: {
           titolo: "2026",
           sottotitolo: "La nuova generazione",
           descrizione:
-            "Il socio fondatore Del Monte passa il timone e sceglie il mare, dopo una vita di farina. Al banco arrivano Gaia e una squadra giovane, con la regola imparata il primo giorno: fai il tuo lavoro con passione.",
-          frase: "Il timone passa. La rotta resta.",
+            "Le grandi storie aziendali sono fatte di cicli naturali e di evoluzione. Entra in azienda la seconda generazione. La squadra si arricchisce di forze giovani, pronte a proseguire il percorso aziendale. La promessa: passano i testimoni, ma la formula di artigianalità e tecnologia resta la stessa. Ogni giorno.",
+          frase: "",
           alt: "Composizione editoriale evocativa del passaggio di un ricettario tra due generazioni",
         },
         futuro: {
           titolo: "25 milioni",
           sottotitolo: "Il piano 2026–27",
           descrizione:
-            "Nuovi spazi entro il 2026, nuove linee nel 2027: la capacità raddoppia, fino a venticinque milioni di pezzi. E le Nuvole — soffice fritto, farcitura a vista, decoro a mano — hanno già il sapore del domani.",
-          frase: "Il forno resta acceso. E raddoppia.",
+            "Abbiamo già tracciato la rotta per i prossimi anni. Nuovi investimenti per il 2027 permetteranno di raddoppiare la capacità produttiva. Nuove idee trasformate in nuovi prodotti, fedeli alla nostra identità.",
+          frase: "",
           alt: "Composizione editoriale evocativa di una squadra di pasticceri al lavoro",
         },
       },

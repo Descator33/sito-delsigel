@@ -24,9 +24,8 @@ export const fr: Testi = {
     legale: "© 2026 Delsigel Italia S.r.l. · TVA 02241670591", termini: "Conditions", privacy: "Confidentialité", cookie: "Cookies",
   },
   hero: {
-    insegna: [{ testo: "L'industrie" }, { testo: "artisanale." }, { testo: "Innovation et", accento: true }, { testo: "Tradition.", accento: true }],
-    descrizione: ["Produits boulangers sucrés et salés,", "fabriqués à grande échelle.", "Catalogue 2026/27."],
-    cta: "Explorer le catalogue", alt: "Intriko, la douceur emblématique de Delsigel, entre un ruban corail et un décor couleur cacao.",
+    insegna: [{ testo: "Industrie" }, { testo: "artisanale." }, { testo: "La tradition", accento: true }, { testo: "est innovation.", accento: true }],
+    alt: "Intriko, la douceur emblématique de Delsigel, entre un ruban corail et un décor couleur cacao.",
   },
   home: {
     ...en.home,
@@ -155,22 +154,21 @@ export const fr: Testi = {
   chiSiamo: {
     ...en.chiSiamo,
     intro: {
-      eyebrow: "Qui sommes-nous · Delsigel Italia", titolo: [{ testo: "L'industrie" }, { testo: "artisanale" }, { testo: "de Sermoneta" }], sigillo: "depuis 1960 · IFS Food · Rainforest Alliance · RSPO",
-      card: "Née en 2011 de la rencontre entre Del Monte et Siani : les douceurs frites d'un côté, la pâte feuilletée de l'autre. Aujourd'hui, 13 millions de douceurs par an et trois certifications, avec la même règle depuis toujours : faire son travail avec passion.",
-      cta: "Découvrir l'histoire", fotoAlt: "Quatre collaboratrices Delsigel souriantes et enlacées dans le laboratoire",
+      eyebrow: "Qui sommes-nous · Delsigel Italia", titolo: [{ testo: "Une industrie" }, { testo: "artisanale" }, { testo: "à Sermoneta" }], sigillo: "depuis 1960 · IFS Food · Rainforest Alliance · RSPO",
+      fotoAlt: "Quatre collaboratrices Delsigel souriantes et enlacées dans le laboratoire",
     },
     album: "L'album de l'usine :",
     storia: {
       ...en.chiSiamo.storia,
-      eyebrow: "Delsigel · depuis 1960", titolo: ["Notre", "histoire"], testo: "Pas une chronologie : six chapitres avec de vrais chiffres et de vraies mains. Et une promesse qui ne change pas : donner le meilleur de nous-mêmes, chaque jour.",
+      eyebrow: "Delsigel · depuis 1960", titolo: ["Notre", "histoire"], testo: "Six chapitres avec de vrais chiffres et de vraies mains. Et une promesse qui ne change pas : donner le meilleur de nous-mêmes, chaque jour.",
       marquee: ["mains", "temps", "soin", "matière", "avenir"], progressoScorri: "faites défiler pour continuer",
       tappe: {
-        origini: { titolo: "2011", sottotitolo: "La rencontre", descrizione: "Del Monte, experte des douceurs frites. Siani, maison de la pâte feuilletée. En 2011, deux entreprises reconnues réunissent recettes et savoir-faire : Delsigel naît à Sermoneta.", frase: "Deux métiers, un seul four.", alt: "Composition éditoriale évocatrice d'un pâtissier ouvrant le four à l'aube" },
-        unione: { titolo: "L'oxymore", sottotitolo: "Industrie artisanale", descrizione: "Recettes traditionnelles, travail semi-artisanal et équipements de dernière génération. On nous appelle un oxymore ; pour nous, c'est une idée : produire à grande échelle ce que peu savent encore faire à la main.", frase: "Des mains d'artisan, un rythme industriel.", alt: "Composition éditoriale évocatrice de deux pâtissiers joignant leurs mains sur le plan de travail" },
-        qualita: { titolo: "La qualité", sottotitolo: "Certifiée, chaque jour", descrizione: "Matières premières sélectionnées et procédés vérifiés sans concession : IFS Food pour la sécurité alimentaire, Rainforest Alliance et RSPO pour des ingrédients respectueux de ceux qui les cultivent. Pas des promesses : des contrôles.", frase: "Le soin, noir sur blanc.", alt: "Composition éditoriale évocatrice de mains pliant une pâte feuilletée sur un plan fariné" },
-        traguardo: { titolo: "13 millions", sottotitolo: "2025 · Intriko", descrizione: "En 2025, nous produisons treize millions d'Intriko et les lignes atteignent leur limite. Un cap qui devient aussitôt une question : comment grandir sans perdre le geste ?", frase: "Treize millions de fois, le même geste.", alt: "Composition éditoriale évocatrice d'un pâtissier contrôlant une ligne moderne" },
-        generazione: { titolo: "2026", sottotitolo: "La nouvelle génération", descrizione: "L'associé fondateur Del Monte passe la barre et choisit la mer, après une vie dans la farine. Gaia et une jeune équipe arrivent au plan de travail avec la règle apprise le premier jour : faire son travail avec passion.", frase: "La barre change de main. Le cap reste.", alt: "Composition éditoriale évocatrice d'un livre de recettes transmis entre deux générations" },
-        futuro: { titolo: "25 millions", sottotitolo: "Le plan 2026–27", descrizione: "De nouveaux espaces en 2026, de nouvelles lignes en 2027 : la capacité double, jusqu'à vingt-cinq millions de pièces. Et les Nuvole — pâte frite moelleuse, garniture visible et décor à la main — ont déjà le goût de demain.", frase: "Le four reste allumé. Et double.", alt: "Composition éditoriale évocatrice d'une équipe de pâtissiers au travail" },
+        origini: { titolo: "2011", sottotitolo: "La rencontre", descrizione: "Del Monte, experte des douceurs frites. Siani, maison de la pâte feuilletée. En 2011, deux entreprises reconnues réunissent recettes et savoir-faire : Delsigel naît à Sermoneta.", frase: "Deux passions, une seule grande excellence.", alt: "Composition éditoriale évocatrice d'un pâtissier ouvrant le four à l'aube" },
+        unione: { titolo: "L'oxymore", sottotitolo: "Industrie artisanale", descrizione: "Cela ressemble à une contradiction, mais c'est notre secret. Nous avons uni le cœur et les recettes de la pâtisserie artisanale à la précision des technologies les plus avancées. Le résultat ? Des produits qui conservent l'amour et le goût authentique du fait main.", frase: "Des mains d'artisan, un rythme industriel.", alt: "Composition éditoriale évocatrice de deux pâtissiers joignant leurs mains sur le plan de travail" },
+        qualita: { titolo: "La qualité", sottotitolo: "Certifiée, chaque jour", descrizione: "Matières premières sélectionnées et vérification de chaque processus de production selon les normes internationales les plus strictes : sécurité alimentaire, garantie par la certification IFS Food ; protection de l'environnement, soutenue par les normes Rainforest Alliance ; éthique et durabilité, certifiées par RSPO pour le respect de ceux qui cultivent.", frase: "Certifiée par ceux qui ne font aucune concession.", alt: "Composition éditoriale évocatrice de mains pliant une pâte feuilletée sur un plan fariné" },
+        traguardo: { titolo: "13 millions", sottotitolo: "2025 · Intriko", descrizione: "En 2025, nous avons atteint un cap extraordinaire : 13 millions d'Intriko nés de l'union entre la force de nos machines et le soin du travail manuel.", frase: "", alt: "Composition éditoriale évocatrice d'un pâtissier contrôlant une ligne moderne" },
+        generazione: { titolo: "2026", sottotitolo: "La nouvelle génération", descrizione: "Les grandes histoires d'entreprise sont faites de cycles naturels et d'évolution. La deuxième génération entre dans l'entreprise. L'équipe s'enrichit de forces jeunes, prêtes à poursuivre le parcours de l'entreprise. La promesse : les mains changent, mais la formule d'artisanat et de technologie reste la même. Chaque jour.", frase: "", alt: "Composition éditoriale évocatrice d'un livre de recettes transmis entre deux générations" },
+        futuro: { titolo: "25 millions", sottotitolo: "Le plan 2026–27", descrizione: "Nous avons déjà tracé la route pour les prochaines années. De nouveaux investissements pour 2027 permettront de doubler la capacité de production. De nouvelles idées transformées en nouveaux produits, fidèles à notre identité.", frase: "", alt: "Composition éditoriale évocatrice d'une équipe de pâtissiers au travail" },
       },
       certificazioni: { ifs: "Logo de la certification IFS Food — International Featured Standards", rainforest: "Logo Rainforest Alliance, People & Nature", rspo: "Label RSPO — Certified Sustainable Palm Oil" },
       finale: { eyebrow: "L'histoire continue", frase: ["Les mains changent.", "Le soin demeure."], coda: "Depuis 1960, à Sermoneta · le meilleur de nous-mêmes, chaque jour" }, azione: "Rencontrer l'équipe",

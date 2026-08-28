@@ -109,9 +109,11 @@ function HistoryReduced({ tappe }: { tappe: TappaLocalizzata[] }) {
             <h3 className="mt-3 font-insegna text-[clamp(2.8rem,14vw,5.5rem)] font-semibold leading-[0.86] tracking-[-0.055em]">
               {tappa.titolo}
             </h3>
-            <p className="mt-6 text-xl font-medium leading-snug text-cacao">
-              {tappa.frase}
-            </p>
+            {tappa.frase && (
+              <p className="mt-6 text-xl font-medium leading-snug text-cacao">
+                {tappa.frase}
+              </p>
+            )}
             <p className="mt-4 max-w-[42ch] text-sm leading-6 text-cacao/65">
               {tappa.descrizione}
             </p>
@@ -427,9 +429,11 @@ export function HistoryJourney() {
                   <h3 className="mt-3 max-w-[9ch] text-balance font-insegna text-[clamp(3.4rem,7vw,8.2rem)] font-semibold leading-[0.82] tracking-[-0.065em]">
                     {tappa.titolo}
                   </h3>
-                  <p className="mt-6 max-w-[29ch] text-balance text-[clamp(1.2rem,2vw,1.9rem)] font-medium leading-[1.08] text-cacao">
-                    {tappa.frase}
-                  </p>
+                  {tappa.frase && (
+                    <p className="mt-6 max-w-[29ch] text-balance text-[clamp(1.2rem,2vw,1.9rem)] font-medium leading-[1.08] text-cacao">
+                      {tappa.frase}
+                    </p>
+                  )}
                   <p className="mt-4 max-w-[42ch] text-pretty text-sm leading-6 text-cacao/70 md:text-[15px] md:leading-7">
                     {tappa.descrizione}
                   </p>

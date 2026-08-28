@@ -366,8 +366,7 @@ html[data-porta-di-ritorno] .preloader-porta {
 
 /* Stati iniziali delle caption. Le maschere sono gli `overflow-hidden` nel
    markup; GSAP anima solo transform, mai opacity. */
-[data-hero-caption-logo],
-[data-hero-caption-copy] {
+[data-hero-caption-logo] {
   transform: translateY(115%);
 }
 
@@ -375,14 +374,8 @@ html[data-porta-di-ritorno] .preloader-porta {
   transform: translateY(165%);
 }
 
-[data-hero-caption-cta] {
-  transform: translateX(-110%);
-}
-
 [data-hero-caption-logo],
-[data-hero-caption],
-[data-hero-caption-copy],
-[data-hero-caption-cta] {
+[data-hero-caption] {
   will-change: transform;
 }
 
@@ -429,38 +422,6 @@ html[data-porta-di-ritorno] .preloader-porta {
     rgb(255 248 237 / 0.12) 0%,
     rgb(255 248 237 / 0) 55%
   );
-}
-
-/* La CTA: pillola panna, testo nero, freccia a destra. All'hover si
-   ribalta — fondo nero, testo panna — e la freccia scorre. Il salto di
-   scala è minimo: sopra il 3% diventa un giocattolo. */
-.hero-cta {
-  transition:
-    background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.hero-cta svg {
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.hero-cta:is(:hover, :focus-visible) {
-  background: var(--hero-nero);
-  border-color: var(--hero-nero);
-  color: var(--hero-panna);
-  transform: scale(1.025);
-}
-/* l'invito è un comando di scroll: la freccia si sposta in GIÙ, nel verso
-   in cui la pagina sta per muoversi (era translateX, quando puntava a una
-   pagina separata). Il rimbalzo continuo sta sull'involucro della
-   freccia, animato da Motion: due transform sullo stesso nodo si
-   annullerebbero a vicenda. */
-.hero-cta:is(:hover, :focus-visible) svg {
-  transform: translateY(3px);
-}
-.hero-cta:focus-visible {
-  outline: 2px solid var(--hero-panna);
-  outline-offset: 4px;
 }
 
 /* Navigazione primaria: una capsula corta e centrata, staccata dal
@@ -757,8 +718,6 @@ html[data-porta-di-ritorno] .preloader-porta {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-cta,
-  .hero-cta svg,
   .hero-comando,
   .site-nav-primary,
   .site-nav-link,
@@ -771,8 +730,6 @@ html[data-porta-di-ritorno] .preloader-porta {
   .hero-impaginato {
     transition-duration: 0.01ms;
   }
-  .hero-cta:is(:hover, :focus-visible),
-  .hero-cta:is(:hover, :focus-visible) svg,
   .hero-menu-voce:is(:hover, :focus-visible) {
     transform: none;
   }
@@ -794,12 +751,8 @@ html[data-porta-di-ritorno] .preloader-porta {
 
 .hero-scena[data-hero-static] [data-hero-caption-logo],
 .hero-scena[data-hero-static] [data-hero-caption],
-.hero-scena[data-hero-static] [data-hero-caption-copy],
-.hero-scena[data-hero-static] [data-hero-caption-cta],
 [data-hero-di-ritorno] [data-hero-caption-logo],
-[data-hero-di-ritorno] [data-hero-caption],
-[data-hero-di-ritorno] [data-hero-caption-copy],
-[data-hero-di-ritorno] [data-hero-caption-cta] {
+[data-hero-di-ritorno] [data-hero-caption] {
   transform: none !important;
 }
 
@@ -815,9 +768,7 @@ html[data-porta-di-ritorno] .preloader-porta {
   }
 
   [data-hero-caption-logo],
-  [data-hero-caption],
-  [data-hero-caption-copy],
-  [data-hero-caption-cta] {
+  [data-hero-caption] {
     transform: none !important;
   }
 }

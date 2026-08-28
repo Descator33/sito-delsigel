@@ -2,9 +2,8 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useCallback, useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { animate, motion, useMotionValue, useReducedMotion } from "motion/react";
-import { ArrowDown } from "lucide-react";
 import {
   HeroFrameSequence,
   type HeroFrameSequenceHandle,
@@ -13,7 +12,6 @@ import { LogoStorico } from "@/components/LogoStorico";
 import { useMenu } from "@/components/MenuStato";
 import { usePreloader } from "@/components/Preloader";
 import { useTesti } from "@/components/LinguaProvider";
-import { lenisAttivo } from "@/components/SmoothScroll";
 import {
   DURATA_MENU,
   EASE_MENU,
@@ -28,8 +26,8 @@ gsap.registerPlugin(useGSAP);
  *
  * Il prodotto di punta è il soggetto, non un accessorio: un Intriko
  * monumentale occupa la metà destra e il nastro corallo riprende la
- * torsione della sfoglia. A sinistra il blocco brand: il marchio storico
- * Delsigel sopra l'insegna, poi copy e invito — tutti in HTML, mai
+ * torsione della sfoglia. A sinistra il blocco brand: l'insegna, poi il
+ * marchio storico Delsigel più in basso e più grande — tutti in HTML, mai
  * stampati nel raster, così marchio e parole restano esatti.
  *
  * La prima visita è un film d'ingresso: 90 WebP desktop o 72 mobile, sempre
@@ -49,9 +47,6 @@ export const HERO_IMAGE = "/hero/hero-intriko-vortice.webp";
 export const HERO_IMAGE_2X = "/hero/hero-intriko-vortice@2x.webp";
 export const HERO_IMAGE_VERT = "/hero/hero-intriko-vortice-mobile.webp";
 export const HERO_IMAGE_VERT_2X = "/hero/hero-intriko-vortice-mobile@2x.webp";
-
-/** dove porta l'invito: il primo capitolo della gamma, in Home */
-const DESTINAZIONE = "catalogo";
 
 /** Durata totale della regia, in secondi. I 90 frame occupano il 70% della
  *  corsa: 5.4s × 0.7 ≈ 3.8s, cioè il passo nativo dei ~24 fps del girato.
@@ -87,7 +82,7 @@ function Riga({
 /**
  * LA FINESTRA (2026-08-12). La hero non è più solo il primo viewport: è
  * anche il secondo attore del menu. Aprendolo, tutto quello che sta qui
- * dentro — fotografia, veli, insegna, invito — smette di riempire lo
+ * dentro — fotografia, veli, insegna, marchio — smette di riempire lo
  * schermo e si raccoglie in un rettangolo appoggiato all'angolo in basso
  * a destra, mentre il campo POP della navigazione resta in primo piano.
  *
@@ -139,7 +134,6 @@ export function Hero() {
   const finestra = useRef<HTMLDivElement>(null);
   const sequenza = useRef<HeroFrameSequenceHandle>(null);
   const frameFinale = useRef<HTMLDivElement>(null);
-  const invito = useRef<HTMLButtonElement>(null);
   const progressoFilm = useRef(0);
 
   /* IL RETTANGOLO DELLA FINESTRA, come quattro valori animati.
@@ -181,19 +175,13 @@ export function Hero() {
 
       const righe = gsap.utils.toArray<HTMLElement>("[data-hero-caption]", track);
       const logo = track.querySelector<HTMLElement>("[data-hero-caption-logo]");
-      const descrizione = gsap.utils.toArray<HTMLElement>(
-        "[data-hero-caption-copy]",
-        track,
-      );
-      const cta = track.querySelector<HTMLElement>("[data-hero-caption-cta]");
 
       if (heroStatica) {
         progressoFilm.current = 1;
         gsap.set(finale, { clipPath: "inset(0 0 0 0)" });
-        gsap.set([logo, ...righe, ...descrizione, cta].filter(Boolean), {
+        gsap.set([logo, ...righe].filter(Boolean), {
           transform: "none",
         });
-        if (invito.current) invito.current.tabIndex = 0;
         return;
       }
 
@@ -201,20 +189,11 @@ export function Hero() {
       gsap.set(finale, { clipPath: "inset(0 100% 0 0)" });
       if (logo) gsap.set(logo, { transform: "translateY(115%)" });
       gsap.set(righe, { transform: "translateY(165%)" });
-      gsap.set(descrizione, { transform: "translateY(115%)" });
-      if (cta) gsap.set(cta, { transform: "translateX(-110%)" });
-      /* finché il CTA sta sotto la maschera non deve prendere il TAB;
-         la timeline non ha ancora emesso alcun update, quindi a mano */
-      if (invito.current) invito.current.tabIndex = -1;
 
       const timeline = gsap.timeline({
         defaults: { ease: "none" },
         onUpdate: () => {
-          const progresso = timeline.progress();
-          progressoFilm.current = progresso;
-          if (invito.current) {
-            invito.current.tabIndex = progresso >= 0.93 ? 0 : -1;
-          }
+          progressoFilm.current = timeline.progress();
         },
       });
 
@@ -240,13 +219,6 @@ export function Hero() {
           0.7,
         );
 
-      if (logo) {
-        timeline.to(
-          logo,
-          { transform: "translateY(0%)", duration: 0.055, ease: "power3.out" },
-          0.755,
-        );
-      }
       timeline.to(
         righe,
         {
@@ -257,21 +229,11 @@ export function Hero() {
         },
         0.79,
       );
-      timeline.to(
-        descrizione,
-        {
-          transform: "translateY(0%)",
-          duration: 0.055,
-          stagger: 0.018,
-          ease: "power3.out",
-        },
-        0.89,
-      );
-      if (cta) {
+      if (logo) {
         timeline.to(
-          cta,
-          { transform: "translateX(0%)", duration: 0.06, ease: "power3.out" },
-          0.94,
+          logo,
+          { transform: "translateY(0%)", duration: 0.055, ease: "power3.out" },
+          0.89,
         );
       }
 
@@ -286,15 +248,6 @@ export function Hero() {
       revertOnUpdate: true,
     },
   );
-
-  /* Il CTA non deve ricevere focus mentre è ancora sotto la maschera; il
-     menu può aprirsi e chiudersi mentre il film sta ancora girando, quindi
-     riallinea qui il tabindex anche in assenza di un update della timeline. */
-  useEffect(() => {
-    if (!invito.current) return;
-    invito.current.tabIndex =
-      aperto || (!heroStatica && progressoFilm.current < 0.93) ? -1 : 0;
-  }, [aperto, heroStatica]);
 
   useEffect(() => {
     const sez = palco.current;
@@ -450,27 +403,6 @@ export function Hero() {
     };
   }, [aperto, ridotto, alto, sinistra, larghezza, altezza, scala, velo, trasparenza]);
 
-  /* L'invito resta nella pagina e porta al primo capitolo del catalogo.
-     Lenis gestisce la corsa quando è attivo; con reduced motion rimane lo
-     scroll nativo. */
-  const scorriAlCatalogo = useCallback(() => {
-    const meta = document.getElementById(DESTINAZIONE);
-    if (!meta) return;
-
-    const lenis = lenisAttivo();
-    if (lenis) {
-      lenis.scrollTo(meta, {
-        duration: 1.25,
-        easing: (t: number) => 1 - Math.pow(1 - t, 3),
-      });
-      return;
-    }
-    meta.scrollIntoView({
-      block: "start",
-      behavior: ridotto ? "auto" : "smooth",
-    });
-  }, [ridotto]);
-
   return (
     <section
       ref={racconto}
@@ -570,19 +502,6 @@ export function Hero() {
             style={{ scale: scala, opacity: velo, transformOrigin: "left bottom" }}
           >
             <div className="w-fit orizzontale:-translate-y-[2vh]">
-              {/* Ogni elemento entra da una maschera: nessuna opacity e
-                  quindi nessuna dissolvenza tipografica. */}
-              <div className="mb-6 overflow-hidden sm:mb-7">
-                <div data-hero-caption-logo>
-                  {/* Lockup ufficiale (scritta sotto l'emblema): l'altezza
-                      è tarata perché il wordmark conservi il corpo che
-                      aveva la vecchia composizione orizzontale. */}
-                  <LogoStorico
-                    variant="stacked"
-                    className="h-[56px] text-hero-panna sm:h-[64px] lg:h-[72px] orizzontale:text-bruno"
-                  />
-                </div>
-              </div>
               {/* Le righe vengono dal dizionario: ogni lingua decide i
                   propri a-capo, la maschera resta per riga. */}
               <h1 className="type-hero text-[clamp(2.3rem,9.6vw,3.4rem)] sm:text-[clamp(2.8rem,6.6vw,4.4rem)] lg:text-[clamp(3.2rem,4.62vw,6rem)]">
@@ -593,54 +512,14 @@ export function Hero() {
                 ))}
               </h1>
 
-              {/* Descrizione e invito arrivano solo dopo la still. */}
-              <div data-hero-uscita={4}>
-                <p className="font-ui mt-6 max-w-[320px] text-[15px] font-medium leading-[1.3] tracking-[-0.015em] text-hero-panna sm:mt-7 sm:text-[16px] orizzontale:text-hero-nero">
-                  {testi.hero.descrizione.map((riga) => (
-                    <span key={riga} className="block overflow-hidden">
-                      <span className="block" data-hero-caption-copy>
-                        {riga}
-                      </span>
-                    </span>
-                  ))}
-                </p>
-              </div>
-
-              <div className="overflow-hidden" data-hero-uscita={5}>
-                <div data-hero-caption-cta className="mt-7 sm:mt-8">
-                  <button
-                    ref={invito}
-                    type="button"
-                    onClick={scorriAlCatalogo}
-                    /* a menu aperto la hero è un'anteprima, non una
-                       destinazione: l'invito si vede ma non si preme, e
-                       soprattutto non risponde al TAB dentro il menu */
-                    tabIndex={aperto ? -1 : undefined}
-                    className="hero-cta font-ui inline-flex h-[52px] w-[220px] items-center justify-between rounded-full border border-[rgb(23_21_18/0.08)] bg-hero-panna pl-[26px] pr-[22px] text-[13px] font-extrabold uppercase tracking-[0.03em] text-hero-nero"
-                  >
-                    {testi.hero.cta}
-                    {/* la freccia respira in giù: è il verso dello scroll,
-                        non quello di un link. Il rimbalzo sta su questo
-                        involucro e l'hover sull'icona (globals.css) —
-                        due transform sullo stesso nodo si pesterebbero. */}
-                    <motion.span
-                      aria-hidden
-                      className="flex"
-                      animate={ridotto || aperto ? { y: 0 } : { y: [0, 3.5, 0] }}
-                      transition={
-                        ridotto || aperto
-                          ? { duration: 0 }
-                          : {
-                              duration: 1.6,
-                              repeat: Infinity,
-                              repeatDelay: 0.6,
-                              ease: "easeInOut",
-                            }
-                      }
-                    >
-                      <ArrowDown size={16} strokeWidth={2.6} />
-                    </motion.span>
-                  </button>
+              {/* Il marchio chiude il blocco, in basso e più grande:
+                  entra da una maschera come il titolo, un passo dopo. */}
+              <div className="mt-7 overflow-hidden sm:mt-8">
+                <div data-hero-caption-logo>
+                  <LogoStorico
+                    variant="stacked"
+                    className="h-[88px] text-hero-panna sm:h-[104px] lg:h-[128px] orizzontale:text-bruno"
+                  />
                 </div>
               </div>
             </div>

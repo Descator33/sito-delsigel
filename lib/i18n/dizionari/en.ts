@@ -25,9 +25,7 @@ export const en: Testi = {
     termini: "Terms", privacy: "Privacy", cookie: "Cookies", credito: "Design & Development · Hoverture",
   },
   hero: {
-    insegna: [{ testo: "Craft" }, { testo: "industry." }, { testo: "Innovation and", accento: true }, { testo: "Tradition.", accento: true }],
-    descrizione: ["Sweet and savoury bakery products,", "crafted at scale.", "2026/27 catalogue."],
-    cta: "Explore the catalogue",
+    insegna: [{ testo: "Craft" }, { testo: "industry." }, { testo: "Tradition is", accento: true }, { testo: "innovation.", accento: true }],
     alt: "Intriko, Delsigel's signature pastry, between a coral ribbon and a cocoa-coloured set.",
   },
   home: {
@@ -172,22 +170,21 @@ export const en: Testi = {
   },
   chiSiamo: {
     intro: {
-      eyebrow: "About us · Delsigel Italia", titolo: [{ testo: "The craft" }, { testo: "industry" }, { testo: "of Sermoneta" }],
+      eyebrow: "About us · Delsigel Italia", titolo: [{ testo: "A craft" }, { testo: "industry" }, { testo: "in Sermoneta" }],
       sigillo: "since 1960 · IFS Food · Rainforest Alliance · RSPO",
-      card: "Born in 2011 when Del Monte and Siani joined forces: sweet fried pastries on one side, puff pastry on the other. Today we make 13 million pastries a year and hold three certifications, guided by the same rule as ever: do your work with passion.",
-      cta: "Discover the story", fotoAlt: "Four Delsigel colleagues smiling and embracing in the bakery",
+      fotoAlt: "Four Delsigel colleagues smiling and embracing in the bakery",
     },
     album: "Inside the factory:",
     storia: {
-      eyebrow: "Delsigel · since 1960", titolo: ["Our", "story"], testo: "Not a timeline: six chapters filled with real numbers and real hands. And one promise that never changes: to do our best, every day.",
+      eyebrow: "Delsigel · since 1960", titolo: ["Our", "story"], testo: "Six chapters filled with real numbers and real hands. And one promise that never changes: to do our best, every day.",
       marquee: ["hands", "time", "care", "ingredients", "future"], progressoScorri: "scroll to continue",
       tappe: {
-        origini: { titolo: "2011", sottotitolo: "The meeting", descrizione: "Del Monte, master of sweet fried pastries. Siani, a name built on puff pastry. In 2011, two established confectionery businesses brought recipes and expertise together: Delsigel was born in Sermoneta.", frase: "Two crafts, one oven.", alt: "Evocative editorial composition of a pastry chef opening an oven at dawn" },
-        unione: { titolo: "The oxymoron", sottotitolo: "Craft industry", descrizione: "Traditional recipes, semi-artisanal processes and state-of-the-art equipment. They call us an oxymoron; to us, it is an idea: making at scale what only a few still know how to make by hand.", frase: "Craft hands, industrial pace.", alt: "Evocative editorial composition of two pastry chefs joining hands over a workbench" },
-        qualita: { titolo: "Quality", sottotitolo: "Certified, every day", descrizione: "Selected raw materials and processes verified without compromise: IFS Food for food safety, Rainforest Alliance and RSPO for ingredients that respect those who grow them. Not promises: audits.", frase: "Care, set down in black and white.", alt: "Evocative editorial composition of hands folding puff pastry on a floured bench" },
-        traguardo: { titolo: "13 million", sottotitolo: "2025 · Intriko", descrizione: "In 2025 we make thirteen million Intriko and our lines reach their limit. A milestone that immediately becomes a question: how do we grow without losing the human touch?", frase: "The same gesture, thirteen million times.", alt: "Evocative editorial composition of a pastry chef monitoring a modern production line" },
-        generazione: { titolo: "2026", sottotitolo: "The new generation", descrizione: "Founding partner Del Monte hands over the helm and chooses the sea after a lifetime of flour. Gaia and a young team arrive at the bench with the rule they learnt on day one: do your work with passion.", frase: "The helm changes hands. The course remains.", alt: "Evocative editorial composition of a recipe book passing between two generations" },
-        futuro: { titolo: "25 million", sottotitolo: "The 2026–27 plan", descrizione: "New spaces by 2026, new lines in 2027: capacity doubles to twenty-five million pieces. And Nuvole — soft fried dough, visible filling and hand-finished decoration — already taste like tomorrow.", frase: "The oven stays on. And doubles.", alt: "Evocative editorial composition of a team of pastry chefs at work" },
+        origini: { titolo: "2011", sottotitolo: "The meeting", descrizione: "Del Monte, master of sweet fried pastries. Siani, a name built on puff pastry. In 2011, two established confectionery businesses brought recipes and expertise together: Delsigel was born in Sermoneta.", frase: "Two passions, one great excellence.", alt: "Evocative editorial composition of a pastry chef opening an oven at dawn" },
+        unione: { titolo: "The oxymoron", sottotitolo: "Craft industry", descrizione: "It sounds like a contradiction, but it is our secret. We have united the heart and the recipes of craft pastry-making with the precision of the most advanced technology. The result? Products that keep the love and authentic taste of handmade work.", frase: "Craft hands, industrial pace.", alt: "Evocative editorial composition of two pastry chefs joining hands over a workbench" },
+        qualita: { titolo: "Quality", sottotitolo: "Certified, every day", descrizione: "Selected raw materials and verification of every production process through the strictest international standards: food safety, guaranteed by IFS Food certification; environmental protection, supported by Rainforest Alliance standards; ethics and sustainability, certified by RSPO in respect of those who grow our ingredients.", frase: "Certified by those who take no shortcuts.", alt: "Evocative editorial composition of hands folding puff pastry on a floured bench" },
+        traguardo: { titolo: "13 million", sottotitolo: "2025 · Intriko", descrizione: "In 2025 we reached an extraordinary milestone: 13 million Intriko born from the union of the strength of our machines and the care of manual work.", frase: "", alt: "Evocative editorial composition of a pastry chef monitoring a modern production line" },
+        generazione: { titolo: "2026", sottotitolo: "The new generation", descrizione: "Great company stories are made of natural cycles and evolution. The second generation joins the company. The team grows with young talent, ready to carry the company's path forward. The promise: the hands change, but the formula of craft and technology stays the same. Every day.", frase: "", alt: "Evocative editorial composition of a recipe book passing between two generations" },
+        futuro: { titolo: "25 million", sottotitolo: "The 2026–27 plan", descrizione: "We have already charted the course for the coming years. New investments in 2027 will double our production capacity. New ideas turned into new products, true to our identity.", frase: "", alt: "Evocative editorial composition of a team of pastry chefs at work" },
       },
       certificazioni: { ifs: "IFS Food certification logo — International Featured Standards", rainforest: "Rainforest Alliance logo, People & Nature", rspo: "RSPO mark — Certified Sustainable Palm Oil" },
       finale: { eyebrow: "The story continues", frase: ["The hands change.", "The care does not."], coda: "Since 1960, in Sermoneta · our best, every day" }, azione: "Meet the team",

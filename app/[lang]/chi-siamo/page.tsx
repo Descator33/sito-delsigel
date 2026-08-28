@@ -77,10 +77,10 @@ export default async function ChiSiamoPage({
     <div className="bg-panna text-inchiostro">
       <SmoothScroll />
       <Header />
-      <Intro />
       <HistoryJourney />
       <Biglietti etichetta={testi.album} />
       <Marquee testo={testi.marquee} />
+      <Intro />
       <Squadra team={team} />
       <Nastri voci={testi.nastri} />
       <Linea />

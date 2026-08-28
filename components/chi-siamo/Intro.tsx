@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useTesti } from "@/components/LinguaProvider";
 import { useScatto } from "@/lib/useScatto";
 
@@ -10,17 +9,12 @@ import { useScatto } from "@/lib/useScatto";
 const HEX =
   "polygon(7% 0, 93% 0, 100% 50%, 93% 100%, 7% 100%, 0 50%)";
 
-/* biglietto ritagliato per il CTA */
-const TICKET =
-  "polygon(2% 8%, 98% 0, 100% 42%, 97% 100%, 3% 94%, 0 55%)";
-
 const CHECKER = "repeating-conic-gradient(#160601 0% 25%, transparent 0% 50%)";
 
 /**
  * Hero replica dell'insegna da fiera: la foto della squadra occupa la metà
- * alta e sfuma nel banco a scacchi; sul confine atterrano la targa
- * esagonale e la card gialla col CTA. I due pezzi schivano il cursore per
- * conto loro e rientrano piano al loro posto.
+ * alta e sfuma nel banco a scacchi; sul confine atterra la targa esagonale,
+ * che schiva il cursore per conto suo e rientra piano al suo posto.
  */
 export function Intro() {
   const ref = useRef<HTMLElement>(null);
@@ -84,28 +78,6 @@ export function Intro() {
                 {testi.sigillo}
               </p>
             </div>
-          </div>
-        </div>
-
-        {/* card informativa col biglietto */}
-        <div
-          data-scatto
-          className="relative z-20 mx-auto mt-10 w-full max-w-sm rotate-1 lg:absolute lg:right-[3%] lg:top-[-9rem] lg:mt-0 lg:w-[350px]"
-        >
-          <div className="bg-acido p-6 text-inchiostro shadow-[0_18px_40px_rgba(22,6,1,0.3)] md:p-7">
-            <p className="font-mono text-[13px] leading-relaxed">
-              {testi.card}
-            </p>
-            {/* Il racconto completo prosegue nella sezione successiva. */}
-            <Link
-              href="#storia"
-              className="mt-6 inline-block bg-fucsia px-7 py-3.5 transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
-              style={{ clipPath: TICKET }}
-            >
-              <span className="type-scritta text-2xl leading-none text-panna">
-                {testi.cta}
-              </span>
-            </Link>
           </div>
         </div>
       </div>

@@ -183,8 +183,6 @@ export interface Testi {
   /* ------------------------------- hero ------------------------------- */
   hero: {
     insegna: RigaInsegna[];
-    descrizione: string[]; // una voce per riga mascherata
-    cta: string;
     alt: string; // alt del key visual
   };
 
@@ -457,8 +455,6 @@ export interface Testi {
       eyebrow: string;
       titolo: RigaInsegna[]; // il punto in tinta chiude l'ultima riga
       sigillo: string; // «dal 1960 · IFS Food · …»
-      card: string;
-      cta: string;
       fotoAlt: string;
     };
     album: string;
