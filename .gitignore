@@ -62,6 +62,10 @@ next-env.d.ts
 /public/intro-delsigel-poster.jpg
 /public/Pastries_as_luxury_objects_montage_202607272157.mp4
 
+# Footage 4K sorgente della scena "origini" in home: da qui sono transcodate
+# le due varianti servite (public/storia-generated/01-origini-home-lenta*.mp4).
+/public/Intirko-Nastro.mp4
+
 # Claude Code: i permessi locali non si versionano — sono legati a questa
 # macchina e ai suoi percorsi.
 .claude/settings.local.json
