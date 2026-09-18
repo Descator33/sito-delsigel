@@ -58,7 +58,17 @@ const DURATA_FILM = 5.4;
 
 /** riga dell'insegna: la maschera sta sul blocco, il testo ci sale dentro.
  *  `data-hero-uscita` resta sulla maschera come aggancio stabile per
- *  la timeline d'ingresso. Nessuna riga usa dissolvenze. */
+ *  la timeline d'ingresso. Nessuna riga usa dissolvenze.
+ *
+ *  L'ARIA SOPRA LE MAIUSCOLE ACCENTATE. Con `line-height: 0.88` il box
+ *  della riga è più corto dei glifi: una E maiuscola ci sta con 0.071em
+ *  d'avanzo, ma È, Ä e Ö portano l'accento 0.114em SOPRA il bordo, e la
+ *  maschera — che deve restare `overflow-hidden` per l'ingresso — lo
+ *  tagliava («È INNOVAZIONE», «KÄSITYÖ»). Il padding apre la finestra
+ *  quel tanto, il margine negativo lo restituisce al flusso: l'interlinea
+ *  e la posizione dell'insegna non cambiano di un pixel. Sotto invece non
+ *  sfora niente (il maiuscolo non ha discendenti), quindi `pb` resta
+ *  quello che era. */
 function Riga({
   indice,
   accento,
@@ -69,7 +79,10 @@ function Riga({
   children: ReactNode;
 }) {
   return (
-    <span className="block overflow-hidden pb-[0.06em]" data-hero-uscita={indice}>
+    <span
+      className="block overflow-hidden pt-[0.14em] -mt-[0.14em] pb-[0.06em]"
+      data-hero-uscita={indice}
+    >
       <span
         data-hero-caption
         className={`block ${
