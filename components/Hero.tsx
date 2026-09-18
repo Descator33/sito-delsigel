@@ -22,22 +22,25 @@ import {
 gsap.registerPlugin(useGSAP);
 
 /**
- * Hero "Vortice Intriko" (2026-08-20).
+ * Hero "Vortice Intriko" (2026-08-20, nuovo girato 2026-09-18).
  *
- * Il prodotto di punta è il soggetto, non un accessorio: un Intriko
- * monumentale occupa la metà destra e il nastro corallo riprende la
- * torsione della sfoglia. A sinistra il blocco brand: l'insegna, poi il
- * marchio storico Delsigel più in basso e più grande — tutti in HTML, mai
- * stampati nel raster, così marchio e parole restano esatti.
+ * Il prodotto di punta è il soggetto, non un accessorio: il film entra in
+ * macro sulla sfoglia e si apre sulle quattro varianti di Intriko, che
+ * occupano la metà destra fra i nastri corallo. A sinistra il blocco
+ * brand: l'insegna, poi il marchio storico Delsigel più in basso e più
+ * grande — tutti in HTML, mai stampati nel raster, così marchio e parole
+ * restano esatti.
  *
  * La prima visita è un film d'ingresso: 90 WebP desktop o 72 mobile, sempre
  * con una finestra decodificata piccola in memoria. Il film parte da solo
  * all'arrivo sul sito — nessuno scrub, la pagina scorre normalmente — e
- * atterra sulla still con le caption; l'ultimo frame del video non viene
- * servito. Al suo posto entra, con una maschera, il `<picture>` approvato:
+ * atterra sulla still con le caption. La sequenza si ferma un fotogramma
+ * prima della fine: l'ultimo lo dà, con una maschera, il `<picture>`
+ * dell'end frame approvato, che è la stessa inquadratura senza il rumore
+ * della compressione video:
  *
- *   orizzontale  1920×1080 (148 KB)  ·  3840×2160 (382 KB)
- *   verticale    1080×1920 (107 KB)  ·  2160×3840 (279 KB)
+ *   orizzontale  1920×1080 (143 KB)  ·  3840×2160 (264 KB)
+ *   verticale    1080×1920 (159 KB)  ·  2160×3840 (287 KB)
  *
  * Il frame iniziale della sequenza è l'LCP. Il picture finale usa ritaglio
  * e `srcSet` a densità; i quattro WebP sono già tarati a mano e non vanno
@@ -441,9 +444,10 @@ export function Hero() {
               />
             )}
 
-            {/* Non è il frame 145 del video: è il key visual 4K approvato,
-                art-directed anche in verticale. La timeline lo svela a
-                tendina prima di far entrare qualsiasi caption. */}
+            {/* L'end frame approvato (2026-09-18), art-directed anche in
+                verticale con lo stesso ritaglio della sequenza mobile. La
+                timeline lo svela a tendina prima di far entrare qualsiasi
+                caption. */}
             <div ref={frameFinale} className="hero-frame-finale absolute inset-0">
               <picture>
                 <source
@@ -479,7 +483,7 @@ export function Hero() {
             che a menu aperto non è più il viewport. L'impaginato dentro non
             cambia — si accorcia il contenitore e il blocco si ricolloca da
             sé, che è esattamente ciò che si vuole vedere. */}
-        <div className="hero-impaginato relative flex h-full flex-col justify-end px-[clamp(20px,5vw,96px)] pb-[9vh] orizzontale:justify-center orizzontale:pb-0">
+        <div className="hero-impaginato relative flex h-full flex-col justify-end px-[clamp(20px,5vw,96px)] pb-[calc(9vh+88px)] sm:pb-[calc(9vh+96px)] orizzontale:justify-center orizzontale:pb-0">
           {/* Il blocco è ancorato al bordo del viewport, non a una colonna
               centrata: oltre i 2000px una `max-width` lo spingerebbe verso
               il centro, cioè addosso al soggetto — la fotografia non si
@@ -511,16 +515,24 @@ export function Hero() {
                   </Riga>
                 ))}
               </h1>
+            </div>
+          </motion.div>
 
-              {/* Il marchio chiude il blocco, in basso e più grande:
-                  entra da una maschera come il titolo, un passo dopo. */}
-              <div className="mt-7 overflow-hidden sm:mt-8">
-                <div data-hero-caption-logo>
-                  <LogoStorico
-                    variant="stacked"
-                    className="h-[88px] text-hero-panna sm:h-[104px] lg:h-[128px] orizzontale:text-bruno"
-                  />
-                </div>
+          {/* Il marchio non chiude più il blocco di testo: sta nell'angolo
+              in basso a sinistra del palco, ancorato al bordo come una
+              firma. Entra da una maschera come il titolo, un passo dopo,
+              e condivide scala e origine con la caption così che a menu
+              aperto rimpicciolisca restando incollato al suo angolo. */}
+          <motion.div
+            className="absolute bottom-[clamp(20px,5vh,56px)] left-[clamp(20px,5vw,96px)]"
+            style={{ scale: scala, opacity: velo, transformOrigin: "left bottom" }}
+          >
+            <div className="overflow-hidden">
+              <div data-hero-caption-logo>
+                <LogoStorico
+                  variant="stacked"
+                  className="h-[60px] text-hero-panna sm:h-[68px] lg:h-[80px] orizzontale:text-bruno"
+                />
               </div>
             </div>
           </motion.div>

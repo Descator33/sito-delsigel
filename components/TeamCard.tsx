@@ -1,8 +1,6 @@
 export type TeamMember = {
   name: string;
   role: string;
-  reparto: string;
-  anni: number;
   /* accento della card (hex della palette): scacchi, numeri, dettagli */
   accent: string;
   /* ritratto al lavoro */
@@ -12,17 +10,14 @@ export type TeamMember = {
 /**
  * Targa grande della squadra, alla maniera delle cornici da fiera: piastra
  * panna con doppia cornice, nome a insegna, fascia a scacchi nell'accento
- * della card sopra il ritratto, due dati e la fascia ruolo scritta a mano.
+ * della card sopra il ritratto e la fascia ruolo scritta a mano. Sulla targa
+ * stanno solo due dati: il nome e il ruolo.
  */
 export function TeamCard({
   m,
-  anniIn,
-  reparto,
   ritratto,
 }: {
   m: TeamMember;
-  anniIn: string;
-  reparto: string;
   ritratto: string;
 }) {
   return (
@@ -49,22 +44,7 @@ export function TeamCard({
             draggable={false}
           />
         </div>
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 py-5">
-          <div className="text-center">
-            <p className="type-display text-4xl leading-none">{m.anni}</p>
-            <p className="mt-1.5 text-xs font-semibold text-inchiostro/60">
-              {anniIn}
-            </p>
-          </div>
-          <div className="h-12 w-px bg-inchiostro/20" />
-          <div className="text-center">
-            <p className="type-display text-4xl leading-none">{m.reparto}</p>
-            <p className="mt-1.5 text-xs font-semibold text-inchiostro/60">
-              {reparto}
-            </p>
-          </div>
-        </div>
-        <div className="bg-inchiostro py-2.5 text-center">
+        <div className="mt-5 bg-inchiostro py-2.5 text-center">
           <p className="type-scritta text-2xl leading-none text-panna">
             {m.role}
           </p>

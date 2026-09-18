@@ -80,6 +80,17 @@ next-env.d.ts
 # serviti stanno in public/hero/sequence/. Stessa regola di /assets/hero/.
 /public/hero/hero-intriko-video-start-4k.png
 
+# Master del nuovo girato hero (2026-09-18) e il suo end frame: da qui sono
+# derivati i 162 webp di public/hero/sequence/ e le quattro still di
+# public/hero/. Il sito non li serve — stessa regola del footage sopra.
+/public/New hero.mp4
+/public/End frame.png
+
+# Documento aziendale dei nomignoli: è la fonte dei nomi in
+# app/[lang]/chi-siamo/page.tsx, non un asset del sito. In public/ sarebbe
+# scaricabile da chiunque conosca l'URL.
+/public/Nomignoli.docx
+
 # Footage e stati di lavorazione della hero (master Kling ecc.): si
 # rigenerano dal footage originale, non da git.
 /tmp/

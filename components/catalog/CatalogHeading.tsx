@@ -2,6 +2,7 @@ import { TOTALE_TIPOLOGIE, TOTALE_VARIANTI } from "@/lib/catalog-bento";
 import { dizionario } from "@/lib/i18n/dizionario";
 import { interpola } from "@/lib/i18n/interpola";
 import { fmtNumero, type Lingua } from "@/lib/i18n/lingue";
+import { Frasi } from "@/lib/frasi";
 
 /**
  * L'intestazione del catalogo: tre aree appoggiate alla stessa linea di
@@ -47,7 +48,7 @@ export function CatalogHeading({ lingua }: { lingua: Lingua }) {
             data-home-caption="copy"
             className="max-w-[34ch] text-[0.82rem] leading-[1.6] text-inchiostro/85 xl:max-w-[15rem]"
           >
-            {testi.promessa}
+            <Frasi testo={testi.promessa} />
           </p>
         </div>
 

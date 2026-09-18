@@ -9,11 +9,12 @@ import type { Lingua } from "@/lib/i18n/lingue";
  * panna e la card ottagonale che si apriva a cerchio. La sezione non è
  * più un rullo ma un impaginato — dal 21/08 tre campiture piene in una
  * riga sola — e ha una sua direzione tipografica (League Spartan, Inter
- * Tight, IBM Plex Mono; vedi app/fonts.ts) che non tocca il resto del
+ * Tight, IBM Plex Mono — dal 2026-09-09 tutte ricondotte ad Archivo e
+ * Space Mono, vedi gli alias in globals.css) che non tocca il resto del
  * sito, dove comanda Archivo.
  *
  * `font-testo` sta qui, sull'involucro: dentro la sezione il testo di
- * default è Inter Tight, e insegna e tecnico si chiedono per classe.
+ * default è Archivo, e insegna e tecnico si chiedono per classe.
  * Server Component: solo la griglia, che ha stato, è client.
  */
 export function CatalogSection({ lingua }: { lingua: Lingua }) {

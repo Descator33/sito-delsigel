@@ -1,9 +1,9 @@
 /**
  * Deriva la moviescroller della hero Intriko da un master video 4K.
  *
- * Il frame sorgente 144 (l'ultimo del master Kling) viene escluso di
- * proposito: in chiusura la UI mostra la still approvata, non un fotogramma
- * ricompresso del video.
+ * Il frame sorgente 144 (l'ultimo del master) viene escluso di proposito:
+ * in chiusura la UI mostra la still dell'end frame approvato, non un
+ * fotogramma ricompresso del video.
  *
  * Uso:
  *   node scripts/estrai-sequenza-hero-intriko.mjs /percorso/master.mp4
@@ -53,7 +53,7 @@ const varianti = [
     height: 1440,
     quality: 80,
     filtro:
-      "trim=end_frame=144,setpts=PTS-STARTPTS,fps=12,crop=1215:2160:2100:0,scale=810:1440:flags=lanczos",
+      "trim=end_frame=144,setpts=PTS-STARTPTS,fps=12,crop=1215:2160:2300:0,scale=810:1440:flags=lanczos",
   },
 ];
 

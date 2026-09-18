@@ -5,6 +5,7 @@ import {
 import { dizionario } from "@/lib/i18n/dizionario";
 import { interpola } from "@/lib/i18n/interpola";
 import { fmtNumero, type Lingua } from "@/lib/i18n/lingue";
+import { Frasi } from "@/lib/frasi";
 
 /** Stessa struttura editoriale dell'intestazione dei dolci. */
 export function SavoryCatalogHeading({
@@ -31,7 +32,7 @@ export function SavoryCatalogHeading({
         </div>
 
         <p className="max-w-[34ch] text-[0.82rem] leading-[1.6] text-inchiostro/85 xl:max-w-[15rem]">
-          {testi.promessa}
+          <Frasi testo={testi.promessa} />
         </p>
 
         <div className="xl:justify-self-end">

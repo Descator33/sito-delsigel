@@ -20,7 +20,7 @@
 export function ContactHero({ testi }: { testi: Testi["contatti"] }) {
   return (
     <div className="@container">
-      <h1 className="font-hero text-[clamp(3.15rem,14cqi,6.5rem)] font-normal uppercase leading-[0.9] tracking-[-0.045em]">
+      <h1 className="font-hero text-[clamp(3.15rem,14cqi,6.5rem)] uppercase leading-[0.9] tracking-[-0.045em]">
         {testi.titolo}
       </h1>
 

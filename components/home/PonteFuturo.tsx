@@ -139,7 +139,7 @@ export function PonteFuturo() {
           <p className="overflow-hidden pb-[0.06em]">
             <span
               data-ponte-frase
-              className="ponte-frase font-pop block text-[clamp(3rem,10vw,9rem)] font-normal uppercase leading-[0.87] tracking-[-0.02em] text-panna"
+              className="ponte-frase font-pop block text-[clamp(3rem,10vw,9rem)] uppercase leading-[0.87] tracking-[-0.02em] text-panna"
             >
               {testi.home.ponte.map((riga) => (
                 <span key={riga} className="block">

@@ -23,11 +23,11 @@ export const fi: Testi = {
   },
   hero: {
     insegna: [{ testo: "Käsityö-" }, { testo: "teollisuutta." }, { testo: "Perinne on", accento: true }, { testo: "innovaatiota.", accento: true }],
-    alt: "Intriko, Delsigelin nimikkoleivonnainen, korallinvärisen nauhan ja kaakaonvärisen lavasteen välissä.",
+    alt: "Neljä Intriko-vaihtoehtoa, Delsigelin nimikkoleivonnaista, korallinväristen nauhojen ja kaakaonvärisen lavasteen keskellä.",
   },
   home: {
     ...en.home,
-    storia: { eyebrow: "Tarinamme", luogo: "Delsigel · Sermoneta", titolo: ["Uuni on yhä lämmin,", "13 miljoonaa leivonnaista myöhemmin."], testo: "Del Monte ja Siani kohtasivat vuonna 2011. Nykyään Delsigel on IFS Food-, Rainforest Alliance- ja RSPO-sertifioitu käsityöteollisuusyritys, jossa uusi sukupolvi työskentelee leivontapöydän ääressä ja kapasiteetti aiotaan kaksinkertaistaa.", cta: "Tutustu tarinaamme", prossimoLabel: "Seuraava luku", prossimoNome: "Kuvasto 2026/27", continuaAria: "Jatka kuvastoon 2026/27" },
+    storia: { eyebrow: "Tarinamme", luogo: "Delsigel · Sermoneta", titolo: ["13 miljoonaa leivonnaista myöhemmin."], testo: "Del Monte ja Siani kohtasivat vuonna 2011. Nykyään Delsigel on IFS Food-, Rainforest Alliance- ja RSPO-sertifioitu käsityöteollisuusyritys, jossa uusi sukupolvi työskentelee leivontapöydän ääressä ja kapasiteetti aiotaan kaksinkertaistaa.", cta: "Tutustu tarinaamme", prossimoLabel: "Seuraava luku", prossimoNome: "Kuvasto 2026/27", continuaAria: "Jatka kuvastoon 2026/27" },
     catalogoAria: "Delsigelin makeiden tuotteiden kuvasto", gammaAria: "Delsigelin tuotekuvasto",
     dolci: { eyebrow: "Kuvasto 2026/27", titolo: "Makeat", titoloAccento: "tuotteemme.", promessa: "Yksinkertaiset reseptit, valikoidut raaka-aineet ja paljon intohimoa. Aidosti herkullisia leivonnaisia joka päivä.", tipologie: "{n} tuotetyyppiä", varianti: "{n} vaihtoehtoa" },
     salati: { eyebrow: "Kuvasto 2026/27", titolo: "Suolaiset", titoloAccento: "tuotteemme.", promessa: "Perinnettä, makua ja luovuutta jokaisessa reseptissä. Suolaisia herkkuja jokaiseen taukoon.", tipologie: "{n} tuotetyyppiä", varianti: "{n} vaihtoehtoa" },
@@ -101,17 +101,11 @@ export const fi: Testi = {
     },
     squadra: {
       ...en.chiSiamo.squadra,
-      titolo: "Tiimi.", testo: "Kaksikymmentäyksi kasvoa, yksi leipomo: koko käsityöteollisuus yhdessä vuodesta 1960.", scritta: "aivan loistava tiimi!", indietro: "Selaa tiimiä taaksepäin", avanti: "Selaa tiimiä eteenpäin", anniIn: "vuotta Delsigelillä", reparto: "osasto",
-      ruoli: { Fornaio: "Leipuri", Decoratrice: "Koristelija", Impastatore: "Taikinantekijä", Sfoglina: "Lehtitaikinaleipuri", Pasticcere: "Kondiittori", Farcitrice: "Täyttäjä", "Addetta linea": "Linjatyöntekijä", "L'anima del lab": "Leipomon sydän", "Controllo qualità": "Laadunvalvonta", "Mastro fornaio": "Leipurimestari", Glassatrice: "Kuorruttaja", "Addetto linea": "Linjatyöntekijä", "Capo turno": "Vuoropäällikkö", Manutentore: "Kunnossapitäjä", Mulettista: "Trukinkuljettaja", "Custode dei -20°": "−20 °C:n kylmiön vartija", "Capo produzione": "Tuotantopäällikkö", Logistica: "Logistiikka", Apprendista: "Harjoittelija", Comunicazione: "Viestintä", Commerciale: "Myynti" },
-      reparti: { Forni: "Uunit", Dolci: "Makeat", Farina: "Taikina", Linea: "Linja", Lab: "Leipomo", Motori: "Kunnossapito", Scorte: "Varasto", Cella: "Kylmiö", Uffici: "Toimistot" }, ritratto: "{nome}, Delsigelin {ruolo}",
+      titolo: "Tiimi.", testo: "Kaksikymmentäyksi kasvoa, yksi leipomo: koko käsityöteollisuus yhdessä vuodesta 1960.", scritta: "aivan loistava tiimi!", indietro: "Selaa tiimiä taaksepäin", avanti: "Selaa tiimiä eteenpäin",
+      ruoli: { "Ufficio commerciale": "Myyntiosasto", "Responsabile ufficio acquisti e personale": "Osto- ja henkilöstöpäällikkö", "Responsabile di magazzino": "Varastopäällikkö", "Autista": "Kuljettaja", "Direttore stabilimento e manutentore": "Tehtaanjohtaja ja kunnossapito", "Linea produttiva": "Tuotantolinja", "Responsabile impasti": "Taikinavastaava", "Impasto e piega": "Taikina ja taittelu", "Responsabile friggitrice": "Rasvakeittimen vastaava", "Responsabile produzione": "Tuotannon vastaava", "Linea di confezionamento": "Pakkauslinja", "Lavorazione pasta": "Taikinan käsittely" },
+      ritratto: "{nome}, Delsigelin {ruolo}",
     },
-    nastri: ["Jauhosäkistä sinettiin", "Viisi asemaa · yksi standardi", "Ei oikoteitä ★★★★★"], marquee: "Delsigel / Käsityöteollisuus / Innovaatio ja perinne / Vuodesta 1960 / ",
-    linea: {
-      ...en.chiSiamo.linea,
-      eyebrow: "Tekninen sydän · Sermoneta", titolo: [{ testo: "Tuotanto-" }, { testo: "linja" }], testo: "Viisi peräkkäistä asemaa ja yksi standardi jokaiselle erälle: yrityksen teknologinen sydän yhdistää tasaisen laadun ja täsmälliset toimitukset.", statistiche: { stazioni: "asemaa linjassa", certificato: "sertifioitu · jokainen erä" }, stazioneLabel: "Asema {n}",
-      stazioni: { sfoglia: { nome: "Kaulinta", alt: "Delsigelin työntekijä säätää kaulintakonetta ohjauspaneelista" }, formatura: { nome: "Muotoilu", alt: "Delsigelin työntekijä muotoilee leivonnaisia linjakoneella" }, cottura: { nome: "Kypsennys linjalla", alt: "Kullanruskeat Delsigelin uppopaistetut leivonnaiset kulkevat kypsennyshihnalla" }, confezionamento: { nome: "Pakkaus", alt: "Tarjottimia lastataan Delsigelin tuotantolinjan vaunuihin" }, spedizione: { nome: "Lähetys", alt: "Delsigelin trukinkuljettaja siirtää lähetysvalmiita lavoja" } },
-      comeFunziona: "Näin se toimii", punti: ["Valikoidut jauhot ja lämpötilahallitussa tilassa levänneet taikinat.", "Kreemit ja täytteet annostellaan tuote kerrallaan tinkimättä.", "Linjauuneissa sama paistokäyrä jokaiselle erälle.", "Lopputarkastus ja sinetöinti ennen lähtöä vitriiniin.", "Täsmälliset, eräkohtaisesti jäljitettävät toimitukset: mittakaava muuttuu, kädenjälki ei."], vieniLabel: "Tule katsomaan", vieniCta: "Vieraile meillä", vieniCoda: "Sermoneta · uuni on lämmin",
-    },
+    marquee: "Delsigel / Käsityöteollisuus / Innovaatio ja perinne / Vuodesta 1960 / ",
   },
   contatti: {
     ...en.contatti,

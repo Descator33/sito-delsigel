@@ -23,6 +23,7 @@ import {
   PERCORSO,
   type DolceConFoto,
 } from "@/lib/percorso-configuratore";
+import { Frasi } from "@/lib/frasi";
 
 /**
  * CREA IL TUO DOLCE: la hero secondaria del configuratore.
@@ -251,7 +252,7 @@ export function ConfiguratorTeaser({
           </div>
           <h2
             id={titoloId}
-            className="font-pop mt-[clamp(0.8rem,2vh,1.6rem)] text-[clamp(3.2rem,min(11vw,15vh),9rem)] font-normal uppercase leading-[0.87] tracking-[-0.02em]"
+            className="font-pop mt-[clamp(0.8rem,2vh,1.6rem)] text-[clamp(3.2rem,min(11vw,15vh),9rem)] uppercase leading-[0.87] tracking-[-0.02em]"
           >
             {testi.home.teaser.titolo.map((riga) => (
               <span
@@ -270,7 +271,7 @@ export function ConfiguratorTeaser({
           <p className="mx-auto mt-[clamp(1rem,2.4vh,2rem)] max-w-[46ch] text-[clamp(1rem,1.25vw,1.35rem)] font-medium leading-[1.55] text-cacao/80">
             <span data-home-caption-mask className="block overflow-hidden">
               <span data-home-caption="copy" className="block">
-                {testi.home.teaser.copy}
+                <Frasi testo={testi.home.teaser.copy} />
               </span>
             </span>
           </p>

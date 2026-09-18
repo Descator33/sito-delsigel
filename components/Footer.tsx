@@ -198,7 +198,7 @@ export function Footer() {
 
 function ColumnHeading({ children }: { children: string }) {
   return (
-    <h3 className="font-pop text-[clamp(1rem,1.1vw,1.25rem)] font-normal uppercase leading-none tracking-[0.02em] text-panna">
+    <h3 className="font-pop text-[clamp(1rem,1.1vw,1.25rem)] uppercase leading-none tracking-[0.02em] text-panna">
       {children}
     </h3>
   );

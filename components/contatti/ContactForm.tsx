@@ -133,7 +133,7 @@ export function ContactForm() {
           campitura crema), che sono pseudo-elementi a z-index 0 */}
       <div className="relative z-10 p-6 pb-8 sm:p-9 sm:pb-10 lg:p-11 lg:pb-12">
         <div className="relative">
-          <h2 className="font-hero text-[clamp(2.35rem,4vw,4.25rem)] font-normal uppercase leading-[0.94] tracking-[-0.045em]">
+          <h2 className="font-hero text-[clamp(2.35rem,4vw,4.25rem)] uppercase leading-[0.94] tracking-[-0.045em]">
             {form.titolo}
           </h2>
           {/* i tre raggi del riferimento, appoggiati in alto a destra */}

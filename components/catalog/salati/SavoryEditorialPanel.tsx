@@ -56,7 +56,7 @@ function DisplayHeading({ id }: { id: string }) {
       /* due scale diverse perché sotto lg il pannello è a tutta larghezza
          e sopra lg è una colonna stretta: la stessa formula darebbe un
          titolo minuscolo sul tablet o un titolo che sfonda la colonna */
-      className="font-insegna-salati mt-[clamp(1.1rem,1.8vw,1.8rem)] text-[clamp(2.9rem,10vw,4.5rem)] font-normal uppercase leading-[0.88] tracking-[-0.02em] text-cacao lg:text-[clamp(3.2rem,6.1vw,6.25rem)]"
+      className="font-insegna-salati mt-[clamp(1.1rem,1.8vw,1.8rem)] text-[clamp(2.9rem,10vw,4.5rem)] uppercase leading-[0.88] tracking-[-0.02em] text-cacao lg:text-[clamp(3.2rem,6.1vw,6.25rem)]"
     >
       <span className="block">I nostri</span>
       <span className="block">Salati</span>

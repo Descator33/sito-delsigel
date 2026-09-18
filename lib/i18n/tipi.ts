@@ -484,30 +484,10 @@ export interface Testi {
       scritta: string;
       indietro: string;
       avanti: string;
-      anniIn: string;
-      reparto: string;
       ruoli: Record<string, string>; // ruolo italiano → tradotto
-      reparti: Record<string, string>;
       ritratto: string; // alt: «{nome}, {ruolo} Delsigel»
     };
-    nastri: [string, string, string];
     marquee: string; // la STRIP ripetuta
-    linea: {
-      eyebrow: string;
-      titolo: RigaInsegna[];
-      testo: string;
-      statistiche: { stazioni: string; certificato: string };
-      stazioneLabel: string; // «Staz. {n}»
-      stazioni: Record<
-        "sfoglia" | "formatura" | "cottura" | "confezionamento" | "spedizione",
-        { nome: string; alt: string }
-      >;
-      comeFunziona: string;
-      punti: string[];
-      vieniLabel: string;
-      vieniCta: string;
-      vieniCoda: string;
-    };
   };
 
   /* ----------------------------- contatti ------------------------------ */

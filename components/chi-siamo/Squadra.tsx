@@ -5,6 +5,7 @@ import { TeamCard, type TeamMember } from "@/components/TeamCard";
 import { Reveal } from "@/components/Reveal";
 import { useTesti } from "@/components/LinguaProvider";
 import { useCardTilt } from "@/lib/useCardTilt";
+import { Frasi } from "@/lib/frasi";
 
 /** lo stesso still del catalogo, scontornato: il Golosone come decoro */
 const GOLOSONE = "/products/golosone-crema-granella.webp";
@@ -65,7 +66,7 @@ export function Squadra({ team }: { team: TeamMember[] }) {
             <Reveal>{testi.titolo}</Reveal>
           </h2>
           <p className="mt-4 max-w-sm text-base leading-relaxed text-panna/70">
-            {testi.testo}
+            <Frasi testo={testi.testo} />
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -101,8 +102,6 @@ export function Squadra({ team }: { team: TeamMember[] }) {
               <div data-tilt-inner className="h-full">
                 <TeamCard
                   m={m}
-                  anniIn={testi.anniIn}
-                  reparto={testi.reparto}
                   ritratto={testi.ritratto}
                 />
               </div>

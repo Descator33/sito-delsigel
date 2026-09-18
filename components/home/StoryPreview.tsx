@@ -4,6 +4,7 @@ import { STORIA } from "@/data/history";
 import { dizionario } from "@/lib/i18n/dizionario";
 import { localizza, type Lingua } from "@/lib/i18n/lingue";
 import { StoryPreviewMedia } from "./StoryPreviewMedia";
+import { Frasi } from "@/lib/frasi";
 
 const ORIGINI = STORIA[0];
 
@@ -84,7 +85,7 @@ export function StoryPreview({ lingua }: { lingua: Lingua }) {
                 data-home-caption="copy"
                 className="max-w-[46ch] text-pretty text-[clamp(1rem,1.18vw,1.2rem)] leading-[1.55] text-panna/78"
               >
-                {storia.testo}
+                <Frasi testo={storia.testo} />
               </p>
             </div>
             <div

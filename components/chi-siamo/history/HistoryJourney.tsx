@@ -12,6 +12,7 @@ import {
   type TappaStoria,
 } from "@/data/history";
 import type { Testi } from "@/lib/i18n/tipi";
+import { Frasi } from "@/lib/frasi";
 
 type TestoTappa = Testi["chiSiamo"]["storia"]["tappe"][keyof Testi["chiSiamo"]["storia"]["tappe"]];
 type TappaLocalizzata = Omit<TappaStoria, "certificazioni"> &
@@ -115,7 +116,7 @@ function HistoryReduced({ tappe }: { tappe: TappaLocalizzata[] }) {
               </p>
             )}
             <p className="mt-4 max-w-[42ch] text-sm leading-6 text-cacao/65">
-              {tappa.descrizione}
+              <Frasi testo={tappa.descrizione} />
             </p>
             <Certificazioni tappa={tappa} />
           </div>
@@ -322,7 +323,7 @@ export function HistoryJourney() {
               </span>
             </h2>
             <p className="mt-9 max-w-[34ch] text-pretty text-base leading-7 text-cacao/68 md:text-lg">
-              {testi.testo}
+              <Frasi testo={testi.testo} />
             </p>
           </div>
         </div>
@@ -435,7 +436,7 @@ export function HistoryJourney() {
                     </p>
                   )}
                   <p className="mt-4 max-w-[42ch] text-pretty text-sm leading-6 text-cacao/70 md:text-[15px] md:leading-7">
-                    {tappa.descrizione}
+                    <Frasi testo={tappa.descrizione} />
                   </p>
                   <Certificazioni tappa={tappa} />
                 </article>

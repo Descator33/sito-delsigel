@@ -23,11 +23,11 @@ export const de: Testi = {
   },
   hero: {
     insegna: [{ testo: "Handwerkliche" }, { testo: "Industrie." }, { testo: "Tradition ist", accento: true }, { testo: "Innovation.", accento: true }],
-    alt: "Intriko, das Aushängeschild von Delsigel, zwischen einem korallfarbenen Band und einer kakaofarbenen Kulisse.",
+    alt: "Vier Varianten von Intriko, dem Aushängeschild von Delsigel, zwischen korallfarbenen Bändern und einer kakaofarbenen Kulisse.",
   },
   home: {
     ...en.home,
-    storia: { eyebrow: "Unsere Geschichte", luogo: "Delsigel · Sermoneta", titolo: ["Ein brennender Ofen,", "13 Millionen Gebäcke später."], testo: "2011 begegneten sich Del Monte und Siani. Heute ist Delsigel ein nach IFS Food, Rainforest Alliance und RSPO zertifiziertes handwerkliches Industrieunternehmen – mit einer neuen Generation am Werktisch und dem Plan, die Kapazität zu verdoppeln.", cta: "Unsere Geschichte entdecken", prossimoLabel: "Nächstes Kapitel", prossimoNome: "Katalog 2026/27", continuaAria: "Weiter zum Katalog 2026/27" },
+    storia: { eyebrow: "Unsere Geschichte", luogo: "Delsigel · Sermoneta", titolo: ["13 Millionen Gebäcke später."], testo: "2011 begegneten sich Del Monte und Siani. Heute ist Delsigel ein nach IFS Food, Rainforest Alliance und RSPO zertifiziertes handwerkliches Industrieunternehmen – mit einer neuen Generation am Werktisch und dem Plan, die Kapazität zu verdoppeln.", cta: "Unsere Geschichte entdecken", prossimoLabel: "Nächstes Kapitel", prossimoNome: "Katalog 2026/27", continuaAria: "Weiter zum Katalog 2026/27" },
     catalogoAria: "Delsigel-Katalog süßer Produkte", gammaAria: "Delsigel-Produktkatalog",
     dolci: { eyebrow: "Katalog 2026/27", titolo: "Unsere", titoloAccento: "süßen Produkte.", promessa: "Einfache Rezepte, ausgewählte Zutaten und viel Leidenschaft. Jeden Tag Gebäck, das wirklich gut schmeckt.", tipologie: "{n} Produkttypen", varianti: "{n} Varianten" },
     salati: { eyebrow: "Katalog 2026/27", titolo: "Unsere", titoloAccento: "herzhaften Produkte.", promessa: "Tradition, Geschmack und Kreativität in jedem Rezept. Herzhafte Snacks, die jede Pause besonders machen.", tipologie: "{n} Produkttypen", varianti: "{n} Varianten" },
@@ -156,23 +156,11 @@ export const de: Testi = {
     },
     squadra: {
       ...en.chiSiamo.squadra,
-      titolo: "Das Team.", testo: "Einundzwanzig Gesichter, eine Backstube: die ganze handwerkliche Industrie, seit 1960.", scritta: "ein großartiges Team!", indietro: "Im Team zurückblättern", avanti: "Im Team vorblättern", anniIn: "Jahre bei Delsigel", reparto: "Bereich",
-      ruoli: {
-        Fornaio: "Bäcker", Decoratrice: "Dekorateurin", Impastatore: "Teigmacher", Sfoglina: "Blätterteigspezialistin", Pasticcere: "Konditor", Farcitrice: "Füllspezialistin", "Addetta linea": "Linienmitarbeiterin", "L'anima del lab": "Die Seele der Backstube",
-        "Controllo qualità": "Qualitätskontrolle", "Mastro fornaio": "Bäckermeister", Glassatrice: "Glasiererin", "Addetto linea": "Linienmitarbeiter", "Capo turno": "Schichtleiterin", Manutentore: "Instandhalter", Mulettista: "Staplerfahrer",
-        "Custode dei -20°": "Hüter der -20-°C-Kammer", "Capo produzione": "Produktionsleiter", Logistica: "Logistik", Apprendista: "Auszubildender", Comunicazione: "Kommunikation", Commerciale: "Vertrieb",
-      },
-      reparti: { Forni: "Öfen", Dolci: "Süßwaren", Farina: "Teig", Linea: "Linie", Lab: "Backstube", Motori: "Technik", Scorte: "Lager", Cella: "Kühlraum", Uffici: "Büros" }, ritratto: "{nome}, {ruolo} bei Delsigel",
+      titolo: "Das Team.", testo: "Einundzwanzig Gesichter, eine Backstube: die ganze handwerkliche Industrie, seit 1960.", scritta: "ein großartiges Team!", indietro: "Im Team zurückblättern", avanti: "Im Team vorblättern",
+      ruoli: { "Ufficio commerciale": "Vertriebsbüro", "Responsabile ufficio acquisti e personale": "Leitung Einkauf und Personal", "Responsabile di magazzino": "Lagerleiter", "Autista": "Fahrer", "Direttore stabilimento e manutentore": "Werkleiter und Instandhaltung", "Linea produttiva": "Produktionslinie", "Responsabile impasti": "Leitung Teigherstellung", "Impasto e piega": "Teig und Tourieren", "Responsabile friggitrice": "Leitung Fritteuse", "Responsabile produzione": "Produktionsleitung", "Linea di confezionamento": "Verpackungslinie", "Lavorazione pasta": "Teigverarbeitung" },
+      ritratto: "{nome}, {ruolo} bei Delsigel",
     },
-    nastri: ["Vom Mehlsack bis zum Siegel", "Fünf Stationen · ein Standard", "Keine Abkürzungen ★★★★★"], marquee: "Delsigel / Handwerkliche Industrie / Innovation und Tradition / Seit 1960 / ",
-    linea: {
-      ...en.chiSiamo.linea,
-      eyebrow: "Das technische Herz · Sermoneta", titolo: [{ testo: "Die Produktions-" }, { testo: "linie" }], testo: "Fünf Stationen in einer Linie, ein Standard für jede Charge: das technologische Herz des Unternehmens, das gleichbleibende Qualität und pünktliche Lieferungen verbindet.",
-      statistiche: { stazioni: "Stationen in der Linie", certificato: "zertifiziert · jede Charge" }, stazioneLabel: "Stat. {n}",
-      stazioni: { sfoglia: { nome: "Ausrollen", alt: "Ein Delsigel-Mitarbeiter stellt die Teigausrollmaschine am Bedienfeld ein" }, formatura: { nome: "Formgebung", alt: "Eine Delsigel-Mitarbeiterin formt Gebäck an der Linienmaschine" }, cottura: { nome: "Garen in der Linie", alt: "Goldbraunes frittiertes Delsigel-Gebäck fährt über das Garband" }, confezionamento: { nome: "Verpackung", alt: "Schalen werden auf Wagen der Delsigel-Linie geladen" }, spedizione: { nome: "Versand", alt: "Ein Delsigel-Staplerfahrer bewegt versandbereite Paletten" } },
-      comeFunziona: "So funktioniert es", punti: ["Ausgewählte Mehle und Teige, die im temperaturgeführten Raum ruhen.", "Cremes und Füllungen werden Artikel für Artikel kompromisslos dosiert.", "Linienöfen mit derselben Backkurve für jede Charge.", "Endkontrolle und Versiegelung vor dem Weg zur Theke.", "Pünktliche, chargengenau rückverfolgbare Lieferungen: Der Maßstab ändert sich, der Handgriff nie."],
-      vieniLabel: "Kommen Sie vorbei", vieniCta: "Besuchen Sie uns", vieniCoda: "Sermoneta · der Ofen ist an",
-    },
+    marquee: "Delsigel / Handwerkliche Industrie / Innovation und Tradition / Seit 1960 / ",
   },
   contatti: {
     ...en.contatti,

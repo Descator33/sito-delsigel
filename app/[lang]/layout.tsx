@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Archivo, Space_Mono, Caveat } from "next/font/google";
-import { variabiliCatalogo } from "../fonts";
 import { LinguaProvider } from "@/components/LinguaProvider";
 import { MenuProvider } from "@/components/MenuStato";
 import { PreloaderProvider } from "@/components/Preloader";
@@ -39,8 +38,12 @@ const PREPARA_HERO_VISITATA = `(function(){try{var d=document.documentElement;if
   ATTRIBUTO_PORTA_DI_RITORNO,
 )},"")}}catch(e){}})()`;
 
-/* Una sola famiglia (Archivo variable, asse wdth) declinata in due voci:
- * display esteso per l'insegna, larghezza normale per il testo.
+/* Una sola famiglia (Archivo variable, asse wdth) per tutto il sito
+ * (uniformazione 2026-09-09): estesa per l'insegna, normale per il
+ * testo, condensata per i manifesti pop di salati e Contatti. Le voci
+ * di catalogo, salati e hero che vivevano in app/fonts.ts (League
+ * Spartan, Inter Tight, IBM Plex Mono, Anton, DM Sans, Archivo Black,
+ * Inter) sono tutte cadute su Archivo; gli alias in globals.css restano.
  * Space Mono è riservato a codici, prezzi ed etichette tecniche.
  * Il subset "latin" copre tutte e cinque le lingue del sito: à/è/ù
  * italiane e francesi, ä/ö finlandesi, ß tedesca e œ francese stanno
@@ -104,7 +107,7 @@ export default async function RootLayout({
       lang={lingua}
       data-preloader-attivo=""
       suppressHydrationWarning
-      className={`${archivo.variable} ${spaceMono.variable} ${caveat.variable} ${variabiliCatalogo} h-full antialiased`}
+      className={`${archivo.variable} ${spaceMono.variable} ${caveat.variable} h-full antialiased`}
     >
       <head>
         <ScriptPrimaDelPaint codice={PREPARA_HERO_VISITATA} />

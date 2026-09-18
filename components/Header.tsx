@@ -10,6 +10,7 @@ import {
   ETICHETTE_LINGUE,
   LINGUE,
   cambiaLinguaNelPercorso,
+  èHome,
   type Lingua,
 } from "@/lib/i18n/lingue";
 import { ATTESA_VOCI, EASE_MENU, PASSO_VOCI } from "@/lib/hero-finestra";
@@ -27,10 +28,86 @@ const ROTTE: readonly (readonly [keyof Testi["comune"]["voci"], string])[] = [
 const MOLLA = [0.22, 1, 0.36, 1] as const;
 
 /** Confronto senza il segmento lingua: /fi/contatti ↔ /contatti. */
-function rottaAttiva(percorso: string, rotta: string) {
+function rottaAttiva(
+  percorso: string,
+  rotta: string,
+  prodottiInVista = false,
+) {
+  const home = èHome(percorso);
+  if (rotta === "/") return home && !prodottiInVista;
+  if (rotta === "/#catalogo") return home && prodottiInVista;
+
   const segmenti = percorso.split("/").filter(Boolean);
   const nudo = `/${segmenti.slice(1).join("/")}`;
-  return rotta === "/" ? nudo === "/" : nudo.startsWith(rotta);
+  return nudo.startsWith(rotta);
+}
+
+/**
+ * La home contiene anche la destinazione della voce «Prodotti»: il suo
+ * pathname resta quello della home, quindi il pathname da solo non può
+ * distinguere i due stati. Il punto di lettura è nel primo terzo del
+ * viewport: così l'indicatore segue sia lo scroll nativo sia Lenis, senza
+ * aggiornare l'URL a ogni pixel.
+ */
+function useProdottiInVista(percorso: string) {
+  const [attivo, setAttivo] = useState(false);
+
+  useEffect(() => {
+    if (!èHome(percorso)) {
+      return;
+    }
+
+    const catalogo = document.getElementById("catalogo");
+    const salati = document.getElementById("salati");
+    if (!catalogo || !salati) return;
+
+    let frame: number | null = null;
+
+    const aggiorna = () => {
+      frame = null;
+      const puntoDiLettura = window.innerHeight * 0.34;
+      const inProdotti =
+        catalogo.getBoundingClientRect().top <= puntoDiLettura &&
+        salati.getBoundingClientRect().bottom > puntoDiLettura;
+      setAttivo((precedente) =>
+        precedente === inProdotti ? precedente : inProdotti,
+      );
+    };
+
+    const programmaAggiornamento = () => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(aggiorna);
+    };
+
+    window.addEventListener("scroll", programmaAggiornamento, {
+      passive: true,
+    });
+    window.addEventListener("resize", programmaAggiornamento);
+
+    /* Le scene scroll-driven possono cambiare altezza dopo il primo paint:
+       in quel caso lo stato va ricalcolato anche senza un nuovo scroll. */
+    const osservatore =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(programmaAggiornamento)
+        : null;
+    osservatore?.observe(catalogo);
+    osservatore?.observe(salati);
+    programmaAggiornamento();
+
+    return () => {
+      window.removeEventListener("scroll", programmaAggiornamento);
+      window.removeEventListener("resize", programmaAggiornamento);
+      osservatore?.disconnect();
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
+  }, [percorso]);
+
+  return attivo;
+}
+
+function ariaCurrentPer(rotta: string, attiva: boolean) {
+  if (!attiva) return undefined;
+  return rotta.startsWith("/#") ? "location" : "page";
 }
 
 /**
@@ -42,6 +119,8 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
   const { aperto, commuta, chiudi, preparaRitornoHome } = useMenu();
   const { testi, percorso: localizza } = useLingua();
   const percorso = usePathname();
+  const prodottiInVistaHome = useProdottiInVista(percorso);
+  const prodottiInVista = èHome(percorso) && prodottiInVistaHome;
   const riduciMovimento = useReducedMotion();
   const intestazione = useRef<HTMLElement>(null);
   const pannello = useRef<HTMLDivElement>(null);
@@ -134,6 +213,7 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
             percorso={percorso}
             aperto={aperto}
             preparaRitornoHome={preparaRitornoHome}
+            prodottiInVista={prodottiInVista}
           />
 
           <div className="col-start-3 flex items-center gap-2 justify-self-end">
@@ -202,7 +282,7 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
           >
             <div
               className={`grid min-h-full px-[clamp(20px,5vw,96px)] pt-[clamp(7.5rem,16vh,10rem)] ${
-                rottaAttiva(percorso, "/")
+                rottaAttiva(percorso, "/", prodottiInVista)
                   ? "pb-[calc(24svh+max(2.5rem,env(safe-area-inset-bottom)))] sm:pb-[calc(30svh+max(2.5rem,env(safe-area-inset-bottom)))] lg:pb-[10vh]"
                   : "pb-[max(2.5rem,env(safe-area-inset-bottom))]"
               }`}
@@ -213,7 +293,7 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
               >
                 <ul>
                   {ROTTE.map(([voce, rotta], indice) => {
-                    const attiva = rottaAttiva(percorso, rotta);
+                    const attiva = rottaAttiva(percorso, rotta, prodottiInVista);
                     return (
                       <motion.li
                         key={voce}
@@ -243,7 +323,7 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
                           onNavigate={
                             rotta === "/" ? preparaRitornoHome : undefined
                           }
-                          aria-current={attiva ? "page" : undefined}
+                          aria-current={ariaCurrentPer(rotta, attiva)}
                           data-active={attiva || undefined}
                           className="hero-menu-voce type-hero block w-fit py-[0.055em] text-[clamp(2rem,9.3vw,4.1rem)] sm:text-[clamp(2.35rem,9vw,4.1rem)] lg:text-[clamp(3rem,5vw,5.4rem)]"
                         >
@@ -285,10 +365,12 @@ function DesktopNavigation({
   percorso,
   aperto,
   preparaRitornoHome,
+  prodottiInVista,
 }: {
   percorso: string;
   aperto: boolean;
   preparaRitornoHome: () => void;
+  prodottiInVista: boolean;
 }) {
   const { testi, percorso: localizza } = useLingua();
 
@@ -300,14 +382,14 @@ function DesktopNavigation({
       className="site-nav-primary col-start-2 hidden h-12 items-center rounded-full p-1 lg:flex"
     >
       {ROTTE.map(([voce, rotta], indice) => {
-        const attiva = rottaAttiva(percorso, rotta);
+        const attiva = rottaAttiva(percorso, rotta, prodottiInVista);
         return (
           <Fragment key={voce}>
             {indice > 0 && <span className="site-nav-sep" aria-hidden />}
             <Link
               href={localizza(rotta)}
               onNavigate={rotta === "/" ? preparaRitornoHome : undefined}
-              aria-current={attiva ? "page" : undefined}
+              aria-current={ariaCurrentPer(rotta, attiva)}
               data-active={attiva || undefined}
               className="site-nav-link font-ui inline-flex h-10 items-center whitespace-nowrap rounded-full px-[clamp(0.7rem,1.1vw,1.1rem)] text-[11px] font-bold uppercase tracking-[0.045em] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-fucsia"
             >

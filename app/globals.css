@@ -274,24 +274,20 @@ html[data-porta-di-ritorno] .preloader-porta {
   --font-display: var(--font-archivo);
   --font-sans: var(--font-archivo);
   --font-mono: var(--font-space-mono);
-  /* le tre voci della sola sezione catalogo (vedi app/fonts.ts) */
-  --font-insegna: var(--font-spartan);
-  --font-testo: var(--font-tight);
-  --font-tecnico: var(--font-plex);
-  /* le due voci della sola sezione salati */
-  --font-insegna-salati: var(--font-anton);
-  --font-testo-salati: var(--font-dm-sans);
-  /* le due voci della sola hero (vedi app/fonts.ts) */
-  --font-hero: var(--font-archivo-black);
-  --font-ui: var(--font-inter);
-  /* Le stesse due famiglie, sotto un nome che non parla di salati.
-     La sub-page Contatti (redesign 2026-08-05) è un manifesto pop e
-     chiede un grottesco condensato che Archivo — esteso per vocazione —
-     non dà: è lo stesso problema del titolo «I NOSTRI SALATI», quindi
-     la stessa risposta. Nessun file in più da scaricare: Anton e DM Sans
-     sono già nel bundle, cambia solo l'alias con cui li si chiama. */
-  --font-pop: var(--font-anton);
-  --font-pop-testo: var(--font-dm-sans);
+  /* Alias storici di catalogo, salati, hero e Contatti (uniformazione
+     2026-09-09). Erano sette famiglie diverse — League Spartan, Inter
+     Tight, IBM Plex Mono, Anton, DM Sans, Archivo Black, Inter — e ora
+     puntano tutte ad Archivo e Space Mono: i nomi restano perché i
+     componenti li usano, e continuano a dire il RUOLO del testo.
+     Le voci condensate ed estese (font-pop, font-insegna-salati,
+     font-hero) non stanno qui ma sotto, come @utility: oltre alla
+     famiglia portano larghezza e peso sull'asse wdth di Archivo. */
+  --font-insegna: var(--font-archivo);
+  --font-testo: var(--font-archivo);
+  --font-tecnico: var(--font-space-mono);
+  --font-testo-salati: var(--font-archivo);
+  --font-ui: var(--font-archivo);
+  --font-pop-testo: var(--font-archivo);
 }
 
 /* Voce display: Archivo esteso, nero, maiuscolo — l'insegna industriale.
@@ -324,14 +320,41 @@ html[data-porta-di-ritorno] .preloader-porta {
 /* e gli stati di CTA, voci di navigazione e comando del menu.        */
 /* ---------------------------------------------------------------- */
 
-/* La voce del manifesto: Archivo Black, maiuscolo, righe serrate.
+/* La voce del manifesto: Archivo nera e un poco estesa, maiuscolo, righe
+   serrate. Fino al 2026-09-09 era Archivo Black; il 900 sull'asse wght
+   con wdth 110 ne restituisce il colore senza allargare le righe, che
+   ogni lingua spezza a mano nel dizionario.
    La misura NON sta qui — cambia per breakpoint e la decide la hero. */
 @utility type-hero {
-  font-family: var(--font-hero), "Arial Black", sans-serif;
-  font-weight: 400;
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-stretch: 110%;
+  font-weight: 900;
   text-transform: uppercase;
   line-height: 0.88;
   letter-spacing: -0.055em;
+}
+
+/* Stessa voce della hero, ma senza misura né interlinea: la usano i
+   titoli di Contatti e i timbri del configuratore. */
+@utility font-hero {
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-stretch: 110%;
+  font-weight: 900;
+}
+
+/* Voce pop condensata: Archivo stretta al 62% e nera — il posto di Anton
+   nei manifesti di salati, Contatti, ponte e teaser del configuratore.
+   Anton aveva un peso solo, quindi il peso lo fissa l'utility. */
+@utility font-pop {
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-stretch: 62%;
+  font-weight: 800;
+}
+
+@utility font-insegna-salati {
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-stretch: 62%;
+  font-weight: 800;
 }
 
 /* La hero cambia impaginato per FORMA dello schermo, non per larghezza: un
@@ -1719,7 +1742,9 @@ html.lenis body {
   background: var(--panna);
   box-shadow: 5px 6px 0 var(--inchiostro);
   color: var(--inchiostro);
-  font-family: var(--font-pop), sans-serif;
+  font-family: var(--font-archivo), sans-serif;
+  font-stretch: 62%;
+  font-weight: 800;
   font-size: clamp(1rem, 1.8vw, 1.7rem);
   line-height: 1;
   letter-spacing: 0.02em;
@@ -2034,7 +2059,9 @@ button.candy-livello:is(:hover, :focus-visible) {
   padding: 0.55rem 1rem 0.42rem;
   box-shadow: 5px 6px 0 var(--inchiostro);
   color: var(--inchiostro);
-  font-family: var(--font-pop), sans-serif;
+  font-family: var(--font-archivo), sans-serif;
+  font-stretch: 62%;
+  font-weight: 800;
   font-size: clamp(1.1rem, 2vw, 1.7rem);
   line-height: 1;
   text-transform: uppercase;
@@ -2368,7 +2395,9 @@ button.candy-livello:is(:hover, :focus-visible) {
   background: white;
   padding: 0.18rem 0.62rem 0.05rem;
   box-shadow: 0 4px 0 #0e0c0d;
-  font-family: var(--font-archivo-black), "Arial Black", sans-serif;
+  font-family: var(--font-archivo), "Arial Black", sans-serif;
+  font-stretch: 110%;
+  font-weight: 900;
   font-size: 1.65rem;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -2390,7 +2419,7 @@ button.candy-livello:is(:hover, :focus-visible) {
   position: relative;
   margin-top: 4.75rem;
   margin-left: 1.45rem;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: clamp(4.35rem, 4.9vw, 5.25rem);
   font-weight: 800;
   line-height: 0.87;
@@ -2425,7 +2454,7 @@ button.candy-livello:is(:hover, :focus-visible) {
 .configurator-intro-copy {
   margin-top: 2.4rem;
   margin-left: 1.45rem;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 520;
   line-height: 1.55;
@@ -2441,7 +2470,9 @@ button.candy-livello:is(:hover, :focus-visible) {
   background: #0b0b12;
   clip-path: polygon(50% 0, 59% 14%, 72% 5%, 77% 22%, 94% 18%, 88% 35%, 100% 43%, 84% 52%, 96% 65%, 77% 68%, 78% 87%, 61% 80%, 50% 100%, 40% 81%, 21% 91%, 23% 70%, 3% 66%, 17% 51%, 0 39%, 17% 32%, 10% 14%, 31% 20%);
   color: white;
-  font-family: var(--font-archivo-black), "Arial Black", sans-serif;
+  font-family: var(--font-archivo), "Arial Black", sans-serif;
+  font-stretch: 110%;
+  font-weight: 900;
   font-size: 1rem;
   line-height: 0.95;
   text-align: center;
@@ -2473,7 +2504,7 @@ button.candy-livello:is(:hover, :focus-visible) {
 }
 
 .configurator-how-button > span {
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: 0.78rem;
   letter-spacing: 0.035em;
 }
@@ -2646,7 +2677,7 @@ button.candy-livello:is(:hover, :focus-visible) {
   width: auto;
   height: auto;
   border: 0;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: 1.45rem;
   font-weight: 900;
   line-height: 0.95;
@@ -2658,7 +2689,7 @@ button.candy-livello:is(:hover, :focus-visible) {
   overflow: visible;
   min-height: 0;
   margin-top: 0.25rem;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: 0.6rem;
   font-weight: 800;
   line-height: 1;
@@ -2743,7 +2774,7 @@ button.candy-livello:is(:hover, :focus-visible) {
   background: linear-gradient(135deg, #ff5b99, #e8266d);
   clip-path: polygon(0 0, 100% 0, 86% 50%, 100% 100%, 0 100%, 10% 50%);
   color: white;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 900;
   letter-spacing: -0.02em;
@@ -2815,7 +2846,7 @@ button.candy-livello:is(:hover, :focus-visible) {
 }
 
 .drop-copy {
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: clamp(1.05rem, 1.55vw, 1.45rem);
   font-weight: 750;
   letter-spacing: -0.025em;
@@ -2841,7 +2872,7 @@ button.candy-livello:is(:hover, :focus-visible) {
 .candy-tray-task {
   z-index: 3;
   color: var(--config-purple);
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
 }
 
 /* Titolo-fumetto e inventario fotografico. */
@@ -2921,7 +2952,7 @@ button.candy-livello:is(:hover, :focus-visible) {
 }
 
 .tessera-nome > span:first-child {
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: 0.72rem;
 }
 
@@ -2968,7 +2999,7 @@ button.candy-livello:is(:hover, :focus-visible) {
 .configurator-savebar strong,
 .configurator-savebar > div > span {
   display: block;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
 }
 
 .configurator-savebar strong {
@@ -3002,7 +3033,7 @@ button.candy-livello:is(:hover, :focus-visible) {
   padding: 0.45rem 0.55rem 0.45rem 1.4rem;
   box-shadow: 0 5px 0 #171019;
   color: white;
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;

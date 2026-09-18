@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { FrecciaCerchio, IconaChiudi } from "./Decori";
 import { useTesti } from "@/components/LinguaProvider";
+import { Frasi } from "@/lib/frasi";
 
 const NUMERI = ["01", "02", "03"];
 
@@ -66,7 +67,7 @@ export function ComeFunziona() {
                 <div>
                   <h3 className="text-[15px] font-bold">{p.titolo}</h3>
                   <p className="mt-1 text-[14px] leading-relaxed text-inchiostro/70">
-                    {p.testo}
+                    <Frasi testo={p.testo} />
                   </p>
                 </div>
               </li>
