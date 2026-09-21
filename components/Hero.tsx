@@ -496,15 +496,18 @@ export function Hero() {
             che a menu aperto non è più il viewport. L'impaginato dentro non
             cambia — si accorcia il contenitore e il blocco si ricolloca da
             sé, che è esattamente ciò che si vuole vedere. */}
-        <div className="hero-impaginato relative flex h-full flex-col justify-end px-[clamp(20px,5vw,96px)] pb-[calc(9vh+88px)] sm:pb-[calc(9vh+96px)] orizzontale:justify-center orizzontale:pb-0">
+        <div className="hero-impaginato relative flex h-full flex-col justify-end px-[clamp(20px,5vw,96px)] pb-[calc(15vh+88px)] sm:pb-[calc(15vh+96px)] orizzontale:justify-center orizzontale:pb-0">
           {/* Il blocco è ancorato al bordo del viewport, non a una colonna
               centrata: oltre i 2000px una `max-width` lo spingerebbe verso
               il centro, cioè addosso al soggetto — la fotografia non si
               sposta con la colonna. Il tetto di 6rem sull'insegna serve
               allo stesso scopo sugli ultra-larghi.
-              In orizzontale il blocco non è centrato ma alzato: nel mockup
-              il suo centro ottico sta al 43% dell'altezza, non al 50% —
+              In orizzontale il blocco non è centrato ma alzato: il suo
+              centro ottico sta sopra la metà dell'altezza, non al 50% —
               sotto deve restare aria, sopra c'è la navigazione.
+              L'alzata (qui e nel `pb` verticale) serve anche a togliere
+              l'ultima riga di dosso all'Intriko: sovrapposta al dolce la
+              scritta perdeva contrasto e si leggeva a fatica.
 
               A menu aperto l'unica cosa che cambia è la SCALA: la stessa
               insegna, gli stessi rapporti, vista più piccola. Rifluire il
@@ -518,7 +521,7 @@ export function Hero() {
             className="w-full"
             style={{ scale: scala, opacity: velo, transformOrigin: "left bottom" }}
           >
-            <div className="w-fit orizzontale:-translate-y-[2vh]">
+            <div className="w-fit orizzontale:-translate-y-[6vh]">
               {/* Le righe vengono dal dizionario: ogni lingua decide i
                   propri a-capo, la maschera resta per riga. */}
               <h1 className="type-hero text-[clamp(2.3rem,9.6vw,3.4rem)] sm:text-[clamp(2.8rem,6.6vw,4.4rem)] lg:text-[clamp(3.2rem,4.62vw,6rem)]">
