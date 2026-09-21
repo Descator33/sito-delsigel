@@ -27,8 +27,10 @@ export async function generateMetadata({
 }
 
 /* Ritratti reali dei dipendenti, con i nomignoli e i ruoli veri presi dal
-   documento aziendale «Nomignoli»: una targa per foto, nell'ordine del
-   documento.
+   documento aziendale «Nomignoli»: una targa per foto.
+
+   L'ordine è per reparto: prima la produzione, che è il cuore di tutto quello
+   che presentiamo, poi ufficio e magazzino, infine i due autisti vicini.
 
    Tre ritratti (svizzero, franco, erode) sono gli scatti originali interi,
    solo ridimensionati: niente relight né scontorno come gli altri.
@@ -36,26 +38,26 @@ export async function generateMetadata({
 const ACCENTI = ["#fbc50a", "#a05cd5", "#f76f0b", "#e8442e"];
 
 const PERSONE = [
+  { name: "Direttò", role: "Direttore stabilimento e manutentore", slug: "franco" },
+  { name: "La rottermaier", role: "Responsabile produzione", slug: "silvia" },
+  { name: "Spiraletto", role: "Responsabile impasti", slug: "augusto" },
+  { name: "Er piega", role: "Responsabile impasti", slug: "marco" },
+  { name: "Friggitelo", role: "Responsabile friggitrice", slug: "ivan" },
+  { name: "A bombazza", role: "Linea produttiva", slug: "anna" },
+  { name: "Burritos", role: "Impasto e piega", slug: "sandro" },
+  { name: "La comare datterina", role: "Linea produttiva", slug: "lucia" },
+  { name: "La mina", role: "Lavorazione pasta", slug: "gino" },
+  { name: "La zia rustichella", role: "Linea produttiva", slug: "rosa" },
+  { name: "Grammetto", role: "Linea produttiva", slug: "dario" },
+  { name: "Speedy twister", role: "Linea produttiva", slug: "fabio" },
+  { name: "Lady sorriso", role: "Linea di confezionamento", slug: "carmela" },
+  { name: "Nuvoletta", role: "Linea di confezionamento", slug: "elisa" },
+  { name: "Sfoglia bella", role: "Linea di confezionamento", slug: "paola" },
   { name: "Pocket coffee", role: "Ufficio commerciale", slug: "giulia" },
   { name: "Il canadese", role: "Responsabile ufficio acquisti e personale", slug: "andrea" },
   { name: "Il pantera", role: "Responsabile di magazzino", slug: "luca" },
   { name: "Goran Pandev", role: "Responsabile di magazzino", slug: "tommaso" },
   { name: "Lo svizzero", role: "Autista", slug: "svizzero" },
-  { name: "Direttò", role: "Direttore stabilimento e manutentore", slug: "franco" },
-  { name: "A bombazza", role: "Linea produttiva", slug: "anna" },
-  { name: "Spiraletto", role: "Responsabile impasti", slug: "augusto" },
-  { name: "Burritos", role: "Impasto e piega", slug: "sandro" },
-  { name: "Friggitelo", role: "Responsabile friggitrice", slug: "ivan" },
-  { name: "La rottermaier", role: "Responsabile produzione", slug: "silvia" },
-  { name: "Er piega", role: "Responsabile impasti", slug: "marco" },
-  { name: "La comare datterina", role: "Linea produttiva", slug: "lucia" },
-  { name: "Lady sorriso", role: "Linea di confezionamento", slug: "carmela" },
-  { name: "La mina", role: "Lavorazione pasta", slug: "gino" },
-  { name: "La zia rustichella", role: "Linea produttiva", slug: "rosa" },
-  { name: "Grammetto", role: "Linea produttiva", slug: "dario" },
-  { name: "Nuvoletta", role: "Linea di confezionamento", slug: "elisa" },
-  { name: "Sfoglia bella", role: "Linea di confezionamento", slug: "paola" },
-  { name: "Speedy twister", role: "Linea produttiva", slug: "fabio" },
   { name: "Erode", role: "Autista", slug: "erode" },
 ];
 
