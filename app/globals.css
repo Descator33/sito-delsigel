@@ -1122,14 +1122,49 @@ html.lenis body {
   isolation: isolate;
   overflow: hidden;
   border-radius: 16px;
-  background: var(--fondo);
+  /* La campitura resta il colore di brand, ma si muove appena verso il
+     prodotto: la zona luminosa lo porta in primo piano senza introdurre
+     un riquadro, un bordo o un colore estraneo al sistema. */
+  background:
+    radial-gradient(
+      ellipse 72% 86% at 81% 70%,
+      color-mix(in srgb, var(--fondo) 72%, white) 0%,
+      transparent 67%
+    ),
+    var(--fondo);
   color: var(--testo);
+}
+
+.card-catalogo::before {
+  position: absolute;
+  z-index: 0;
+  right: -16%;
+  bottom: -42%;
+  width: 76%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  content: "";
+  background: radial-gradient(
+    circle,
+    rgb(255 255 255 / 0.18) 0%,
+    rgb(255 255 255 / 0.05) 44%,
+    transparent 71%
+  );
 }
 
 /* Nessuna ombra sulla sagoma: anche una drop-shadow morbida si addensa sul
    profilo dei prodotti chiari e viene percepita come un bordo scuro. */
 .foto-prodotto {
+  z-index: 1;
   filter: none;
+}
+
+/* Il copy è il solo strato sopra al prodotto: anche quando una sagoma
+   arriva molto vicino al margine, nome e comando non perdono contrasto. */
+.card-catalogo > .relative {
+  isolation: isolate;
+  z-index: 3;
 }
 
 /* La freccia È il comando della card: un solo <button> per prodotto, un

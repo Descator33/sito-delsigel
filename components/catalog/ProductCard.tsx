@@ -56,7 +56,7 @@ const MISURE: Record<VarianteCard, Misure> = {
     testo: "max-w-[62%] sm:max-w-[54%] xl:max-w-[58%]",
     freccia: "grande",
     spazio: "mt-6 xl:mt-[clamp(1rem,1.6vw,1.9rem)]",
-    foto: "bottom-[2%] right-[1%] h-[66%] w-[74%]",
+    foto: "bottom-[-4%] right-[-3%] h-[82%] w-[84%]",
   },
   grande: {
     guscio: "min-h-[18rem] sm:min-h-[24rem] xl:min-h-0",
@@ -67,7 +67,7 @@ const MISURE: Record<VarianteCard, Misure> = {
     testo: "max-w-[60%] xl:max-w-[54%]",
     freccia: "grande",
     spazio: "mt-6 xl:mt-[clamp(1rem,1.5vw,1.8rem)]",
-    foto: "bottom-[2%] right-[1%] h-[78%] w-[52%]",
+    foto: "bottom-[-3%] right-[-4%] h-[86%] w-[70%]",
   },
   compatta: {
     guscio: "min-h-[13rem] xl:min-h-0",
@@ -78,7 +78,7 @@ const MISURE: Record<VarianteCard, Misure> = {
     testo: "max-w-[56%] xl:max-w-[62%]",
     freccia: "piccola",
     spazio: "mt-auto pt-4 xl:pt-[clamp(0.5rem,0.9vw,1.1rem)]",
-    foto: "bottom-[2%] right-[1%] h-[78%] w-[48%]",
+    foto: "bottom-[-4%] right-[-4%] h-[86%] w-[62%]",
   },
 };
 

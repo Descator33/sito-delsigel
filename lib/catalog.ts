@@ -44,7 +44,7 @@ export type Tipologia = {
  * browser e ottimizzatore Next a non riutilizzare le vecchie sagome in cache
  * quando i file vengono sostituiti mantenendo lo stesso nome.
  */
-const PRODUCT_IMAGE_REVISION = "2026-09-23-kling-4k-2";
+const PRODUCT_IMAGE_REVISION = "2026-09-23-paninetto-colorato-3";
 const img = (slug: string) =>
   `/products-4k/${slug}.webp?v=${PRODUCT_IMAGE_REVISION}`;
 
@@ -276,7 +276,7 @@ export const CATALOG: Tipologia[] = [
     slug: "paninetto-colorato-tre-gusti",
     note: "Tre impasti colorati, un unico formato.",
     set: ["bianco", "curcuma", "pomodoro"],
-    image: img("paninetto-curcuma"),
+    image: img("paninetto-colorato-tre-gusti"),
     variants: {
       bianco: img("paninetto-bianco"),
       curcuma: img("paninetto-curcuma"),

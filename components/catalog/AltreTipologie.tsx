@@ -13,8 +13,8 @@ import type { Testi } from "@/lib/i18n/tipi";
 /**
  * La coda del catalogo, dietro alla CTA: i dolci che la vetrina non
  * mostra, nello stesso linguaggio ma in tono minore — una sola campitura
- * chiara, foto piccola, niente claim. La gerarchia la fa la misura,
- * quindi queste non competono con le sette di punta.
+ * chiara, foto grande, niente claim. La gerarchia resta affidata al copy
+ * essenziale, mentre il prodotto è sempre leggibile a colpo d'occhio.
  *
  * La lista è parametrica: di default mostra `RESTO_DOLCI`, mentre la
  * sezione salata le passa il proprio resto. Le tessere aprono la stessa
@@ -57,7 +57,7 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
   return (
     <motion.article
       onClick={onApri}
-      className="card-catalogo min-h-[9.5rem]"
+      className="card-catalogo min-h-[10.5rem]"
       style={
         {
           "--fondo": TEMI.sabbia.fondo,
@@ -72,11 +72,11 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
     >
       {t.image && (
         <motion.div
-          className="foto-prodotto pointer-events-none absolute bottom-[7%] right-[2%] h-[66%] w-[40%]"
+          className="foto-prodotto pointer-events-none absolute bottom-[-5%] right-[-5%] h-[86%] w-[56%]"
           style={{ transformOrigin: "72% 100%" }}
           variants={{
             riposo: { scale: 1, rotate: 0 },
-            attiva: { scale: 1.06, rotate: 1.5 },
+            attiva: { scale: 1.035, rotate: 1 },
           }}
           transition={{ type: "spring", stiffness: 240, damping: 20 }}
         >
@@ -97,7 +97,7 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
         >
           {t.code.replace(/^N\./, "")}.
         </p>
-        <h4 className="font-insegna mt-[0.55em] max-w-[55%] text-[1.25rem] font-extrabold uppercase leading-[0.9] tracking-[-0.04em]">
+        <h4 className="font-insegna mt-[0.55em] max-w-[50%] text-[1.25rem] font-extrabold uppercase leading-[0.9] tracking-[-0.04em]">
           {t.name}
         </h4>
         <p className="font-tecnico mt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-inchiostro/45">

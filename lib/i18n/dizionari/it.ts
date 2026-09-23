@@ -502,7 +502,7 @@ export const it: Testi = {
       eyebrow: "Delsigel · dal 1960",
       titolo: ["La nostra", "storia"],
       testo:
-        "Sei capitoli con dentro numeri veri e mani vere. E una promessa che non cambia: fare del nostro meglio, ogni giorno.",
+        "Esperienza, persone e risultati raccontano il percorso fatto fin qui. Con un impegno costante: continuare a dare il meglio, ogni giorno.",
       marquee: ["mani", "tempo", "cura", "materia", "futuro"],
       progressoScorri: "scorri per continuare",
       tappe: {
@@ -527,7 +527,7 @@ export const it: Testi = {
           sottotitolo: "Certificata, ogni giorno",
           descrizione:
             "Materie prime selezionate e verifica di ogni processo produttivo attraverso i più rigidi standard internazionali: sicurezza alimentare, garantita dalla certificazione IFS Food; tutela dell'ambiente, sostenuta dagli standard Rainforest Alliance; etica e sostenibilità, certificata da RSPO per il rispetto di chi coltiva.",
-          frase: "Certificata da chi non fa sconti.",
+          frase: "",
           alt: "Composizione editoriale evocativa di mani che piegano la sfoglia sul banco infarinato",
         },
         traguardo: {

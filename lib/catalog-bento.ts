@@ -115,26 +115,27 @@ const VETRINA = [
     tema: "fucsia",
     badge: true,
     posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
-    /* La treccia resta dominante, ma tutta la base rimane dentro la card. */
-    foto: "xl:w-[68%] xl:h-[78%] xl:right-[1%] xl:bottom-[2%]",
+    /* La treccia è la protagonista: la luce e il margine trasparente del
+       master tengono leggibile il copy anche con una sagoma più generosa. */
+    foto: "xl:w-[82%] xl:h-[92%] xl:right-[-4%] xl:bottom-[-7%]",
   },
   {
     slug: "bomba-fritta",
     variante: "grande",
     tema: "cacao",
     posto: "xl:col-span-4 xl:row-span-2",
-    /* la card è più larga di quando stava sulle tre colonne: la larghezza
-       scende in proporzione (62%·3/4) così la sfera resta della stessa
-       misura, sospesa sopra il bordo come prima */
-    foto: "xl:w-[48%] xl:h-[58%] xl:right-[0%] xl:bottom-[20%]",
+    /* La sfera riempie il lato destro: resta aria attorno al testo, ma non
+       sembra più un'icona appoggiata nella card. */
+    foto: "xl:w-[76%] xl:h-[84%] xl:right-[-9%] xl:bottom-[-2%]",
   },
   {
     slug: "nuvola",
     variante: "grande",
     tema: "sabbia",
     posto: "xl:col-span-3 xl:row-span-2",
-    /* La sagoma circolare resta ben centrata e non tocca il bordo basso. */
-    foto: "xl:w-[62%] xl:h-[62%] xl:right-[1%] xl:bottom-[4%]",
+    /* La sagoma circolare prende il primo piano mantenendo la crema libera
+       per nome, claim e comando. */
+    foto: "xl:w-[84%] xl:h-[86%] xl:right-[-9%] xl:bottom-[-4%]",
   },
 ] as const satisfies readonly {
   slug: string;
