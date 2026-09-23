@@ -281,8 +281,8 @@ export function statoDaPathname(pathname: string): {
 /**
  * Slug delle tessere dolci in home (lib/catalog.ts) → id base del
  * configuratore. Gli slug NON coincidono (bomba-fritta vs bomba,
- * frittella vs frittelline, lusekatt vs lussekatt) e Intriko Midi non è in
- * home: la corrispondenza è dichiarata qui, mai assunta.
+ * frittella vs frittelline, lusekatt vs lussekatt): la corrispondenza è
+ * dichiarata qui, mai assunta.
  *
  * `bomba-fritta → bomba` è esatta dal 2026-08-01: Bomba Super non è più
  * una base ma il nome commerciale della combinazione bomba + crema, quindi
@@ -294,6 +294,7 @@ export const TESSERA_A_BASE: Record<string, string | null> = {
   cuore: "cuore",
   frittella: "frittelline",
   intriko: "intriko",
+  "intriko-midi": "intriko-midi",
   lusekatt: "lussekatt",
   nuvola: "nuvola",
   stella: "stella",

@@ -21,21 +21,21 @@ const VETRINA = [
     variante: "hero",
     tema: "arancio",
     posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
-    foto: "xl:h-[88%] xl:w-[70%] xl:right-[-5%] xl:bottom-[-12%]",
+    foto: "xl:h-[78%] xl:w-[67%] xl:right-[1%] xl:bottom-[2%]",
   },
   {
     slug: "pizzetta-fritta",
     variante: "grande",
     tema: "cacao",
     posto: "xl:col-span-4 xl:row-span-2",
-    foto: "xl:h-[78%] xl:w-[67%] xl:right-[-5%] xl:bottom-[-10%]",
+    foto: "xl:h-[72%] xl:w-[64%] xl:right-[1%] xl:bottom-[3%]",
   },
   {
     slug: "montanarina",
     variante: "grande",
     tema: "fucsia",
     posto: "xl:col-span-3 xl:row-span-2",
-    foto: "xl:h-[66%] xl:w-[70%] xl:right-[-9%] xl:bottom-[4%]",
+    foto: "xl:h-[64%] xl:w-[66%] xl:right-[1%] xl:bottom-[5%]",
   },
 ] as const satisfies readonly {
   slug: string;

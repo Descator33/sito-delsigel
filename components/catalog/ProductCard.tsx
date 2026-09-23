@@ -15,7 +15,7 @@ import { ProductImage } from "./ProductImage";
  * freccia in colonna a sinistra, prodotto a destra — che le tre varianti
  * riscalano: cambia la misura, non l'ordine di lettura.
  *
- *   hero        l'Intriko: prodotto enorme, tagliato dallo spigolo
+ *   hero        l'Intriko: prodotto dominante, completamente visibile
  *   grande      testo a sinistra, prodotto dominante a destra
  *   compatta    la riga bassa: tutto più piccolo, prodotto di fianco
  *
@@ -41,9 +41,8 @@ type Misure = {
   testo: string;
   freccia: "grande" | "piccola";
   spazio: string;
-  /** il ritaglio della foto sotto xl, dove la griglia è una colonna sola:
-   *  i ritagli dei dati valgono da xl in su e qui non arriverebbero, ma
-   *  la hero deve restare la card più forte anche sul telefono */
+  /** l'ingombro della foto sotto xl, dove la griglia è una colonna sola:
+   *  la hero resta la card più forte senza sacrificare la sagoma */
   foto: string;
 };
 
@@ -57,7 +56,7 @@ const MISURE: Record<VarianteCard, Misure> = {
     testo: "max-w-[62%] sm:max-w-[54%] xl:max-w-[58%]",
     freccia: "grande",
     spazio: "mt-6 xl:mt-[clamp(1rem,1.6vw,1.9rem)]",
-    foto: "bottom-[-6%] right-[-5%] h-[64%] w-[76%]",
+    foto: "bottom-[2%] right-[1%] h-[66%] w-[74%]",
   },
   grande: {
     guscio: "min-h-[18rem] sm:min-h-[24rem] xl:min-h-0",

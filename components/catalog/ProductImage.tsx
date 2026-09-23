@@ -5,8 +5,8 @@ import { motion } from "motion/react";
 
 /**
  * Lo still del prodotto dentro la card. Il riquadro arriva dai dati
- * (`CardCatalogo.foto`) ed è spesso più grande della card: è così che la
- * sagoma esce dai bordi e viene tagliata dall'`overflow: hidden`.
+ * (`CardCatalogo.foto`) ed è calibrato per lasciare sempre visibile la
+ * sagoma completa. I master 4K hanno un margine trasparente uniforme.
  *
  * `object-contain` e non `cover`: gli still sono scontornati su
  * trasparente, deformarli sarebbe visibile. L'ombra è in `.foto-prodotto`,

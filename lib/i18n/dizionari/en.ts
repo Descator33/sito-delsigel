@@ -69,9 +69,10 @@ export const en: Testi = {
     note: {
       golosone: "Filled leavened pastry with a satin glaze and dark chocolate sprinkles.",
       "bomba-fritta": "The traditional fried leavened pastry, filled or plain.", cuore: "Heart-shaped puff pastry with five fillings in the range.",
-      frittella: "A soft fried counter pastry in two flavours.", intriko: "Filled braided puff pastry, in four variants plus an unfilled version.",
+      frittella: "A soft fried counter pastry in two flavours.", intriko: "Filled braided puff pastry, in five variants plus an unfilled version.",
+      "intriko-midi": "Midi Intriko in six filled variants.",
       lusekatt: "The Nordic saffron swirl.", nuvola: "The lightest leavened pastry in the range, in five flavours.", stella: "Star-shaped puff pastry in five variants.",
-      klejner: "The traditional Nordic fried knot, unfilled.", "focaccine-miste-tre-gusti": "A three-flavour set, ready for the counter.",
+      klejner: "The traditional Nordic fried knot, plain or cinnamon.", "focaccine-miste-tre-gusti": "A three-flavour set, ready for the counter.",
       montanarina: "The Neapolitan fried base with two toppings.", "paninetto-colorato-tre-gusti": "Three coloured doughs in one size.",
       "pizzetta-al-pomodoro": "The classic deli-counter size.", "pizzetta-bianca": "Oil and salt in the classic size.",
       "pizzetta-fritta": "Two sizes for the hot counter.", "pizzette-fantasia": "Four toppings in seasonal rotation.",
@@ -80,7 +81,7 @@ export const en: Testi = {
     assi: { gusto: "Flavour", farcitura: "Filling", finitura: "Topping", formato: "Size" },
     valori: {
       cioccolato: "chocolate", "tre cioccolati": "three chocolates", crema: "custard", pistacchio: "pistachio", marmellata: "jam",
-      "frutti di bosco": "forest fruits", semplice: "plain", granella: "sprinkles", vuoto: "unfilled", mozzarella: "mozzarella", pomodoro: "tomato",
+      "frutti di bosco": "forest fruits", caramello: "caramel", "dulce de leche": "dulce de leche", cannella: "cinnamon", semplice: "plain", granella: "sprinkles", vuoto: "unfilled", mozzarella: "mozzarella", pomodoro: "tomato",
       bianca: "white", bianco: "white", curcuma: "turmeric", funghi: "mushrooms", olive: "olives", verdure: "vegetables", wurstel: "frankfurter",
       peperoni: "peppers", pizzaiola: "pizzaiola", "4 formaggi": "four cheeses", "ricotta e spinaci": "ricotta and spinach", piccola: "small", media: "medium",
     },

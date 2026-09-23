@@ -8,7 +8,8 @@ import { useCardTilt } from "@/lib/useCardTilt";
 import { Frasi } from "@/lib/frasi";
 
 /** lo stesso still del catalogo, scontornato: il Golosone come decoro */
-const GOLOSONE = "/products/golosone-crema-granella.webp";
+const GOLOSONE =
+  "/products-4k/golosone-crema-granella.webp?v=2026-09-23-kling-4k-2";
 
 const OCTAGON =
   "polygon(22% 0, 78% 0, 100% 22%, 100% 78%, 78% 100%, 22% 100%, 0 78%, 0 22%)";

@@ -521,7 +521,7 @@ export function Hero() {
             className="w-full"
             style={{ scale: scala, opacity: velo, transformOrigin: "left bottom" }}
           >
-            <div className="w-fit orizzontale:-translate-y-[6vh]">
+            <div className="w-fit orizzontale:-translate-y-[10vh]">
               {/* Le righe vengono dal dizionario: ogni lingua decide i
                   propri a-capo, la maschera resta per riga. */}
               <h1 className="type-hero text-[clamp(2.3rem,9.6vw,3.4rem)] sm:text-[clamp(2.8rem,6.6vw,4.4rem)] lg:text-[clamp(3.2rem,4.62vw,6rem)]">

@@ -5,6 +5,22 @@ const nextConfig: NextConfig = {
     // il display retina largo richiede varianti oltre il default di 3840px
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840, 4672],
     qualities: [75, 90],
+    // Revisione stretta degli still di catalogo: invalida le vecchie sagome
+    // senza autorizzare query arbitrarie sugli altri asset locali.
+    localPatterns: [
+      {
+        pathname: "/**",
+        search: "",
+      },
+      {
+        pathname: "/products/**",
+        search: "?v=2026-09-22-edge-2",
+      },
+      {
+        pathname: "/products-4k/**",
+        search: "?v=2026-09-23-kling-4k-2",
+      },
+    ],
   },
   async headers() {
     return [

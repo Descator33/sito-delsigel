@@ -1,0 +1,622 @@
+{
+  "model": "kling-image-v3_0_omni",
+  "resolution": "4k",
+  "assets": {
+    "intriko-cioccolato": {
+      "status": "completed",
+      "generationId": "AT_G93UqKuJQGpPupLFfjd-_5ErWftsvJCfStSqZyJy51bTsBXe1hjSSO1KZyw86XYQrl1Ty",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-cioccolato.webp",
+      "width": 3891,
+      "height": 2469,
+      "credits": 4
+    },
+    "focaccina-bianca": {
+      "status": "completed",
+      "generationId": "AW3YY_BBtINKRhnDAkOCzRcQ3ihWWRCxVBYmuojyxUADFUMjvSONMbDGw37WL6t9z7YEi7Mx",
+      "workIndex": 0,
+      "file": "public/products-4k/focaccina-bianca.webp",
+      "width": 4587,
+      "height": 2385,
+      "credits": 4
+    },
+    "focaccina-curcuma": {
+      "status": "completed",
+      "generationId": "AWQ7KbCOufeVvHwQdtbA9q0FzuLz_iAQJ8vymMBajML3PKJbloXlayLUZYOs8R1cLh24W6_c",
+      "workIndex": 0,
+      "file": "public/products-4k/focaccina-curcuma.webp",
+      "width": 2934,
+      "height": 1656,
+      "credits": 4
+    },
+    "focaccina-pomodoro": {
+      "status": "completed",
+      "generationId": "AZIkP0B5xpUjRqgPJrCluF_q_esa-hVgrXu9Oq0D93NwMlhjM7zYb514-5J3bO876PAeN7zN",
+      "workIndex": 0,
+      "file": "public/products-4k/focaccina-pomodoro.webp",
+      "width": 4670,
+      "height": 2533,
+      "credits": 4
+    },
+    "bomba-fritta-crema-spaccato": {
+      "generationId": "AZpZaQc-3iIBbSfh448zL0pNU2X_fU5EntWmjC12p3ELGadYFmpwy2JFPYNCyZpO1Ias06cY",
+      "workIndex": 0,
+      "file": "public/products-4k/bomba-fritta-crema-spaccato.webp",
+      "width": 4542,
+      "height": 2836,
+      "credits": 4
+    },
+    "bomba-fritta-crema": {
+      "generationId": "AbIhTMPVnA9HIiFZLxlG4uSRM_opYUEgRS3d0xgOfZgyWXWGGS5-h8Hlw-OujUU33DuZxQj-",
+      "workIndex": 0,
+      "file": "public/products-4k/bomba-fritta-crema.webp",
+      "width": 3948,
+      "height": 3344,
+      "credits": 4
+    },
+    "bomba-fritta-semplice-spaccato": {
+      "generationId": "AccrBiHs4VygWoXV-hj26aRJrIBsLwhm0JDoUmF4YL7LLl9ckWKx5YKXPDiPrlZzm2DH6YJR",
+      "workIndex": 0,
+      "file": "public/products-4k/bomba-fritta-semplice-spaccato.webp",
+      "width": 4013,
+      "height": 2646,
+      "credits": 4
+    },
+    "bomba-fritta-semplice": {
+      "generationId": "AeUqx1Fh68KCM2p2dmXtd4rwkmu0X08QkOfMiHnVS2M5AUJ0QVb5kp71NHYd5ZcReLOKv2lJ",
+      "workIndex": 0,
+      "file": "public/products-4k/bomba-fritta-semplice.webp",
+      "width": 4141,
+      "height": 4027,
+      "credits": 4
+    },
+    "cuore-cioccolato": {
+      "generationId": "ATaL0zKzc55J0KrH_CzQXxZHJK9bW5SBGLmC7ocb-fZb44EqSFaAZEdfKn7CvfNoGbXnmQuL",
+      "workIndex": 0,
+      "file": "public/products-4k/cuore-cioccolato.webp",
+      "width": 3576,
+      "height": 3170,
+      "credits": 4
+    },
+    "cuore-crema": {
+      "generationId": "AZQkK1lFCK9PCtpy9-PCxAE8ok2QsvCAOfieA3ZoSdWtQ3LdmNpAvURJU9uBz_F9HNdrL27W",
+      "workIndex": 0,
+      "file": "public/products-4k/cuore-crema.webp",
+      "width": 3563,
+      "height": 3464,
+      "credits": 4
+    },
+    "cuore-marmellata": {
+      "generationId": "AV_ApkHgtZqlixqCf1_uVcEc1y5GqVJ0livFRbkfyJpTOu2q0Z_9QqQoXoUGxM48iNudI8CY",
+      "workIndex": 0,
+      "file": "public/products-4k/cuore-marmellata.webp",
+      "width": 3790,
+      "height": 3710,
+      "credits": 4
+    },
+    "cuore-pistacchio": {
+      "generationId": "ASkWZ2zodPPlgvni1siLbT7xB0vbdgHlxc0oFXD_J7JpV2oJXdEpPOTwAei2S7ZSWoPBLrba",
+      "workIndex": 0,
+      "file": "public/products-4k/cuore-pistacchio.webp",
+      "width": 3717,
+      "height": 3429,
+      "credits": 4
+    },
+    "cuore-semplice": {
+      "generationId": "AZu17o1u_lBzi6UWlvrIeTGYcj4rLTwLg3cnd0qJgGLfsdXrG8xK8R3L720xzT1KQU-zkgSd",
+      "workIndex": 0,
+      "file": "public/products-4k/cuore-semplice.webp",
+      "width": 3810,
+      "height": 3762,
+      "credits": 4
+    },
+    "focaccine-miste-tre-gusti": {
+      "status": "completed",
+      "generationId": "AYkJULoBB1l2hZVMXeJm1pQmMcwtagPK8bFuYjq8TLNiUUK3wwAtffCamPppXf9k_rmc4iAV",
+      "workIndex": 0,
+      "file": "public/products-4k/focaccine-miste-tre-gusti.webp",
+      "width": 4670,
+      "height": 1305,
+      "credits": 4
+    },
+    "frittella-cioccolato": {
+      "status": "completed",
+      "generationId": "AVqIrdWbrmJW9zDgCBQDz_K--tHQhEGWCdjZauysbxwHVnDUmfr15u8x2Myjnz-z5Y1jnobq",
+      "workIndex": 0,
+      "file": "public/products-4k/frittella-cioccolato.webp",
+      "width": 3846,
+      "height": 3528,
+      "credits": 4
+    },
+    "frittella-crema": {
+      "status": "completed",
+      "generationId": "AfuDPk8iMB0WcWSf6Nj1z4mZlxdPyIx6HK4YJ2ifgELB2dW8yC-yGCQ-h5XyNVSmKkv8ibEk",
+      "workIndex": 0,
+      "file": "public/products-4k/frittella-crema.webp",
+      "width": 2978,
+      "height": 2618,
+      "credits": 4
+    },
+    "golosone-cioccolato-granella": {
+      "status": "completed",
+      "generationId": "AZ0sXTQgwfKUT4M6oMYLDFy_4My3rJ7z5sWH4u4D-bp2umUxTEoRMD-rmFwngo72DDfLPlsh",
+      "workIndex": 0,
+      "file": "public/products-4k/golosone-cioccolato-granella.webp",
+      "width": 2968,
+      "height": 2435,
+      "credits": 4
+    },
+    "golosone-cioccolato-semplice": {
+      "status": "completed",
+      "generationId": "AQPB7Cuq9xdhMSswhvLmmbheqKbwyJdwygHD73fWlFuBfg31dHfgnGZa9WutYJlio0hhZV-O",
+      "workIndex": 0,
+      "file": "public/products-4k/golosone-cioccolato-semplice.webp",
+      "width": 3548,
+      "height": 2516,
+      "credits": 4
+    },
+    "golosone-cioccolato-spaccato": {
+      "status": "completed",
+      "generationId": "AUljW1UX0-s3Y_EmpRsju8HTWEHp2RSDpHt3eJRdt49k2mjjXWEWRK17ZxwT36wDhcbCZeLo",
+      "workIndex": 0,
+      "file": "public/products-4k/golosone-cioccolato-spaccato.webp",
+      "width": 4670,
+      "height": 2215,
+      "credits": 4
+    },
+    "golosone-crema-granella": {
+      "status": "completed",
+      "generationId": "AZi4TCTQqInoRjMoAUY-qNgON_m6mNx89MRx806OdasyQpbvvKX9ugd7bHsCgSdF__n9iClR",
+      "workIndex": 0,
+      "file": "public/products-4k/golosone-crema-granella.webp",
+      "width": 3250,
+      "height": 3132,
+      "credits": 4
+    },
+    "golosone-crema-semplice": {
+      "status": "completed",
+      "generationId": "Afzip-hXBXJ7rOjl5IuBiKEqIBmq2kam7UJIHxaHOwFyveR_LVrecGGUsdakziwH7yP-Lozq",
+      "workIndex": 0,
+      "file": "public/products-4k/golosone-crema-semplice.webp",
+      "width": 3744,
+      "height": 2974,
+      "credits": 4
+    },
+    "golosone-crema-spaccato": {
+      "status": "completed",
+      "generationId": "AfCg0PC1i_vCVU3qI1lrGahELOtk8Ipz44bASfY4TItSiHPr5zcPcNfH2nuPj71rPPLKw-5R",
+      "workIndex": 0,
+      "file": "public/products-4k/golosone-crema-spaccato.webp",
+      "width": 4670,
+      "height": 2192,
+      "credits": 4
+    },
+    "intriko-crema": {
+      "status": "completed",
+      "generationId": "ATA9Rni5hyceHzOtxfZofmea5S9QGE4j4Flny_Ma-DBVuF_XkorGNiPBMx0E303biKpo5dqU",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-crema.webp",
+      "width": 4006,
+      "height": 2949,
+      "credits": 4
+    },
+    "intriko-frutti-di-bosco": {
+      "status": "completed",
+      "generationId": "AW4Tongde1Mp1rikShpF_34hzYlzfOjCTQq0plHJt_cmB9hK42v3oANuVGxyTxrBK9sofUQS",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-frutti-di-bosco.webp",
+      "width": 4670,
+      "height": 3066,
+      "credits": 4,
+      "sourcePreservingCorrection": true,
+      "correction": "original studio photo upscaled locally after Kling identity drift; transparent edge re-derived from source"
+    },
+    "intriko-midi-caramello": {
+      "status": "completed",
+      "generationId": "AX5cICWtcv7_A-Pr2uHvkoK2SzP1F5NL9GNayFo_ky6S9-9m-QL4HHlsXThBcDVq7WkBlxS2",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-midi-caramello.webp",
+      "width": 4670,
+      "height": 2930,
+      "credits": 4
+    },
+    "intriko-midi-cioccolato": {
+      "status": "completed",
+      "generationId": "AcaKX1S4tIp7Ep68jezYEApejoRI_FkoiULZfL_WxO4EAlRV0YBSYh7-lAUwTiGEDQhxh_Z3",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-midi-cioccolato.webp",
+      "width": 4670,
+      "height": 3557,
+      "credits": 4
+    },
+    "intriko-midi-crema": {
+      "status": "completed",
+      "generationId": "Aco2uVFDsoPcGe3nqk3Hb_iYCfcImKc_tQ20e7t0eLm7dC0_hqaOZjFKes6OLaXOqe12rR3b",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-midi-crema.webp",
+      "width": 4670,
+      "height": 3565,
+      "credits": 4
+    },
+    "intriko-midi-dulce-de-leche": {
+      "status": "completed",
+      "generationId": "Ac3taBKW9onFSOHstxJXajcjBRT7JVqfws1ol-nZXwwa_sgbB5dnoh1si7VvokzMEiG-Q8Gq",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-midi-dulce-de-leche.webp",
+      "width": 4670,
+      "height": 3128,
+      "credits": 4
+    },
+    "intriko-midi-frutti-rossi": {
+      "status": "completed",
+      "generationId": "AT-exXm9uPSBVHXbaqGKdSuC07wKxvwX_bhJaiqPyFuSA1UvdutZXZGdoYBIycvuy49D0MJi",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-midi-frutti-rossi.webp",
+      "width": 4670,
+      "height": 3038,
+      "credits": 4
+    },
+    "intriko-midi-pistacchio": {
+      "status": "completed",
+      "generationId": "AWMLnM3vCzwocb6HioY6lkF2YFaPVDrNzg-hF1f7zwMwPu1-GDAKfJQ3K_6Yi-kbv2kdBW-0",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-midi-pistacchio.webp",
+      "width": 3456,
+      "height": 3061,
+      "credits": 4
+    },
+    "intriko-pistacchio": {
+      "status": "completed",
+      "generationId": "ARmHqvWsnQcQUE4XDqqdkLqwyK5Wk7wPFDqLmntwByPEX_i53taFUDEaQc5NcwNvR52r9w-x",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-pistacchio.webp",
+      "width": 4142,
+      "height": 3430,
+      "credits": 4
+    },
+    "intriko-tre-cioccolati": {
+      "status": "completed",
+      "generationId": "AZZiuUzCkE-pJJrtjDt27U2G-XHWGwpHJBTcPHkyba0NrjgA21MoLIWckFhKmC7ZFm5MUPYL",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-tre-cioccolati.webp",
+      "width": 4670,
+      "height": 2608,
+      "credits": 4,
+      "sourcePreservingCorrection": true,
+      "correction": "original studio photo upscaled locally after Kling identity drift; transparent edge re-derived from source"
+    },
+    "intriko-vuoto": {
+      "status": "completed",
+      "generationId": "AX4NnjOkkpn42VV2zEzlVTUqGxoDwLEtbhJL5NPfSyMHzLvvO_Q-GZ9u1G9beL_HGwyvaS9M",
+      "workIndex": 0,
+      "file": "public/products-4k/intriko-vuoto.webp",
+      "width": 4670,
+      "height": 3213,
+      "credits": 4
+    },
+    "klejner-cannella": {
+      "status": "completed",
+      "generationId": "AaihcDT07BPY2FchLSkKnpwJ7dXSKzn7OZkspNpsBXwj0Qif0OgIMokiJHgA3ddj5VEJ0yt8",
+      "workIndex": 0,
+      "file": "public/products-4k/klejner-cannella.webp",
+      "width": 4670,
+      "height": 3527,
+      "credits": 4
+    },
+    "klejner": {
+      "status": "completed",
+      "generationId": "Afe9OXSRZdF3Rc0bvR3rJUZi3hpIEt-vzokLcZ3N-s2cROdRDv5vwVqcJAxVzm6Inn-pINx8",
+      "workIndex": 0,
+      "file": "public/products-4k/klejner.webp",
+      "width": 3050,
+      "height": 3903,
+      "credits": 4
+    },
+    "lusekatt": {
+      "status": "completed",
+      "generationId": "AcDvdUDvluClnG85w3UFxO8vH3ieqmIFnxkNdnhqMh6K2xv7XlfzmTnsOCUqcTpuZmh5sWQf",
+      "workIndex": 0,
+      "file": "public/products-4k/lusekatt.webp",
+      "width": 4670,
+      "height": 2887,
+      "credits": 4
+    },
+    "montanarina-mozzarella": {
+      "status": "completed",
+      "generationId": "ATtfDKm4gTQ5I3poH35iDcgIwV-N9EU5ShhsZ0X6Xese-_80_XBFouIk13VxOL7rborNolR2",
+      "workIndex": 0,
+      "file": "public/products-4k/montanarina-mozzarella.webp",
+      "width": 3099,
+      "height": 2923,
+      "credits": 4
+    },
+    "montanarina-pomodoro": {
+      "status": "completed",
+      "generationId": "AdJ6C62Z_TUJS5CXTfk3NP0qFMh4Who3LQsT5S6GEcsxrNh7wZxmjEuc30ACWYEjr9DDwGoB",
+      "workIndex": 0,
+      "file": "public/products-4k/montanarina-pomodoro.webp",
+      "width": 3720,
+      "height": 3405,
+      "credits": 4
+    },
+    "nuvola-cioccolato": {
+      "status": "completed",
+      "generationId": "ATYynV6OCLA8bQf1iOHOUsCvVTDZl1N3U2Y0hhbIfIby30EAjjfgjgr68FIOK614HDMm1oHD",
+      "workIndex": 0,
+      "file": "public/products-4k/nuvola-cioccolato.webp",
+      "width": 3504,
+      "height": 2724,
+      "credits": 4
+    },
+    "nuvola-crema": {
+      "status": "completed",
+      "generationId": "AUdRfNu7X98J67PqxgmWjMbHCcT7_RdDP17VoPRUn8t48cgwNNp7vJgmaUqgfwpVbiOrS9oM",
+      "workIndex": 0,
+      "file": "public/products-4k/nuvola-crema.webp",
+      "width": 4317,
+      "height": 3433,
+      "credits": 4
+    },
+    "nuvola-marmellata": {
+      "status": "completed",
+      "generationId": "ARhmLJBxhcwoe_f4FVJhXDFWVfv8Os0PFRYUTWwtgJVJWpXJj9ELnKlp0RFkdtPXdy9TngeJ",
+      "workIndex": 0,
+      "file": "public/products-4k/nuvola-marmellata.webp",
+      "width": 4121,
+      "height": 3387,
+      "credits": 4
+    },
+    "nuvola-pistacchio": {
+      "status": "completed",
+      "generationId": "AVCb-bySv0NFru70gar2zIoRZrMse4EbZGgLw4LMG2cXCcJlkc64TlOG0aJ7vhjo-1kZogwv",
+      "workIndex": 0,
+      "file": "public/products-4k/nuvola-pistacchio.webp",
+      "width": 4035,
+      "height": 3453,
+      "credits": 4
+    },
+    "nuvola-semplice": {
+      "status": "completed",
+      "generationId": "AQoUbO8bm1FVkt2CRybvaOezmA_Awl7u0O24iY2TMAGYI7rXwWsQDVk4CKp2T4N-49MagqAe",
+      "workIndex": 0,
+      "file": "public/products-4k/nuvola-semplice.webp",
+      "width": 4670,
+      "height": 3641,
+      "credits": 4
+    },
+    "paninetto-bianco": {
+      "status": "completed",
+      "generationId": "ATKkkhN4Q-ixQM1qJs2U_E3WbyYwXxlwdQoVb47byAiy8DXGQGeIDORo8uZu-iaP91P-5VuV",
+      "workIndex": 0,
+      "file": "public/products-4k/paninetto-bianco.webp",
+      "width": 3496,
+      "height": 2672,
+      "credits": 4
+    },
+    "paninetto-colorato-tre-gusti": {
+      "status": "completed",
+      "generationId": "Aa_u9v85qZhZzigMs_UOSLG6fnC3aeKEHSwxWROfH_iO_Sd_iKc3ux57TbqvOhCVA35Lbhwr",
+      "workIndex": 0,
+      "file": "public/products-4k/paninetto-colorato-tre-gusti.webp",
+      "width": 4670,
+      "height": 1568,
+      "credits": 4
+    },
+    "paninetto-curcuma": {
+      "status": "completed",
+      "generationId": "AXwmiUpL3FcUdZCKiampFPw29jgNbxRaRstQtceugFg87jLUsjN_6TtIJgebAaZWWy-YLF9W",
+      "workIndex": 0,
+      "file": "public/products-4k/paninetto-curcuma.webp",
+      "width": 3392,
+      "height": 2949,
+      "credits": 4
+    },
+    "paninetto-pomodoro": {
+      "status": "completed",
+      "generationId": "ASzpi6UQ_QjEU8Y4O47_kcJ2bH89mFfjpGxEDPVvIBo9yyYn6sdrReLxBNPF00jr0qDYxQuC",
+      "workIndex": 0,
+      "file": "public/products-4k/paninetto-pomodoro.webp",
+      "width": 3177,
+      "height": 2554,
+      "credits": 4
+    },
+    "pizzetta-al-pomodoro": {
+      "status": "completed",
+      "generationId": "ARVzqetBqvBwNgS7xmsthXjR1p2OCYVsm-3RmwkNaJ_NN9JQ0HarN_HU_DRkR9v8rxAC71Ko",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzetta-al-pomodoro.webp",
+      "width": 3500,
+      "height": 2992,
+      "credits": 4
+    },
+    "pizzetta-bianca": {
+      "status": "completed",
+      "generationId": "Ae0H_BdCoU4u56DJU0RpUgkRkPKId5ALOgHDfzIgViU5VhtaIvw2bTSvMd5vcXXK_DKqb8g7",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzetta-bianca.webp",
+      "width": 3136,
+      "height": 2533,
+      "credits": 4
+    },
+    "pizzetta-fantasia-funghi": {
+      "status": "completed",
+      "generationId": "Acm4JC1HJhdQrm8aCyvPAhHBmPZ-uMysuTLlDlHcvVJn3LSh2pviQ668nAYgJzt1KBVoknT9",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzetta-fantasia-funghi.webp",
+      "width": 4118,
+      "height": 3671,
+      "credits": 4
+    },
+    "pizzetta-fantasia-olive": {
+      "status": "completed",
+      "generationId": "AQEeSdIEI3en__KhtqRRNGBF74MvhG0v3Uqkc_rLlKt5zENxefSJeg6E99NqdCMTsPDcuIWg",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzetta-fantasia-olive.webp",
+      "width": 3581,
+      "height": 3138,
+      "credits": 4
+    },
+    "pizzetta-fantasia-verdure": {
+      "status": "completed",
+      "generationId": "AcDvgvEoJ4rLWnwow9oocZ87EvX5zmW-HXPYr6OFS2zRlj9Z19EJ2uslFYxd33SspC_0eIvg",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzetta-fantasia-verdure.webp",
+      "width": 4018,
+      "height": 3684,
+      "credits": 4
+    },
+    "pizzetta-fantasia-wurstel": {
+      "status": "completed",
+      "generationId": "AT1B_4J8gdvpNOR9VU7_IQSZF3rYdecrXebd4sEh8XDAahXbbKSaFlP5_qYmGtfE0j_7KHZW",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzetta-fantasia-wurstel.webp",
+      "width": 4078,
+      "height": 3430,
+      "credits": 4
+    },
+    "pizzetta-fritta-media": {
+      "status": "completed",
+      "generationId": "AV8wmrp134C1CQmmCIJwx1krNchejUQ4daqlbnZR8r3WOPE0iA946jR1vBpFE7iagzIdyPA0",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzetta-fritta-media.webp",
+      "width": 3307,
+      "height": 2832,
+      "credits": 4
+    },
+    "pizzetta-fritta-piccola": {
+      "status": "completed",
+      "generationId": "AQ8ShrMmLdI1fcdWVYmcqHc8ieHSU3_4kzWmfr2mJlqA1Hz3D_jSCad7Vosr3-1Oms39t1vG",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzetta-fritta-piccola.webp",
+      "width": 4670,
+      "height": 3865,
+      "credits": 4
+    },
+    "pizzette-al-pomodoro": {
+      "status": "completed",
+      "generationId": "AUNjcpDm4ofIvXkguEEw2ANNkLLcxRMnf1QTG836yTip1xp0OMPde36k4ZihMvOliIlSVwoU",
+      "workIndex": 0,
+      "file": "public/products-4k/pizzette-al-pomodoro.webp",
+      "width": 4646,
+      "height": 3650,
+      "credits": 4
+    },
+    "rustici": {
+      "status": "completed",
+      "generationId": "Af77kAZ06q65DIdofwMa67rsdw0mRW3UDkfMSvaCzAqKD1bGSS8xwUjcJMEJ_nMMPXEqIhXT",
+      "workIndex": 0,
+      "file": "public/products-4k/rustici.webp",
+      "width": 4670,
+      "height": 1999,
+      "credits": 4
+    },
+    "rustico-4-formaggi": {
+      "status": "completed",
+      "generationId": "AbDCf4kYpXn4_h77UoDno6h1MZR4rBcEjgbd0vypxT24BFos1xSz6oUTP8VtZbRhSoNXqyRN",
+      "workIndex": 0,
+      "file": "public/products-4k/rustico-4-formaggi.webp",
+      "width": 3485,
+      "height": 2945,
+      "credits": 4
+    },
+    "rustico-funghi": {
+      "status": "completed",
+      "generationId": "AeEOcrmTDe8EOvwu0NKYBM0LcQGLs_6MuARm3ItSXrjRgdyPct1CeBmm2yzRPW5ZZh4XDu4P",
+      "workIndex": 0,
+      "file": "public/products-4k/rustico-funghi.webp",
+      "width": 4670,
+      "height": 3369,
+      "credits": 4
+    },
+    "rustico-peperoni": {
+      "status": "completed",
+      "generationId": "AQJM7CpKLor0mrvDngV7Adi7mW-pH9_82XJa86jXYeKLNCCqC35Gdks0Q4u1DDjGld8KrFTR",
+      "workIndex": 0,
+      "file": "public/products-4k/rustico-peperoni.webp",
+      "width": 4104,
+      "height": 2853,
+      "credits": 4
+    },
+    "rustico-pizzaiola": {
+      "status": "completed",
+      "generationId": "AS5I7N_91fpEPFU93ZlayRS4-oO38FPmR5lXAzs1Ixz4j6YR7h7mFT-wr1j918sWebeKIRXg",
+      "workIndex": 0,
+      "file": "public/products-4k/rustico-pizzaiola.webp",
+      "width": 4670,
+      "height": 3507,
+      "credits": 4
+    },
+    "rustico-ricotta-e-spinaci": {
+      "status": "completed",
+      "generationId": "AZlkBj5wdcJRz9KCMwI-msG31oM0vHqz0NF6-IUlFWbnvRGm20UdQh1hdgwnSqRo-5V3f6lK",
+      "workIndex": 0,
+      "file": "public/products-4k/rustico-ricotta-e-spinaci.webp",
+      "width": 3728,
+      "height": 2644,
+      "credits": 4
+    },
+    "rustico-wurstel": {
+      "status": "completed",
+      "generationId": "AftsKPcp7nAhBuWoYC5Uf9U0LofcUTHjWL8wLAJ9ngmZDi2H9_OmMi10sec_Tg3Oz4StEPIX",
+      "workIndex": 0,
+      "file": "public/products-4k/rustico-wurstel.webp",
+      "width": 4670,
+      "height": 3588,
+      "credits": 4
+    },
+    "stella-cioccolato": {
+      "status": "completed",
+      "generationId": "AaKdeICR4VGw9H0kMsjSmiL4iLTtRkvL5aZRep1N2a41q7u7izJmUHyYVcUnkmfX-qu1jLIe",
+      "workIndex": 0,
+      "file": "public/products-4k/stella-cioccolato.webp",
+      "width": 3716,
+      "height": 3096,
+      "credits": 4
+    },
+    "stella-crema": {
+      "status": "completed",
+      "generationId": "AcGeic7p31U2Q3Z1RwIN1vMCLpOGC4Dvyq6yPL0FfqFhRxT8UFy44coS11pjsYJ-LrmbfNrx",
+      "workIndex": 0,
+      "file": "public/products-4k/stella-crema.webp",
+      "width": 3251,
+      "height": 2976,
+      "credits": 4
+    },
+    "stella-marmellata": {
+      "status": "completed",
+      "generationId": "AWRhmQInFck1UPCTrRSm6-CvXchauWww4_PLdc-VbcdrX64vz2f0p1ksWsQst1EBHQvSlwAw",
+      "workIndex": 0,
+      "file": "public/products-4k/stella-marmellata.webp",
+      "width": 4302,
+      "height": 3640,
+      "credits": 4
+    },
+    "stella-pistacchio": {
+      "status": "completed",
+      "generationId": "ATf_VNdITqEvQIjyzXux9tZzovmQ1Kn0J1QviHctfuqSTq2EW_0i1kSd1m8YDE0I9DQblSbj",
+      "workIndex": 0,
+      "file": "public/products-4k/stella-pistacchio.webp",
+      "width": 4670,
+      "height": 3661,
+      "credits": 4
+    },
+    "stella-semplice": {
+      "status": "completed",
+      "generationId": "AfZexbIAyEz_6SVtWXvM-TyN1M4stuxpishDUI2E43lOy7isyy-1XOFF2Z4Sf9uzwQA89qFc",
+      "workIndex": 0,
+      "file": "public/products-4k/stella-semplice.webp",
+      "width": 3958,
+      "height": 3553,
+      "credits": 4
+    },
+    "vol-au-vent": {
+      "status": "completed",
+      "generationId": "AQxiliMq34LxExB1IDlhUC4oLkKWHYEUcILFJ21GiXtKjISlWwTJJu8Gx2wds_D_ONshR4XK",
+      "workIndex": 0,
+      "file": "public/products-4k/vol-au-vent.webp",
+      "width": 3636,
+      "height": 3177,
+      "credits": 4
+    }
+  }
+}

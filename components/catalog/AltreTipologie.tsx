@@ -72,7 +72,7 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
     >
       {t.image && (
         <motion.div
-          className="foto-prodotto pointer-events-none absolute bottom-[4%] right-[-1%] h-[72%] w-[41%]"
+          className="foto-prodotto pointer-events-none absolute bottom-[7%] right-[2%] h-[66%] w-[40%]"
           style={{ transformOrigin: "72% 100%" }}
           variants={{
             riposo: { scale: 1, rotate: 0 },

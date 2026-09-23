@@ -6,17 +6,17 @@
  *  - le foglie "APERTA/APERTO/CHIUSA" dell'albero NON sono prodotti: sono
  *    viste fotografiche → `views` ("spaccato" = il dolce aperto a metà);
  *  - i "TRE GUSTI" (focaccine, paninetto) sono venduti come set → `set`,
- *    la card usa lo scatto di gruppo, i gusti sono contenuto non selettore;
+ *    mentre i singoli gusti restano sfogliabili nella scheda;
  *  - tutto il resto è gamma vera → `axes` (gusto / farcitura / finitura /
  *    formato), che la card mostra come pallini colorati.
  *
- * `image` = still generato (public/products/<slug>.webp): finché è assente
+ * `image` = still 4K scontornato (public/products-4k/<slug>.webp): finché è assente
  * la card mostra il placeholder 2D.
  *
- * Gli still sono relight Kling degli scatti in public/DOLCI e public/SALATI,
- * scontornati su trasparente: sulla card il dolce galleggia sopra la
- * campitura d'accento, come il ritaglio del film. `variants` mappa il valore
- * di un asse al suo scatto, così passando sui pallini la card cambia foto.
+ * Gli still derivano pixel per pixel dalle foto definitive e hanno fondo
+ * trasparente: sulla card il prodotto galleggia sopra la campitura d'accento.
+ * `variants` mappa il valore di un asse al suo scatto, così passando sui
+ * pallini la card cambia foto.
  */
 
 export type Axis = { label: string; values: string[] };
@@ -31,7 +31,7 @@ export type Tipologia = {
   axes?: Axis[];
   set?: string[];
   views?: "spaccato"[];
-  /** still generato, quando esiste; altrimenti placeholder */
+  /** still scontornato, quando esiste; altrimenti placeholder */
   image?: string;
   /** valore d'asse → still: la card lo mostra al passaggio sul pallino */
   variants?: Record<string, string>;
@@ -39,8 +39,14 @@ export type Tipologia = {
   spaccato?: string;
 };
 
-/** tutti gli still stanno in public/products/<slug>.webp */
-const img = (slug: string) => `/products/${slug}.webp`;
+/**
+ * Tutti gli still stanno in public/products-4k/<slug>.webp. La revisione forza
+ * browser e ottimizzatore Next a non riutilizzare le vecchie sagome in cache
+ * quando i file vengono sostituiti mantenendo lo stesso nome.
+ */
+const PRODUCT_IMAGE_REVISION = "2026-09-23-kling-4k-2";
+const img = (slug: string) =>
+  `/products-4k/${slug}.webp?v=${PRODUCT_IMAGE_REVISION}`;
 
 export const CATALOG: Tipologia[] = [
   // ------------------------------- DOLCI --------------------------------
@@ -119,12 +125,13 @@ export const CATALOG: Tipologia[] = [
     name: "Intriko",
     macro: "dolci",
     slug: "intriko",
-    note: "Treccia di sfoglia farcita, quattro varianti più la versione vuota.",
+    note: "Treccia di sfoglia farcita, cinque varianti più la versione vuota.",
     axes: [
       {
         label: "Gusto",
         values: [
           "cioccolato",
+          "crema",
           "frutti di bosco",
           "pistacchio",
           "tre cioccolati",
@@ -132,9 +139,10 @@ export const CATALOG: Tipologia[] = [
         ],
       },
     ],
-    image: img("intriko-pistacchio"),
+    image: img("intriko-cioccolato"),
     variants: {
       cioccolato: img("intriko-cioccolato"),
+      crema: img("intriko-crema"),
       "frutti di bosco": img("intriko-frutti-di-bosco"),
       pistacchio: img("intriko-pistacchio"),
       "tre cioccolati": img("intriko-tre-cioccolati"),
@@ -142,8 +150,37 @@ export const CATALOG: Tipologia[] = [
     },
   },
   {
+    code: "N.19",
+    name: "Intriko Midi",
+    macro: "dolci",
+    slug: "intriko-midi",
+    note: "Intriko in formato midi, sei farciture a gamma.",
+    axes: [
+      {
+        label: "Gusto",
+        values: [
+          "caramello",
+          "cioccolato",
+          "crema",
+          "pistacchio",
+          "frutti di bosco",
+          "dulce de leche",
+        ],
+      },
+    ],
+    image: img("intriko-midi-cioccolato"),
+    variants: {
+      caramello: img("intriko-midi-caramello"),
+      cioccolato: img("intriko-midi-cioccolato"),
+      crema: img("intriko-midi-crema"),
+      pistacchio: img("intriko-midi-pistacchio"),
+      "frutti di bosco": img("intriko-midi-frutti-rossi"),
+      "dulce de leche": img("intriko-midi-dulce-de-leche"),
+    },
+  },
+  {
     code: "N.06",
-    name: "Lusekatt",
+    name: "Lussekatt",
     macro: "dolci",
     slug: "lusekatt",
     note: "La girella nordica allo zafferano.",
@@ -196,8 +233,13 @@ export const CATALOG: Tipologia[] = [
     name: "Klejner",
     macro: "dolci",
     slug: "klejner",
-    note: "Il nodo fritto della tradizione nordica, senza farcitura.",
+    note: "Il nodo fritto della tradizione nordica, semplice o alla cannella.",
+    axes: [{ label: "Gusto", values: ["semplice", "cannella"] }],
     image: img("klejner"),
+    variants: {
+      semplice: img("klejner"),
+      cannella: img("klejner-cannella"),
+    },
   },
   // ------------------------------- SALATI -------------------------------
   {
@@ -264,8 +306,11 @@ export const CATALOG: Tipologia[] = [
     slug: "pizzetta-fritta",
     note: "Due formati per il banco caldo.",
     axes: [{ label: "Formato", values: ["piccola", "media"] }],
-    // la piccola è identica alla media a meno del diametro: stesso scatto
     image: img("pizzetta-fritta-media"),
+    variants: {
+      piccola: img("pizzetta-fritta-piccola"),
+      media: img("pizzetta-fritta-media"),
+    },
   },
   {
     code: "N.15",
@@ -346,6 +391,9 @@ const GUSTO_COLORS: Record<string, string> = {
   pistacchio: "#7fc25b",
   marmellata: "#eb186b",
   "frutti di bosco": "#a05cd5",
+  caramello: "#c98b4a",
+  "dulce de leche": "#b9783d",
+  cannella: "#a56638",
   semplice: "#fff4e6",
   granella: "#54301a",
   // salati

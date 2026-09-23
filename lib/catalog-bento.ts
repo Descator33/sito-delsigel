@@ -8,7 +8,7 @@
  * sparisce dal catalogo il build si ferma qui (`vetrina()` lancia) invece
  * di renderizzare una card vuota.
  *
- * Le tre tipologie in vetrina sono i dolci di punta. Le altre sei non
+ * Le tre tipologie in vetrina sono i dolci di punta. Le altre sette non
  * spariscono: stanno dietro alla CTA in fondo alla griglia, che le apre
  * in coda senza cambiare pagina.
  *
@@ -50,9 +50,9 @@ export type CardCatalogo = {
   badge?: boolean;
   /** posto nella griglia a 12 colonne, da xl in su */
   posto: string;
-  /** ritaglio della foto dentro la card, da xl in su: la sagoma esce dai
-   *  bordi quanto serve, ed è per-prodotto perché gli still hanno
-   *  proporzioni diverse (Lusekatt è largo il doppio del Golosone) */
+  /** ingombro della foto dentro la card, da xl in su. Resta per-prodotto
+   *  perché gli still hanno proporzioni diverse, ma la sagoma non supera
+   *  più i bordi: i master 4K includono già il margine di sicurezza. */
   foto: string;
 };
 
@@ -115,9 +115,8 @@ const VETRINA = [
     tema: "fucsia",
     badge: true,
     posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
-    /* la treccia è la sagoma più larga della vetrina (1,32:1) e attraversa
-       la card in diagonale: esce dallo spigolo in basso a destra */
-    foto: "xl:w-[68%] xl:h-[87%] xl:right-[-4%] xl:bottom-[-14%]",
+    /* La treccia resta dominante, ma tutta la base rimane dentro la card. */
+    foto: "xl:w-[68%] xl:h-[78%] xl:right-[1%] xl:bottom-[2%]",
   },
   {
     slug: "bomba-fritta",
@@ -134,9 +133,8 @@ const VETRINA = [
     variante: "grande",
     tema: "sabbia",
     posto: "xl:col-span-3 xl:row-span-2",
-    /* dalla striscia bassa al posto alto: il ciuffo cresce e torna a
-       sfiorare il bordo basso, come faceva da compatta */
-    foto: "xl:w-[60%] xl:h-[62%] xl:right-[-2%] xl:bottom-[-10%]",
+    /* La sagoma circolare resta ben centrata e non tocca il bordo basso. */
+    foto: "xl:w-[62%] xl:h-[62%] xl:right-[1%] xl:bottom-[4%]",
   },
 ] as const satisfies readonly {
   slug: string;
@@ -188,7 +186,7 @@ export function varianti(t: Tipologia): number {
   return 1;
 }
 
-/** «9 tipologie / 30 varianti»: contato, non scritto. Da quando i salati
+/** «10 tipologie / 38 varianti»: contato, non scritto. Da quando i salati
  *  hanno una sezione loro, il conto dell'intestazione è quello dei dolci. */
 export const TOTALE_TIPOLOGIE = DOLCI.length;
 export const TOTALE_VARIANTI = DOLCI.reduce((n, t) => n + varianti(t), 0);

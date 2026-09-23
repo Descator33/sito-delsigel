@@ -1126,10 +1126,10 @@ html.lenis body {
   color: var(--testo);
 }
 
-/* Il dolce galleggia sopra la campitura: l'ombra è disegnata qui e non
-   incisa nel webp, così la stessa foto serve card chiare e scure. */
+/* Nessuna ombra sulla sagoma: anche una drop-shadow morbida si addensa sul
+   profilo dei prodotti chiari e viene percepita come un bordo scuro. */
 .foto-prodotto {
-  filter: drop-shadow(0 22px 18px rgb(40 20 8 / 0.22));
+  filter: none;
 }
 
 /* La freccia È il comando della card: un solo <button> per prodotto, un
@@ -1530,11 +1530,11 @@ html.lenis body {
   );
 }
 .salati-foto {
-  filter: drop-shadow(0 12px 10px rgb(90 45 12 / 0.16));
+  filter: none;
   transition: filter 0.25s ease-out;
 }
 .salati-prodotto:is(:hover, :focus-visible) .salati-foto {
-  filter: drop-shadow(0 18px 14px rgb(90 45 12 / 0.24));
+  filter: none;
 }
 .salati-nome {
   transition: color 0.25s ease-out;

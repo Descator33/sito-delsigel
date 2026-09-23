@@ -80,6 +80,7 @@ const FARCITURA_A_CHIAVE: Record<string, string> = {
   "marmellata-frutti-rossi-e-ribes": "marmellata",
   "frutti-di-bosco-e-ribes": "marmellata",
   "frutti-rossi": "frutti di bosco",
+  "dulce-de-leche": "dulce de leche",
   "senza-farcitura": "semplice",
 };
 

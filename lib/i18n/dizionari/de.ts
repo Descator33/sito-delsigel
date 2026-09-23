@@ -54,15 +54,15 @@ export const de: Testi = {
     ...en.prodotti,
     note: {
       golosone: "Gefülltes Hefegebäck mit seidiger Glasur und dunklen Schokostreuseln.", "bomba-fritta": "Traditionelles frittiertes Hefegebäck, gefüllt oder pur.", cuore: "Herzförmiges Blätterteiggebäck mit fünf Füllungen.",
-      frittella: "Weiches frittiertes Thekengebäck in zwei Geschmacksrichtungen.", intriko: "Gefüllter Blätterteigzopf in vier Varianten sowie ungefüllt.", lusekatt: "Die nordische Safranschnecke.",
-      nuvola: "Das leichteste Hefegebäck im Sortiment, in fünf Geschmacksrichtungen.", stella: "Sternförmiges Blätterteiggebäck in fünf Varianten.", klejner: "Der traditionelle nordische frittierte Knoten, ungefüllt.",
+      frittella: "Weiches frittiertes Thekengebäck in zwei Geschmacksrichtungen.", intriko: "Gefüllter Blätterteigzopf in fünf Varianten sowie ungefüllt.", "intriko-midi": "Intriko im Midi-Format mit sechs Füllungen.", lusekatt: "Die nordische Safranschnecke.",
+      nuvola: "Das leichteste Hefegebäck im Sortiment, in fünf Geschmacksrichtungen.", stella: "Sternförmiges Blätterteiggebäck in fünf Varianten.", klejner: "Der traditionelle nordische frittierte Knoten, pur oder mit Zimt.",
       "focaccine-miste-tre-gusti": "Dreier-Set verschiedener Geschmacksrichtungen, bereit für die Theke.", montanarina: "Die frittierte neapolitanische Basis mit zwei Belägen.", "paninetto-colorato-tre-gusti": "Drei farbige Teige in einem Format.",
       "pizzetta-al-pomodoro": "Das klassische Feinkostthekenformat.", "pizzetta-bianca": "Öl und Salz im klassischen Format.", "pizzetta-fritta": "Zwei Formate für die Warmtheke.", "pizzette-fantasia": "Vier Beläge im saisonalen Wechsel.",
       rustici: "Sechs Füllungen in einer Blätterteighülle.", "vol-au-vent": "Portioniertes Blätterteiggebäck zum Befüllen.",
     },
     assi: { gusto: "Geschmack", farcitura: "Füllung", finitura: "Topping", formato: "Format" },
     valori: {
-      cioccolato: "Schokolade", "tre cioccolati": "drei Schokoladensorten", crema: "Creme", pistacchio: "Pistazie", marmellata: "Konfitüre", "frutti di bosco": "Waldbeeren", semplice: "pur", granella: "Streusel", vuoto: "ungefüllt",
+      cioccolato: "Schokolade", "tre cioccolati": "drei Schokoladensorten", crema: "Creme", pistacchio: "Pistazie", marmellata: "Konfitüre", "frutti di bosco": "Waldbeeren", caramello: "Karamell", "dulce de leche": "Dulce de leche", cannella: "Zimt", semplice: "pur", granella: "Streusel", vuoto: "ungefüllt",
       mozzarella: "Mozzarella", pomodoro: "Tomate", bianca: "weiß", bianco: "weiß", curcuma: "Kurkuma", funghi: "Pilze", olive: "Oliven", verdure: "Gemüse", wurstel: "Würstchen", peperoni: "Paprika", pizzaiola: "Pizzaiola",
       "4 formaggi": "vier Käsesorten", "ricotta e spinaci": "Ricotta und Spinat", piccola: "klein", media: "mittel",
     },
