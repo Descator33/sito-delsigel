@@ -2,14 +2,14 @@ import type { IdTappaStoria } from "@/lib/i18n/tipi";
 
 /**
  * Le sei tappe del film scroll-driven «La nostra storia» — la sola
- * STRUTTURA: immagini, ordine, loghi delle certificazioni. Tutti i
+ * STRUTTURA: fotografie, ordine, loghi delle certificazioni. Tutti i
  * testi (titolo, sottotitolo, descrizione, frase, alt) vivono nei
  * dizionari sotto `chiSiamo.storia.tappe`, agganciati per `id`: è ciò
  * che permette alle cinque lingue di raccontare le stesse immagini.
  *
- * Le immagini sono interpretazioni editoriali generate per la campagna,
- * non fotografie d'archivio né ritratti delle persone reali. Ogni scena
- * ha un taglio orizzontale e un reframe verticale dedicato.
+ * Le fotografie originali ricevute per la pagina vivono in public. Lo stesso
+ * scatto è usato a ogni breakpoint: l'elemento picture mantiene comunque il
+ * reframe con object-cover nella composizione responsive.
  */
 
 export type Certificazione = {
@@ -34,24 +34,38 @@ export type TappaStoria = {
   certificazioni?: Certificazione[];
 };
 
+const CARTELLA_STORIA =
+  "/wetransfer_13-milioni-3-jpg_2026-10-26_1056";
+
+export const IMMAGINI_STORIA = {
+  intro: {
+    immagine: `${CARTELLA_STORIA}/la nostra storia 2.jpg`,
+    immagineVertical: `${CARTELLA_STORIA}/la nostra storia.jpg`,
+  },
+  titolo: {
+    immagine: `${CARTELLA_STORIA}/la nostra storia.jpg`,
+    immagineVertical: `${CARTELLA_STORIA}/la nostra storia.jpg`,
+  },
+} as const;
+
 export const STORIA: TappaStoria[] = [
   {
     id: "origini",
     numero: "01",
-    immagine: "/storia-generated/01-origini-wide.webp",
-    immagineVertical: "/storia-generated/01-origini-vertical.webp",
+    immagine: `${CARTELLA_STORIA}/2011 (3).jpg`,
+    immagineVertical: `${CARTELLA_STORIA}/2011 (3).jpg`,
   },
   {
     id: "unione",
     numero: "02",
-    immagine: "/storia-generated/02-unione-wide.webp",
-    immagineVertical: "/storia-generated/02-unione-vertical.webp",
+    immagine: `${CARTELLA_STORIA}/l'ossimoro.jpg`,
+    immagineVertical: `${CARTELLA_STORIA}/l'ossimoro.jpg`,
   },
   {
     id: "qualita",
     numero: "03",
-    immagine: "/storia-generated/03-artigianalita-wide.webp",
-    immagineVertical: "/storia-generated/03-artigianalita-vertical.webp",
+    immagine: `${CARTELLA_STORIA}/la qualità.jpg`,
+    immagineVertical: `${CARTELLA_STORIA}/la qualità.jpg`,
     certificazioni: [
       { chiave: "ifs", nome: "IFS Food", logo: "/brand/certificazioni/ifs.svg" },
       {
@@ -65,19 +79,19 @@ export const STORIA: TappaStoria[] = [
   {
     id: "traguardo",
     numero: "04",
-    immagine: "/storia-generated/04-crescita-wide.webp",
-    immagineVertical: "/storia-generated/04-crescita-vertical.webp",
+    immagine: `${CARTELLA_STORIA}/13 milioni (3).jpg`,
+    immagineVertical: `${CARTELLA_STORIA}/13 milioni (3).jpg`,
   },
   {
     id: "generazione",
     numero: "05",
-    immagine: "/storia-generated/06-futuro-wide.webp",
-    immagineVertical: "/storia-generated/06-futuro-vertical.webp",
+    immagine: `${CARTELLA_STORIA}/2026.jpg`,
+    immagineVertical: `${CARTELLA_STORIA}/2026.jpg`,
   },
   {
     id: "futuro",
     numero: "06",
-    immagine: "/storia-generated/05-squadra-wide.webp",
-    immagineVertical: "/storia-generated/05-squadra-vertical.webp",
+    immagine: `${CARTELLA_STORIA}/28 milioni.jpg`,
+    immagineVertical: `${CARTELLA_STORIA}/28 milioni.jpg`,
   },
 ];

@@ -547,7 +547,7 @@ export const it: Testi = {
           alt: "Composizione editoriale evocativa del passaggio di un ricettario tra due generazioni",
         },
         futuro: {
-          titolo: "25 milioni",
+          titolo: "28 milioni",
           sottotitolo: "Il piano 2026–27",
           descrizione:
             "Abbiamo già tracciato la rotta per i prossimi anni. Nuovi investimenti per il 2027 permetteranno di raddoppiare la capacità produttiva. Nuove idee trasformate in nuovi prodotti, fedeli alla nostra identità.",

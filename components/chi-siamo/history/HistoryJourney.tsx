@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { useTesti } from "@/components/LinguaProvider";
 import {
   STORIA,
+  IMMAGINI_STORIA,
   type Certificazione,
   type TappaStoria,
 } from "@/data/history";
@@ -29,16 +30,20 @@ const SFONDI_CAPITOLI = [
 ] as const;
 
 function StoryPicture({
-  tappa,
+  immagine,
+  immagineVertical,
+  alt,
   className,
   loading = "lazy",
 }: {
-  tappa: TappaLocalizzata;
+  immagine: string;
+  immagineVertical: string;
+  alt: string;
   className?: string;
   loading?: "eager" | "lazy";
 }) {
   const common = {
-    alt: tappa.alt,
+    alt,
     sizes: "(min-width: 768px) 64vw, 100vw",
     loading,
   };
@@ -46,7 +51,7 @@ function StoryPicture({
     props: { srcSet: desktop },
   } = getImageProps({
     ...common,
-    src: tappa.immagine,
+    src: immagine,
     width: 1536,
     height: 1024,
   });
@@ -54,7 +59,7 @@ function StoryPicture({
     props: { srcSet: mobile, ...rest },
   } = getImageProps({
     ...common,
-    src: tappa.immagineVertical,
+    src: immagineVertical,
     width: 768,
     height: 1024,
   });
@@ -63,7 +68,7 @@ function StoryPicture({
     <picture>
       <source media="(min-width: 768px)" srcSet={desktop} />
       <source media="(max-width: 767px)" srcSet={mobile} />
-      <img {...rest} alt={tappa.alt} className={className} />
+      <img {...rest} alt={alt} className={className} />
     </picture>
   );
 }
@@ -99,7 +104,9 @@ function HistoryReduced({ tappe }: { tappe: TappaLocalizzata[] }) {
         <li key={tappa.id} className="mx-auto max-w-5xl border-b border-cacao/15 py-16">
           <figure className="relative aspect-[3/4] overflow-clip md:aspect-[16/10]">
             <StoryPicture
-              tappa={tappa}
+              immagine={tappa.immagine}
+              immagineVertical={tappa.immagineVertical}
+              alt={tappa.alt}
               className="absolute inset-0 h-full w-full object-cover"
             />
           </figure>
@@ -315,7 +322,9 @@ export function HistoryJourney() {
               <span className="flex items-center gap-[0.11em]">
                 <span className="relative inline-block h-[0.42em] w-[0.92em] shrink-0 overflow-hidden rounded-[999px] align-middle">
                   <StoryPicture
-                    tappa={tappe[2]}
+                    immagine={IMMAGINI_STORIA.titolo.immagine}
+                    immagineVertical={IMMAGINI_STORIA.titolo.immagineVertical}
+                    alt=""
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </span>
@@ -331,7 +340,9 @@ export function HistoryJourney() {
         <figure className="relative min-h-[56svh] overflow-clip md:min-h-[100svh]">
           <div data-intro-foto className="absolute inset-0 origin-center">
             <StoryPicture
-              tappa={tappe[0]}
+              immagine={IMMAGINI_STORIA.intro.immagine}
+              immagineVertical={IMMAGINI_STORIA.intro.immagineVertical}
+              alt=""
               /* È la prima immagine del capitolo e diventa LCP quando si
                  entra direttamente da /#storia: non deve aspettare il
                  margine del lazy loader. Tutte le tappe successive restano
@@ -390,7 +401,9 @@ export function HistoryJourney() {
               >
                 <div data-story-image className="absolute -inset-[3%] origin-center">
                   <StoryPicture
-                    tappa={tappa}
+                    immagine={tappa.immagine}
+                    immagineVertical={tappa.immagineVertical}
+                    alt={tappa.alt}
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
