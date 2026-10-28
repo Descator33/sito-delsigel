@@ -239,7 +239,9 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
               aria-expanded={aperto}
               aria-controls="menu-delsigel"
               aria-haspopup="dialog"
-              className="hero-comando font-ui flex h-12 min-w-[7.25rem] items-center justify-center gap-3 rounded-full px-4 text-[12px] font-bold uppercase tracking-[0.025em] sm:px-5"
+              /* Il menu resta disponibile nella logica dell'app, ma il suo
+                 comando non è previsto nell'interfaccia corrente. */
+              className="hero-comando font-ui hidden h-12 min-w-[7.25rem] items-center justify-center gap-3 rounded-full px-4 text-[12px] font-bold uppercase tracking-[0.025em] sm:px-5"
             >
               <span className="hero-burger" data-aperto={aperto} aria-hidden>
                 <span />
