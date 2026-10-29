@@ -11,12 +11,14 @@ Uso (ambiente isolato, nessuna dipendenza aggiunta al progetto):
 """
 
 from pathlib import Path
+import sys
 
 import numpy as np
 from PIL import Image
 from rembg import new_session, remove
 from scipy.ndimage import (
     binary_erosion,
+    binary_fill_holes,
     distance_transform_edt,
     gaussian_filter,
 )
@@ -134,6 +136,11 @@ ASSETS = {
     "vol-au-vent": "Salati/Vol au vent/Vol au vent.jpg",
 }
 
+# Alcuni prodotti molto chiari contengono riflessi che il segmentatore può
+# scambiare per fondale. Il tre-cioccolati non ha vere aperture nella sagoma:
+# le cavità alpha interne vanno quindi richiuse, lasciando invariato il bordo.
+FILL_ALPHA_HOLES = {"intriko-tre-cioccolati"}
+
 
 def crop_with_padding(image: Image.Image) -> Image.Image:
     alpha = image.getchannel("A")
@@ -153,7 +160,11 @@ def crop_with_padding(image: Image.Image) -> Image.Image:
     )
 
 
-def refine_edges(image: Image.Image) -> Image.Image:
+def refine_edges(
+    image: Image.Image,
+    *,
+    fill_alpha_holes: bool = False,
+) -> Image.Image:
     """Elimina aloni e contaminazioni di fondale lungo il profilo.
 
     rembg fornisce la sagoma; qui si interviene soltanto sulla fascia
@@ -169,6 +180,8 @@ def refine_edges(image: Image.Image) -> Image.Image:
     source_alpha = rgba[:, :, 3]
 
     mask = source_alpha >= ALPHA_THRESHOLD
+    if fill_alpha_holes:
+        mask = binary_fill_holes(mask)
     clean_mask = binary_erosion(mask, iterations=EDGE_EROSION)
     if not clean_mask.any():
         return image
@@ -223,9 +236,18 @@ def main() -> None:
         raise FileNotFoundError("Foto mancanti:\n" + "\n".join(missing))
 
     session = new_session("isnet-general-use")
-    total = len(ASSETS)
+    requested = set(sys.argv[1:])
+    unknown = requested.difference(ASSETS)
+    if unknown:
+        raise ValueError("Asset sconosciuti: " + ", ".join(sorted(unknown)))
+    assets = {
+        slug: relative
+        for slug, relative in ASSETS.items()
+        if not requested or slug in requested
+    }
+    total = len(assets)
 
-    for index, (slug, relative) in enumerate(ASSETS.items(), start=1):
+    for index, (slug, relative) in enumerate(assets.items(), start=1):
         source = Image.open(SOURCES / relative).convert("RGB")
         cutout = remove(
             source,
@@ -237,7 +259,10 @@ def main() -> None:
         )
         cutout = crop_with_padding(cutout)
         cutout.thumbnail((MAX_SIDE, MAX_SIDE), Image.Resampling.LANCZOS)
-        cutout = refine_edges(cutout)
+        cutout = refine_edges(
+            cutout,
+            fill_alpha_holes=slug in FILL_ALPHA_HOLES,
+        )
 
         destinations = [output / f"{slug}.webp" for output in OUTPUTS]
         for destination in destinations:

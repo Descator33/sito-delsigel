@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         pathname: "/products-4k/**",
-        search: "?v=2026-10-29-foto-definitive-2",
+        search: "?v=2026-10-29-intriko-alpha-1",
       },
     ],
   },
