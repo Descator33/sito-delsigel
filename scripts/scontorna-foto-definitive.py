@@ -23,9 +23,12 @@ from scipy.ndimage import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = ROOT / "public" / "Foto definitive"
-OUTPUTS = ROOT / "public" / "products"
-MAX_SIDE = 1200
+SOURCES = ROOT / "public" / "Foto definitive 2"
+OUTPUTS = (
+    ROOT / "public" / "products",
+    ROOT / "public" / "products-4k",
+)
+MAX_SIDE = 1600
 PADDING = 12
 ALPHA_THRESHOLD = 96
 EDGE_EROSION = 1
@@ -47,6 +50,8 @@ ASSETS = {
     # Dolci — Frittella
     "frittella-cioccolato": "Dolci/Frittella/Frittella con cioccolato.png",
     "frittella-crema": "Dolci/Frittella/Frittella con crema.png",
+    "frittella-senza-zucchero": "Dolci/Frittella/Frittella senza zucchero.png",
+    "frittella-vuota": "Dolci/Frittella/Frittella vuota.png",
     # Dolci — Golosone
     "golosone-cioccolato-spaccato": "Dolci/Golosone /Golosone al cioccolato/Golosone al cioccolato_aperto.png",
     "golosone-cioccolato-granella": "Dolci/Golosone /Golosone al cioccolato/Golosone al cioccolato_chiuso.png",
@@ -63,21 +68,29 @@ ASSETS = {
     "intriko-midi-dulce-de-leche": "Dolci/Intriko/Midi/Midi dulche de leche.png",
     # Dolci — Intriko normale e vuoto
     "intriko-cioccolato": "Dolci/Intriko/Normali/Intriko al cioccolato.png",
-    "intriko-crema": "Dolci/Intriko/Normali/Intriko alla crema.png",
+    "intriko-crema": "Dolci/Intriko/Normali/Intriko Crema.png",
     "intriko-frutti-di-bosco": "Dolci/Intriko/Normali/Intriko frutti rossi.png",
     "intriko-pistacchio": "Dolci/Intriko/Normali/Intriko normale pistacchio.png",
-    "intriko-tre-cioccolati": "Dolci/Intriko/Normali/Intriko tre cioccolati.png",
+    "intriko-tre-cioccolati": "Dolci/Intriko/Normali/Intriko 3 cioccolati.png",
     "intriko-vuoto": "Dolci/Intriko/Vuoto/Intriko Vuoto.png",
     # Dolci — Klejner e Lussekatt
     "klejner": "Dolci/Klejner/ Klejner semplice.jpg",
     "klejner-cannella": "Dolci/Klejner/Klejner cannella.png",
     "lusekatt": "Dolci/Lussekatt/Lussekatt.jpg",
     # Dolci — Nuvola
-    "nuvola-cioccolato": "Dolci/Nuvola/Nuvola Nuì.png",
-    "nuvola-crema": "Dolci/Nuvola/Nuvola crema e fragola.png",
-    "nuvola-marmellata": "Dolci/Nuvola/Nuvola frutti rossi.png",
-    "nuvola-pistacchio": "Dolci/Nuvola/Nuvola pistacchio e lampone.png",
-    "nuvola-semplice": "Dolci/Nuvola/Nuvola semplice.jpg",
+    # I cinque slug storici restano generati per compatibilità con link e
+    # cache precedenti; il catalogo nuovo usa i sette nomi precisi sotto.
+    "nuvola-cioccolato": "Dolci/Nuvola/Nuì.png",
+    "nuvola-crema": "Dolci/Nuvola/Crema e fragola.png",
+    "nuvola-marmellata": "Dolci/Nuvola/Frutti rossi.png",
+    "nuvola-pistacchio": "Dolci/Nuvola/Pistacchio e lampone.png",
+    "nuvola-semplice": "Dolci/Nuvola/Semplice.png",
+    "nuvola-nui": "Dolci/Nuvola/Nuì.png",
+    "nuvola-cioccolato-semplice": "Dolci/Nuvola/Cioccolato semplice.png",
+    "nuvola-crema-e-fragola": "Dolci/Nuvola/Crema e fragola.png",
+    "nuvola-crema-semplice": "Dolci/Nuvola/Crema semplice.png",
+    "nuvola-frutti-rossi": "Dolci/Nuvola/Frutti rossi.png",
+    "nuvola-pistacchio-e-lampone": "Dolci/Nuvola/Pistacchio e lampone.png",
     # Dolci — Stella
     "stella-cioccolato": "Dolci/Stella/Stella Nuì.png",
     "stella-crema": "Dolci/Stella/Stella crema e fragola.png",
@@ -98,7 +111,8 @@ ASSETS = {
     "paninetto-pomodoro": "Salati/Paninetto colorato tre gusti/Paninetto pomodoro.png",
     "paninetto-colorato-tre-gusti": "Salati/Paninetto colorato tre gusti/Paninetto colorato tre gusti.png",
     # Salati — Pizzette
-    "pizzetta-al-pomodoro": "Salati/Pizzetta al pomodoro/Pizzetta rossa.png",
+    "pizzetta-al-pomodoro": "Salati/Pizzetta al pomodoro/Pizzetta nuova.jpg",
+    "pizzetta-al-pomodoro-classica": "Salati/Pizzetta al pomodoro/Pizzetta rossa.png",
     "pizzette-al-pomodoro": "Salati/Pizzetta al pomodoro/Pizzette rosse.png",
     "pizzetta-bianca": "Salati/Pizzetta bianca/Pizzetta bianca.png",
     "pizzetta-fritta-media": "Salati/Pizzetta fritta/Pizzetta fritta media.png",
@@ -109,6 +123,7 @@ ASSETS = {
     "pizzetta-fantasia-verdure": "Salati/Pizzette fantasia/Pizzette fantasia_verdure.png",
     # Salati — Rustici
     "rustici": "Salati/Rustici/Rustici.png",
+    "rustici-tutti-insieme": "Salati/Rustici/Rustici tutti insieme.png",
     "rustico-4-formaggi": "Salati/Rustici/Rustico 4 formaggi.png",
     "rustico-funghi": "Salati/Rustici/Rustico con i funghi.png",
     "rustico-peperoni": "Salati/Rustici/Rustico con peperoni.png",
@@ -201,7 +216,8 @@ def refine_edges(image: Image.Image) -> Image.Image:
 
 
 def main() -> None:
-    OUTPUTS.mkdir(parents=True, exist_ok=True)
+    for output in OUTPUTS:
+        output.mkdir(parents=True, exist_ok=True)
     missing = [relative for relative in ASSETS.values() if not (SOURCES / relative).is_file()]
     if missing:
         raise FileNotFoundError("Foto mancanti:\n" + "\n".join(missing))
@@ -223,11 +239,12 @@ def main() -> None:
         cutout.thumbnail((MAX_SIDE, MAX_SIDE), Image.Resampling.LANCZOS)
         cutout = refine_edges(cutout)
 
-        destination = OUTPUTS / f"{slug}.webp"
-        cutout.save(destination, "WEBP", quality=90, method=6, exact=True)
+        destinations = [output / f"{slug}.webp" for output in OUTPUTS]
+        for destination in destinations:
+            cutout.save(destination, "WEBP", quality=95, method=6, exact=True)
         print(
-            f"[{index:02d}/{total}] {destination.name} "
-            f"{cutout.width}x{cutout.height} {destination.stat().st_size // 1024} KB",
+            f"[{index:02d}/{total}] {slug}.webp "
+            f"{cutout.width}x{cutout.height} {destinations[-1].stat().st_size // 1024} KB",
             flush=True,
         )
 

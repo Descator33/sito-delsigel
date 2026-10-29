@@ -75,7 +75,11 @@ export function SavoryProductItem({
       >
         <span className="relative block aspect-[7/10] w-full">
           <ProductHalo />
-          <ProductImage src={t.image} alt={alt} iniziale={t.name.charAt(0)} />
+          <ProductImage
+            src={t.cardImage ?? t.image}
+            alt={alt}
+            iniziale={t.name.charAt(0)}
+          />
         </span>
 
         <ProductNumber>{indice}</ProductNumber>

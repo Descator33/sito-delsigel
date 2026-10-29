@@ -31,12 +31,21 @@ export type Tipologia = {
   axes?: Axis[];
   set?: string[];
   views?: "spaccato"[];
+  /** usa la gamma fotografica dichiarata qui anche quando esiste una base
+   * tecnica nel configuratore (serve per varianti di catalogo più ampie). */
+  catalogGamma?: boolean;
   /** still scontornato, quando esiste; altrimenti placeholder */
   image?: string;
+  /** still compatto per la tessera; la scheda può usare una composizione
+   * di gruppo più larga senza rimpicciolire il prodotto nel carosello. */
+  cardImage?: string;
   /** valore d'asse → still: la card lo mostra al passaggio sul pallino */
   variants?: Record<string, string>;
   /** still del prodotto aperto, per le tipologie con `views: ["spaccato"]` */
   spaccato?: string;
+  /** variante selezionata → still aperto; evita di mostrare lo spaccato
+   * della crema quando l'utente sta guardando cioccolato o semplice. */
+  spaccati?: Record<string, string>;
 };
 
 /**
@@ -44,7 +53,7 @@ export type Tipologia = {
  * browser e ottimizzatore Next a non riutilizzare le vecchie sagome in cache
  * quando i file vengono sostituiti mantenendo lo stesso nome.
  */
-const PRODUCT_IMAGE_REVISION = "2026-09-23-paninetto-colorato-3";
+const PRODUCT_IMAGE_REVISION = "2026-10-29-foto-definitive-2";
 const img = (slug: string) =>
   `/products-4k/${slug}.webp?v=${PRODUCT_IMAGE_REVISION}`;
 
@@ -57,19 +66,31 @@ export const CATALOG: Tipologia[] = [
     slug: "golosone",
     note: "Lievitato farcito, glassa satinata e granella fondente.",
     price: "€ 6",
-    axes: [
-      { label: "Farcitura", values: ["cioccolato", "crema"] },
-      { label: "Finitura", values: ["granella", "semplice"] },
-    ],
+    axes: [{
+      label: "Variante",
+      values: [
+        "cioccolato con granella",
+        "cioccolato semplice",
+        "crema con granella",
+        "crema semplice",
+      ],
+    }],
+    catalogGamma: true,
     views: ["spaccato"],
     image: img("golosone-crema-granella"),
     variants: {
-      cioccolato: img("golosone-cioccolato-granella"),
-      crema: img("golosone-crema-granella"),
-      granella: img("golosone-crema-granella"),
-      semplice: img("golosone-crema-semplice"),
+      "cioccolato con granella": img("golosone-cioccolato-granella"),
+      "cioccolato semplice": img("golosone-cioccolato-semplice"),
+      "crema con granella": img("golosone-crema-granella"),
+      "crema semplice": img("golosone-crema-semplice"),
     },
     spaccato: img("golosone-crema-spaccato"),
+    spaccati: {
+      "cioccolato con granella": img("golosone-cioccolato-spaccato"),
+      "cioccolato semplice": img("golosone-cioccolato-spaccato"),
+      "crema con granella": img("golosone-crema-spaccato"),
+      "crema semplice": img("golosone-crema-spaccato"),
+    },
   },
   {
     code: "N.02",
@@ -85,6 +106,10 @@ export const CATALOG: Tipologia[] = [
       semplice: img("bomba-fritta-semplice"),
     },
     spaccato: img("bomba-fritta-crema-spaccato"),
+    spaccati: {
+      crema: img("bomba-fritta-crema-spaccato"),
+      semplice: img("bomba-fritta-semplice-spaccato"),
+    },
   },
   {
     code: "N.03",
@@ -112,12 +137,18 @@ export const CATALOG: Tipologia[] = [
     name: "Frittella",
     macro: "dolci",
     slug: "frittella",
-    note: "Il fritto morbido da banco, in due gusti.",
-    axes: [{ label: "Gusto", values: ["cioccolato", "crema"] }],
+    note: "Il fritto morbido da banco, in quattro varianti.",
+    axes: [{
+      label: "Variante",
+      values: ["cioccolato", "crema", "senza zucchero", "vuota"],
+    }],
+    catalogGamma: true,
     image: img("frittella-crema"),
     variants: {
       cioccolato: img("frittella-cioccolato"),
       crema: img("frittella-crema"),
+      "senza zucchero": img("frittella-senza-zucchero"),
+      vuota: img("frittella-vuota"),
     },
   },
   {
@@ -191,19 +222,30 @@ export const CATALOG: Tipologia[] = [
     name: "Nuvola",
     macro: "dolci",
     slug: "nuvola",
-    note: "Il lievitato più leggero della gamma, cinque gusti.",
+    note: "Il lievitato più leggero della gamma, in sette varianti.",
     axes: [
       {
         label: "Gusto",
-        values: ["cioccolato", "crema", "marmellata", "pistacchio", "semplice"],
+        values: [
+          "Nuì",
+          "cioccolato semplice",
+          "crema e fragola",
+          "crema semplice",
+          "frutti rossi",
+          "pistacchio e lampone",
+          "semplice",
+        ],
       },
     ],
-    image: img("nuvola-pistacchio"),
+    catalogGamma: true,
+    image: img("nuvola-nui"),
     variants: {
-      cioccolato: img("nuvola-cioccolato"),
-      crema: img("nuvola-crema"),
-      marmellata: img("nuvola-marmellata"),
-      pistacchio: img("nuvola-pistacchio"),
+      Nuì: img("nuvola-nui"),
+      "cioccolato semplice": img("nuvola-cioccolato-semplice"),
+      "crema e fragola": img("nuvola-crema-e-fragola"),
+      "crema semplice": img("nuvola-crema-semplice"),
+      "frutti rossi": img("nuvola-frutti-rossi"),
+      "pistacchio e lampone": img("nuvola-pistacchio-e-lampone"),
       semplice: img("nuvola-semplice"),
     },
   },
@@ -249,7 +291,8 @@ export const CATALOG: Tipologia[] = [
     slug: "focaccine-miste-tre-gusti",
     note: "Set da tre gusti, pronto per il banco.",
     set: ["bianca", "curcuma", "pomodoro"],
-    image: img("focaccina-curcuma"),
+    image: img("focaccine-miste-tre-gusti"),
+    cardImage: img("focaccina-curcuma"),
     variants: {
       bianca: img("focaccina-bianca"),
       curcuma: img("focaccina-curcuma"),
@@ -348,7 +391,8 @@ export const CATALOG: Tipologia[] = [
         ],
       },
     ],
-    image: img("rustico-wurstel"),
+    image: img("rustici"),
+    cardImage: img("rustico-wurstel"),
     variants: {
       "4 formaggi": img("rustico-4-formaggi"),
       funghi: img("rustico-funghi"),
@@ -395,6 +439,16 @@ const GUSTO_COLORS: Record<string, string> = {
   "dulce de leche": "#b9783d",
   cannella: "#a56638",
   semplice: "#fff4e6",
+  Nuì: "#7a4a26",
+  "cioccolato semplice": "#7a4a26",
+  "cioccolato con granella": "#54301a",
+  "crema semplice": "#fbc50a",
+  "crema con granella": "#e7cf93",
+  "crema e fragola": "#f29a8a",
+  "frutti rossi": "#eb186b",
+  "pistacchio e lampone": "#7fc25b",
+  "senza zucchero": "#d49b55",
+  vuota: "#e4ae69",
   granella: "#54301a",
   // salati
   mozzarella: "#fff4e6",

@@ -82,7 +82,17 @@ export type ValoreAsse =
   | "4 formaggi"
   | "ricotta e spinaci"
   | "piccola"
-  | "media";
+  | "media"
+  | "Nuì"
+  | "cioccolato semplice"
+  | "cioccolato con granella"
+  | "crema semplice"
+  | "crema con granella"
+  | "crema e fragola"
+  | "frutti rossi"
+  | "pistacchio e lampone"
+  | "senza zucchero"
+  | "vuota";
 
 export type IdFarcitura =
   | "ciock-e-lampone"
@@ -294,7 +304,13 @@ export interface Testi {
   /* --------------------- dati prodotto (overlay) ---------------------- */
   prodotti: {
     note: Record<SlugCatalogo, string>;
-    assi: { gusto: string; farcitura: string; finitura: string; formato: string };
+    assi: {
+      gusto: string;
+      farcitura: string;
+      finitura: string;
+      formato: string;
+      variante: string;
+    };
     valori: Record<ValoreAsse, string>;
     farciture: Record<IdFarcitura, string>;
     topping: Record<IdTopping, string>;

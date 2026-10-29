@@ -90,6 +90,7 @@ const ASSE_A_CHIAVE: Record<string, keyof Testi["prodotti"]["assi"]> = {
   Farcitura: "farcitura",
   Finitura: "finitura",
   Formato: "formato",
+  Variante: "variante",
 };
 
 const LOCALE_NUMERI: Record<Lingua, string> = {
@@ -160,10 +161,12 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
      Golosone ha un asse «Finitura» che a catalogo non è un prodotto).
      Sotto le due varianti non c'è gamma da sfogliare — il Lussekatt è un
      prodotto solo, e un elenco di una voce sola direbbe il contrario */
-  scheda.gamma =
-    varianti.length > 1
-      ? [{ label: testi.catalogo.scheda.variantiCatalogo, varianti }]
-      : [];
+  if (!t.catalogGamma) {
+    scheda.gamma =
+      varianti.length > 1
+        ? [{ label: testi.catalogo.scheda.variantiCatalogo, varianti }]
+        : [];
+  }
 
   if (grammature.length) {
     const min = Math.min(...grammature);

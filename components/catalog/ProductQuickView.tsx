@@ -111,12 +111,15 @@ function Scheda({
   const s = schedaDi(t, lingua, testi);
   const nota = testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]];
   const [mostrato, setMostrato] = useState<string | null>(null);
+  const [vistaSpaccata, setVistaSpaccata] = useState(false);
   const variante = s.gamma
     .flatMap((g) => g.varianti)
     .find((v) => v.id === mostrato);
+  const spaccatoCorrente =
+    (variante && t.spaccati?.[variante.chiave]) ?? t.spaccato;
   const still =
-    (mostrato === "spaccato"
-      ? t.spaccato
+    (vistaSpaccata
+      ? spaccatoCorrente
       : variante && t.variants?.[variante.chiave]) ?? t.image;
 
   const specifiche = [
@@ -144,13 +147,15 @@ function Scheda({
             key={still}
             src={still}
             alt={
-              variante
+              vistaSpaccata
+                ? interpola(testi.catalogo.scheda.spaccatoAlt, {
+                    nome: variante
+                      ? `${t.name} ${variante.nome.toLowerCase()}`
+                      : t.name,
+                  })
+                : variante
                 ? `${t.name} ${variante.nome.toLowerCase()}`
-                : mostrato === "spaccato"
-                  ? interpola(testi.catalogo.scheda.spaccatoAlt, {
-                      nome: t.name,
-                    })
-                  : `${t.name}: ${nota ?? testi.prodotti.scattoProdotto}`
+                : `${t.name}: ${nota ?? testi.prodotti.scattoProdotto}`
             }
             fill
             sizes="(max-width: 767px) 92vw, 30vw"
@@ -166,16 +171,14 @@ function Scheda({
           </span>
         )}
 
-        {t.views?.includes("spaccato") && t.spaccato && (
+        {t.views?.includes("spaccato") && spaccatoCorrente && (
           <button
             type="button"
-            onClick={() =>
-              setMostrato((m) => (m === "spaccato" ? null : "spaccato"))
-            }
-            aria-pressed={mostrato === "spaccato"}
+            onClick={() => setVistaSpaccata((v) => !v)}
+            aria-pressed={vistaSpaccata}
             className="font-tecnico absolute bottom-4 left-4 min-h-11 rounded-full border px-4 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
             style={
-              mostrato === "spaccato"
+              vistaSpaccata
                 ? {
                     color: TEMI[tema].fondo,
                     borderColor: TEMI[tema].testo,
@@ -188,7 +191,7 @@ function Scheda({
                   }
             }
           >
-            {mostrato === "spaccato"
+            {vistaSpaccata
               ? testi.catalogo.scheda.vediIntero
               : testi.catalogo.scheda.vediSpaccato}
           </button>
@@ -247,9 +250,10 @@ function Scheda({
                     <button
                       type="button"
                       disabled={!sfogliabile}
-                      onClick={() =>
-                        setMostrato((m) => (m === v.id ? null : v.id))
-                      }
+                      onClick={() => {
+                        setMostrato((m) => (m === v.id ? null : v.id));
+                        setVistaSpaccata(false);
+                      }}
                       aria-pressed={sfogliabile ? mostrato === v.id : undefined}
                       className={`inline-flex min-h-9 items-center gap-2 rounded-full border py-1.5 pl-2 pr-3.5 text-[11px] font-semibold uppercase tracking-[0.04em] transition-colors ${
                         mostrato === v.id

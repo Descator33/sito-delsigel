@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         pathname: "/products-4k/**",
-        search: "?v=2026-09-23-paninetto-colorato-3",
+        search: "?v=2026-10-29-foto-definitive-2",
       },
     ],
   },

@@ -120,9 +120,9 @@ export function ProductCard({
       }}
       transition={{ type: "spring", stiffness: 260, damping: 22 }}
     >
-      {t.image && (
+      {(t.cardImage ?? t.image) && (
         <ProductImage
-          src={t.image}
+          src={(t.cardImage ?? t.image)!}
           alt={`${t.name}: ${nota}`}
           riquadro={`z-0 ${m.foto} ${foto}`}
         />
