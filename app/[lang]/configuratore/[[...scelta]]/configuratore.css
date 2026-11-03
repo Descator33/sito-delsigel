@@ -1637,15 +1637,9 @@
 }
 
 /* Audit 2026-10: feedback reali, azioni coerenti, anteprima mobile compatta. */
-:where(.configuratore-page) .configurator-loader { position:fixed;inset:0;z-index:100;background:var(--panna,#fff5e9);display:grid;place-items:center;padding:1.25rem;overflow:auto; }
-:where(.configuratore-page) .configurator-loader__card { width:min(100%,30rem);text-align:center;border:2px solid var(--inchiostro,#221718);border-radius:2rem;background:var(--carta,#fff);padding:2rem;box-shadow:8px 8px 0 var(--oro,#ffd644); }
-:where(.configuratore-page) .configurator-loader__mark { display:grid;place-items:center;width:4rem;height:4rem;margin:0 auto 1.5rem;border-radius:50%;background:var(--viola,#763de4);color:white;font-size:2.5rem;font-weight:900; }
-:where(.configuratore-page) .configurator-loader h2 { font-size:clamp(1.5rem,4vw,2rem);font-weight:900;line-height:1.1; }
-:where(.configuratore-page) .configurator-loader p { margin:1rem 0;line-height:1.5; }
-:where(.configuratore-page) .configurator-loader progress { width:100%;height:1rem;accent-color:var(--viola,#763de4); }
-:where(.configuratore-page) .configurator-loader button, :where(.configuratore-page) .configurator-action { min-height:44px;border-radius:2rem;background:var(--inchiostro,#221718);color:var(--panna,#fff5e9);padding:.8rem 1.3rem;font-weight:700;cursor:pointer; }
+:where(.configuratore-page) .configurator-action { min-height:44px;border-radius:2rem;background:var(--inchiostro,#221718);color:var(--panna,#fff5e9);padding:.8rem 1.3rem;font-weight:700;cursor:pointer; }
 :where(.configuratore-page) .configurator-action:disabled { opacity:.55;cursor:wait; }
-:where(.configuratore-page) .configurator-loader button:focus-visible, :where(.configuratore-page) .configurator-action:focus-visible { outline:3px solid var(--viola,#763de4);outline-offset:4px; }
+:where(.configuratore-page) .configurator-action:focus-visible { outline:3px solid var(--viola,#763de4);outline-offset:4px; }
 :where(.configuratore-page) .configurator-share-dialog { margin:auto;width:min(92vw,36rem);border:2px solid var(--inchiostro);border-radius:1.5rem;background:var(--panna); }
 :where(.configuratore-page) .configurator-share-dialog::backdrop {background:#21172580;}
 :where(.configuratore-page) .configurator-notice {margin-block:1rem;padding:1rem;border:1px solid var(--inchiostro);border-radius:1rem;background:var(--carta);font-size:.9rem;line-height:1.5;}

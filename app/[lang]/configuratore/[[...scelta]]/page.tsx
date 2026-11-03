@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { LinguaProvider as LinguaConfiguratoreProvider } from "@/components/LinguaConfiguratoreProvider";
 import "./configuratore.css";
-import { Caricamento } from "@/components/configuratore/Caricamento";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { Header } from "@/components/Header";
@@ -121,14 +120,6 @@ export default async function ConfiguratorePage({ params }: Props) {
     farciture = fotoFarciture(),
     credenze = fotoCredenza(),
     finiture = fotoFinitura();
-  const urls = [
-    ...new Set([
-      ...Object.values(foto),
-      ...Object.values(farciture),
-      ...Object.values(credenze),
-      ...Object.values(finiture),
-    ]),
-  ];
 
   /* overflow-x-clip (mai hidden: romperebbe lo sticky del palco): una
      tessera trascinata oltre il bordo non apre lo scroll orizzontale.
@@ -139,8 +130,6 @@ export default async function ConfiguratorePage({ params }: Props) {
     <div className="configuratore-page overflow-x-clip bg-panna text-inchiostro">
       <Header />
       <LinguaConfiguratoreProvider lingua={lang} testi={dizionario(lang)}>
-      <Caricamento urls={urls}>
-
         {/* Il prebuild ricava dalle cartelle un manifest di soli URL; l'isola
           client riceve le voci che hanno una foto senza trascinare i file
           statici nel bundle della funzione serverless. */}
@@ -156,7 +145,6 @@ export default async function ConfiguratorePage({ params }: Props) {
           />
         </Suspense>
 
-      </Caricamento>
       </LinguaConfiguratoreProvider>
       <p className="mx-auto max-w-5xl px-5 py-5 text-sm leading-relaxed text-inchiostro/70">
         <small>{dizionario(lang).configuratore.esperienza.postilla}</small>
