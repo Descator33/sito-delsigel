@@ -101,10 +101,19 @@ const LOCALE_NUMERI: Record<Lingua, string> = {
   fi: "fi-FI",
 };
 
+const FORMATI_MONTANARINA: Record<Lingua, Record<string, string>> = {
+  it: { "classica (30 g)": "Classica (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
+  en: { "classica (30 g)": "Classic (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
+  fr: { "classica (30 g)": "Classique (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
+  de: { "classica (30 g)": "Klassisch (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
+  fi: { "classica (30 g)": "Klassinen (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
+};
+
 export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
   const numero = (n: number) =>
     n.toLocaleString(LOCALE_NUMERI[lingua], { maximumFractionDigits: 1 });
   const valore = (v: string) =>
+    (t.slug === "montanarina" ? FORMATI_MONTANARINA[lingua][v] : undefined) ??
     testi.prodotti.valori[v as ValoreAsse] ?? v;
 
   /* fallback per le tessere senza base nel dataset (tutta la linea salata):
@@ -131,6 +140,7 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
         ? testi.catalogo.scheda.lineaDolci
         : testi.catalogo.scheda.lineaSalati,
     gamma: gammaCatalogo,
+    peso: t.pesoGr != null ? `${numero(t.pesoGr)} g` : undefined,
   };
 
   const idBase = TESSERA_A_BASE[t.slug];

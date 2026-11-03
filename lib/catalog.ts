@@ -28,6 +28,8 @@ export type Tipologia = {
   slug: string;
   note?: string;
   price?: string;
+  /** Peso unitario in grammi, quando dichiarato nel listino. */
+  pesoGr?: number;
   axes?: Axis[];
   set?: string[];
   views?: "spaccato"[];
@@ -132,21 +134,19 @@ export const CATALOG: Tipologia[] = [
   },
   {
     code: "N.04",
-    name: "Frittella",
+    name: "Mini Nuvola",
     macro: "dolci",
     slug: "frittella",
-    note: "Il fritto morbido da banco, in quattro varianti.",
+    note: "Il fritto morbido da banco, in due varianti.",
     axes: [{
       label: "Variante",
-      values: ["cioccolato", "crema", "senza zucchero", "vuota"],
+      values: ["cioccolato", "crema"],
     }],
     catalogGamma: true,
     image: img("frittella-crema"),
     variants: {
       cioccolato: img("frittella-cioccolato"),
       crema: img("frittella-crema"),
-      "senza zucchero": img("frittella-senza-zucchero"),
-      vuota: img("frittella-vuota"),
     },
   },
   {
@@ -168,7 +168,7 @@ export const CATALOG: Tipologia[] = [
         ],
       },
     ],
-    image: img("intriko-cioccolato"),
+    image: img("intriko-tre-cioccolati"),
     variants: {
       cioccolato: img("intriko-cioccolato"),
       crema: img("intriko-crema"),
@@ -225,8 +225,8 @@ export const CATALOG: Tipologia[] = [
       {
         label: "Gusto",
         values: [
-          "cioccolato semplice",
-          "crema semplice",
+          "cioccolato",
+          "crema",
         ],
       },
     ],
@@ -234,9 +234,9 @@ export const CATALOG: Tipologia[] = [
     image: img("nuvola-crema-semplice"),
     variants: {
       Nuì: img("nuvola-nui"),
-      "cioccolato semplice": img("nuvola-cioccolato-semplice"),
+      cioccolato: img("nuvola-cioccolato-semplice"),
       "crema e fragola": img("nuvola-crema-e-fragola"),
-      "crema semplice": img("nuvola-crema-semplice"),
+      crema: img("nuvola-crema-semplice"),
       "frutti rossi": img("nuvola-frutti-rossi"),
       "pistacchio e lampone": img("nuvola-pistacchio-e-lampone"),
       semplice: img("nuvola-semplice"),
@@ -282,6 +282,7 @@ export const CATALOG: Tipologia[] = [
     name: "Focaccine Miste",
     macro: "salati",
     slug: "focaccine-miste-tre-gusti",
+    pesoGr: 40,
     note: "Set da tre gusti, pronto per il banco.",
     set: ["bianca", "curcuma", "pomodoro"],
     image: img("focaccine-miste-tre-gusti"),
@@ -297,19 +298,16 @@ export const CATALOG: Tipologia[] = [
     name: "Montanarina",
     macro: "salati",
     slug: "montanarina",
-    note: "La base fritta napoletana, due condimenti.",
-    axes: [{ label: "Gusto", values: ["mozzarella", "pomodoro"] }],
+    note: "La base fritta napoletana, nei formati classico e mini.",
+    axes: [{ label: "Formato", values: ["classica (30 g)", "mini montanarina (20 g)"] }],
     image: img("montanarina-pomodoro"),
-    variants: {
-      mozzarella: img("montanarina-mozzarella"),
-      pomodoro: img("montanarina-pomodoro"),
-    },
   },
   {
     code: "N.11",
     name: "Paninetto Colorato",
     macro: "salati",
     slug: "paninetto-colorato-tre-gusti",
+    pesoGr: 16,
     note: "Tre impasti colorati, un unico formato.",
     set: ["bianco", "curcuma", "pomodoro"],
     image: img("paninetto-colorato-tre-gusti"),
@@ -324,6 +322,7 @@ export const CATALOG: Tipologia[] = [
     name: "Pizzetta al Pomodoro",
     macro: "salati",
     slug: "pizzetta-al-pomodoro",
+    pesoGr: 28,
     note: "Il formato classico da rosticceria.",
     image: img("pizzetta-al-pomodoro"),
   },
@@ -332,19 +331,15 @@ export const CATALOG: Tipologia[] = [
     name: "Pizzetta Fritta",
     macro: "salati",
     slug: "pizzetta-fritta",
-    note: "Due formati per il banco caldo.",
-    axes: [{ label: "Formato", values: ["piccola", "media"] }],
-    image: img("pizzetta-fritta-media"),
-    variants: {
-      piccola: img("pizzetta-fritta-piccola"),
-      media: img("pizzetta-fritta-media"),
-    },
+    note: "Soffice e dorata, pronta da gustare.",
+    image: img("pizzetta-fritta-piccola"),
   },
   {
     code: "N.15",
     name: "Pizzette Fantasia",
     macro: "salati",
     slug: "pizzette-fantasia",
+    pesoGr: 45,
     note: "Quattro condimenti a rotazione stagionale.",
     axes: [
       { label: "Gusto", values: ["funghi", "olive", "verdure", "wurstel"] },
@@ -362,6 +357,7 @@ export const CATALOG: Tipologia[] = [
     name: "Rustici",
     macro: "salati",
     slug: "rustici",
+    pesoGr: 18,
     note: "Sei ripieni su base sfoglia.",
     axes: [
       {
@@ -392,6 +388,7 @@ export const CATALOG: Tipologia[] = [
     name: "Vol-au-vent",
     macro: "salati",
     slug: "vol-au-vent",
+    pesoGr: 16,
     note: "La sfoglia monoporzione da farcire.",
     image: img("vol-au-vent"),
   },
