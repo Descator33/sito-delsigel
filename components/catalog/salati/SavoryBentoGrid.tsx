@@ -106,6 +106,7 @@ export function SavoryBentoGrid() {
               >
                 <AltreTipologie
                   tipologie={RESTO_SALATI}
+                  fotoIntere
                   titolo={testi.catalogo.altriSalati}
                   onApri={(t) => setScheda({ t, tema: "sabbia" })}
                 />

@@ -54,6 +54,8 @@ export type CardCatalogo = {
    *  perché gli still hanno proporzioni diverse, ma la sagoma non supera
    *  più i bordi: i master 4K includono già il margine di sicurezza. */
   foto: string;
+  /** La posizione include anche le misure sotto xl. */
+  fotoCompleta?: boolean;
 };
 
 /**

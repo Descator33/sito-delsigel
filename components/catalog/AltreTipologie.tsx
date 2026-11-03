@@ -24,10 +24,12 @@ export function AltreTipologie({
   onApri,
   tipologie = RESTO_DOLCI,
   titolo,
+  fotoIntere = false,
 }: {
   onApri: (t: Tipologia) => void;
   tipologie?: Tipologia[];
   titolo?: string;
+  fotoIntere?: boolean;
 }) {
   const { testi } = useLingua();
   if (tipologie.length === 0) return null;
@@ -41,14 +43,14 @@ export function AltreTipologie({
       </h3>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {tipologie.map((t) => (
-          <Tessera key={t.code} t={t} onApri={() => onApri(t)} />
+          <Tessera key={t.code} t={t} onApri={() => onApri(t)} fotoIntere={fotoIntere} />
         ))}
       </div>
     </section>
   );
 }
 
-function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
+function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; fotoIntere: boolean }) {
   const { testi } = useLingua();
   const n = varianti(t);
   const nota =
@@ -72,7 +74,7 @@ function Tessera({ t, onApri }: { t: Tipologia; onApri: () => void }) {
     >
       {t.image && (
         <motion.div
-          className="foto-prodotto pointer-events-none absolute bottom-[-5%] right-[-5%] h-[86%] w-[56%]"
+          className={`foto-prodotto pointer-events-none absolute ${fotoIntere ? "bottom-[5%] right-[4%] h-[80%] w-[48%]" : "bottom-[-5%] right-[-5%] h-[86%] w-[56%]"}`}
           style={{ transformOrigin: "72% 100%" }}
           variants={{
             riposo: { scale: 1, rotate: 0 },

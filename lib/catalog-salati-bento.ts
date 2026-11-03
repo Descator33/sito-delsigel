@@ -19,23 +19,26 @@ const VETRINA = [
   {
     slug: "pizzetta-al-pomodoro",
     variante: "hero",
-    tema: "arancio",
+    tema: "sabbia",
     posto: "sm:col-span-2 xl:col-span-5 xl:row-span-2",
-    foto: "xl:h-[92%] xl:w-[82%] xl:right-[-5%] xl:bottom-[-7%]",
+    foto: "bottom-[4%] right-[3%] h-[76%] w-[65%] xl:h-[82%] xl:w-[68%]",
+    fotoCompleta: true,
   },
   {
     slug: "pizzetta-fritta",
     variante: "grande",
     tema: "cacao",
     posto: "xl:col-span-4 xl:row-span-2",
-    foto: "xl:h-[88%] xl:w-[78%] xl:right-[-7%] xl:bottom-[-4%]",
+    foto: "bottom-[4%] right-[3%] h-[76%] w-[60%] xl:h-[80%] xl:w-[65%]",
+    fotoCompleta: true,
   },
   {
     slug: "montanarina",
     variante: "grande",
     tema: "fucsia",
     posto: "xl:col-span-3 xl:row-span-2",
-    foto: "xl:h-[86%] xl:w-[82%] xl:right-[-8%] xl:bottom-[-5%]",
+    foto: "bottom-[4%] right-[3%] h-[76%] w-[60%] xl:h-[78%] xl:w-[70%]",
+    fotoCompleta: true,
   },
 ] as const satisfies readonly {
   slug: string;
@@ -43,6 +46,7 @@ const VETRINA = [
   tema: TemaCard;
   posto: string;
   foto: string;
+  fotoCompleta: boolean;
 }[];
 
 const PER_SLUG = new Map(SALATI.map((t) => [t.slug, t]));

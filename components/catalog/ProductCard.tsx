@@ -124,7 +124,7 @@ export function ProductCard({
         <ProductImage
           src={(t.cardImage ?? t.image)!}
           alt={`${t.name}: ${nota}`}
-          riquadro={`z-0 ${m.foto} ${foto}`}
+          riquadro={`z-0 ${card.fotoCompleta ? "" : m.foto} ${foto}`}
         />
       )}
 
