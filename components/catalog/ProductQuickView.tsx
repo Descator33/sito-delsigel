@@ -109,7 +109,8 @@ function Scheda({
 }) {
   const { lingua, testi, percorso } = useLingua();
   const s = schedaDi(t, lingua, testi);
-  const nota = testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]];
+  const claim = testi.catalogo.claims[t.slug as keyof Testi["catalogo"]["claims"]];
+  const nota = claim?.join(" ") ?? testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]];
   const [mostrato, setMostrato] = useState<string | null>(null);
   const [vistaSpaccata, setVistaSpaccata] = useState(false);
   const variante = s.gamma

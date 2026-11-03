@@ -51,7 +51,7 @@ export const fr: Testi = {
     a11y: { carosello: "carrousel", diapositiva: "diapositive", prodottiSalati: "Produits de la gamme salée", precedenti: "Afficher les produits précédents", successivi: "Afficher les produits suivants", gruppoDi: "Groupe {i} sur {tot}", vaiGruppo: "Aller au groupe {i} sur {tot}" },
     claims: {
       intriko: ["Tressé", "à la perfection."], "bomba-fritta": ["Classique.", "Intemporelle."], nuvola: ["Légère comme", "un nuage."],
-      "pizzetta-al-pomodoro": ["La classique.", "Toujours irrésistible."], "pizzetta-fritta": ["Moelleuse et dorée,", "à savourer."], montanarina: ["Napolitaine.", "Tout simplement bonne."],
+      "pizzetta-al-pomodoro": ["La classique.", "Toujours irrésistible."], "pizzetta-fritta": ["Moelleuse et dorée,", "à savourer."], montanarina: ["De la tradition napolitaine,", "pour un apéritif parfait."],
     },
     apriScheda: "Ouvrir la fiche de {nome}", chiudiScheda: "Fermer la fiche de {nome}", scopriDolci: "Découvrir toutes les douceurs", scopriSalati: "Découvrir tous les produits salés",
     mostraVetrina: "Afficher uniquement la sélection", altriDolci: "Autres douceurs", altriSalati: "Autres produits salés", tipologieCoda: "{n} types", varianti: "{n} variantes", formatoUnico: "format unique",
@@ -61,12 +61,12 @@ export const fr: Testi = {
     ...en.prodotti,
     note: {
       golosone: "Pâte levée fourrée, glaçage satiné et éclats de chocolat noir.", "bomba-fritta": "La pâte levée frite traditionnelle, fourrée ou nature.",
-      cuore: "Feuilleté en forme de cœur, décliné en cinq garnitures.", frittella: "Une douceur frite et moelleuse en deux saveurs.",
-      intriko: "Tresse feuilletée fourrée, cinq variantes et une version nature.", "intriko-midi": "Intriko au format midi, décliné en six garnitures.", lusekatt: "La spirale nordique au safran.", nuvola: "La pâte levée la plus légère de la gamme.",
-      stella: "Feuilleté en forme d'étoile, en cinq variantes.", klejner: "Le nœud frit de la tradition nordique, nature ou à la cannelle.", "focaccine-miste-tre-gusti": "Assortiment de trois saveurs, prêt pour le comptoir.",
-      montanarina: "La base frite napolitaine en formats classique et mini.", "paninetto-colorato-tre-gusti": "Trois pâtes colorées, un seul format.", "pizzetta-al-pomodoro": "Le format classique de restauration rapide.",
-      "pizzetta-bianca": "Huile et sel, format classique.", "pizzetta-fritta": "Moelleuse et dorée, prête à savourer.", "pizzette-fantasia": "Quatre garnitures en rotation saisonnière.",
-      rustici: "Six farces dans une enveloppe feuilletée.", "vol-au-vent": "Le feuilleté individuel prêt à garnir.",
+      cuore: "Pensé pour gâter votre moitié.", frittella: "Une bouchée moelleuse de gourmandise.",
+      intriko: "Tresse feuilletée fourrée, cinq variantes et une version nature.", "intriko-midi": "Intriko au format midi, six garnitures.", lusekatt: "La spirale nordique au safran.", nuvola: "La pâte levée la plus légère de la gamme.",
+      stella: "Pour un Noël plus doux.", klejner: "Le nœud frit de la tradition nordique, nature ou à la cannelle.", "focaccine-miste-tre-gusti": "Un carton de trois saveurs, prêt pour le comptoir.",
+      montanarina: "La base frite napolitaine en formats classique et mini.", "paninetto-colorato-tre-gusti": "Trois pâtes colorées, un seul format. Carton assorti.", "pizzetta-al-pomodoro": "Le format classique de restauration rapide.",
+      "pizzetta-bianca": "Huile et sel, format classique.", "pizzetta-fritta": "Moelleuse et dorée, prête à savourer.", "pizzette-fantasia": "Carton assorti, quatre saveurs.",
+      rustici: "Carton mixte, six saveurs.", "vol-au-vent": "Idéals pour des garnitures rapides.",
     },
     assi: { gusto: "Saveur", farcitura: "Garniture", finitura: "Finition", formato: "Format", variante: "Variante" },
     valori: {

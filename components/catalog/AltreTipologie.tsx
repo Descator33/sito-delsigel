@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import type { CSSProperties } from "react";
 import type { Tipologia } from "@/lib/catalog";
-import { RESTO_DOLCI, TEMI, varianti } from "@/lib/catalog-bento";
+import { RESTO_DOLCI, TEMI } from "@/lib/catalog-bento";
 import { CircleArrowButton } from "./CircleArrowButton";
 import { useLingua } from "@/components/LinguaProvider";
 import { interpola } from "@/lib/i18n/interpola";
@@ -52,7 +52,6 @@ export function AltreTipologie({
 
 function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; fotoIntere: boolean }) {
   const { testi } = useLingua();
-  const n = varianti(t);
   const nota =
     testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]] ??
     testi.prodotti.scattoProdotto;
@@ -102,10 +101,8 @@ function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; 
         <h4 className="font-insegna mt-[0.55em] max-w-[50%] text-[1.25rem] font-extrabold uppercase leading-[0.9] tracking-[-0.04em]">
           {t.name}
         </h4>
-        <p className="font-tecnico mt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-inchiostro/45">
-          {n > 1
-            ? interpola(testi.catalogo.varianti, { n })
-            : testi.catalogo.formatoUnico}
+        <p className="font-tecnico mt-2 max-w-[50%] text-[9px] font-semibold uppercase leading-relaxed tracking-[0.08em] text-inchiostro/70">
+          {nota}
         </p>
         <CircleArrowButton
           misura="piccola"

@@ -44,7 +44,7 @@ export const de: Testi = {
     a11y: { carosello: "Karussell", diapositiva: "Folie", prodottiSalati: "Produkte des herzhaften Sortiments", precedenti: "Vorherige Produkte anzeigen", successivi: "Nächste Produkte anzeigen", gruppoDi: "Gruppe {i} von {tot}", vaiGruppo: "Zu Gruppe {i} von {tot}" },
     claims: {
       intriko: ["Geflochten", "bis zur Perfektion."], "bomba-fritta": ["Klassisch.", "Zeitlos."], nuvola: ["Leicht wie", "eine Wolke."],
-      "pizzetta-al-pomodoro": ["Der Klassiker.", "Immer unwiderstehlich."], "pizzetta-fritta": ["Locker und goldbraun,", "zum Genießen."], montanarina: ["Neapolitanisch.", "Einfach gut."],
+      "pizzetta-al-pomodoro": ["Der Klassiker.", "Immer unwiderstehlich."], "pizzetta-fritta": ["Locker und goldbraun,", "zum Genießen."], montanarina: ["Neapolitanische Tradition", "für den perfekten Aperitif."],
     },
     apriScheda: "Produktdetails zu {nome} öffnen", chiudiScheda: "Produktdetails zu {nome} schließen", scopriDolci: "Alle süßen Produkte entdecken", scopriSalati: "Alle herzhaften Produkte entdecken",
     mostraVetrina: "Nur Highlights anzeigen", altriDolci: "Weitere süße Produkte", altriSalati: "Weitere herzhafte Produkte", tipologieCoda: "{n} Produkttypen", varianti: "{n} Varianten", formatoUnico: "Einheitsgröße",
@@ -53,12 +53,12 @@ export const de: Testi = {
   prodotti: {
     ...en.prodotti,
     note: {
-      golosone: "Gefülltes Hefegebäck mit seidiger Glasur und dunklen Schokostreuseln.", "bomba-fritta": "Traditionelles frittiertes Hefegebäck, gefüllt oder pur.", cuore: "Herzförmiges Blätterteiggebäck mit fünf Füllungen.",
-      frittella: "Weiches frittiertes Gebäck in zwei Geschmacksrichtungen.", intriko: "Gefüllter Blätterteigzopf in fünf Varianten sowie ungefüllt.", "intriko-midi": "Intriko im Midi-Format mit sechs Füllungen.", lusekatt: "Die nordische Safranschnecke.",
-      nuvola: "Das leichteste Hefegebäck im Sortiment.", stella: "Sternförmiges Blätterteiggebäck in fünf Varianten.", klejner: "Der traditionelle nordische frittierte Knoten, pur oder mit Zimt.",
-      "focaccine-miste-tre-gusti": "Dreier-Set verschiedener Geschmacksrichtungen, bereit für die Theke.", montanarina: "Die frittierte neapolitanische Spezialität in klassischer und Mini-Größe.", "paninetto-colorato-tre-gusti": "Drei farbige Teige in einem Format.",
-      "pizzetta-al-pomodoro": "Das klassische Feinkostthekenformat.", "pizzetta-bianca": "Öl und Salz im klassischen Format.", "pizzetta-fritta": "Locker und goldbraun, fertig zum Genießen.", "pizzette-fantasia": "Vier Beläge im saisonalen Wechsel.",
-      rustici: "Sechs Füllungen in einer Blätterteighülle.", "vol-au-vent": "Portioniertes Blätterteiggebäck zum Befüllen.",
+      golosone: "Gefülltes Hefegebäck mit seidiger Glasur und dunklen Schokostreuseln.", "bomba-fritta": "Traditionelles frittiertes Hefegebäck, gefüllt oder pur.", cuore: "Für süße Momente mit deinem Lieblingsmenschen.",
+      frittella: "Ein fluffiger Bissen voller Genuss.", intriko: "Gefüllter Blätterteigzopf in fünf Varianten sowie ungefüllt.", "intriko-midi": "Intriko im Midi-Format mit sechs Füllungen.", lusekatt: "Die nordische Safranschnecke.",
+      nuvola: "Das leichteste Hefegebäck im Sortiment.", stella: "Für eine süßere Weihnachtszeit.", klejner: "Der traditionelle nordische frittierte Knoten, pur oder mit Zimt.",
+      "focaccine-miste-tre-gusti": "Ein Karton mit drei Geschmacksrichtungen, bereit für die Theke.", montanarina: "Die frittierte neapolitanische Spezialität in klassischer und Mini-Größe.", "paninetto-colorato-tre-gusti": "Drei farbige Teige in einem Format. Sortierter Karton.",
+      "pizzetta-al-pomodoro": "Das klassische Feinkostthekenformat.", "pizzetta-bianca": "Öl und Salz im klassischen Format.", "pizzetta-fritta": "Locker und goldbraun, fertig zum Genießen.", "pizzette-fantasia": "Sortierter Karton mit vier Geschmacksrichtungen.",
+      rustici: "Gemischter Karton mit sechs Geschmacksrichtungen.", "vol-au-vent": "Ideal für schnelle Füllungen.",
     },
     assi: { gusto: "Geschmack", farcitura: "Füllung", finitura: "Topping", formato: "Format", variante: "Variante" },
     valori: {

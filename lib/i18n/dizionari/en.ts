@@ -54,7 +54,7 @@ export const en: Testi = {
     a11y: { carosello: "carousel", diapositiva: "slide", prodottiSalati: "Products in the savoury range", precedenti: "Show previous products", successivi: "Show next products", gruppoDi: "Group {i} of {tot}", vaiGruppo: "Go to group {i} of {tot}" },
     claims: {
       intriko: ["Braided", "to perfection."], "bomba-fritta": ["Classic.", "Timeless."], nuvola: ["Light as", "a cloud."],
-      "pizzetta-al-pomodoro": ["The classic.", "Always irresistible."], "pizzetta-fritta": ["Soft and golden,", "made to be enjoyed."], montanarina: ["Neapolitan.", "Simply delicious."],
+      "pizzetta-al-pomodoro": ["The classic.", "Always irresistible."], "pizzetta-fritta": ["Soft and golden,", "made to be enjoyed."], montanarina: ["From Neapolitan tradition,", "for the perfect aperitif."],
     },
     badge: ["BEST", "SELLER"], apriScheda: "Open {nome} details", chiudiScheda: "Close {nome} details",
     scopriDolci: "Discover all sweet products", scopriSalati: "Discover all savoury products", mostraVetrina: "Show featured products only",
@@ -68,15 +68,15 @@ export const en: Testi = {
   prodotti: {
     note: {
       golosone: "Filled leavened pastry with a satin glaze and dark chocolate sprinkles.",
-      "bomba-fritta": "The traditional fried leavened pastry, filled or plain.", cuore: "Heart-shaped puff pastry with five fillings in the range.",
-      frittella: "A soft fried counter pastry in two flavours.", intriko: "Filled braided puff pastry, in five variants plus an unfilled version.",
+      "bomba-fritta": "The traditional fried leavened pastry, filled or plain.", cuore: "Made to spoil your sweetheart.",
+      frittella: "A soft bite of goodness.", intriko: "Filled braided puff pastry, in five variants plus an unfilled version.",
       "intriko-midi": "Midi Intriko in six filled variants.",
-      lusekatt: "The Nordic saffron swirl.", nuvola: "The lightest leavened pastry in the range.", stella: "Star-shaped puff pastry in five variants.",
-      klejner: "The traditional Nordic fried knot, plain or cinnamon.", "focaccine-miste-tre-gusti": "A three-flavour set, ready for the counter.",
-      montanarina: "The Neapolitan fried base in classic and mini sizes.", "paninetto-colorato-tre-gusti": "Three coloured doughs in one size.",
+      lusekatt: "The Nordic saffron swirl.", nuvola: "The lightest leavened pastry in the range.", stella: "For a sweeter Christmas.",
+      klejner: "The traditional Nordic fried knot, plain or cinnamon.", "focaccine-miste-tre-gusti": "A case of three flavours, ready for the counter.",
+      montanarina: "The Neapolitan fried base in classic and mini sizes.", "paninetto-colorato-tre-gusti": "Three coloured doughs in one size. Assorted case.",
       "pizzetta-al-pomodoro": "The classic deli-counter size.", "pizzetta-bianca": "Oil and salt in the classic size.",
-      "pizzetta-fritta": "Soft and golden, ready to enjoy.", "pizzette-fantasia": "Four toppings in seasonal rotation.",
-      rustici: "Six fillings in a puff-pastry shell.", "vol-au-vent": "Individual puff pastry ready to fill.",
+      "pizzetta-fritta": "Soft and golden, ready to enjoy.", "pizzette-fantasia": "Assorted case, four flavours.",
+      rustici: "Mixed case, six flavours.", "vol-au-vent": "Ideal for quick fillings.",
     },
     assi: { gusto: "Flavour", farcitura: "Filling", finitura: "Topping", formato: "Size", variante: "Variant" },
     valori: {
