@@ -288,13 +288,12 @@ function Scheda({
 
         <div className="mt-8 flex flex-wrap gap-2.5">
           {t.slug === "nuvola" && (
-            <button
-              type="button"
-              disabled
-              className="font-tecnico inline-flex min-h-11 items-center rounded-full bg-inchiostro px-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-panna opacity-60"
+            <Link
+              href={percorso("/configuratore")}
+              className="font-tecnico inline-flex min-h-11 items-center rounded-full bg-inchiostro px-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-panna focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fucsia"
             >
               {testi.comune.voci.configuratore}
-            </button>
+            </Link>
           )}
           <Link
             href={percorso("/contatti")}

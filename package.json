@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/valida-configuratore.mjs",
+    "prebuild": "node scripts/prepara-foto.mjs && node scripts/valida-configuratore.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --test tests/*.test.cjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

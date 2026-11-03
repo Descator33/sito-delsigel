@@ -38,7 +38,7 @@ export const fr: Testi = {
     dolci: { eyebrow: "Catalogue 2026/27", titolo: "Nos", titoloAccento: "douceurs.", promessa: "Des recettes simples, des ingrédients sélectionnés et beaucoup de passion. Chaque jour, des douceurs vraiment savoureuses.", tipologie: "{n} types", varianti: "{n} variantes" },
     salati: { eyebrow: "Catalogue 2026/27", titolo: "Nos", titoloAccento: "produits salés.", promessa: "Tradition, goût et créativité dans chaque recette. Des produits salés prêts à rendre chaque pause spéciale.", tipologie: "{n} types", varianti: "{n} variantes" },
     ponte: ["La suite,", "c'est vous."],
-    teaser: { eyebrow: "Le configurateur", titolo: [{ testo: "Créez votre" }, { testo: "douceur.", accento: true }], copy: "Choisissez la base, la garniture, la finition et les détails. Composez votre douceur idéale en quelques étapes avec notre configurateur. Tout en ligne, tout sur mesure, rien que pour vous.", cta: "Configurer votre douceur" },
+    teaser: { eyebrow: "Le configurateur", titolo: [{ testo: "Créez votre" }, { testo: "douceur.", accento: true }], copy: "Commencez avec Nuvola, la garniture, la finition et les détails. Composez votre douceur idéale en quelques étapes avec notre configurateur. Tout en ligne, tout sur mesure, rien que pour vous.", cta: "Configurer votre douceur" },
     catalogoFisico: {
       eyebrow: "Catalogue imprimé 2026/27", titolo: [{ testo: "Le catalogue" }, { testo: "2026/2027", accento: true }, { testo: "À feuilleter" }],
       promessa: ["Inspirations, tendances et toutes les nouveautés Delsigel.", "Tout un monde de douceur à découvrir."], cta: "Découvrir la nouvelle édition",
@@ -91,12 +91,12 @@ export const fr: Testi = {
   configuratore: {
     ...en.configuratore,
     percorso: [
-      { titolo: "Choisissez la base", testo: "Sélectionnez votre base préférée et donnez forme à votre douceur." },
+      { titolo: "Choisissez la base", testo: "La base Nuvola est prête pour votre création." },
       { titolo: "Ajoutez la garniture", testo: "Choisissez la crème ou la garniture qui vous inspire le plus." },
       { titolo: "Terminez par la finition", testo: "Ajoutez du croquant, des fruits, de la gourmandise et des décors." },
       { titolo: "Obtenez votre création", testo: "Visualisez le résultat et finalisez votre création." },
     ],
-    statiNastro: ["Nuvola nature, la base sans garniture", "Nuvola garnie de crème et de fraise", "Nuvola crème-fraise au sucre glace"],
+    statiNastro: ["Nuvola nature, la base sans garniture", "Nuvola garnie de crème", "Nuvola crème-fraise au sucre glace"],
     intro: { titolo: [{ testo: "Créez" }, { testo: "votre" }, { testo: "douceur !", accento: true }], copy: ["Jouez, combinez, personnalisez.", "La douceur que vous imaginez,", "c'est vous qui la créez !"], comeFunziona: "Comment ça marche" },
     comeFunziona: {
       titolo: "Comment ça marche", passi: [

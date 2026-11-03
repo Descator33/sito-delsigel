@@ -32,7 +32,7 @@ export const fi: Testi = {
     dolci: { eyebrow: "Kuvasto 2026/27", titolo: "Makeat", titoloAccento: "tuotteemme.", promessa: "Yksinkertaiset reseptit, valikoidut raaka-aineet ja paljon intohimoa. Aidosti herkullisia leivonnaisia joka päivä.", tipologie: "{n} tuotetyyppiä", varianti: "{n} vaihtoehtoa" },
     salati: { eyebrow: "Kuvasto 2026/27", titolo: "Suolaiset", titoloAccento: "tuotteemme.", promessa: "Perinnettä, makua ja luovuutta jokaisessa reseptissä. Suolaisia herkkuja jokaiseen taukoon.", tipologie: "{n} tuotetyyppiä", varianti: "{n} vaihtoehtoa" },
     ponte: ["Seuraavana", "olet sinä."],
-    teaser: { eyebrow: "Konfiguraattori", titolo: [{ testo: "Luo oma" }, { testo: "leivonnaisesi.", accento: true }], copy: "Valitse pohja, täyte, viimeistely ja yksityiskohdat. Rakenna ihanteellinen leivonnaisesi konfiguraattorilla muutamassa vaiheessa – kokonaan verkossa ja juuri sinun tarpeisiisi.", cta: "Suunnittele leivonnaisesi" },
+    teaser: { eyebrow: "Konfiguraattori", titolo: [{ testo: "Luo oma" }, { testo: "leivonnaisesi.", accento: true }], copy: "Aloita Nuvolasta, täyte, viimeistely ja yksityiskohdat. Rakenna ihanteellinen leivonnaisesi konfiguraattorilla muutamassa vaiheessa – kokonaan verkossa ja juuri sinun tarpeisiisi.", cta: "Suunnittele leivonnaisesi" },
     catalogoFisico: {
       eyebrow: "Painettu kuvasto 2026/27", titolo: [{ testo: "Kuvasto" }, { testo: "2026/2027", accento: true }, { testo: "Selailtavaksi" }],
       promessa: ["Inspiraatiota, trendejä ja kaikki Delsigelin uutuudet.", "Kokonainen makea maailma odottaa löytäjäänsä."], cta: "Tutustu uuteen painokseen", edizione: ["Painettu painos", "keräiltäväksi"],
@@ -63,8 +63,8 @@ export const fi: Testi = {
   },
   configuratore: {
     ...en.configuratore,
-    percorso: [{ titolo: "Valitse pohja", testo: "Valitse mieleisesi pohja ja anna leivonnaiselle muoto." }, { titolo: "Lisää täyte", testo: "Valitse sinua eniten inspiroiva kreemi tai täyte." }, { titolo: "Viimeistele päällysteellä", testo: "Lisää rapeutta, hedelmiä, herkullisuutta ja koristeita." }, { titolo: "Saat oman leivonnaisesi", testo: "Katso lopputulos ja viimeistele luomuksesi." }],
-    statiNastro: ["Täyttämätön Nuvola-pohja", "Kreemillä ja mansikalla täytetty Nuvola", "Kreemi-mansikka-Nuvola tomusokerilla"],
+    percorso: [{ titolo: "Valitse pohja", testo: "Nuvola-pohja on valmis luomustasi varten." }, { titolo: "Lisää täyte", testo: "Valitse sinua eniten inspiroiva kreemi tai täyte." }, { titolo: "Viimeistele päällysteellä", testo: "Lisää rapeutta, hedelmiä, herkullisuutta ja koristeita." }, { titolo: "Saat oman leivonnaisesi", testo: "Katso lopputulos ja viimeistele luomuksesi." }],
+    statiNastro: ["Täyttämätön Nuvola-pohja", "Kreemillä täytetty Nuvola", "Kreemi-mansikka-Nuvola tomusokerilla"],
     intro: { titolo: [{ testo: "Luo" }, { testo: "oma" }, { testo: "leivonnaisesi!", accento: true }], copy: ["Leiki, yhdistele, räätälöi.", "Kuvittelemasi leivonnainen", "syntyy käsissäsi!"], comeFunziona: "Näin se toimii" },
     comeFunziona: { titolo: "Näin se toimii", passi: [{ titolo: "Taso 01 — valitse pelaaja", testo: "Kymmenen pohjaa, kaikki saatavilla. Vedä pohja lavalle hiirellä tai napauta sitä – lopputulos on sama." }, { titolo: "Taso 02 — lataa täyte", testo: "Näet vain täytteet, joita kyseiseen pohjaan todella valmistetaan – ei mahdottomia valintoja." }, { titolo: "Taso 03 — viimeistele yhdistelmä", testo: "Resepti määrää viimeistelyn, mutta sinä asetat sen. Sen jälkeen valitaan koko, vähimmäistilaus ja lavamäärä, ja tarjouspyyntö on valmis." }], chiudi: "Sulje", ok: "Selvä, aloitetaan" },
     titoli: { passo1: "Valitse pohjasi", passo2: "Lisätään täyte", passo3: "Viimeinen silaus", completo: "Valmis!" }, passoDi: "Vaihe {n}/3 — {titolo}", avvisoFarcituraSparita: "Avaamasi linkin täytettä ei enää ole saatavilla tälle pohjalle. Valitse jokin nykyisen valikoiman täytteistä.",

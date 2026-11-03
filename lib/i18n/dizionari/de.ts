@@ -82,10 +82,10 @@ export const de: Testi = {
   configuratore: {
     ...en.configuratore,
     percorso: [
-      { titolo: "Basis wählen", testo: "Wählen Sie Ihre bevorzugte Basis und geben Sie Ihrem Gebäck Form." }, { titolo: "Füllung hinzufügen", testo: "Wählen Sie die Creme oder Füllung, die Sie am meisten anspricht." },
+      { titolo: "Mit Nuvola beginnen", testo: "Die Nuvola-Basis ist für Ihre Kreation bereit." }, { titolo: "Füllung hinzufügen", testo: "Wählen Sie die Creme oder Füllung, die Sie am meisten anspricht." },
       { titolo: "Mit dem Topping vollenden", testo: "Fügen Sie Knuspriges, Früchte, Genuss und Dekoration hinzu." }, { titolo: "Ihr Gebäck erhalten", testo: "Sehen Sie das Ergebnis und vollenden Sie Ihre Kreation." },
     ],
-    statiNastro: ["Ungefüllte Nuvola, die Basis ohne Füllung", "Nuvola mit Creme- und Erdbeerfüllung", "Nuvola mit Creme, Erdbeere und Puderzucker"],
+    statiNastro: ["Ungefüllte Nuvola, die Basis ohne Füllung", "Nuvola mit Cremefüllung", "Nuvola mit Creme, Erdbeere und Puderzucker"],
     intro: { titolo: [{ testo: "Kreieren" }, { testo: "Sie Ihr" }, { testo: "Gebäck!", accento: true }], copy: ["Spielen, kombinieren, personalisieren.", "Das Gebäck, das Sie sich vorstellen,", "kreieren Sie selbst!"], comeFunziona: "So funktioniert es" },
     comeFunziona: {
       titolo: "So funktioniert es", passi: [

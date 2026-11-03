@@ -288,8 +288,8 @@ export const it: Testi = {
   configuratore: {
     percorso: [
       {
-        titolo: "Scegli la base",
-        testo: "Seleziona la base che preferisci e dai forma al tuo dolce.",
+        titolo: "Parti da Nuvola",
+        testo: "La base Nuvola è già pronta per la tua creazione.",
       },
       {
         titolo: "Aggiungi la farcitura",
@@ -306,7 +306,7 @@ export const it: Testi = {
     ],
     statiNastro: [
       "Nuvola vuota, la base senza farcitura",
-      "Nuvola farcita con crema e fragola",
+      "Nuvola farcita con crema",
       "Nuvola alla crema e fragola con zucchero a velo",
     ],
     intro: {

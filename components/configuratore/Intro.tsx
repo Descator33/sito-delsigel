@@ -2,7 +2,7 @@
 
 import { SottolineaturaOro } from "./Decori";
 import { ComeFunziona } from "./ComeFunziona";
-import { useTesti } from "@/components/LinguaProvider";
+import { useTesti } from "@/components/LinguaConfiguratoreProvider";
 
 /**
  * La colonna introduttiva: l'insegna della pagina. Titolo su tre

@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useLingua } from "@/components/LinguaConfiguratoreProvider";
 
 /**
  * Immagine con catena di ripiego. Le sorgenti arrivano SOLO dalle
- * cartelle di stato di public/img/configuratore/prodotti/ (scoperte dal
- * server, vedi lib/configuratore/foto.ts), già in ordine di preferenza:
+ * cartelle di stato di public/img/configuratore/prodotti/ (indicizzate nel
+ * manifest dal prebuild), già in ordine di preferenza:
  * stato corrente, poi gli stati precedenti del dolce, infine il
  * placeholder tipografico onesto del sito. Man mano che le foto
  * arrivano nelle cartelle, la catena si accorcia da sola senza toccare
@@ -21,12 +22,14 @@ import { useState } from "react";
  */
 export function ImmagineProdotto({
   sorgenti,
+  prioritaria = false,
   alt,
   iniziale,
   notaRipiego,
   classe = "absolute inset-0 h-full w-full object-contain p-3",
 }: {
   /** in ordine di preferenza; le voci null/undefined si scartano */
+  prioritaria?: boolean;
   sorgenti: (string | null | undefined)[];
   alt: string;
   /** lettera del placeholder tipografico */
@@ -35,6 +38,7 @@ export function ImmagineProdotto({
   /** inquadratura dell'immagine; deve restare object-contain */
   classe?: string;
 }) {
+  const { testi } = useLingua();
   const valide = sorgenti.filter((s): s is string => Boolean(s));
 
   /* l'indice di ripiego è legato alla lista di sorgenti: se cambia il
@@ -46,7 +50,7 @@ export function ImmagineProdotto({
   const setIndice = (i: number) => setStato({ chiave, indice: i });
 
   const src = indice < valide.length ? valide[indice] : null;
-  const inRipiego = indice > 0 || !src;
+  const inRipiego = indice > 0 || !src || !sorgenti[0];
 
   return (
     <>
@@ -60,7 +64,9 @@ export function ImmagineProdotto({
         <img
           src={src}
           alt={alt}
-          loading="lazy"
+          loading={prioritaria ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={prioritaria ? "high" : "auto"}
           draggable={false}
           /* l'errore di rete può scattare PRIMA dell'idratazione, quando
              onError non è ancora attaccato: il ref callback recupera i
@@ -73,7 +79,11 @@ export function ImmagineProdotto({
           className={classe}
         />
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center"
+          role="img"
+          aria-label={testi.configuratore.esperienza.immagineErrore}
+        >
           <span className="type-display text-[38cqw] leading-none text-inchiostro/12">
             {iniziale}
           </span>

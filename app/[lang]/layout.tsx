@@ -5,11 +5,8 @@ import { LinguaProvider } from "@/components/LinguaProvider";
 import { MenuProvider } from "@/components/MenuStato";
 import { PreloaderProvider } from "@/components/Preloader";
 import { ScriptPrimaDelPaint } from "@/components/ScriptPrimaDelPaint";
-import {
-  fotoFarciture,
-  fotoStati,
-  fotoTopping,
-} from "@/lib/configuratore/foto";
+import { fotoStati } from "@/lib/configuratore/foto";
+import { DOLCI } from "@/lib/percorso-configuratore";
 import { dizionario } from "@/lib/i18n/dizionario";
 import { LINGUE, haLingua, type Lingua } from "@/lib/i18n/lingue";
 import { BASE_SITO, alternatesPer } from "@/lib/i18n/sito";
@@ -96,11 +93,10 @@ export default async function RootLayout({
   const lingua: Lingua = lang;
   const testi = dizionario(lingua);
 
-  const assetsConfiguratore = [
-    ...Object.values(fotoStati()),
-    ...Object.values(fotoFarciture()),
-    ...Object.values(fotoTopping()),
-  ].filter((url, posizione, tutti) => tutti.indexOf(url) === posizione);
+  const foto = fotoStati();
+  const assetsConfiguratore = DOLCI.map(({ stato }) => foto[stato]).filter(
+    (url): url is string => Boolean(url),
+  );
 
   return (
     <html

@@ -28,7 +28,7 @@ import {
   baseDi,
   combinazione,
   farcitureDi,
-} from "@/lib/configuratore";
+} from "@/lib/catalogo-storico/modello";
 import type { Lingua } from "@/lib/i18n/lingue";
 import type { IdFarcitura, Testi, ValoreAsse } from "@/lib/i18n/tipi";
 

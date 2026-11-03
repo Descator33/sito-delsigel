@@ -1,37 +1,27 @@
 /**
  * Configuratore dolci — modello dati e logica pura.
  *
- * Fonte normativa: public/configuratore-dolci-spec-tecnica.md (seconda
- * revisione). Il dataset (lib/configuratore/dati-dolci.json) è l'unica
- * sorgente di verità su cosa esiste: la matrice è sparsa e chiusa (32 SKU
- * su 900 combinazioni teoriche), il topping è determinato dalla coppia
- * (base, farcitura) e non è mai una scelta, grammatura/pesi/ordine minimo
- * vivono sulla combinazione. Il configuratore non genera combinazioni,
- * le seleziona.
+ * Matrice 2026-10-22: il configuratore espone una base (Nuvola) e una
+ * selezione chiusa di ricette. I quattro componenti restano nello stato e
+ * nell'URL, ma una SKU è valida soltanto se compare in `combinazioni`.
  *
- * Questo modulo è volutamente separato da lib/catalog.ts: quello è il
- * modello UI delle card in home (slug e semantica divergenti), il ponte
- * tra i due è la sola mappa TESSERA_A_BASE, esplicita e revocabile.
+ * Grammatura, peso e ordine minimo — prima proprietà della singola
+ * combinazione — restano proprietà della BASE: la scelta della ricetta non
+ * cambia la logistica.
  *
- * Le cinque funzioni pure (farcitureDi, combinazione, toppingDi, quantita,
- * validaStato) sono condivise alla lettera tra client e Server Action:
- * la traduzione mostrata accanto al campo e quella scritta nel payload
- * escono dalla stessa moltiplicazione, mai da due implementazioni.
+ * Le funzioni pure (prodotto, quantita, validaStato) restano condivise alla
+ * lettera tra client e Server Action: la traduzione mostrata accanto al
+ * campo e quella scritta nel payload escono dalla stessa fonte, mai da due
+ * implementazioni.
  */
 
 import dati from "./configuratore/dati-dolci.json";
 
 /* ------------------------------- tipi ---------------------------------- */
 
-/** Catena logistica a 4 livelli (vassoio→cartone→strato→pedana) o a 3:
- *  Intriko Midi, Lussekatt e Klejner non hanno il livello vassoio né la
- *  scomposizione in strati. Non è un dato mancante da colmare: è una
- *  configurazione d'imballo diversa, e i campi null lo dicono. */
 export type Packaging = {
   vassoi_per_cartone: number | null;
   pezzi_per_vassoio: number | null;
-  /** solo Frittelline: il listino dichiara il cartone a peso (2,5 kg),
-   *  i 72 pezzi sono derivati dai vassoi */
   peso_cartone_kg: number | null;
   cartone_dichiarato_a_peso: boolean;
   pezzi_per_cartone: number;
@@ -43,45 +33,29 @@ export type Packaging = {
   testo_originale: string;
 };
 
-/* I tipi Base e Combinazione NON portano l'immagine: il JSON conserva i
-   vecchi campi `immagine` come residuo della trascrizione, ma le foto
-   vivono in public/img/configuratore/prodotti/<stato>/ e le scopre a
-   render lib/configuratore/foto.ts. */
-
 export type Base = {
   id: string;
   nome: string;
   diametro_cm: number;
   modalita_uso: string;
   packaging: Packaging;
-};
-
-export type Farcitura = {
-  id: string;
-  nome: string;
-  senza_farcitura: boolean;
-};
-
-export type Topping = { id: string; nome: string };
-
-export type Combinazione = {
-  sku: string;
-  /** nome commerciale proprio della combinazione, quando a listino il
-   *  prodotto farcito cambia nome (Bomba + crema si vende come
-   *  «Bomba Super», decisione Delsigel 2026-08-01: stessa base, non due
-   *  basi distinte); assente = vale il nome della base */
-  nome?: string;
-  base: string;
-  farcitura: string;
-  topping: string;
+  /** logistica del prodotto finito: farcitura/credenza/finitura sono
+   *  compositive, non cambiano grammatura né catena di imballo */
   grammatura_gr: number;
   peso_cartone_kg: number;
   peso_pedana_kg: number;
   ordine_minimo_pedane: number | null;
   ordine_minimo_pezzi: number | null;
-  /** vero = il minimo è scritto sulla riga del foglio (lettura letterale,
-   *  non interpretata: vedi l'ambiguità aperta nella spec) */
-  ordine_minimo_dichiarato_su_riga: boolean;
+};
+
+export type Farcitura = { id: string; nome: string };
+export type Credenza = { id: string; nome: string };
+export type Finitura = { id: string; nome: string };
+export type Combinazione = {
+  base: string;
+  farcitura: string;
+  credenza: string;
+  finitura: string;
 };
 
 export type Dataset = {
@@ -91,8 +65,19 @@ export type Dataset = {
   unita_quantita: string;
   basi: Base[];
   farciture: Farcitura[];
-  topping: Topping[];
+  credenza: Credenza[];
+  finiture: Finitura[];
   combinazioni: Combinazione[];
+};
+
+/** Un prodotto configurato: i 4 componenti di una ricetta presente in
+ * `combinazioni`. */
+export type Prodotto = {
+  sku: string;
+  base: string;
+  farcitura: string;
+  credenza: string;
+  finitura: string;
 };
 
 /** Traduzione di una quantità lungo la catena logistica. */
@@ -109,73 +94,86 @@ export const DATASET = dati as Dataset;
 
 const BASI = new Map(DATASET.basi.map((b) => [b.id, b]));
 const FARCITURE = new Map(DATASET.farciture.map((f) => [f.id, f]));
-const TOPPING = new Map(DATASET.topping.map((t) => [t.id, t]));
-const COMBINAZIONI = new Map(DATASET.combinazioni.map((c) => [c.sku, c]));
-
-const FARCITURE_PER_BASE = new Map<string, Farcitura[]>();
-for (const c of DATASET.combinazioni) {
-  const f = FARCITURE.get(c.farcitura);
-  if (!f) continue; // integrità garantita dal prebuild, ma non si lancia qui
-  const lista = FARCITURE_PER_BASE.get(c.base) ?? [];
-  lista.push(f);
-  FARCITURE_PER_BASE.set(c.base, lista);
-}
+const CREDENZA = new Map(DATASET.credenza.map((c) => [c.id, c]));
+const FINITURE = new Map(DATASET.finiture.map((f) => [f.id, f]));
+const COMBINAZIONI = new Map(
+  DATASET.combinazioni.map((c) => [
+    `${c.base}--${c.farcitura}--${c.credenza}--${c.finitura}`,
+    c,
+  ]),
+);
 
 export const baseDi = (id: string): Base | null => BASI.get(id) ?? null;
 export const farcituraVoce = (id: string): Farcitura | null =>
   FARCITURE.get(id) ?? null;
-export const toppingVoce = (id: string): Topping | null =>
-  TOPPING.get(id) ?? null;
+export const credenzaVoce = (id: string): Credenza | null =>
+  CREDENZA.get(id) ?? null;
+export const finituraVoce = (id: string): Finitura | null =>
+  FINITURE.get(id) ?? null;
 
-/* ------------------------ le cinque funzioni pure ------------------------ */
+/** Opzioni disponibili al passo 3, filtrate dalla ricetta scelta. */
+export const credenzePer = (base: string, farcitura: string): Credenza[] =>
+  DATASET.combinazioni
+    .filter((c) => c.base === base && c.farcitura === farcitura)
+    .map((c) => CREDENZA.get(c.credenza))
+    .filter((c): c is Credenza => Boolean(c));
 
-/** Farciture ammesse per una base: solo quelle che compaiono in una
- *  combinazione valida. Al passo 2 si filtra, non si disabilita. */
-export const farcitureDi = (base: string): Farcitura[] =>
-  FARCITURE_PER_BASE.get(base) ?? [];
-
-/** La combinazione è unica: (base, farcitura) → SKU, o niente. */
-export const combinazione = (
-  base: string,
-  farcitura: string
-): Combinazione | null => COMBINAZIONI.get(`${base}--${farcitura}`) ?? null;
-
-/** Il topping è derivato, mai scelto. */
-export const toppingDi = (base: string, farcitura: string): Topping | null => {
-  const c = combinazione(base, farcitura);
-  return c ? (TOPPING.get(c.topping) ?? null) : null;
-};
-
-/** Nome commerciale del prodotto configurato: la combinazione può avere
- *  un nome proprio a listino (Bomba con crema → Bomba Super); altrimenti
- *  è il nome della base. Ovunque si nomina il PRODOTTO (passo 3, titolo
- *  pagina, richiesta di quotazione) si passa da qui; il nome della BASE
- *  resta per i passi in cui la farcitura non è ancora scelta. */
-export const nomeCommerciale = (c: Combinazione): string =>
-  c.nome ?? BASI.get(c.base)?.nome ?? c.base;
-
-/** Conversione della quantità lungo la catena logistica.
- *  Unica fonte aritmetica per UI e payload. */
-export const quantita = (
+/** Opzioni disponibili al passo 4. Oggi la matrice ha una sola finitura,
+ * ma resta una funzione: il flusso non dovrà cambiare se il listino la
+ * allargherà. */
+export const finiturePer = (
   base: string,
   farcitura: string,
-  pedane: number
-): Quantita | null => {
-  const c = combinazione(base, farcitura);
+  credenza: string,
+): Finitura[] =>
+  DATASET.combinazioni
+    .filter(
+      (c) =>
+        c.base === base && c.farcitura === farcitura && c.credenza === credenza,
+    )
+    .map((c) => FINITURE.get(c.finitura))
+    .filter((f): f is Finitura => Boolean(f));
+
+/* --------------------------- le funzioni pure ---------------------------- */
+
+/** Costruisce il prodotto soltanto quando la quadrupla è prevista dalla
+ * matrice chiusa. */
+export const prodotto = (
+  base: string,
+  farcitura: string,
+  credenza: string,
+  finitura: string,
+): Prodotto | null => {
+  const sku = `${base}--${farcitura}--${credenza}--${finitura}`;
+  if (!COMBINAZIONI.has(sku)) return null;
+  return {
+    sku,
+    base,
+    farcitura,
+    credenza,
+    finitura,
+  };
+};
+
+/** Conversione della quantità lungo la catena logistica. Grammatura e pesi
+ *  vivono sulla base: farcitura/credenza/finitura non li cambiano. */
+export const quantita = (base: string, pedane: number): Quantita | null => {
   const b = BASI.get(base);
-  if (!c || !b) return null;
+  if (!b) return null;
   const p = b.packaging;
   return {
     pedane,
     cartoni: pedane * p.cartoni_per_pedana,
     pezzi: pedane * p.pezzi_per_pedana,
-    peso_kg: Math.round(pedane * c.peso_pedana_kg),
+    peso_kg: Math.round(pedane * b.peso_pedana_kg * 100) / 100,
   };
 };
 
 export type StatoConfiguratore = {
   base: string;
   farcitura: string;
+  credenza: string;
+  finitura: string;
   pedane: number;
 };
 
@@ -196,136 +194,223 @@ export type EsitoValidazione =
  *  nel gestionale.
  *
  *  La quantità è in pedane INTERE: mezze pedane non esistono nella catena
- *  descritta dal foglio. Il vincolo di minimo segue la lettura letterale
- *  del dataset (19 SKU su 32) finché Delsigel non scioglie l'ambiguità
- *  per-SKU / per-base / per-ordine: per questo la regola sta solo qui. */
+ *  descritta dal foglio. Il minimo, dove dichiarato, è della base. */
 export const validaStato = (s: StatoConfiguratore): EsitoValidazione => {
-  const c = combinazione(s.base, s.farcitura);
-  if (!c) return { ok: false, errore: "COMBINAZIONE_INESISTENTE" };
-  if (!Number.isInteger(s.pedane) || s.pedane < 1)
+  const p = prodotto(s.base, s.farcitura, s.credenza, s.finitura);
+  if (!p) return { ok: false, errore: "COMBINAZIONE_INESISTENTE" };
+  if (!Number.isSafeInteger(s.pedane) || s.pedane < 1 || s.pedane > 10000)
     return { ok: false, errore: "QUANTITA_NON_VALIDA" };
-  if (c.ordine_minimo_pedane != null && s.pedane < c.ordine_minimo_pedane)
+  const b = BASI.get(s.base)!;
+  if (b.ordine_minimo_pedane != null && s.pedane < b.ordine_minimo_pedane)
     return {
       ok: false,
       errore: "SOTTO_ORDINE_MINIMO",
-      minimo_pedane: c.ordine_minimo_pedane,
-      minimo_pezzi: c.ordine_minimo_pezzi,
+      minimo_pedane: b.ordine_minimo_pedane,
+      minimo_pezzi: b.ordine_minimo_pezzi,
     };
-  return { ok: true, sku: c.sku, quantita: quantita(s.base, s.farcitura, s.pedane)! };
+  return { ok: true, sku: p.sku, quantita: quantita(s.base, s.pedane)! };
 };
 
 /* --------------------------- parsing dell'URL --------------------------- */
 
-/** Esito del parsing dei segmenti di /configuratore/[[...scelta]].
- *  `render` porta lo stato iniziale; `redirect` normalizza gli URL sporchi
- *  (combinazione inesistente, segmenti in eccesso) senza mai mostrare un
- *  errore tecnico. */
+/** Esito del parsing dei segmenti di
+ *  /configuratore/[[...scelta]]. `render` porta lo stato iniziale (ognuno
+ *  dei 4 componenti, quando presente); `redirect` normalizza gli URL
+ *  sporchi (id fuori vocabolario, segmenti in eccesso) senza mai mostrare
+ *  un errore tecnico. */
 export type EsitoParse =
-  | { tipo: "render"; base: Base | null; comb: Combinazione | null }
+  | {
+      tipo: "render";
+      base: Base | null;
+      farcitura: Farcitura | null;
+      credenza: Credenza | null;
+      prodotto: Prodotto | null;
+    }
   | { tipo: "redirect"; destinazione: string };
 
 export function parseScelta(scelta: string[] | undefined): EsitoParse {
-  const [idBase, idFarcitura, ...resto] = scelta ?? [];
+  const [idBase, idFarcitura, idCredenza, idFinitura, ...resto] = scelta ?? [];
 
-  if (!idBase) return { tipo: "render", base: null, comb: null };
-
-  const base = BASI.get(idBase);
-  /* base inesistente: si riparte dal passo 1, non un 404 */
-  if (!base) return { tipo: "redirect", destinazione: "/configuratore" };
-
-  /* il passo 2 è sempre un passo vero, anche per le basi a farcitura
-     unica: la spec (§passo 2) prescriveva il salto automatico, ma la
-     decisione UX del 2026-08-02 lo supera — il dolce si compone sempre
-     con lo stesso gesto, la scelta non si fa mai al posto dell'utente */
-  if (!idFarcitura) return { tipo: "render", base, comb: null };
-
-  const comb = combinazione(base.id, idFarcitura);
-  /* farcitura inesistente per questa base: si atterra al passo 2 con un
-     avviso discreto composto dal query param (letto solo lato client) */
-  if (!comb)
+  if (!idBase)
     return {
-      tipo: "redirect",
-      destinazione: `/configuratore/${base.id}?nd=${encodeURIComponent(idFarcitura)}`,
+      tipo: "render",
+      base: null,
+      farcitura: null,
+      credenza: null,
+      prodotto: null,
     };
 
-  /* segmenti in eccesso: si tengono i primi due e si normalizza */
+  const base = BASI.get(idBase);
+  /* base inesistente: capita spesso con link salvati prima del 2026-08-28
+     (bomba, golosone, intriko…, uscite dal configuratore) — si riparte dal
+     passo 1 con l'avviso discreto, non un 404 */
+  if (!base)
+    return {
+      tipo: "redirect",
+      destinazione: `/configuratore/${sceltaCompatibile([]).join("/")}?nd=1`,
+    };
+
+  if (!idFarcitura)
+    return {
+      tipo: "render",
+      base,
+      farcitura: null,
+      credenza: null,
+      prodotto: null,
+    };
+
+  const farcitura = FARCITURE.get(idFarcitura);
+  if (
+    !farcitura ||
+    !DATASET.combinazioni.some(
+      (c) => c.base === base.id && c.farcitura === idFarcitura,
+    )
+  )
+    return { tipo: "redirect", destinazione: `/configuratore/${base.id}?nd=1` };
+
+  if (!idCredenza)
+    return { tipo: "render", base, farcitura, credenza: null, prodotto: null };
+
+  const credenza = CREDENZA.get(idCredenza);
+  if (
+    !credenza ||
+    !DATASET.combinazioni.some(
+      (c) =>
+        c.base === base.id &&
+        c.farcitura === farcitura.id &&
+        c.credenza === idCredenza,
+    )
+  )
+    return {
+      tipo: "redirect",
+      destinazione: `/configuratore/${base.id}/${farcitura.id}?nd=1`,
+    };
+
+  if (!idFinitura)
+    return { tipo: "render", base, farcitura, credenza, prodotto: null };
+
+  const finitura = FINITURE.get(idFinitura);
+  if (!finitura || !prodotto(base.id, farcitura.id, credenza.id, finitura.id))
+    return {
+      tipo: "redirect",
+      destinazione: `/configuratore/${sceltaCompatibile([base.id, farcitura.id, credenza.id]).join("/")}?nd=1`,
+    };
+
+  /* segmenti in eccesso: si tengono i primi quattro e si normalizza */
   if (resto.length > 0)
     return {
       tipo: "redirect",
-      destinazione: `/configuratore/${base.id}/${idFarcitura}`,
+      destinazione: `/configuratore/${base.id}/${farcitura.id}/${credenza.id}/${finitura.id}`,
     };
 
-  return { tipo: "render", base, comb };
+  return {
+    tipo: "render",
+    base,
+    farcitura,
+    credenza,
+    prodotto: prodotto(base.id, farcitura.id, credenza.id, finitura.id),
+  };
 }
 
 /** Parsing tollerante per il client: dal pathname allo stato, senza
- *  redirect (il client naviga solo verso URL canonici). Il pathname
- *  arriva col prefisso lingua (/fi/configuratore/…): si parte dal
- *  segmento "configuratore", ovunque stia. */
+ *  redirect (il client naviga solo verso URL canonici). Il pathname arriva
+ *  col prefisso lingua (/fi/configuratore/…): si parte dal segmento
+ *  "configuratore", ovunque stia. */
 export function statoDaPathname(pathname: string): {
   base: Base | null;
-  comb: Combinazione | null;
+  farcitura: Farcitura | null;
+  credenza: Credenza | null;
+  prodotto: Prodotto | null;
 } {
   const tutti = pathname.split("/").filter(Boolean);
   const daConfiguratore = tutti.indexOf("configuratore");
   const segmenti = daConfiguratore >= 0 ? tutti.slice(daConfiguratore + 1) : [];
-  const [idBase, idFarcitura] = segmenti;
+  const [idBase, idFarcitura, idCredenza, idFinitura] = segmenti;
+
   const base = idBase ? (BASI.get(idBase) ?? null) : null;
-  const comb =
-    base && idFarcitura ? combinazione(base.id, idFarcitura) : null;
-  return { base, comb };
+  const farcitura =
+    base &&
+    idFarcitura &&
+    DATASET.combinazioni.some(
+      (c) => c.base === base.id && c.farcitura === idFarcitura,
+    )
+      ? (FARCITURE.get(idFarcitura) ?? null)
+      : null;
+  const credenza =
+    farcitura &&
+    idCredenza &&
+    DATASET.combinazioni.some(
+      (c) =>
+        c.base === base!.id &&
+        c.farcitura === farcitura.id &&
+        c.credenza === idCredenza,
+    )
+      ? (CREDENZA.get(idCredenza) ?? null)
+      : null;
+  const finitura =
+    credenza && idFinitura ? (FINITURE.get(idFinitura) ?? null) : null;
+
+  return {
+    base,
+    farcitura,
+    credenza,
+    prodotto:
+      base && farcitura && credenza && finitura
+        ? prodotto(base.id, farcitura.id, credenza.id, finitura.id)
+        : null,
+  };
 }
 
-/* --------------------- ponte con il catalogo in home --------------------- */
-
-/**
- * Slug delle tessere dolci in home (lib/catalog.ts) → id base del
- * configuratore. Gli slug NON coincidono (bomba-fritta vs bomba,
- * frittella vs frittelline, lusekatt vs lussekatt): la corrispondenza è
- * dichiarata qui, mai assunta.
- *
- * `bomba-fritta → bomba` è esatta dal 2026-08-01: Bomba Super non è più
- * una base ma il nome commerciale della combinazione bomba + crema, quindi
- * la tessera home copre l'intero ramo.
- */
-export const TESSERA_A_BASE: Record<string, string | null> = {
-  golosone: "golosone",
-  "bomba-fritta": "bomba",
-  cuore: "cuore",
-  frittella: "frittelline",
-  intriko: "intriko",
-  "intriko-midi": "intriko-midi",
-  lusekatt: "lussekatt",
-  nuvola: "nuvola",
-  stella: "stella",
-  klejner: "klejner",
-};
-
-/**
+/*
  * Le foto del configuratore arrivano SOLO dalle cartelle di
- * public/img/configuratore/ (una per base, per sku, per prodotto
- * completo, per farcitura e per topping). Le mappe chiave → URL le costruisce il
- * server con lib/configuratore/foto.ts e scendono ai client component
- * come prop: l'assenza della chiave significa "foto non ancora
- * arrivata" e la UI ripiega sullo stato precedente o sul placeholder
- * tipografico — mai la foto di un'altra farcitura, mai i vecchi still
- * di /products.
+ * public/img/configuratore/ (una per base, per farcitura, per voce di
+ * credenza, per finitura, per ogni stato del prodotto). Il prebuild genera
+ * il manifest chiave → URL letto da lib/configuratore/foto.ts; le mappe
+ * scendono ai client component come prop. L'assenza della chiave significa
+ * "foto non ancora arrivata" e la UI ripiega sullo stato precedente o sul
+ * placeholder tipografico — mai la foto di un'altra scelta.
  */
 
-/** Stato visibile del prodotto (base, sku, sku--topping) → URL foto. */
+/** Stato visibile del prodotto (base, base--farcitura,
+ *  base--farcitura--credenza, sku completo) → URL foto. */
 export type FotoStati = Record<string, string>;
 
-/** Id farcitura → URL della foto dell'ingrediente DA SOLO. È l'immagine
- *  delle tessere del passo 2: la tessera è la cosa che si trascina, il
- *  farcito (foto dello sku) compare sul banco dopo il rilascio. */
+/** Id farcitura → URL della foto dell'ingrediente DA SOLO (tessere del
+ *  passo 2). */
 export type FotoFarciture = Record<string, string>;
 
-/** Id topping → URL della foto della finitura DA SOLA. Stesso patto
- *  della farcitura, un passo più in là: è l'immagine della tessera del
- *  passo 3, quella che si trascina sul dolce farcito; il prodotto
- *  completo (foto sku--topping) compare sul banco dopo il rilascio. */
-export type FotoTopping = Record<string, string>;
+/** Id voce di credenza → URL della foto dell'ingrediente DA SOLO (tessere
+ *  del passo 3). */
+export type FotoCredenza = Record<string, string>;
+
+/** Id finitura → URL della foto della finitura DA SOLA (tessere del
+ *  passo 4). */
+export type FotoFinitura = Record<string, string>;
 
 /* La formattazione dei numeri (3.360 / 3,360 / 3 360) è passata a
    lib/i18n/lingue.ts: cambia con la lingua della pagina, e questo
    modulo resta neutro. */
+
+/** Conserva solo suffissi compatibili; le opzioni uniche sono già incluse. */
+export function sceltaCompatibile(segmenti: string[]): string[] {
+  const risultato: string[] = [];
+  for (let i = 0; i < 4; i++) {
+    const compatibili = DATASET.combinazioni.filter((c) =>
+      [c.base, c.farcitura, c.credenza, c.finitura]
+        .slice(0, i)
+        .every((v, n) => v === risultato[n]),
+    );
+    const opzioni = [
+      ...new Set(
+        compatibili.map(
+          (c) => [c.base, c.farcitura, c.credenza, c.finitura][i],
+        ),
+      ),
+    ];
+    const proposta = segmenti[i];
+    if (proposta && opzioni.includes(proposta)) risultato.push(proposta);
+    else if (opzioni.length === 1) risultato.push(opzioni[0]);
+    else break;
+  }
+  return risultato;
+}

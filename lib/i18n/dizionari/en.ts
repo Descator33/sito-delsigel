@@ -40,7 +40,7 @@ export const en: Testi = {
     ponte: ["The next one", "is you."],
     teaser: {
       eyebrow: "The configurator", titolo: [{ testo: "Create your" }, { testo: "pastry.", accento: true }],
-      copy: "Choose the base, filling, topping and details. Build your ideal pastry in just a few steps with our configurator. Entirely online, made to measure and all yours.", cta: "Configure your pastry",
+      copy: "Start with Nuvola, filling, topping and details. Build your ideal pastry in just a few steps with our configurator. Entirely online, made to measure and all yours.", cta: "Configure your pastry",
     },
     catalogoFisico: {
       eyebrow: "Printed catalogue 2026/27", titolo: [{ testo: "The catalogue" }, { testo: "2026/2027", accento: true }, { testo: "Made to browse" }],
@@ -103,12 +103,12 @@ export const en: Testi = {
   },
   configuratore: {
     percorso: [
-      { titolo: "Choose the base", testo: "Select your preferred base and give shape to your pastry." },
+      { titolo: "Choose the base", testo: "The Nuvola base is ready for your creation." },
       { titolo: "Add the filling", testo: "Choose the custard or filling that inspires you most." },
       { titolo: "Finish with the topping", testo: "Add crunch, fruit, indulgence and decoration." },
       { titolo: "Get your pastry", testo: "See the result and complete your creation." },
     ],
-    statiNastro: ["Unfilled Nuvola, the base without filling", "Nuvola filled with custard and strawberry", "Custard and strawberry Nuvola with icing sugar"],
+    statiNastro: ["Unfilled Nuvola, the base without filling", "Nuvola filled with custard", "Custard and strawberry Nuvola with icing sugar"],
     intro: {
       titolo: [{ testo: "Create" }, { testo: "your" }, { testo: "pastry!", accento: true }],
       copy: ["Play, combine, customise.", "The pastry you imagine", "is yours to create!"], comeFunziona: "How it works",

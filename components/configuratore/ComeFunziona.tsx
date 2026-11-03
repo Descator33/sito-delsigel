@@ -2,10 +2,9 @@
 
 import { useRef } from "react";
 import { FrecciaCerchio, IconaChiudi } from "./Decori";
-import { useTesti } from "@/components/LinguaProvider";
-import { Frasi } from "@/lib/frasi";
+import { useTesti } from "@/components/LinguaConfiguratoreProvider";
 
-const NUMERI = ["01", "02", "03"];
+const NUMERI = ["01", "02", "03", "04"];
 
 /**
  * Il pulsante «come funziona» della colonna introduttiva e il dialogo
@@ -67,7 +66,7 @@ export function ComeFunziona() {
                 <div>
                   <h3 className="text-[15px] font-bold">{p.titolo}</h3>
                   <p className="mt-1 text-[14px] leading-relaxed text-inchiostro/70">
-                    <Frasi testo={p.testo} />
+                    {p.testo}
                   </p>
                 </div>
               </li>

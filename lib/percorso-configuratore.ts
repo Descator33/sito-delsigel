@@ -49,8 +49,8 @@ export const PERCORSO: readonly TappaPercorso[] = [
 
 export const DOLCI: readonly StatoDolce[] = [
   { stato: "nuvola" },
-  { stato: "nuvola--crema-e-fragola" },
-  { stato: "nuvola--crema-e-fragola--zucchero-a-velo-idrorepellente" },
+  { stato: "nuvola--crema" },
+  { stato: "nuvola--crema--fragola--zucchero-a-velo" },
 ] as const;
 
 /** Lo stato con l'URL della foto già risolto (o senza, se non c'è). */
