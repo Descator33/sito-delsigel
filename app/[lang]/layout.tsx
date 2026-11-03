@@ -8,7 +8,6 @@ import { ScriptPrimaDelPaint } from "@/components/ScriptPrimaDelPaint";
 import { fotoStati, fotoFarciture, fotoCredenza, fotoFinitura } from "@/lib/configuratore/foto";
 import fotoSito from "@/lib/foto-sito.json";
 import { CATALOG } from "@/lib/catalog";
-import { IMMAGINI_STORIA, STORIA } from "@/data/history";
 import { dizionario } from "@/lib/i18n/dizionario";
 import { LINGUE, haLingua, type Lingua } from "@/lib/i18n/lingue";
 import { BASE_SITO, alternatesPer } from "@/lib/i18n/sito";
@@ -96,9 +95,7 @@ export default async function RootLayout({
   const testi = dizionario(lingua);
 
   const assetsConfiguratore = [...new Set([
-    ...fotoSito,
-    ...Object.values(IMMAGINI_STORIA).flatMap(({ immagine, immagineVertical }) => [immagine, immagineVertical]),
-    ...STORIA.flatMap(({ immagine, immagineVertical }) => [immagine, immagineVertical]),
+    ...fotoSito.filter((url) => url.startsWith("/chi-siamo/") || url.startsWith("/img/home-configuratore/")),
     ...CATALOG.flatMap((prodotto) => [
       prodotto.image, prodotto.cardImage, prodotto.spaccato,
       ...Object.values(prodotto.variants ?? {}),

@@ -85,8 +85,8 @@ export const STORIA: TappaStoria[] = [
   {
     id: "generazione",
     numero: "05",
-    immagine: `${CARTELLA_STORIA}/2026.jpg`,
-    immagineVertical: `${CARTELLA_STORIA}/2026.jpg`,
+    immagine: "/foto-modificata.png",
+    immagineVertical: "/foto-modificata.png",
   },
   {
     id: "futuro",

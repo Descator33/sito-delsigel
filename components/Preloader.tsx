@@ -21,10 +21,10 @@ import {
 
 const BASE_HERO = "/hero/sequence/intriko-v1";
 const ATTRIBUTO = "data-preloader-attivo";
-const DURATA_MINIMA = 5_000;
+const DURATA_MINIMA = 1_500;
 const ATTESA_USCITA = 260;
 const DURATA_USCITA = 720;
-const TIMEOUT_GLOBALE = 45_000;
+const TIMEOUT_GLOBALE = 8_000;
 
 type StatoPreloader = { pronto: boolean };
 
@@ -59,39 +59,11 @@ function frame(cartella: "desktop" | "mobile", indice: number) {
   return `${BASE_HERO}/${cartella}/frame-${String(indice + 1).padStart(4, "0")}.webp`;
 }
 
-/** Prima gli anchor del film e le foto del configuratore, poi i frame
- * intermedi: così nessuna famiglia di asset aspetta che l'altra finisca. */
-function listaAssets(assetsConfiguratore: string[]) {
+/** Solo il poster e il primo frame dell'hero bloccano l'apertura. */
+function listaAssetsIniziali() {
   const verticale = window.matchMedia("(max-aspect-ratio: 5/4)").matches;
   const cartella = verticale ? "mobile" : "desktop";
-  const totale = verticale ? 72 : 90;
-  const anchor = [
-    0,
-    totale - 1,
-    ...Array.from({ length: Math.ceil(totale / 8) }, (_, i) =>
-      Math.min(totale - 1, i * 8),
-    ),
-  ].filter((valore, posizione, tutti) => tutti.indexOf(valore) === posizione);
-  const setAnchor = new Set(anchor);
-  const intermedi = Array.from({ length: totale }, (_, i) => i).filter(
-    (i) => !setAnchor.has(i),
-  );
-  const still = verticale
-    ? [
-        "/hero/hero-intriko-vortice-mobile.webp",
-        "/hero/hero-intriko-vortice-mobile@2x.webp",
-      ]
-    : [
-        "/hero/hero-intriko-vortice.webp",
-        "/hero/hero-intriko-vortice@2x.webp",
-      ];
-
-  return [
-    ...still,
-    ...anchor.map((i) => frame(cartella, i)),
-    ...assetsConfiguratore,
-    ...intermedi.map((i) => frame(cartella, i)),
-  ].filter((url, posizione, tutti) => tutti.indexOf(url) === posizione);
+  return [verticale ? "/hero/hero-intriko-vortice-mobile.webp" : "/hero/hero-intriko-vortice.webp", frame(cartella, 0)];
 }
 
 async function consuma(
@@ -138,7 +110,10 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
   const avvio = useRef<number | null>(null);
 
   useEffect(() => {
-    if (giaAttraversata()) setFase("finito");
+    if (!giaAttraversata()) return;
+    let attivo = true;
+    queueMicrotask(() => { if (attivo) setFase("finito"); });
+    return () => { attivo = false; };
   }, []);
 
   useEffect(() => {
@@ -146,7 +121,7 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
     let vivo = true;
     let pubblicazione = 0;
     const controller = new AbortController();
-    const urls = listaAssets(assetsConfiguratore);
+    const urls = listaAssetsIniziali();
     const quote = new Float32Array(urls.length);
     let prossimo = 0;
 
@@ -179,13 +154,14 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
       }
     };
 
-    // La porta non trattiene il visitatore indefinitamente: oltre il limite
-    // i download rimanenti proseguono in background.
-    const timeout = window.setTimeout(() => setAssetsPronti(true), TIMEOUT_GLOBALE);
+    // Anche un modello 3D o una richiesta bloccata non trattiene la porta.
+    const timeout = window.setTimeout(() => {
+      setAssetsPronti(true);
+      setModelloPronto(true);
+    }, TIMEOUT_GLOBALE);
     const concorrenza = window.matchMedia("(max-width: 700px)").matches ? 4 : 6;
     void Promise.all(Array.from({ length: concorrenza }, lavora)).finally(() => {
       if (!vivo) return;
-      window.clearTimeout(timeout);
       if (pubblicazione) cancelAnimationFrame(pubblicazione);
       setProgressoAssets(1);
       setAssetsPronti(true);
@@ -197,12 +173,34 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
       window.clearTimeout(timeout);
       if (pubblicazione) cancelAnimationFrame(pubblicazione);
     };
-  }, [assetsConfiguratore]);
+  }, []);
+
+  // Il resto non compete con l'apertura: due download alla volta, a bassa
+  // priorità, solo dopo l'uscita. Le foto della storia usano next/image lazy.
+  useEffect(() => {
+    if (fase !== "finito") return;
+    const rete = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } };
+    if (rete.connection?.saveData || /(^|-)2g$/.test(rete.connection?.effectiveType ?? "")) return;
+    const controller = new AbortController();
+    let indice = 0;
+    let attivo = true;
+    const lavora = async () => {
+      while (attivo && indice < assetsConfiguratore.length) {
+        const url = assetsConfiguratore[indice++];
+        try {
+          const risposta = await fetch(url, { cache: "force-cache", priority: "low", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]) });
+          if (risposta.ok) await risposta.arrayBuffer();
+        } catch { /* Il caricamento normale della pagina resta il ripiego. */ }
+      }
+    };
+    void Promise.all([lavora(), lavora()]);
+    return () => { attivo = false; controller.abort(); };
+  }, [assetsConfiguratore, fase]);
 
   /* Anche con gli asset gia in cache la porta resta leggibile per almeno
-     cinque secondi. Il limite temporale governa anche la barra, quindi non
+     un breve intervallo. Il limite temporale governa anche la barra, quindi non
      arriva subito al 100% per poi restare immobile. Se invece la rete e piu
-     lenta, dopo i cinque secondi prevale ancora il progresso dei download. */
+     lenta prevale ancora il progresso dei download. */
   useEffect(() => {
     if (giaAttraversata()) return;
     const iniziato = avvio.current ?? Date.now();
