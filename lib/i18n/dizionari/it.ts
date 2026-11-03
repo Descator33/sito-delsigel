@@ -194,7 +194,7 @@ export const it: Testi = {
       intriko: "Treccia di sfoglia farcita, cinque varianti più la versione vuota.",
       "intriko-midi": "Intriko in formato midi, sei farciture a gamma.",
       lusekatt: "La girella nordica allo zafferano.",
-      nuvola: "Il lievitato più leggero della gamma, in sette varianti.",
+      nuvola: "Il lievitato più leggero della gamma.",
       stella: "Sfoglia a stella, cinque varianti.",
       klejner: "Il nodo fritto della tradizione nordica, semplice o alla cannella.",
       "focaccine-miste-tre-gusti": "Set da tre gusti, pronto per il banco.",

@@ -62,7 +62,7 @@ export const fr: Testi = {
     note: {
       golosone: "Pâte levée fourrée, glaçage satiné et éclats de chocolat noir.", "bomba-fritta": "La pâte levée frite traditionnelle, fourrée ou nature.",
       cuore: "Feuilleté en forme de cœur, décliné en cinq garnitures.", frittella: "Une douceur frite et moelleuse pour le comptoir, en quatre variantes.",
-      intriko: "Tresse feuilletée fourrée, cinq variantes et une version nature.", "intriko-midi": "Intriko au format midi, décliné en six garnitures.", lusekatt: "La spirale nordique au safran.", nuvola: "La pâte levée la plus légère de la gamme, en sept variantes.",
+      intriko: "Tresse feuilletée fourrée, cinq variantes et une version nature.", "intriko-midi": "Intriko au format midi, décliné en six garnitures.", lusekatt: "La spirale nordique au safran.", nuvola: "La pâte levée la plus légère de la gamme.",
       stella: "Feuilleté en forme d'étoile, en cinq variantes.", klejner: "Le nœud frit de la tradition nordique, nature ou à la cannelle.", "focaccine-miste-tre-gusti": "Assortiment de trois saveurs, prêt pour le comptoir.",
       montanarina: "La base frite napolitaine, en deux garnitures.", "paninetto-colorato-tre-gusti": "Trois pâtes colorées, un seul format.", "pizzetta-al-pomodoro": "Le format classique de restauration rapide.",
       "pizzetta-bianca": "Huile et sel, format classique.", "pizzetta-fritta": "Deux formats pour le comptoir chaud.", "pizzette-fantasia": "Quatre garnitures en rotation saisonnière.",

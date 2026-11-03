@@ -87,9 +87,7 @@ export const CATALOG: Tipologia[] = [
     spaccato: img("golosone-crema-spaccato"),
     spaccati: {
       "cioccolato con granella": img("golosone-cioccolato-spaccato"),
-      "cioccolato semplice": img("golosone-cioccolato-spaccato"),
       "crema con granella": img("golosone-crema-spaccato"),
-      "crema semplice": img("golosone-crema-spaccato"),
     },
   },
   {
@@ -222,23 +220,18 @@ export const CATALOG: Tipologia[] = [
     name: "Nuvola",
     macro: "dolci",
     slug: "nuvola",
-    note: "Il lievitato più leggero della gamma, in sette varianti.",
+    note: "Il lievitato più leggero della gamma.",
     axes: [
       {
         label: "Gusto",
         values: [
-          "Nuì",
           "cioccolato semplice",
-          "crema e fragola",
           "crema semplice",
-          "frutti rossi",
-          "pistacchio e lampone",
-          "semplice",
         ],
       },
     ],
     catalogGamma: true,
-    image: img("nuvola-nui"),
+    image: img("nuvola-crema-semplice"),
     variants: {
       Nuì: img("nuvola-nui"),
       "cioccolato semplice": img("nuvola-cioccolato-semplice"),
@@ -277,7 +270,7 @@ export const CATALOG: Tipologia[] = [
     slug: "klejner",
     note: "Il nodo fritto della tradizione nordica, semplice o alla cannella.",
     axes: [{ label: "Gusto", values: ["semplice", "cannella"] }],
-    image: img("klejner"),
+    image: img("klejner-cannella"),
     variants: {
       semplice: img("klejner"),
       cannella: img("klejner-cannella"),
@@ -333,14 +326,6 @@ export const CATALOG: Tipologia[] = [
     slug: "pizzetta-al-pomodoro",
     note: "Il formato classico da rosticceria.",
     image: img("pizzetta-al-pomodoro"),
-  },
-  {
-    code: "N.13",
-    name: "Pizzetta Bianca",
-    macro: "salati",
-    slug: "pizzetta-bianca",
-    note: "Olio e sale, formato classico.",
-    image: img("pizzetta-bianca"),
   },
   {
     code: "N.14",

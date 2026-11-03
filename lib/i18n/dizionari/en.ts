@@ -71,7 +71,7 @@ export const en: Testi = {
       "bomba-fritta": "The traditional fried leavened pastry, filled or plain.", cuore: "Heart-shaped puff pastry with five fillings in the range.",
       frittella: "A soft fried counter pastry in four variants.", intriko: "Filled braided puff pastry, in five variants plus an unfilled version.",
       "intriko-midi": "Midi Intriko in six filled variants.",
-      lusekatt: "The Nordic saffron swirl.", nuvola: "The lightest leavened pastry in the range, in seven variants.", stella: "Star-shaped puff pastry in five variants.",
+      lusekatt: "The Nordic saffron swirl.", nuvola: "The lightest leavened pastry in the range.", stella: "Star-shaped puff pastry in five variants.",
       klejner: "The traditional Nordic fried knot, plain or cinnamon.", "focaccine-miste-tre-gusti": "A three-flavour set, ready for the counter.",
       montanarina: "The Neapolitan fried base with two toppings.", "paninetto-colorato-tre-gusti": "Three coloured doughs in one size.",
       "pizzetta-al-pomodoro": "The classic deli-counter size.", "pizzetta-bianca": "Oil and salt in the classic size.",

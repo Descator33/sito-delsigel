@@ -50,7 +50,7 @@ export const fi: Testi = {
     ...en.prodotti,
     note: {
       golosone: "Täytetty hiivaleivonnainen, silkkinen kuorrute ja tummat suklaarakeet.", "bomba-fritta": "Perinteinen uppopaistettu hiivaleivonnainen, täytettynä tai ilman täytettä.", cuore: "Sydämenmuotoinen lehtitaikinaleivonnainen viidellä täytteellä.",
-      frittella: "Pehmeä uppopaistettu vitriinituote neljänä vaihtoehtona.", intriko: "Täytetty lehtitaikinapunos, viisi vaihtoehtoa sekä täyttämätön versio.", "intriko-midi": "Midi-kokoinen Intriko kuudella täytteellä.", lusekatt: "Pohjoismainen sahramikierre.", nuvola: "Valikoiman kevein hiivaleivonnainen seitsemänä vaihtoehtona.",
+      frittella: "Pehmeä uppopaistettu vitriinituote neljänä vaihtoehtona.", intriko: "Täytetty lehtitaikinapunos, viisi vaihtoehtoa sekä täyttämätön versio.", "intriko-midi": "Midi-kokoinen Intriko kuudella täytteellä.", lusekatt: "Pohjoismainen sahramikierre.", nuvola: "Valikoiman kevein hiivaleivonnainen.",
       stella: "Tähdenmuotoinen lehtitaikinaleivonnainen viitenä vaihtoehtona.", klejner: "Perinteinen pohjoismainen uppopaistettu solmu sellaisenaan tai kanelilla.", "focaccine-miste-tre-gusti": "Kolmen maun lajitelma suoraan vitriiniin.",
       montanarina: "Napolilainen uppopaistettu pohja kahdella päällysteellä.", "paninetto-colorato-tre-gusti": "Kolme värillistä taikinaa yhdessä koossa.", "pizzetta-al-pomodoro": "Klassinen palvelutiskin koko.",
       "pizzetta-bianca": "Öljyä ja suolaa klassisessa koossa.", "pizzetta-fritta": "Kaksi kokoa lämpimään vitriiniin.", "pizzette-fantasia": "Neljä kausittain vaihtuvaa päällystettä.", rustici: "Kuusi täytettä lehtitaikinakuoressa.", "vol-au-vent": "Yksittäinen täytettävä lehtitaikinaleivonnainen.",

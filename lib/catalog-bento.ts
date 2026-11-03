@@ -146,7 +146,8 @@ const VETRINA = [
   foto: string;
 }[];
 
-const PER_SLUG = new Map(DOLCI.map((t) => [t.slug, t]));
+const DOLCI_VISIBILI = DOLCI.filter((t) => t.slug !== "golosone");
+const PER_SLUG = new Map(DOLCI_VISIBILI.map((t) => [t.slug, t]));
 
 /**
  * «01.» è il posto in vetrina, non il codice di listino.
@@ -174,7 +175,7 @@ export const VETRINA_CATALOGO: CardCatalogo[] = vetrina();
 const IN_VETRINA = new Set<string>(VETRINA.map((v) => v.slug));
 
 /** I dolci che la vetrina non mostra, nell'ordine del catalogo. */
-export const RESTO_DOLCI: Tipologia[] = DOLCI.filter(
+export const RESTO_DOLCI: Tipologia[] = DOLCI_VISIBILI.filter(
   (t) => !IN_VETRINA.has(t.slug)
 );
 
@@ -189,5 +190,5 @@ export function varianti(t: Tipologia): number {
 
 /** «10 tipologie / 38 varianti»: contato, non scritto. Da quando i salati
  *  hanno una sezione loro, il conto dell'intestazione è quello dei dolci. */
-export const TOTALE_TIPOLOGIE = DOLCI.length;
-export const TOTALE_VARIANTI = DOLCI.reduce((n, t) => n + varianti(t), 0);
+export const TOTALE_TIPOLOGIE = DOLCI_VISIBILI.length;
+export const TOTALE_VARIANTI = DOLCI_VISIBILI.reduce((n, t) => n + varianti(t), 0);

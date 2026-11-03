@@ -55,7 +55,7 @@ export const de: Testi = {
     note: {
       golosone: "Gefülltes Hefegebäck mit seidiger Glasur und dunklen Schokostreuseln.", "bomba-fritta": "Traditionelles frittiertes Hefegebäck, gefüllt oder pur.", cuore: "Herzförmiges Blätterteiggebäck mit fünf Füllungen.",
       frittella: "Weiches frittiertes Thekengebäck in vier Varianten.", intriko: "Gefüllter Blätterteigzopf in fünf Varianten sowie ungefüllt.", "intriko-midi": "Intriko im Midi-Format mit sechs Füllungen.", lusekatt: "Die nordische Safranschnecke.",
-      nuvola: "Das leichteste Hefegebäck im Sortiment, in sieben Varianten.", stella: "Sternförmiges Blätterteiggebäck in fünf Varianten.", klejner: "Der traditionelle nordische frittierte Knoten, pur oder mit Zimt.",
+      nuvola: "Das leichteste Hefegebäck im Sortiment.", stella: "Sternförmiges Blätterteiggebäck in fünf Varianten.", klejner: "Der traditionelle nordische frittierte Knoten, pur oder mit Zimt.",
       "focaccine-miste-tre-gusti": "Dreier-Set verschiedener Geschmacksrichtungen, bereit für die Theke.", montanarina: "Die frittierte neapolitanische Basis mit zwei Belägen.", "paninetto-colorato-tre-gusti": "Drei farbige Teige in einem Format.",
       "pizzetta-al-pomodoro": "Das klassische Feinkostthekenformat.", "pizzetta-bianca": "Öl und Salz im klassischen Format.", "pizzetta-fritta": "Zwei Formate für die Warmtheke.", "pizzette-fantasia": "Vier Beläge im saisonalen Wechsel.",
       rustici: "Sechs Füllungen in einer Blätterteighülle.", "vol-au-vent": "Portioniertes Blätterteiggebäck zum Befüllen.",

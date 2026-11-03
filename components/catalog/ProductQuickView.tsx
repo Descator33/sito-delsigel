@@ -115,8 +115,9 @@ function Scheda({
   const variante = s.gamma
     .flatMap((g) => g.varianti)
     .find((v) => v.id === mostrato);
-  const spaccatoCorrente =
-    (variante && t.spaccati?.[variante.chiave]) ?? t.spaccato;
+  const spaccatoCorrente = variante
+    ? t.spaccati?.[variante.chiave]
+    : t.spaccato;
   const still =
     (vistaSpaccata
       ? spaccatoCorrente
@@ -286,6 +287,15 @@ function Scheda({
         )}
 
         <div className="mt-8 flex flex-wrap gap-2.5">
+          {t.slug === "nuvola" && (
+            <button
+              type="button"
+              disabled
+              className="font-tecnico inline-flex min-h-11 items-center rounded-full bg-inchiostro px-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-panna opacity-60"
+            >
+              {testi.comune.voci.configuratore}
+            </button>
+          )}
           <Link
             href={percorso("/contatti")}
             className="font-tecnico inline-flex min-h-11 items-center gap-2.5 rounded-full border border-inchiostro/25 px-5 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors hover:border-inchiostro hover:bg-inchiostro hover:text-panna focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fucsia"
