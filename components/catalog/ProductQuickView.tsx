@@ -176,7 +176,7 @@ function Scheda({
             type="button"
             onClick={() => setVistaSpaccata((v) => !v)}
             aria-pressed={vistaSpaccata}
-            className="font-tecnico absolute bottom-4 left-4 min-h-11 rounded-full border px-4 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="font-tecnico absolute bottom-4 left-4 z-10 min-h-11 rounded-full border px-4 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
             style={
               vistaSpaccata
                 ? {
