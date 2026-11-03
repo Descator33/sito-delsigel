@@ -1,4 +1,3 @@
-import { fotoStati } from "@/lib/configuratore/foto";
 import { DOLCI, type DolceConFoto } from "@/lib/percorso-configuratore";
 import { ConfiguratorTeaser } from "./ConfiguratorTeaser";
 
@@ -18,18 +17,20 @@ import { ConfiguratorTeaser } from "./ConfiguratorTeaser";
  * prossimo sei tu»), il cui sipario crema consegna direttamente a questo
  * crema — una fascia qui sotto tornerebbe a essere un secondo confine.
  *
- * Server Component, e deve restarlo: le foto degli stati del dolce si
- * leggono qui, dal filesystem, con la stessa funzione che usa la pagina
- * del configuratore. La cartella resta il contratto, e l'isola client
- * riceve solo gli URL degli stati che una foto ce l'hanno davvero.
+ * La home usa copie dedicate, scontornate sul nastro scuro; le foto del
+ * configuratore restano indipendenti.
  */
 const TITOLO_ID = "crea-il-tuo-dolce-titolo";
+const FOTO_HOME: Record<string, string> = {
+  nuvola: "/img/home-configuratore/nuvola.png",
+  "nuvola--crema": "/img/home-configuratore/nuvola-crema.png",
+  "nuvola--crema--fragola--zucchero-a-velo": "/img/home-configuratore/nuvola-fragola.png",
+};
 
 export function ConfiguratorClosingSection() {
-  const foto = fotoStati();
   const dolci: DolceConFoto[] = DOLCI.map((d) => ({
     ...d,
-    foto: foto[d.stato],
+    foto: FOTO_HOME[d.stato],
   }));
 
   return (

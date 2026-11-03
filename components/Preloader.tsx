@@ -142,7 +142,6 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
   }, []);
 
   useEffect(() => {
-    if (giaAttraversata()) return;
     if (avvio.current === null) avvio.current = Date.now();
     let vivo = true;
     let pubblicazione = 0;
@@ -180,7 +179,9 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
       }
     };
 
-    const timeout = window.setTimeout(() => controller.abort(), TIMEOUT_GLOBALE);
+    // La porta non trattiene il visitatore indefinitamente: oltre il limite
+    // i download rimanenti proseguono in background.
+    const timeout = window.setTimeout(() => setAssetsPronti(true), TIMEOUT_GLOBALE);
     const concorrenza = window.matchMedia("(max-width: 700px)").matches ? 4 : 6;
     void Promise.all(Array.from({ length: concorrenza }, lavora)).finally(() => {
       if (!vivo) return;

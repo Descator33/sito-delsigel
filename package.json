@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/prepara-foto.mjs && node scripts/valida-configuratore.mjs",
+    "prebuild": "node scripts/prepara-foto.mjs && node scripts/valida-configuratore.mjs && node scripts/elenca-foto-sito.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

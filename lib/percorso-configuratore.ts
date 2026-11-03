@@ -18,10 +18,8 @@
  * sulla stessa larghezza della fila, proporzionalmente: la
  * corrispondenza è di ritmo, non di colonna.
  *
- * Il campo `stato` è la chiave di public/img/configuratore/prodotti/: la
- * stessa che usa il configuratore per le sue foto. Nessun percorso
- * cablato — li risolve `fotoStati()` a render, lato server — quindi se
- * una foto cambia nome o arriva più tardi la sezione non si rompe.
+ * Il campo `stato` identifica gli stessi passaggi del configuratore;
+ * la home usa copie scontornate dedicate al nastro.
  *
  * Il dolce d'esempio è la Nuvola, sempre la stessa in stati successivi:
  * vuota, farcita alla crema e fragola, chiusa con lo zucchero a velo. È
