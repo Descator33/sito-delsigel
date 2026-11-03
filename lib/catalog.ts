@@ -30,6 +30,8 @@ export type Tipologia = {
   price?: string;
   /** Peso unitario in grammi, quando dichiarato nel listino. */
   pesoGr?: number;
+  /** Peso unitario delle singole varianti, in grammi. */
+  pesiVariantiGr?: Record<string, number>;
   axes?: Axis[];
   set?: string[];
   views?: "spaccato"[];
@@ -299,8 +301,13 @@ export const CATALOG: Tipologia[] = [
     macro: "salati",
     slug: "montanarina",
     note: "La base fritta napoletana, nei formati classico e mini.",
-    axes: [{ label: "Formato", values: ["classica (30 g)", "mini montanarina (20 g)"] }],
+    axes: [{ label: "Formato", values: ["classica", "mini montanarina"] }],
+    pesiVariantiGr: { classica: 30, "mini montanarina": 20 },
     image: img("montanarina-pomodoro"),
+    variants: {
+      classica: img("montanarina-pomodoro"),
+      "mini montanarina": img("montanarina-pomodoro"),
+    },
   },
   {
     code: "N.11",

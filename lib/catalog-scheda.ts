@@ -102,11 +102,11 @@ const LOCALE_NUMERI: Record<Lingua, string> = {
 };
 
 const FORMATI_MONTANARINA: Record<Lingua, Record<string, string>> = {
-  it: { "classica (30 g)": "Classica (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
-  en: { "classica (30 g)": "Classic (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
-  fr: { "classica (30 g)": "Classique (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
-  de: { "classica (30 g)": "Klassisch (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
-  fi: { "classica (30 g)": "Klassinen (30 g)", "mini montanarina (20 g)": "Mini Montanarina (20 g)" },
+  it: { classica: "Classica", "mini montanarina": "Mini Montanarina" },
+  en: { classica: "Classic", "mini montanarina": "Mini Montanarina" },
+  fr: { classica: "Classique", "mini montanarina": "Mini Montanarina" },
+  de: { classica: "Klassisch", "mini montanarina": "Mini Montanarina" },
+  fi: { classica: "Klassinen", "mini montanarina": "Mini Montanarina" },
 };
 
 export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
@@ -123,7 +123,10 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
         label: ASSE_A_CHIAVE[a.label]
           ? testi.prodotti.assi[ASSE_A_CHIAVE[a.label]]
           : a.label,
-        varianti: a.values.map((v) => ({ id: v, nome: valore(v), chiave: v })),
+        varianti: a.values.map((v) => ({
+          id: v, nome: valore(v), chiave: v,
+          peso: t.pesiVariantiGr?.[v] != null ? `${numero(t.pesiVariantiGr[v])} g` : undefined,
+        })),
       }))
     : t.set?.length
       ? [
@@ -134,13 +137,16 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
         ]
       : [];
 
+  const pesi = Object.values(t.pesiVariantiGr ?? {});
   const scheda: Scheda = {
     linea:
       t.macro === "dolci"
         ? testi.catalogo.scheda.lineaDolci
         : testi.catalogo.scheda.lineaSalati,
     gamma: gammaCatalogo,
-    peso: t.pesoGr != null ? `${numero(t.pesoGr)} g` : undefined,
+    peso: t.pesoGr != null ? `${numero(t.pesoGr)} g` : pesi.length
+      ? `${numero(Math.min(...pesi))}–${numero(Math.max(...pesi))} g`
+      : undefined,
   };
 
   const idBase = TESSERA_A_BASE[t.slug];
