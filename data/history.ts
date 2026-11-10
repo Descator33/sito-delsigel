@@ -54,20 +54,23 @@ export const STORIA: TappaStoria[] = [
   {
     id: "origini",
     numero: "01",
-    immagine: `${CARTELLA_STORIA}/2011 (3).jpg`,
-    immagineVertical: `${CARTELLA_STORIA}/2011 (3).jpg`,
+    immagine: "/spuntoni-senza-crema.png",
+    immagineVertical: "/spuntoni-senza-crema.png",
+    originale: true,
   },
   {
     id: "unione",
     numero: "02",
-    immagine: `${CARTELLA_STORIA}/l'ossimoro.jpg`,
-    immagineVertical: `${CARTELLA_STORIA}/l'ossimoro.jpg`,
+    immagine: "/ossimoro-ritocco.png",
+    immagineVertical: "/ossimoro-ritocco.png",
+    originale: true,
   },
   {
     id: "qualita",
     numero: "03",
-    immagine: `${CARTELLA_STORIA}/la qualità.jpg`,
-    immagineVertical: `${CARTELLA_STORIA}/la qualità.jpg`,
+    immagine: "/la-qualita-piu-zucchero.png",
+    immagineVertical: "/la-qualita-piu-zucchero.png",
+    originale: true,
     certificazioni: [
       { chiave: "ifs", nome: "IFS Food", logo: "/brand/certificazioni/ifs.svg" },
       {
@@ -81,8 +84,9 @@ export const STORIA: TappaStoria[] = [
   {
     id: "traguardo",
     numero: "04",
-    immagine: `${CARTELLA_STORIA}/13 milioni (3).jpg`,
-    immagineVertical: `${CARTELLA_STORIA}/13 milioni (3).jpg`,
+    immagine: "/13 milioni ritoccati.png",
+    immagineVertical: "/13 milioni ritoccati.png",
+    originale: true,
   },
   {
     id: "generazione",
