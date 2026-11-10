@@ -35,13 +35,23 @@ function StoryPicture({
   alt,
   className,
   loading = "lazy",
+  originale = false,
 }: {
   immagine: string;
   immagineVertical: string;
   alt: string;
   className?: string;
   loading?: "eager" | "lazy";
+  originale?: boolean;
 }) {
+  if (originale) {
+    return (
+      // Il file originale viene servito senza ridimensionamento o ricompressione.
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={immagine} alt={alt} loading={loading} className={className} />
+    );
+  }
+
   const common = {
     alt,
     sizes: "(min-width: 768px) 64vw, 100vw",
@@ -106,6 +116,7 @@ function HistoryReduced({ tappe }: { tappe: TappaLocalizzata[] }) {
             <StoryPicture
               immagine={tappa.immagine}
               immagineVertical={tappa.immagineVertical}
+              originale={tappa.originale}
               alt={tappa.alt}
               className="absolute inset-0 h-full w-full object-cover"
             />
@@ -403,6 +414,7 @@ export function HistoryJourney() {
                   <StoryPicture
                     immagine={tappa.immagine}
                     immagineVertical={tappa.immagineVertical}
+                    originale={tappa.originale}
                     alt={tappa.alt}
                     className="absolute inset-0 h-full w-full object-cover"
                   />

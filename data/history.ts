@@ -30,6 +30,8 @@ export type TappaStoria = {
   immagine: string;
   /** reframe verticale per telefono */
   immagineVertical: string;
+  /** Serve il file originale senza passare dall’ottimizzatore delle immagini. */
+  originale?: boolean;
   /** loghi ufficiali mostrati sotto il testo della tappa */
   certificazioni?: Certificazione[];
 };
@@ -87,6 +89,7 @@ export const STORIA: TappaStoria[] = [
     numero: "05",
     immagine: "/foto-modificata.png",
     immagineVertical: "/foto-modificata.png",
+    originale: true,
   },
   {
     id: "futuro",
