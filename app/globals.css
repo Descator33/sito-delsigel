@@ -365,86 +365,22 @@ html[data-porta-di-ritorno] .preloader-porta {
 @custom-variant orizzontale (@media (min-aspect-ratio: 5/4));
 @custom-variant verticale (@media (max-aspect-ratio: 5/4));
 
-/* Film d'ingresso Intriko. La hero è un solo viewport: la regia è a tempo
-   (vedi Hero.tsx) e la pagina sotto scorre normalmente. Il palco tiene il
-   rettangolo 100svh che la macchina del menu sa trasformare; z-index e
-   overflow stanno nel markup. */
-.hero-sequenza,
-.hero-sequenza-poster,
-.hero-frame-canvas,
-.hero-frame-finale {
-  display: block;
-}
-
-.hero-frame-canvas {
-  contain: strict;
-  transform: translateZ(0);
-}
-
-/* La still finale non dissolve: una maschera laterale la svela quando il
-   playhead ha esaurito tutti i frame utili del filmato. */
-.hero-frame-finale {
-  clip-path: inset(0 100% 0 0);
-}
-
-/* Stati iniziali delle caption. Le maschere sono gli `overflow-hidden` nel
-   markup; GSAP anima solo transform, mai opacity. */
-[data-hero-caption-logo] {
-  transform: translateY(115%);
-}
-
-[data-hero-caption] {
-  transform: translateY(165%);
-}
-
+/* La fotografia resta visibile mentre le scritte entrano. */
+[data-hero-caption-logo] { transform: translateY(115%); }
+[data-hero-caption] { transform: translateY(165%); text-shadow: 0 2px 12px rgb(50 0 0 / 0.45); }
 [data-hero-caption-logo],
-[data-hero-caption] {
-  will-change: transform;
+[data-hero-caption] { will-change: transform; }
+.hero-scatto { position: absolute; inset: 0; }
+.hero-foto { object-position: 50% 50%; }
+@media (max-aspect-ratio: 5/4) {
+  .hero-foto { object-position: 65% 50%; }
 }
-
-.hero-frame-finale {
-  will-change: clip-path;
-}
-
-/* Il ritaglio dello scatto. Il grosso non si fa più qui: sotto il 5/4 il
-   `<picture>` serve un file già ritagliato 3:4 sul soggetto (vedi la nota
-   in Hero.tsx), quindi in tutte e due le forme l'immagine è inquadrata e
-   basta centrarla. Restano due sole regole.
-
-   Orizzontale (16:9 e dintorni): il taglio è minimo, il centro va bene —
-   restano visibili il volto, la bomba davanti alla bocca, la mano in
-   alto a destra e quella in basso a sinistra, e a sinistra avanza il
-   vuoto per l'insegna. */
-.hero-scatto {
-  position: absolute;
-  inset: 0;
-}
-.hero-foto {
-  object-position: 50% 50%;
-}
-
-/* La dissolvenza verticale prosegue il cacao già presente nel reframe
-   mobile del Vortice: protegge la copy senza coprire il prodotto. */
+/* I veli rendono leggibile il testo chiaro sulle zone più luminose. */
 .hero-sfumatura {
-  background: linear-gradient(
-    180deg,
-    rgb(43 29 22 / 0) 42%,
-    rgb(43 29 22 / 0.2) 56%,
-    rgb(43 29 22 / 0.72) 76%,
-    rgb(43 29 22 / 0.94) 100%
-  );
+  background: linear-gradient(180deg, transparent 25%, rgb(50 0 0 / 0.35) 55%, rgb(50 0 0 / 0.88) 100%);
 }
-
-/* Il velo sulla colonna del testo. Quasi invisibile per scelta: serve a
-   tenere il nero dell'insegna staccato dall'arancio quando lo schermo è
-   largo e la campitura si schiarisce verso sinistra, non a scurire la
-   fotografia. Si ferma a metà, dove comincia il soggetto. */
 .hero-velo {
-  background: linear-gradient(
-    90deg,
-    rgb(255 248 237 / 0.12) 0%,
-    rgb(255 248 237 / 0) 55%
-  );
+  background: linear-gradient(90deg, rgb(50 0 0 / 0.42), transparent 58%);
 }
 
 /* Navigazione primaria: una capsula corta e centrata, staccata dal

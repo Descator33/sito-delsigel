@@ -73,7 +73,7 @@ export const it: Testi = {
       { testo: "La tradizione", accento: true },
       { testo: "è innovazione.", accento: true },
     ],
-    alt: "Quattro varianti di Intriko, il dolce di punta Delsigel, tra nastri corallo e un set color cacao.",
+    alt: "Quattro varianti di Intriko su piedistalli rossi e arancioni.",
   },
 
   home: {

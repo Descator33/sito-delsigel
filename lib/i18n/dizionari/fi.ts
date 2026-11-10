@@ -23,7 +23,7 @@ export const fi: Testi = {
   },
   hero: {
     insegna: [{ testo: "Käsityö-" }, { testo: "teollisuutta." }, { testo: "Perinne on", accento: true }, { testo: "innovaatiota.", accento: true }],
-    alt: "Neljä Intriko-vaihtoehtoa, Delsigelin nimikkoleivonnaista, korallinväristen nauhojen ja kaakaonvärisen lavasteen keskellä.",
+    alt: "Neljä Intriko-vaihtoehtoa punaisilla ja oransseilla jalustoilla.",
   },
   home: {
     ...en.home,

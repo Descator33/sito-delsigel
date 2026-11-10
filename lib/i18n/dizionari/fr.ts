@@ -25,7 +25,7 @@ export const fr: Testi = {
   },
   hero: {
     insegna: [{ testo: "Industrie" }, { testo: "artisanale." }, { testo: "La tradition", accento: true }, { testo: "est innovation.", accento: true }],
-    alt: "Quatre variantes d'Intriko, la douceur emblématique de Delsigel, parmi des rubans corail et un décor couleur cacao.",
+    alt: "Quatre variétés d’Intriko sur des socles rouges et orange.",
   },
   home: {
     ...en.home,

@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import Image from "next/image";
+import { HERO_IMAGE } from "@/lib/hero-image";
 import { PreloaderLogo3D } from "@/components/PreloaderLogo3D";
 import { useTesti } from "@/components/LinguaProvider";
 import { interpola } from "@/lib/i18n/interpola";
@@ -19,7 +20,6 @@ import {
   ricordaPortaAttraversata,
 } from "@/lib/porta-visita";
 
-const BASE_HERO = "/hero/sequence/intriko-v1";
 const ATTRIBUTO = "data-preloader-attivo";
 const DURATA_MINIMA = 1_500;
 const ATTESA_USCITA = 260;
@@ -55,15 +55,9 @@ function giaAttraversata() {
   return attraversataInMemoria || portaGiaAttraversata();
 }
 
-function frame(cartella: "desktop" | "mobile", indice: number) {
-  return `${BASE_HERO}/${cartella}/frame-${String(indice + 1).padStart(4, "0")}.webp`;
-}
-
-/** Solo il poster e il primo frame dell'hero bloccano l'apertura. */
+/** La fotografia originale è l'unico asset della hero da precaricare. */
 function listaAssetsIniziali() {
-  const verticale = window.matchMedia("(max-aspect-ratio: 5/4)").matches;
-  const cartella = verticale ? "mobile" : "desktop";
-  return [verticale ? "/hero/hero-intriko-vortice-mobile.webp" : "/hero/hero-intriko-vortice.webp", frame(cartella, 0)];
+  return [HERO_IMAGE];
 }
 
 async function consuma(

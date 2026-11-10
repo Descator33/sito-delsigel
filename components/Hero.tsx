@@ -4,14 +4,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useEffect, useRef, type ReactNode } from "react";
 import { animate, motion, useMotionValue, useReducedMotion } from "motion/react";
-import {
-  HeroFrameSequence,
-  type HeroFrameSequenceHandle,
-} from "@/components/HeroFrameSequence";
 import { LogoStorico } from "@/components/LogoStorico";
 import { useMenu } from "@/components/MenuStato";
 import { usePreloader } from "@/components/Preloader";
 import { useTesti } from "@/components/LinguaProvider";
+import { HERO_IMAGE } from "@/lib/hero-image";
 import {
   DURATA_MENU,
   EASE_MENU,
@@ -20,41 +17,6 @@ import {
 } from "@/lib/hero-finestra";
 
 gsap.registerPlugin(useGSAP);
-
-/**
- * Hero "Vortice Intriko" (2026-08-20, nuovo girato 2026-09-18).
- *
- * Il prodotto di punta è il soggetto, non un accessorio: il film entra in
- * macro sulla sfoglia e si apre sulle quattro varianti di Intriko, che
- * occupano la metà destra fra i nastri corallo. A sinistra il blocco
- * brand: l'insegna, poi il marchio storico Delsigel più in basso e più
- * grande — tutti in HTML, mai stampati nel raster, così marchio e parole
- * restano esatti.
- *
- * La prima visita è un film d'ingresso: 90 WebP desktop o 72 mobile, sempre
- * con una finestra decodificata piccola in memoria. Il film parte da solo
- * all'arrivo sul sito — nessuno scrub, la pagina scorre normalmente — e
- * atterra sulla still con le caption. La sequenza si ferma un fotogramma
- * prima della fine: l'ultimo lo dà, con una maschera, il `<picture>`
- * dell'end frame approvato, che è la stessa inquadratura senza il rumore
- * della compressione video:
- *
- *   orizzontale  1920×1080 (143 KB)  ·  3840×2160 (264 KB)
- *   verticale    1080×1920 (159 KB)  ·  2160×3840 (287 KB)
- *
- * Il frame iniziale della sequenza è l'LCP. Il picture finale usa ritaglio
- * e `srcSet` a densità; i quattro WebP sono già tarati a mano e non vanno
- * ricompressi dall'ottimizzatore.
- */
-export const HERO_IMAGE = "/hero/hero-intriko-vortice.webp";
-export const HERO_IMAGE_2X = "/hero/hero-intriko-vortice@2x.webp";
-export const HERO_IMAGE_VERT = "/hero/hero-intriko-vortice-mobile.webp";
-export const HERO_IMAGE_VERT_2X = "/hero/hero-intriko-vortice-mobile@2x.webp";
-
-/** Durata totale della regia, in secondi. I 90 frame occupano il 70% della
- *  corsa: 5.4s × 0.7 ≈ 3.8s, cioè il passo nativo dei ~24 fps del girato.
- *  Il resto è la tendina della still e l'ingresso delle caption. */
-const DURATA_FILM = 5.4;
 
 /** riga dell'insegna: la maschera sta sul blocco, il testo ci sale dentro.
  *  `data-hero-uscita` resta sulla maschera come aggancio stabile per
@@ -71,11 +33,9 @@ const DURATA_FILM = 5.4;
  *  quello che era. */
 function Riga({
   indice,
-  accento,
   children,
 }: {
   indice: number;
-  accento?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -85,9 +45,7 @@ function Riga({
     >
       <span
         data-hero-caption
-        className={`block ${
-          accento ? "text-corallo" : "text-hero-panna orizzontale:text-cacao"
-        }`}
+        className="block text-hero-panna"
       >
         {children}
       </span>
@@ -148,9 +106,6 @@ export function Hero() {
   const racconto = useRef<HTMLElement>(null);
   const palco = useRef<HTMLDivElement>(null);
   const finestra = useRef<HTMLDivElement>(null);
-  const sequenza = useRef<HeroFrameSequenceHandle>(null);
-  const frameFinale = useRef<HTMLDivElement>(null);
-  const progressoFilm = useRef(0);
 
   /* IL RETTANGOLO DELLA FINESTRA, come quattro valori animati.
      Non si anima il nodo con `animate(elemento, …)`: Motion terrebbe quei
@@ -171,98 +126,20 @@ export function Hero() {
   /** serve solo alla comparsa e alla sparizione fuori campo */
   const trasparenza = useMotionValue(1);
 
-  /* La timeline possiede soltanto il playhead, le maschere della still e
-     le trasformazioni delle caption. Motion resta l'unico proprietario
-     del rettangolo della finestra usato dal menu.
-
-     La regia è a TEMPO, non a scroll: parte dietro la porta di caricamento
-     appena tutti gli asset sono pronti e dura `DURATA_FILM`. I tween qui
-     sotto restano scritti in unità
-     relative (sommano a 1) e la `duration()` finale le riporta in secondi:
-     così i rapporti della vecchia partitura non cambiano. La pagina sotto
-     scorre normalmente — chi scende durante il film se lo lascia alle
-     spalle, e lo ritrova concluso risalendo. */
+  // Le scritte entrano subito dopo il caricamento della fotografia.
   useGSAP(
     () => {
-      if (!preloaderPronto) return;
-      const track = racconto.current;
-      const finale = frameFinale.current;
-      if (!track || !finale) return;
-
-      const righe = gsap.utils.toArray<HTMLElement>("[data-hero-caption]", track);
-      const logo = track.querySelector<HTMLElement>("[data-hero-caption-logo]");
-
+      if (!preloaderPronto || !racconto.current) return;
+      const righe = gsap.utils.toArray<HTMLElement>("[data-hero-caption]", racconto.current);
+      const logo = racconto.current.querySelector<HTMLElement>("[data-hero-caption-logo]");
       if (heroStatica) {
-        progressoFilm.current = 1;
-        gsap.set(finale, { clipPath: "inset(0 0 0 0)" });
-        gsap.set([logo, ...righe].filter(Boolean), {
-          transform: "none",
-        });
+        gsap.set([logo, ...righe].filter(Boolean), { transform: "none" });
         return;
       }
-
-      const playhead = { valore: 0 };
-      gsap.set(finale, { clipPath: "inset(0 100% 0 0)" });
-      if (logo) gsap.set(logo, { transform: "translateY(115%)" });
-      gsap.set(righe, { transform: "translateY(165%)" });
-
-      const timeline = gsap.timeline({
-        defaults: { ease: "none" },
-        onUpdate: () => {
-          progressoFilm.current = timeline.progress();
-        },
-      });
-
-      timeline
-        .to(
-          playhead,
-          {
-            valore: 1,
-            duration: 0.7,
-            onUpdate: () => sequenza.current?.mostra(playhead.valore),
-          },
-          0,
-        )
-        /* È la still approvata a chiudere il film. Entra a tendina: nessuna
-           dissolvenza e nessun uso dell'ultimo frame Kling. */
-        .to(
-          finale,
-          {
-            clipPath: "inset(0 0% 0 0)",
-            duration: 0.045,
-            ease: "power2.inOut",
-          },
-          0.7,
-        );
-
-      timeline.to(
-        righe,
-        {
-          transform: "translateY(0%)",
-          duration: 0.06,
-          stagger: 0.02,
-          ease: "power3.out",
-        },
-        0.79,
-      );
-      if (logo) {
-        timeline.to(
-          logo,
-          { transform: "translateY(0%)", duration: 0.055, ease: "power3.out" },
-          0.89,
-        );
-      }
-
-      /* dalle unità relative ai secondi: una sola manopola, DURATA_FILM */
-      timeline.duration(DURATA_FILM);
-
-      sequenza.current?.mostra(0);
+      gsap.to(righe, { transform: "translateY(0%)", duration: 0.55, stagger: 0.1, ease: "power3.out" });
+      if (logo) gsap.to(logo, { transform: "translateY(0%)", duration: 0.55, delay: 0.35, ease: "power3.out" });
     },
-    {
-      scope: racconto,
-      dependencies: [heroStatica, preloaderPronto],
-      revertOnUpdate: true,
-    },
+    { scope: racconto, dependencies: [heroStatica, preloaderPronto], revertOnUpdate: true },
   );
 
   useEffect(() => {
@@ -446,38 +323,17 @@ export function Hero() {
           }}
           className="hero-finestra absolute overflow-hidden"
         >
-        {/* Lo scatto. Il ritaglio non è uno solo: su schermi larghi sta al
-            centro (la fotografia è 16:9, il taglio è minimo), in verticale
-            si sposta sul soggetto — vedi `.hero-scatto` in globals.css. */}
           <div className="hero-scatto">
-            {!heroDiRitorno && (
-              <HeroFrameSequence
-                ref={sequenza}
-                disabilitata={Boolean(ridotto) || !preloaderPronto}
-              />
-            )}
-
-            {/* L'end frame approvato (2026-09-18), art-directed anche in
-                verticale con lo stesso ritaglio della sequenza mobile. La
-                timeline lo svela a tendina prima di far entrare qualsiasi
-                caption. */}
-            <div ref={frameFinale} className="hero-frame-finale absolute inset-0">
-              <picture>
-                <source
-                  media="(max-aspect-ratio: 5/4)"
-                  srcSet={`${HERO_IMAGE_VERT} 1x, ${HERO_IMAGE_VERT_2X} 2x`}
-                />
-                <img
-                  src={HERO_IMAGE}
-                  srcSet={`${HERO_IMAGE} 1x, ${HERO_IMAGE_2X} 2x`}
-                  alt={testi.hero.alt}
-                  fetchPriority={heroDiRitorno ? "high" : "low"}
-                  decoding="async"
-                  draggable={false}
-                  className="hero-foto absolute inset-0 h-full w-full object-cover"
-                />
-              </picture>
-            </div>
+            {/* Il PNG originale viene servito direttamente, senza ridimensionamenti. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={HERO_IMAGE}
+              alt={testi.hero.alt}
+              fetchPriority="high"
+              decoding="async"
+              draggable={false}
+              className="hero-foto absolute inset-0 h-full w-full object-cover"
+            />
           </div>
 
         {/* velo quasi impercettibile sulla sola colonna del testo */}
@@ -526,7 +382,7 @@ export function Hero() {
                   propri a-capo, la maschera resta per riga. */}
               <h1 className="type-hero text-[clamp(2.3rem,9.6vw,3.4rem)] sm:text-[clamp(2.8rem,6.6vw,4.4rem)] lg:text-[clamp(3.2rem,4.62vw,6rem)]">
                 {testi.hero.insegna.map((riga, indice) => (
-                  <Riga key={riga.testo} indice={indice} accento={riga.accento}>
+                  <Riga key={riga.testo} indice={indice}>
                     {riga.testo}
                   </Riga>
                 ))}
@@ -547,7 +403,7 @@ export function Hero() {
               <div data-hero-caption-logo>
                 <LogoStorico
                   variant="stacked"
-                  className="h-[60px] text-hero-panna sm:h-[68px] lg:h-[80px] orizzontale:text-bruno"
+                  className="h-[60px] text-hero-panna sm:h-[68px] lg:h-[80px]"
                 />
               </div>
             </div>

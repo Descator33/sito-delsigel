@@ -23,7 +23,7 @@ export const de: Testi = {
   },
   hero: {
     insegna: [{ testo: "Handwerkliche" }, { testo: "Industrie." }, { testo: "Tradition ist", accento: true }, { testo: "Innovation.", accento: true }],
-    alt: "Vier Varianten von Intriko, dem Aushängeschild von Delsigel, zwischen korallfarbenen Bändern und einer kakaofarbenen Kulisse.",
+    alt: "Vier Intriko-Varianten auf roten und orangefarbenen Podesten.",
   },
   home: {
     ...en.home,
