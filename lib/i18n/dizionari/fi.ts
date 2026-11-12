@@ -23,7 +23,7 @@ export const fi: Testi = {
   },
   hero: {
     insegna: [{ testo: "Käsityö-" }, { testo: "teollisuutta." }, { testo: "Perinne on", accento: true }, { testo: "innovaatiota.", accento: true }],
-    alt: "Suklaa-Intriko, jonka päällä on valkoisia sokerirakeita.",
+    alt: "Neljä Intriko-vaihtoehtoa punaisilla ja oransseilla jalustoilla.",
   },
   home: {
     ...en.home,

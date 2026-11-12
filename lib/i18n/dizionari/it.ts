@@ -73,7 +73,7 @@ export const it: Testi = {
       { testo: "La tradizione", accento: true },
       { testo: "è innovazione.", accento: true },
     ],
-    alt: "Intriko al cioccolato con granella bianca.",
+    alt: "Quattro varianti di Intriko su piedistalli rossi e arancioni.",
   },
 
   home: {

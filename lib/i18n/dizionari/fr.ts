@@ -25,7 +25,7 @@ export const fr: Testi = {
   },
   hero: {
     insegna: [{ testo: "Industrie" }, { testo: "artisanale." }, { testo: "La tradition", accento: true }, { testo: "est innovation.", accento: true }],
-    alt: "Intriko au chocolat avec grains de sucre blancs.",
+    alt: "Quatre variétés d’Intriko sur des socles rouges et orange.",
   },
   home: {
     ...en.home,
