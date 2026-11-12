@@ -63,9 +63,8 @@
 /* ---------------------------------------------------------------- */
 /* Porta d'ingresso                                                   */
 /*                                                                    */
-/* Il documento nasce gia bloccato dal root layout: nessun frame della */
-/* pagina puo scorrere prima che React monti il preloader. Il provider */
-/* rimuove l'attributo soltanto dopo l'uscita della campitura panna.   */
+/* Il bootstrap HTML attiva la porta e ne limita la durata anche se  */
+/* i bundle non arrivano. Senza script il documento resta accessibile. */
 /* ---------------------------------------------------------------- */
 
 html[data-preloader-attivo],
@@ -81,6 +80,7 @@ html[data-porta-di-ritorno] .preloader-porta {
 }
 
 .preloader-porta {
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -90,6 +90,10 @@ html[data-porta-di-ritorno] .preloader-porta {
   color: var(--bruno);
   transform: translate3d(0, 0, 0);
   will-change: transform;
+}
+
+html[data-preloader-attivo] .preloader-porta {
+  display: block;
 }
 
 .preloader-grana {
@@ -826,6 +830,18 @@ html[data-porta-di-ritorno] .preloader-porta {
   overflow-x: clip;
 }
 
+/* Il racconto di Chi siamo nasce leggibile in flusso. La regia attiva
+   la sequenza solo quando c'è spazio; la barra ha una riga tutta sua. */
+.history-sequence {
+  display: none;
+}
+[data-history-animated] .history-sequence {
+  display: block;
+}
+[data-history-animated] .history-static {
+  display: none;
+}
+
 .story-sweets-scene__story-track,
 .story-sweets-scene__story-sticky,
 .story-sweets-scene__catalog-track,
@@ -879,21 +895,20 @@ html[data-porta-di-ritorno] .preloader-porta {
   margin-top: clamp(1.25rem, 2.5svh, 1.75rem);
 }
 
-/* Anche sul telefono alto aggiungiamo 100svh di lettura a Storia ferma,
-   dopo il reveal originale di 50svh. Il catalogo torna nel flusso e ogni
-   card si anima soltanto quando arriva. */
+/* In verticale aggiungiamo la pausa anche sui telefoni bassi: l'altezza
+   misurata lascia scorrere la copy più lunga dello schermo prima del pin.
+   Il catalogo torna nel flusso e ogni card si anima quando arriva. */
 [data-scene-mode="mobile"] .story-sweets-scene__story-track {
-  height: 250svh;
+  height: calc(var(--story-height, 100svh) + 150svh);
 }
 
 [data-scene-mode="mobile"] .story-sweets-scene__story-sticky {
   position: sticky;
-  top: 0;
-  height: 100svh;
+  top: min(0px, calc(100svh - var(--story-height, 100svh)));
+  min-height: 100svh;
 }
 
-[data-scene-mode="desktop"] .story-preview,
-[data-scene-mode="mobile"] .story-preview {
+[data-scene-mode="desktop"] .story-preview {
   height: 100svh;
   min-height: 100svh;
 }
@@ -3825,7 +3840,7 @@ button.candy-livello:is(:hover, :focus-visible) {
   border-radius: 3px;
   background: var(--carta);
   padding: 0.85rem 1rem;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.45;
   color: var(--inchiostro);
   transition:

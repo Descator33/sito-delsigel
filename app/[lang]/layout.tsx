@@ -6,9 +6,7 @@ import { LinguaProvider } from "@/components/LinguaProvider";
 import { MenuProvider } from "@/components/MenuStato";
 import { PreloaderProvider } from "@/components/Preloader";
 import { ScriptPrimaDelPaint } from "@/components/ScriptPrimaDelPaint";
-import { fotoStati, fotoFarciture, fotoCredenza, fotoFinitura } from "@/lib/configuratore/foto";
-import fotoSito from "@/lib/foto-sito.json";
-import { CATALOG } from "@/lib/catalog";
+import { SCRIPT_SICUREZZA_PRELOADER } from "@/lib/preloader-sicurezza";
 import { dizionario } from "@/lib/i18n/dizionario";
 import { LINGUE, haLingua, type Lingua } from "@/lib/i18n/lingue";
 import { BASE_SITO, alternatesPer } from "@/lib/i18n/sito";
@@ -95,28 +93,14 @@ export default async function RootLayout({
   const lingua: Lingua = lang;
   const testi = dizionario(lingua);
 
-  const assetsConfiguratore = [...new Set([
-    ...fotoSito.filter((url) => url.startsWith("/chi-siamo/") || url.startsWith("/img/home-configuratore/")),
-    ...CATALOG.flatMap((prodotto) => [
-      prodotto.image, prodotto.cardImage, prodotto.spaccato,
-      ...Object.values(prodotto.variants ?? {}),
-      ...Object.values(prodotto.spaccati ?? {}),
-    ].filter((url): url is string => Boolean(url))),
-    ...Object.values(fotoStati()),
-    ...Object.values(fotoFarciture()),
-    ...Object.values(fotoCredenza()),
-    ...Object.values(fotoFinitura()),
-  ])];
-
   return (
     <html
       lang={lingua}
-      data-preloader-attivo=""
       suppressHydrationWarning
       className={`${archivo.variable} ${spaceMono.variable} ${caveat.variable} h-full antialiased`}
     >
       <head>
-        <ScriptPrimaDelPaint codice={PREPARA_HERO_VISITATA} />
+        <ScriptPrimaDelPaint codice={`${PREPARA_HERO_VISITATA};${SCRIPT_SICUREZZA_PRELOADER}`} />
       </head>
       {/* I provider globali gestiscono la porta d'ingresso e il menu senza
           trasformare questo layout in un Client Component. La lingua entra
@@ -124,7 +108,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col">
         <LinguaProvider lingua={lingua} testi={testi}>
           <ConsensoCookieProvider>
-          <PreloaderProvider assetsConfiguratore={assetsConfiguratore}>
+          <PreloaderProvider>
             <MenuProvider>{children}</MenuProvider>
           </PreloaderProvider>
           </ConsensoCookieProvider>

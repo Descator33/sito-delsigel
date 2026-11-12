@@ -156,7 +156,7 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
               )
             : [],
         )
-        .filter((elemento) => !elemento.closest("[inert]"));
+        .filter((elemento) => !elemento.closest("[inert]") && elemento.getClientRects().length > 0);
 
     pannello.current?.querySelector<HTMLElement>("a[href]")?.focus({
       preventScroll: true,
@@ -239,9 +239,7 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
               aria-expanded={aperto}
               aria-controls="menu-delsigel"
               aria-haspopup="dialog"
-              /* Il menu resta disponibile nella logica dell'app, ma il suo
-                 comando non è previsto nell'interfaccia corrente. */
-              className="hero-comando font-ui hidden h-12 min-w-[7.25rem] items-center justify-center gap-3 rounded-full px-4 text-[12px] font-bold uppercase tracking-[0.025em] sm:px-5"
+              className="hero-comando font-ui flex h-12 min-w-[7.25rem] items-center justify-center gap-3 rounded-full px-4 text-[12px] font-bold uppercase tracking-[0.025em] sm:px-5 lg:hidden"
             >
               <span className="hero-burger" data-aperto={aperto} aria-hidden>
                 <span />
@@ -263,6 +261,7 @@ export function Header({ fondo = "chiaro" }: { fondo?: "chiaro" | "scuro" }) {
           <motion.div
             ref={pannello}
             id="menu-delsigel"
+            data-lenis-prevent
             role="dialog"
             aria-modal="true"
             aria-label={testi.comune.menu.pannello}

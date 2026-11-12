@@ -11,6 +11,13 @@ import {
   type ReactNode,
 } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { èHome } from "@/lib/i18n/lingue";
+import {
+  ATTRIBUTO_PRELOADER as ATTRIBUTO,
+  ATTRIBUTO_PRELOADER_SCADUTO,
+  EVENTO_PRELOADER_SCADUTO,
+} from "@/lib/preloader-sicurezza";
 import { HERO_IMAGE } from "@/lib/hero-image";
 import { PreloaderLogo3D } from "@/components/PreloaderLogo3D";
 import { useTesti } from "@/components/LinguaProvider";
@@ -20,7 +27,6 @@ import {
   ricordaPortaAttraversata,
 } from "@/lib/porta-visita";
 
-const ATTRIBUTO = "data-preloader-attivo";
 const DURATA_MINIMA = 1_500;
 const ATTESA_USCITA = 260;
 const DURATA_USCITA = 720;
@@ -38,7 +44,6 @@ export function usePreloader() {
 }
 
 type Props = {
-  assetsConfiguratore: string[];
   children: ReactNode;
 };
 
@@ -52,12 +57,13 @@ type Fase = "caricamento" | "uscita" | "finito";
 let attraversataInMemoria = false;
 
 function giaAttraversata() {
-  return attraversataInMemoria || portaGiaAttraversata();
+  return attraversataInMemoria || portaGiaAttraversata() ||
+    (typeof document !== "undefined" && document.documentElement.hasAttribute(ATTRIBUTO_PRELOADER_SCADUTO));
 }
 
-/** La fotografia originale è l'unico asset della hero da precaricare. */
-function listaAssetsIniziali() {
-  return [HERO_IMAGE];
+/** Le altre pagine non scaricano la fotografia della home. */
+function listaAssetsIniziali(home: boolean) {
+  return home ? [HERO_IMAGE] : [];
 }
 
 async function consuma(
@@ -86,8 +92,9 @@ async function consuma(
   aggiorna(1);
 }
 
-export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
+export function PreloaderProvider({ children }: Props) {
   const testi = useTesti();
+  const home = èHome(usePathname());
   /* L'iniziale legge solo la memoria, mai sessionStorage: durante
      l'idratazione il render deve combaciare con l'HTML del server, che la
      porta la contiene sempre. Il ritorno dopo un refresh lo congeda
@@ -104,18 +111,23 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
   const avvio = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!giaAttraversata()) return;
     let attivo = true;
-    queueMicrotask(() => { if (attivo) setFase("finito"); });
-    return () => { attivo = false; };
+    const termina = () => { if (attivo) setFase("finito"); };
+    if (giaAttraversata()) queueMicrotask(termina);
+    window.addEventListener(EVENTO_PRELOADER_SCADUTO, termina);
+    return () => {
+      attivo = false;
+      window.removeEventListener(EVENTO_PRELOADER_SCADUTO, termina);
+    };
   }, []);
 
   useEffect(() => {
+    if (giaAttraversata()) return;
     if (avvio.current === null) avvio.current = Date.now();
     let vivo = true;
     let pubblicazione = 0;
     const controller = new AbortController();
-    const urls = listaAssetsIniziali();
+    const urls = listaAssetsIniziali(home);
     const quote = new Float32Array(urls.length);
     let prossimo = 0;
 
@@ -167,29 +179,7 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
       window.clearTimeout(timeout);
       if (pubblicazione) cancelAnimationFrame(pubblicazione);
     };
-  }, []);
-
-  // Il resto non compete con l'apertura: due download alla volta, a bassa
-  // priorità, solo dopo l'uscita. Le foto della storia usano next/image lazy.
-  useEffect(() => {
-    if (fase !== "finito") return;
-    const rete = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } };
-    if (rete.connection?.saveData || /(^|-)2g$/.test(rete.connection?.effectiveType ?? "")) return;
-    const controller = new AbortController();
-    let indice = 0;
-    let attivo = true;
-    const lavora = async () => {
-      while (attivo && indice < assetsConfiguratore.length) {
-        const url = assetsConfiguratore[indice++];
-        try {
-          const risposta = await fetch(url, { cache: "force-cache", priority: "low", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]) });
-          if (risposta.ok) await risposta.arrayBuffer();
-        } catch { /* Il caricamento normale della pagina resta il ripiego. */ }
-      }
-    };
-    void Promise.all([lavora(), lavora()]);
-    return () => { attivo = false; controller.abort(); };
-  }, [assetsConfiguratore, fase]);
+  }, [home]);
 
   /* Anche con gli asset gia in cache la porta resta leggibile per almeno
      un breve intervallo. Il limite temporale governa anche la barra, quindi non
@@ -247,13 +237,8 @@ export function PreloaderProvider({ assetsConfiguratore, children }: Props) {
     if (giaAttraversata()) return;
 
     document.documentElement.setAttribute(ATTRIBUTO, "");
-    const { overflow, paddingRight } = document.body.style;
-    const barra = window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.overflow = "hidden";
-    if (barra > 0) document.body.style.paddingRight = `${barra}px`;
     return () => {
-      document.body.style.overflow = overflow;
-      document.body.style.paddingRight = paddingRight;
+      document.documentElement.removeAttribute(ATTRIBUTO);
     };
   }, [fase]);
 

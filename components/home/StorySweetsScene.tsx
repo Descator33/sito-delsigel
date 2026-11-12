@@ -98,7 +98,7 @@ export function StorySweetsScene({
         {
           desktop:
             "(min-width: 1280px) and (min-height: 760px) and (max-aspect-ratio: 19/10)",
-          mobile: "(max-width: 767px) and (min-height: 720px)",
+          mobile: "(max-width: 767px) and (orientation: portrait)",
           movimento: "(prefers-reduced-motion: no-preference)",
         },
         (contesto) => {
@@ -118,9 +118,31 @@ export function StorySweetsScene({
 
           scope.dataset.sceneMode = modo;
 
+          // Sui telefoni bassi la copy può superare lo schermo: prima si
+          // legge tutta, poi si ferma l'ultima porzione per la pausa.
+          let frameMisura = 0;
+          const misuraStoria = () => {
+            scope.style.setProperty("--story-height", `${storia.offsetHeight}px`);
+          };
+          const osservatore = modo === "mobile" ? new ResizeObserver(() => {
+            cancelAnimationFrame(frameMisura);
+            frameMisura = requestAnimationFrame(() => {
+              misuraStoria();
+              ScrollTrigger.refresh();
+            });
+          }) : null;
+          if (modo === "mobile") {
+            misuraStoria();
+            osservatore?.observe(storia);
+          }
+
           if (!condizioni.movimento) {
             abilitaInterattiviCaption(captionStoria, true);
-            return;
+            return () => {
+              osservatore?.disconnect();
+              cancelAnimationFrame(frameMisura);
+              scope.style.removeProperty("--story-height");
+            };
           }
 
           preparaCaptionHome(captionStoria);
@@ -315,6 +337,9 @@ export function StorySweetsScene({
           ScrollTrigger.refresh();
 
           return () => {
+            osservatore?.disconnect();
+            cancelAnimationFrame(frameMisura);
+            scope.style.removeProperty("--story-height");
             abilitaInterattiviCaption(captionStoria, true);
             scope.dataset.sceneMode = "static";
           };
@@ -333,6 +358,7 @@ export function StorySweetsScene({
   useEffect(() => {
     const scope = radice.current;
     if (!scope) return;
+    let frameNavigazione = 0;
 
     const vaiA = (hash: string, immediato = false) => {
       if (!ANCORE.has(hash)) return;
@@ -404,7 +430,10 @@ export function StorySweetsScene({
 
       evento.preventDefault();
       window.history.pushState(null, "", url.hash);
-      vaiA(url.hash);
+      // Il click può anche chiudere il menu: aspettiamo che il suo effetto
+      // riavvii Lenis prima di chiedergli lo scroll verso il capitolo.
+      cancelAnimationFrame(frameNavigazione);
+      frameNavigazione = requestAnimationFrame(() => vaiA(url.hash));
     };
 
     const riallineaHash = () => vaiA(window.location.hash, true);
@@ -417,6 +446,7 @@ export function StorySweetsScene({
     });
 
     return () => {
+      cancelAnimationFrame(frameNavigazione);
       cancelAnimationFrame(primoFrame);
       cancelAnimationFrame(secondoFrame);
       document.removeEventListener("click", intercetta, true);

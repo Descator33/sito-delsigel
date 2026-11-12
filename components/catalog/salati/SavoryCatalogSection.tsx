@@ -17,7 +17,7 @@ export function SavoryCatalogSection({ lingua }: { lingua: Lingua }) {
     <section
       id="salati"
       aria-labelledby={TITOLO_ID}
-      className="font-testo scroll-mt-24 bg-panna text-inchiostro"
+      className="font-testo scroll-mt-24 overflow-x-clip bg-panna text-inchiostro"
     >
       <div className="mx-auto max-w-[1800px] px-6 pb-16 pt-14 md:px-12 md:pb-24 md:pt-20">
         <SavoryCatalogHeading titoloId={TITOLO_ID} lingua={lingua} />

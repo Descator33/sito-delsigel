@@ -107,9 +107,9 @@ function Certificazioni({ tappa }: { tappa: TappaLocalizzata }) {
   );
 }
 
-function HistoryReduced({ tappe }: { tappe: TappaLocalizzata[] }) {
+function HistoryStatic({ tappe }: { tappe: TappaLocalizzata[] }) {
   return (
-    <ol className="hidden border-t border-cacao/15 px-5 text-cacao motion-reduce:block md:px-10">
+    <ol className="history-static border-t border-cacao/15 px-5 text-cacao md:px-10">
       {tappe.map((tappa) => (
         <li key={tappa.id} className="mx-auto max-w-5xl border-b border-cacao/15 py-16">
           <figure className="relative aspect-[3/4] overflow-clip md:aspect-[16/10]">
@@ -165,7 +165,8 @@ export function HistoryJourney() {
       if (!scope) return;
 
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add("(prefers-reduced-motion: no-preference) and (min-height: 800px)", () => {
+        scope.dataset.historyAnimated = "true";
         const intro = scope.querySelector<HTMLElement>("[data-story-intro]");
         const introFoto = scope.querySelector<HTMLElement>("[data-intro-foto]");
         const introTitolo = scope.querySelector<HTMLElement>("[data-intro-titolo]");
@@ -299,6 +300,7 @@ export function HistoryJourney() {
         }
 
         return () => {
+          delete scope.dataset.historyAnimated;
           attivaRef.current = 0;
           setAttiva(0);
         };
@@ -388,46 +390,76 @@ export function HistoryJourney() {
 
       <div
         data-story-sequence
-        className="relative h-[610svh] motion-reduce:hidden"
+        className="history-sequence relative h-[610svh]"
       >
-        <div className="sticky top-0 h-[100svh] overflow-clip bg-panna">
-          <div aria-hidden className="absolute inset-0">
-            {SFONDI_CAPITOLI.map((sfondo, index) => (
-              <span
-                key={sfondo}
-                data-story-color
-                className="absolute inset-0"
-                style={{ background: sfondo, zIndex: index + 1 }}
-              />
-            ))}
-          </div>
-
-          <div className="absolute inset-x-0 top-0 z-10 h-[52svh] md:inset-y-0 md:left-[39%] md:h-auto">
-            {tappe.map((tappa, index) => (
-              <figure
-                key={tappa.id}
-                data-story-media
-                className="absolute inset-0 origin-bottom overflow-clip"
-                style={{ zIndex: index + 1 }}
-              >
-                <div data-story-image className="absolute -inset-[3%] origin-center">
-                  <StoryPicture
-                    immagine={tappa.immagine}
-                    immagineVertical={tappa.immagineVertical}
-                    originale={tappa.originale}
-                    alt={tappa.alt}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                </div>
+        <div className="sticky top-0 grid h-[100svh] grid-rows-[minmax(0,1fr)_auto] overflow-clip bg-panna">
+          <div data-story-panel className="relative min-h-0">
+            <div aria-hidden className="absolute inset-0">
+              {SFONDI_CAPITOLI.map((sfondo, index) => (
                 <span
-                  aria-hidden
-                  className="absolute inset-0 hidden bg-gradient-to-r from-cacao/18 via-transparent to-transparent md:block"
+                  key={sfondo}
+                  data-story-color
+                  className="absolute inset-0"
+                  style={{ background: sfondo, zIndex: index + 1 }}
                 />
-              </figure>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <div className="absolute inset-x-5 top-[5.5rem] z-30 flex items-center gap-4 rounded-full border border-cacao/10 bg-panna/90 px-4 py-3 backdrop-blur-md md:inset-x-10 md:top-24 lg:inset-x-14">
+            <div data-story-photos className="absolute inset-x-0 top-0 z-10 h-[32%] md:inset-y-0 md:left-[39%] md:h-auto">
+              {tappe.map((tappa, index) => (
+                <figure
+                  key={tappa.id}
+                  data-story-media
+                  className="absolute inset-0 origin-bottom overflow-clip"
+                  style={{ zIndex: index + 1 }}
+                >
+                  <div data-story-image className="absolute -inset-[3%] origin-center">
+                    <StoryPicture
+                      immagine={tappa.immagine}
+                      immagineVertical={tappa.immagineVertical}
+                      originale={tappa.originale}
+                      alt={tappa.alt}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </div>
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 hidden bg-gradient-to-r from-cacao/18 via-transparent to-transparent md:block"
+                  />
+                </figure>
+              ))}
+            </div>
+
+            <ol className="absolute inset-x-0 bottom-0 top-[32%] z-20 md:top-0">
+              {tappe.map((tappa, index) => (
+                <li
+                  key={tappa.id}
+                  data-story-copy
+                  aria-hidden={index !== attiva}
+                  className="absolute inset-0 flex items-center px-5 py-4 text-cacao md:px-10 md:pt-24 lg:px-14"
+                >
+                  <article className="w-full max-w-[36rem] md:w-[35vw] md:max-w-[34rem]">
+                    <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.26em] text-cacao/70">
+                      {tappa.sottotitolo}
+                    </p>
+                    <h3 className="mt-3 max-w-[9ch] text-balance font-insegna text-[clamp(3.4rem,7vw,8.2rem)] font-semibold leading-[0.82] tracking-[-0.065em]">
+                      {tappa.titolo}
+                    </h3>
+                    {tappa.frase && (
+                      <p className="mt-6 max-w-[29ch] text-balance text-[clamp(1.2rem,2vw,1.9rem)] font-medium leading-[1.08] text-cacao">
+                        {tappa.frase}
+                      </p>
+                    )}
+                    <p className="mt-4 max-w-[42ch] text-pretty text-sm leading-6 text-cacao/70 md:text-[15px] md:leading-7">
+                      <Frasi testo={tappa.descrizione} />
+                    </p>
+                    <Certificazioni tappa={tappa} />
+                  </article>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div data-story-status className="relative z-30 flex min-h-16 items-center gap-4 border-t border-cacao/15 bg-panna px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:px-10 lg:px-14">
             <p className="shrink-0 font-mono text-[10px] font-semibold tabular-nums tracking-[0.22em] text-cacao">
               {String(attiva + 1).padStart(2, "0")}
               <span className="text-cacao/45"> / {String(STORIA.length).padStart(2, "0")}</span>
@@ -439,39 +471,10 @@ export function HistoryJourney() {
               {testi.progressoScorri}
             </p>
           </div>
-
-          <ol className="absolute inset-0 z-20">
-            {tappe.map((tappa, index) => (
-              <li
-                key={tappa.id}
-                data-story-copy
-                aria-hidden={index !== attiva}
-                className="absolute inset-0 flex items-end px-5 pb-8 pt-24 text-cacao md:items-center md:px-10 md:pb-0 lg:px-14"
-              >
-                <article className="w-full max-w-[36rem] md:w-[35vw] md:max-w-[34rem]">
-                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.26em] text-cacao/70">
-                    {tappa.sottotitolo}
-                  </p>
-                  <h3 className="mt-3 max-w-[9ch] text-balance font-insegna text-[clamp(3.4rem,7vw,8.2rem)] font-semibold leading-[0.82] tracking-[-0.065em]">
-                    {tappa.titolo}
-                  </h3>
-                  {tappa.frase && (
-                    <p className="mt-6 max-w-[29ch] text-balance text-[clamp(1.2rem,2vw,1.9rem)] font-medium leading-[1.08] text-cacao">
-                      {tappa.frase}
-                    </p>
-                  )}
-                  <p className="mt-4 max-w-[42ch] text-pretty text-sm leading-6 text-cacao/70 md:text-[15px] md:leading-7">
-                    <Frasi testo={tappa.descrizione} />
-                  </p>
-                  <Certificazioni tappa={tappa} />
-                </article>
-              </li>
-            ))}
-          </ol>
         </div>
       </div>
 
-      <HistoryReduced tappe={tappe} />
+      <HistoryStatic tappe={tappe} />
 
       <footer className="relative flex min-h-[92svh] items-center border-t border-cacao/12 bg-[color-mix(in_srgb,var(--viola)_22%,var(--panna))] px-5 py-28 text-cacao md:px-10 lg:px-14">
         <div className="mx-auto w-full max-w-[1480px]">

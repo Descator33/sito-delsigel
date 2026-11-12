@@ -81,7 +81,7 @@ export function ProductQuickView({
 
   return (
     <Drawer open={!!aperto} onOpenChange={chiudi}>
-      <DrawerContent>
+      <DrawerContent chiudiLabel={interpola(testi.catalogo.chiudiScheda, { nome: t.name })}>
         <Scheda
           key={t.slug}
           t={t}
