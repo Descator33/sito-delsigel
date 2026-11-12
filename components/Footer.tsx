@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { LogoStorico } from "@/components/LogoStorico";
@@ -185,9 +185,9 @@ export function Footer() {
             <a href="#" className="voce-footer">
               {testi.footer.privacy}
             </a>
-            <a href="#" className="voce-footer">
+            <Link href={percorso("/cookie")} className="voce-footer">
               {testi.footer.cookie}
-            </a>
+            </Link>
           </div>
           <p>{testi.footer.credito}</p>
         </div>
@@ -226,21 +226,43 @@ const SEDE = "Delsigel, Via della Meccanica 1, 04013 Sermoneta LT";
  * collage, non su una mappa che si guarda e si trascina.
  */
 function MappaSede() {
-  const { testi } = useLingua();
+  const { testi, lingua } = useLingua();
+  const [attiva, setAttiva] = useState(false);
+  const messaggi = {
+    it: { avviso: "Per visualizzare la mappa, Google può utilizzare cookie e ricevere dati di navigazione. La mappa è facoltativa.", attiva: "Accetta e mostra la mappa", disattiva: "Disattiva la mappa", dettagli: "Informativa cookie" },
+    en: { avviso: "To display the map, Google may use cookies and receive browsing data. The map is optional.", attiva: "Accept and show the map", disattiva: "Disable the map", dettagli: "Cookie information" },
+    fr: { avviso: "Pour afficher la carte, Google peut utiliser des cookies et recevoir des données de navigation. La carte est facultative.", attiva: "Accepter et afficher la carte", disattiva: "Désactiver la carte", dettagli: "Informations sur les cookies" },
+    de: { avviso: "Zum Anzeigen der Karte kann Google Cookies verwenden und Navigationsdaten erhalten. Die Karte ist optional.", attiva: "Akzeptieren und Karte anzeigen", disattiva: "Karte deaktivieren", dettagli: "Cookie-Informationen" },
+    fi: { avviso: "Kartan näyttämiseksi Google voi käyttää evästeitä ja vastaanottaa selaustietoja. Kartta on valinnainen.", attiva: "Hyväksy ja näytä kartta", disattiva: "Poista kartta käytöstä", dettagli: "Evästetiedot" },
+  }[lingua];
 
   return (
     <div className="w-full max-w-[26rem] justify-self-start xl:w-[22rem]">
       <ColumnHeading>{testi.footer.dove}</ColumnHeading>
 
       <div className="mappa-sede mt-6 overflow-hidden rounded-[18px] border border-panna/25">
-        <iframe
-          title={testi.footer.mappaTitolo}
-          src={`https://www.google.com/maps?q=${encodeURIComponent(SEDE)}&z=15&output=embed`}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className="block h-[13.5rem] w-full border-0"
-        />
+        {attiva ? (
+          <iframe
+            title={testi.footer.mappaTitolo}
+            src={`https://www.google.com/maps?q=${encodeURIComponent(SEDE)}&z=15&output=embed`}
+            referrerPolicy="no-referrer"
+            className="block h-[13.5rem] w-full border-0"
+          />
+        ) : (
+          <div className="flex min-h-[13.5rem] flex-col items-start justify-center gap-3 p-5 text-sm leading-relaxed">
+            <p>{messaggi.avviso}</p>
+            <button type="button" onClick={() => setAttiva(true)} className="min-h-11 rounded-full bg-panna px-5 py-2 font-bold text-cacao focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panna">
+              {messaggi.attiva}
+            </button>
+            <Link href={`/${lingua}/cookie`} className="underline underline-offset-4">{messaggi.dettagli}</Link>
+          </div>
+        )}
       </div>
+      {attiva && (
+        <button type="button" onClick={() => setAttiva(false)} className="mt-3 min-h-11 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panna">
+          {messaggi.disattiva}
+        </button>
+      )}
 
       <a
         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SEDE)}`}
