@@ -180,7 +180,9 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
       id: f.id,
       /* il nome proprio della combinazione vince sul nome della farcitura:
          bomba + crema si vende come «Bomba Super», non come «Crema» */
-      nome: c.nome ?? testi.prodotti.farciture[f.id as IdFarcitura] ?? f.nome,
+      nome: t.slug === "klejner" && f.id === "senza-farcitura" && lingua === "it"
+        ? "Semplice"
+        : c.nome ?? testi.prodotti.farciture[f.id as IdFarcitura] ?? f.nome,
       chiave: FARCITURA_A_CHIAVE[f.id] ?? f.id,
       peso: `${c.grammatura_gr} g`,
     });
