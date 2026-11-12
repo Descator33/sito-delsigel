@@ -72,7 +72,7 @@ export const ESPERIENZA: Record<Lingua, TestiEsperienza> = {
     invioFallito:
       "Non siamo riusciti a confermare l’invio. Riprova: la stessa richiesta non verrà duplicata. In alternativa, apri il messaggio nella tua app di posta.",
     invioAssente:
-      "L’invio dal sito è in preparazione. Puoi aprire la richiesta nella tua app di posta; dovrai inviarla da lì.",
+      "Apri la richiesta nella tua app di posta e inviala da lì.",
     campiInvalidi:
       "Controlla email, canale e lunghezza dei campi. Azienda: massimo 160 caratteri; telefono: 40; note: 2000.",
     privacy: "Privacy",
@@ -117,7 +117,7 @@ export const ESPERIENZA: Record<Lingua, TestiEsperienza> = {
     invioFallito:
       "We could not confirm delivery. Try again; the same request will not be duplicated. You can also open the message in your email app.",
     invioAssente:
-      "Sending from this site is being set up. You can open the request in your email app and send it from there.",
+      "Open the request in your email app and send it from there.",
     campiInvalidi:
       "Check your email, channel and field lengths. Company: up to 160 characters; phone: 40; notes: 2000.",
     privacy: "Privacy",
@@ -161,7 +161,7 @@ export const ESPERIENZA: Record<Lingua, TestiEsperienza> = {
     invioFallito:
       "L’envoi n’a pas pu être confirmé. Réessayez : la même demande ne sera pas dupliquée. Vous pouvez aussi ouvrir le message dans votre messagerie.",
     invioAssente:
-      "L’envoi depuis le site est en préparation. Ouvrez la demande dans votre messagerie et envoyez-la depuis celle-ci.",
+      "Ouvrez la demande dans votre messagerie et envoyez-la.",
     campiInvalidi:
       "Vérifiez l’e-mail, le circuit et la longueur des champs. Entreprise : 160 caractères maximum ; téléphone : 40 ; notes : 2000.",
     privacy: "Confidentialité",
@@ -205,7 +205,7 @@ export const ESPERIENZA: Record<Lingua, TestiEsperienza> = {
     invioFallito:
       "Der Versand konnte nicht bestätigt werden. Versuchen Sie es erneut; dieselbe Anfrage wird nicht doppelt gesendet. Alternativ öffnen Sie die Nachricht in Ihrem E-Mail-Programm.",
     invioAssente:
-      "Der Versand über die Website wird vorbereitet. Öffnen und senden Sie die Anfrage in Ihrem E-Mail-Programm.",
+      "Öffnen und senden Sie die Anfrage in Ihrem E-Mail-Programm.",
     campiInvalidi:
       "Prüfen Sie E-Mail, Vertriebskanal und Feldlängen. Firma: maximal 160 Zeichen; Telefon: 40; Hinweise: 2000.",
     privacy: "Datenschutz",
@@ -250,7 +250,7 @@ export const ESPERIENZA: Record<Lingua, TestiEsperienza> = {
     invioFallito:
       "Lähetystä ei voitu vahvistaa. Yritä uudelleen; samaa pyyntöä ei lähetetä kahdesti. Voit myös avata viestin sähköpostiohjelmassasi.",
     invioAssente:
-      "Lähetys sivustolta on valmisteilla. Avaa pyyntö sähköpostiohjelmassasi ja lähetä se sieltä.",
+      "Avaa pyyntö sähköpostiohjelmassasi ja lähetä se sieltä.",
     campiInvalidi:
       "Tarkista sähköposti, kanava ja kenttien pituudet. Yritys: enintään 160 merkkiä; puhelin: 40; huomautukset: 2000.",
     privacy: "Tietosuoja",

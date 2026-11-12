@@ -21,7 +21,6 @@ import {
   type BozzaContatto,
   type StatoContatto,
 } from "@/lib/contatti";
-import { spedisci } from "@/lib/contatti/consegna";
 import { dizionario } from "@/lib/i18n/dizionario";
 import {
   LINGUA_PREDEFINITA,
@@ -102,7 +101,7 @@ export async function inviaRichiesta(
   if (testo("sito_web").trim() !== "") {
     return {
       stato: "ok",
-      messaggio: testi.esiti.ricevuto,
+      messaggio: testi.esiti.canaleAssente,
     };
   }
 
@@ -142,25 +141,10 @@ export async function inviaRichiesta(
     };
   }
 
-  const esito = await spedisci({ ...bozza, origine: ip });
-
-  if (esito.ok) {
-    return {
-      stato: "ok",
-      messaggio: testi.esiti.ricevuto,
-    };
-  }
-
-  /* Le due rese sono diverse e vanno dette diverse: il canale non c'è
-     ancora, oppure c'è e ha fallito. In entrambi i casi si consegna alla
-     persona una strada che funziona subito. */
   return {
     stato: "errore",
     campi: {},
-    messaggio:
-      esito.motivo === "NON_CONFIGURATO"
-        ? testi.esiti.canaleAssente
-        : testi.esiti.invioFallito,
+    messaggio: testi.esiti.canaleAssente,
     ripiego: mailtoDiRipiego(bozza, testi),
     valori: bozza,
   };

@@ -224,7 +224,7 @@ export const en: Testi = {
       email: "Email", emailPh: "name@company.com", azienda: "Company", aziendaPh: "Company name", ruolo: "Role", ruoloPh: "e.g. buyer, owner, R&D",
       reparto: "Department of interest", repartoPh: "Select a department", messaggio: "Message", messaggioPh: "Tell us what you need: products, quantity, delivery area...", facoltativo: "(optional)",
       privacy: "I confirm that I have read the Privacy Notice and consent to the processing of my personal data under EU Regulation 2016/679 (GDPR).",
-      invia: "Send request", invioInCorso: "Sending...", inviata: "Request sent", apriPosta: "Open in email app", honeypot: "Website",
+      invia: "Prepare request", invioInCorso: "Preparing...", inviata: "Request sent", apriPosta: "Open in email app", honeypot: "Website",
     },
     errori: {
       nomeCorto: "Enter your first name so we know who we are speaking to.", nomeLungo: "First name cannot exceed {max} characters.", cognomeCorto: "Enter your last name.", cognomeLungo: "Last name cannot exceed {max} characters.",
@@ -234,7 +234,7 @@ export const en: Testi = {
     },
     esiti: {
       ricevuto: "Message received. We will reply within one working day.", troppoInFretta: "The request was sent too quickly. Try again in a few seconds.", controllaCampi: "Check the highlighted fields: we need a little more information to reply.",
-      troppiInvii: "You have sent several requests in a row. Wait a few minutes or call us on +39 0773 319437.", canaleAssente: "Website sending is not active yet. Open the message in your email app; it is already filled in.", invioFallito: "We could not send the message. Try again, or open it in your email app; it is already filled in.",
+      troppiInvii: "You have sent several requests in a row. Wait a few minutes or call us on +39 0773 319437.", canaleAssente: "Open the prepared message in your email app and send it from there.", invioFallito: "We could not send the message. Try again, or open it in your email app; it is already filled in.",
     },
     mailRipiego: { oggetto: "Website enquiry — {nome}", contatto: "contact", nome: "First name", cognome: "Last name", telefono: "Telephone", email: "Email", azienda: "Company", ruolo: "Role", reparto: "Department of interest" },
   },

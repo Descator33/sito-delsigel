@@ -648,8 +648,8 @@ export const it: Testi = {
       facoltativo: "(facoltativo)",
       privacy:
         "Dichiaro di aver letto l'Informativa Privacy e acconsento al trattamento dei miei dati personali ai sensi del Regolamento UE 2016/679 (GDPR).",
-      invia: "Invia la richiesta",
-      invioInCorso: "Invio in corso...",
+      invia: "Prepara la richiesta",
+      invioInCorso: "Preparazione...",
       inviata: "Richiesta inviata",
       apriPosta: "Apri nel programma di posta",
       honeypot: "Sito web",
@@ -683,7 +683,7 @@ export const it: Testi = {
       troppiInvii:
         "Hai già inviato più richieste di fila. Aspetta qualche minuto, oppure chiamaci: +39 0773 319437.",
       canaleAssente:
-        "L'invio dal sito non è ancora attivo. Apri il messaggio nel tuo programma di posta: è già compilato.",
+        "Apri il messaggio già compilato nel tuo programma di posta e invialo da lì.",
       invioFallito:
         "Non siamo riusciti a inviare il messaggio. Riprova, oppure aprilo nel tuo programma di posta: è già compilato.",
     },

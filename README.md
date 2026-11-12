@@ -15,18 +15,10 @@ npm run dev
 
 Il sito è su http://localhost:3000.
 
-Per il form contatti serve una configurazione: senza, la pagina **non finge**
-di aver spedito — valida, dichiara che il canale non è attivo e offre un
-`mailto:` già compilato. Le variabili vanno in `.env.local` (non versionato):
-
-| Variabile | Obbligatoria | Cosa contiene |
-| --- | --- | --- |
-| `RESEND_API_KEY` | sì | chiave API del progetto Resend |
-| `CONTATTI_MITTENTE` | sì | mittente su un dominio **verificato** in Resend |
-| `CONTATTI_DESTINATARIO` | no | dove arrivano le richieste (default `info@delsigel.it`) |
-
-Il dettaglio — difese antispam, come cambiare provider — sta in
-[`docs/contatti.md`](docs/contatti.md).
+I moduli Contatti e Configuratore preparano un messaggio per `info@delsigel.it`.
+Il visitatore lo apre nel proprio programma di posta e lo invia da lì; non
+sono necessarie credenziali o variabili Resend. Il sito non può confermare
+che il messaggio sia stato effettivamente inviato.
 
 ## Comandi
 

@@ -370,7 +370,7 @@ function Esito({
       )}
 
       {stato.stato === "errore" && (
-        <div className="mt-6 border-2 border-rosso bg-rosso/10 p-4">
+        <div className={`mt-6 border-2 p-4 ${stato.ripiego ? "border-inchiostro bg-acido/35" : "border-rosso bg-rosso/10"}`}>
           <p className="flex items-start gap-3 text-[14px] font-semibold leading-snug text-inchiostro">
             <CircleAlert
               aria-hidden

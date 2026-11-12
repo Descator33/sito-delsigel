@@ -1,8 +1,7 @@
 "use server";
 
-/** Valida la richiesta e la consegna a Resend. Mailto come ripiego esplicito. */
+/** Valida la richiesta e prepara il messaggio per il programma di posta. */
 
-import { consegnaQuotazione } from "@/lib/quotazioni/consegna";
 import { BASE_SITO } from "@/lib/i18n/sito";
 import { headers } from "next/headers";
 import {
@@ -255,23 +254,9 @@ export async function richiediQuotazione(
 
   const mailto = `mailto:${DESTINATARIO}?subject=${encodeURIComponent(oggetto)}&body=${encodeURIComponent(corpo)}`;
 
-  const consegna = await consegnaQuotazione({
-    oggetto,
-    corpo,
-    email: cliente.email,
-    richiesta,
-  });
-  if (consegna.stato === "errore")
-    return {
-      ok: false,
-      errore: "INVIO_FALLITO",
-      messaggio: testi.configuratore.esperienza.invioFallito,
-      mailto,
-    };
   return {
     ok: true,
-    inviata: consegna.stato === "inviata",
-    ...(consegna.stato === "inviata" ? { id: consegna.id } : {}),
+    inviata: false,
     sku: p.sku,
     quantita: q,
     mailto,

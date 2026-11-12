@@ -204,7 +204,7 @@ export const fr: Testi = {
       titolo: "Écrivez-nous", nome: "Prénom", nomePh: "Ex. Piera", cognome: "Nom", cognomePh: "Ex. Ollearo", telefono: "Téléphone", telefonoPh: "+33 0 00 00 00 00", email: "E-mail", emailPh: "nom@entreprise.fr",
       azienda: "Entreprise", aziendaPh: "Raison sociale", ruolo: "Fonction", ruoloPh: "Ex. acheteur, dirigeant, R&D", reparto: "Service concerné", repartoPh: "Sélectionnez un service", messaggio: "Message",
       messaggioPh: "Dites-nous ce dont vous avez besoin : références, quantité, zone de livraison...", facoltativo: "(facultatif)", privacy: "Je déclare avoir lu la Politique de confidentialité et consens au traitement de mes données personnelles conformément au règlement UE 2016/679 (RGPD).",
-      invia: "Envoyer la demande", invioInCorso: "Envoi en cours...", inviata: "Demande envoyée", apriPosta: "Ouvrir dans la messagerie", honeypot: "Site web",
+      invia: "Préparer la demande", invioInCorso: "Préparation...", inviata: "Demande envoyée", apriPosta: "Ouvrir dans la messagerie", honeypot: "Site web",
     },
     errori: {
       nomeCorto: "Indiquez votre prénom pour que nous sachions à qui nous parlons.", nomeLungo: "Le prénom ne peut pas dépasser {max} caractères.", cognomeCorto: "Indiquez votre nom.", cognomeLungo: "Le nom ne peut pas dépasser {max} caractères.",
@@ -214,7 +214,7 @@ export const fr: Testi = {
     },
     esiti: {
       ricevuto: "Message reçu. Nous vous répondrons sous un jour ouvré.", troppoInFretta: "La demande a été envoyée trop rapidement. Réessayez dans quelques secondes.", controllaCampi: "Vérifiez les champs signalés : il nous manque des informations pour vous répondre.",
-      troppiInvii: "Vous avez envoyé plusieurs demandes de suite. Attendez quelques minutes ou appelez-nous au +39 0773 319437.", canaleAssente: "L'envoi depuis le site n'est pas encore actif. Ouvrez le message dans votre messagerie : il est déjà rempli.", invioFallito: "Nous n'avons pas pu envoyer le message. Réessayez ou ouvrez-le dans votre messagerie : il est déjà rempli.",
+      troppiInvii: "Vous avez envoyé plusieurs demandes de suite. Attendez quelques minutes ou appelez-nous au +39 0773 319437.", canaleAssente: "Ouvrez le message préparé dans votre messagerie et envoyez-le.", invioFallito: "Nous n'avons pas pu envoyer le message. Réessayez ou ouvrez-le dans votre messagerie : il est déjà rempli.",
     },
     mailRipiego: { oggetto: "Demande depuis le site — {nome}", contatto: "contact", nome: "Prénom", cognome: "Nom", telefono: "Téléphone", email: "E-mail", azienda: "Entreprise", ruolo: "Fonction", reparto: "Service concerné" },
   },

@@ -139,44 +139,21 @@ test("senza configurazione non dichiara inviata la richiesta e genera un riferim
     if (from) process.env.QUOTAZIONI_FROM = from;
   }
 });
-test("Resend: destinatario, reply-to, idempotenza, quantità aggiornata ed errore riprovabile", async () => {
-  const oldFetch = global.fetch,
-    key = process.env.RESEND_API_KEY,
-    from = process.env.QUOTAZIONI_FROM;
+test("la richiesta usa il programma di posta anche con vecchie variabili Resend", async () => {
+  const key = process.env.RESEND_API_KEY, from = process.env.QUOTAZIONI_FROM;
+  const oldFetch = global.fetch;
   process.env.RESEND_API_KEY = "test-only";
   process.env.QUOTAZIONI_FROM = "test@example.com";
-  const chiamate = [];
-  global.fetch = async (url, args) => {
-    chiamate.push(args);
-    return new Response(JSON.stringify({ id: "test-id" }), { status: 200 });
-  };
+  global.fetch = async () => { throw new Error("Non deve inviare via rete"); };
   try {
-    const a = await richiediQuotazione(null, form());
-    assert.equal(a.inviata, true);
-    await richiediQuotazione(null, form());
-    const q = await richiediQuotazione(null, form({ pedane: "2" }));
-    assert.equal(q.quantita.peso_kg, 470.4);
-    assert.equal(
-      chiamate[0].headers["Idempotency-Key"],
-      chiamate[1].headers["Idempotency-Key"],
-    );
-    assert.notEqual(
-      chiamate[1].headers["Idempotency-Key"],
-      chiamate[2].headers["Idempotency-Key"],
-    );
-    const body = JSON.parse(chiamate[0].body);
-    assert.deepEqual(body.to, ["info@delsigel.it"]);
-    assert.equal(body.reply_to, "buyer@example.com");
-    global.fetch = async () => new Response("{}", { status: 503 });
-    const errore = await richiediQuotazione(null, form());
-    assert.equal(errore.errore, "INVIO_FALLITO");
-    assert.ok(errore.mailto);
+    const r = await richiediQuotazione(null, form({ pedane: "2" }));
+    assert.equal(r.inviata, false);
+    assert.equal(r.quantita.peso_kg, 470.4);
+    assert.match(decodeURIComponent(r.mailto), /^mailto:info@delsigel.it/);
   } finally {
     global.fetch = oldFetch;
-    if (key) process.env.RESEND_API_KEY = key;
-    else delete process.env.RESEND_API_KEY;
-    if (from) process.env.QUOTAZIONI_FROM = from;
-    else delete process.env.QUOTAZIONI_FROM;
+    if (key === undefined) delete process.env.RESEND_API_KEY; else process.env.RESEND_API_KEY = key;
+    if (from === undefined) delete process.env.QUOTAZIONI_FROM; else process.env.QUOTAZIONI_FROM = from;
   }
 });
 
