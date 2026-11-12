@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useConsensoCookie } from "@/components/ConsensoCookie";
 import { LogoStorico } from "@/components/LogoStorico";
 import { useLingua } from "@/components/LinguaProvider";
 import { DESTINAZIONE_CONFIGURATORE } from "@/lib/percorso-configuratore";
@@ -76,7 +77,9 @@ function colonne(testi: Testi): { titolo: string; voci: [string, string][] }[] {
  */
 export function Footer() {
   const ref = useRef<HTMLElement>(null);
-  const { testi, percorso } = useLingua();
+  const { testi, percorso, lingua } = useLingua();
+  const { apri } = useConsensoCookie();
+  const preferenze = { it: "Preferenze cookie", en: "Cookie settings", fr: "Préférences cookies", de: "Cookie-Einstellungen", fi: "Evästeasetukset" }[lingua];
 
   useScatto(ref);
 
@@ -178,7 +181,7 @@ export function Footer() {
         {/* barra finale a tre zone */}
         <div className="mt-14 flex flex-col items-center gap-4 border-t border-panna/20 pt-6 text-[12px] text-panna/50 md:mt-16 md:flex-row md:justify-between">
           <p>{testi.footer.legale}</p>
-          <div className="flex gap-8">
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
             <a href="#" className="voce-footer">
               {testi.footer.termini}
             </a>
@@ -188,6 +191,7 @@ export function Footer() {
             <Link href={percorso("/cookie")} className="voce-footer">
               {testi.footer.cookie}
             </Link>
+            <button type="button" onClick={apri} className="voce-footer underline underline-offset-4">{preferenze}</button>
           </div>
           <p>{testi.footer.credito}</p>
         </div>
@@ -227,7 +231,7 @@ const SEDE = "Delsigel, Via della Meccanica 1, 04013 Sermoneta LT";
  */
 function MappaSede() {
   const { testi, lingua } = useLingua();
-  const [attiva, setAttiva] = useState(false);
+  const { mappa: attiva, imposta } = useConsensoCookie();
   const messaggi = {
     it: { avviso: "Per visualizzare la mappa, Google può utilizzare cookie e ricevere dati di navigazione. La mappa è facoltativa.", attiva: "Accetta e mostra la mappa", disattiva: "Disattiva la mappa", dettagli: "Informativa cookie" },
     en: { avviso: "To display the map, Google may use cookies and receive browsing data. The map is optional.", attiva: "Accept and show the map", disattiva: "Disable the map", dettagli: "Cookie information" },
@@ -251,7 +255,7 @@ function MappaSede() {
         ) : (
           <div className="flex min-h-[13.5rem] flex-col items-start justify-center gap-3 p-5 text-sm leading-relaxed">
             <p>{messaggi.avviso}</p>
-            <button type="button" onClick={() => setAttiva(true)} className="min-h-11 rounded-full bg-panna px-5 py-2 font-bold text-cacao focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panna">
+            <button type="button" onClick={() => imposta(true)} className="min-h-11 rounded-full bg-panna px-5 py-2 font-bold text-cacao focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panna">
               {messaggi.attiva}
             </button>
             <Link href={`/${lingua}/cookie`} className="underline underline-offset-4">{messaggi.dettagli}</Link>
@@ -259,7 +263,7 @@ function MappaSede() {
         )}
       </div>
       {attiva && (
-        <button type="button" onClick={() => setAttiva(false)} className="mt-3 min-h-11 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panna">
+        <button type="button" onClick={() => imposta(false)} className="mt-3 min-h-11 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-panna">
           {messaggi.disattiva}
         </button>
       )}

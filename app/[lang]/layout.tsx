@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Archivo, Space_Mono, Caveat } from "next/font/google";
+import { ConsensoCookieProvider } from "@/components/ConsensoCookie";
 import { LinguaProvider } from "@/components/LinguaProvider";
 import { MenuProvider } from "@/components/MenuStato";
 import { PreloaderProvider } from "@/components/Preloader";
@@ -122,9 +123,11 @@ export default async function RootLayout({
           per prima: preloader e menu leggono i testi da lei. */}
       <body className="min-h-full flex flex-col">
         <LinguaProvider lingua={lingua} testi={testi}>
+          <ConsensoCookieProvider>
           <PreloaderProvider assetsConfiguratore={assetsConfiguratore}>
             <MenuProvider>{children}</MenuProvider>
           </PreloaderProvider>
+          </ConsensoCookieProvider>
         </LinguaProvider>
       </body>
     </html>
