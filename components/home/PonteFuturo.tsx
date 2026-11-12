@@ -23,7 +23,10 @@ import { useTesti } from "@/components/LinguaProvider";
  * Da lì il fondo fucsia salta dentro dal basso con la stessa curva
  * del sipario crema in uscita: due sipari, una sola lingua.
  *
- * La sequenza in scrub: fucsia su dai salati, la frase si rivela dalla
+ * Prima del sipario, una pausa in scrub tiene i salati fermi e interamente
+ * consultabili per circa una schermata di scroll aggiuntiva. Vale anche
+ * per la coda espansa: il pin parte sempre dall'ultima schermata del catalogo.
+ * La sequenza in scrub: pausa sui salati, fucsia su, la frase si rivela dalla
  * maschera, un momento di quiete, poi il sipario crema sale dal basso
  * e consegna al teaser del configuratore, che di crema è fatto. Con
  * `prefers-reduced-motion` (o senza JS) la quinta si scioglie via CSS:
@@ -36,6 +39,7 @@ import { useTesti } from "@/components/LinguaProvider";
    interpola i soli raggi */
 const SIPARIO_GIU = "ellipse(85% 0% at 50% 102%)";
 const SIPARIO_SU = "ellipse(145% 125% at 50% 102%)";
+const PAUSA_SALATI = 0.64;
 
 export function PonteFuturo() {
   const testi = useTesti();
@@ -72,6 +76,11 @@ export function PonteFuturo() {
           },
         });
 
+        // Il primo terzo della corsa è riservato al catalogo: niente
+        // sipario o testo sopra le card, che restano cliccabili. È una
+        // pausa guidata dallo scroll, reversibile e senza timer o blocchi input.
+        tl.addLabel("ingresso", PAUSA_SALATI);
+
         /* il fucsia salta dentro: sale sopra l'ultima schermata dei
            salati, che resta ferma sotto la quinta, con la stessa andatura
            del sipario crema in uscita */
@@ -80,7 +89,7 @@ export function PonteFuturo() {
             fondo,
             { clipPath: SIPARIO_GIU },
             { clipPath: SIPARIO_SU, duration: 0.34, ease: "power2.inOut" },
-            0
+            "ingresso"
           );
         }
 
@@ -94,11 +103,11 @@ export function PonteFuturo() {
             frase,
             { yPercent: 115, y: 0 },
             { yPercent: 0, y: 0, duration: 0.28, ease: "power2.out" },
-            0.4
+            "ingresso+=0.4"
           ).to(
             frase,
             { scale: 0.94, autoAlpha: 0.6, duration: 0.3, ease: "power1.in" },
-            0.86
+            "ingresso+=0.86"
           );
         }
 
@@ -109,7 +118,7 @@ export function PonteFuturo() {
             sipario,
             { clipPath: SIPARIO_GIU },
             { clipPath: SIPARIO_SU, duration: 0.42, ease: "power2.inOut" },
-            0.86
+            "ingresso+=0.86"
           );
         }
       });
@@ -159,9 +168,10 @@ export function PonteFuturo() {
         />
       </div>
 
-      {/* la corsa della quinta, allungata per i tre atti (ingresso
-          fucsia, frase, uscita crema): sparisce con prefers-reduced-motion */}
-      <div aria-hidden className="ponte-corsa h-[150vh] md:h-[190vh]" />
+      {/* Un terzo della corsa per consultare i salati; i due terzi restanti
+          mantengono lo spazio dei tre atti (fucsia, frase, crema).
+          Sparisce con prefers-reduced-motion. */}
+      <div aria-hidden className="ponte-corsa h-[225svh] md:h-[285svh]" />
     </section>
   );
 }
