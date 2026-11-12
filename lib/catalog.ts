@@ -228,7 +228,7 @@ export const CATALOG: Tipologia[] = [
     code: "N.07",
     name: "Nuvola",
     macro: "dolci",
-    pesiVariantiGr: { cioccolato: 75 },
+    pesiVariantiGr: { cioccolato: 75, crema: 85 },
     slug: "nuvola",
     note: "Il lievitato più leggero della gamma.",
     axes: [
