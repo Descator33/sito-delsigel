@@ -60,7 +60,7 @@ export const it: Testi = {
     },
     instagram: "Delsigel su Instagram",
     dove: "Dove siamo",
-    mappaTitolo: "Mappa: sede Delsigel in via della Meccanica 1, Sermoneta",
+    mappaTitolo: "Mappa: sede Delsigel in via della Meccanica 14, Sermoneta",
     legale: "© 2026 Delsigel Italia S.r.l. · P.IVA 02241670591",
     termini: "Termini",
     privacy: "Privacy",

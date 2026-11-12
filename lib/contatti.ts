@@ -21,7 +21,7 @@ import type { Testi } from "@/lib/i18n/tipi";
    query testuale e non su un place-id: sopravvive a un cambio di scheda
    dell'attività, che il place-id non farebbe. */
 export const INDIRIZZO = {
-  via: "Via della Meccanica, 1",
+  via: "Via della Meccanica, 14",
   citta: "04013 Sermoneta (LT)",
 } as const;
 

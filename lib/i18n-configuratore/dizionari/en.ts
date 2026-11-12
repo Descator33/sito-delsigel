@@ -22,7 +22,7 @@ export const en: Testi = {
       contatti: { titolo: "Contact" },
     },
     instagram: "Delsigel on Instagram", dove: "Where to find us",
-    mappaTitolo: "Map: Delsigel headquarters at 1 Via della Meccanica, Sermoneta",
+    mappaTitolo: "Map: Delsigel headquarters at 14 Via della Meccanica, Sermoneta",
     legale: "© 2026 Delsigel Italia S.r.l. · VAT no. 02241670591",
     termini: "Terms", privacy: "Privacy", cookie: "Cookies", credito: "Design & Development · Hoverture",
   },

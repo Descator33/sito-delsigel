@@ -124,7 +124,7 @@ export function Footer() {
               <ColumnHeading>{testi.footer.colonne.contatti.titolo}</ColumnHeading>
               <ul className="mt-6 space-y-3.5 text-[13px] leading-relaxed text-panna/70">
                 <li>
-                  Via della Meccanica, 1
+                  Via della Meccanica, 14
                   <br />
                   04013 Sermoneta (LT)
                 </li>
@@ -210,7 +210,7 @@ function ColumnHeading({ children }: { children: string }) {
 
 /** L'indirizzo, scritto una volta sola: lo leggono la mappa (che ci
  *  cerca sopra) e il link che apre Google Maps. */
-const SEDE = "Delsigel, Via della Meccanica 1, 04013 Sermoneta LT";
+const SEDE = "Delsigel, Via della Meccanica 14, 04013 Sermoneta LT";
 
 /**
  * La mappa della sede. Prende il posto del biglietto per il
@@ -274,7 +274,7 @@ function MappaSede() {
         rel="noreferrer"
         className="voce-footer mt-4 inline-flex items-center gap-2 text-[13px]"
       >
-        Via della Meccanica, 1 · Sermoneta (LT)
+        Via della Meccanica, 14 · Sermoneta (LT)
         <ArrowRight aria-hidden strokeWidth={1.8} className="h-4 w-4 flex-none" />
       </a>
     </div>

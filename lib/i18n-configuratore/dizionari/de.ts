@@ -20,7 +20,7 @@ export const de: Testi = {
  titolo: "Konfigurator", crea: "Eigenes Gebäck kreieren", comeFunziona: "So funktioniert es", quotazione: "Angebot anfordern" },
       contatti: { titolo: "Kontakt" },
     },
-    instagram: "Delsigel auf Instagram", dove: "Unser Standort", mappaTitolo: "Karte: Delsigel, Via della Meccanica 1, Sermoneta",
+    instagram: "Delsigel auf Instagram", dove: "Unser Standort", mappaTitolo: "Karte: Delsigel, Via della Meccanica 14, Sermoneta",
     legale: "© 2026 Delsigel Italia S.r.l. · USt-IdNr. 02241670591", termini: "Bedingungen", privacy: "Datenschutz", cookie: "Cookies",
   },
   hero: {

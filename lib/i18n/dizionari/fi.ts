@@ -18,7 +18,7 @@ export const fi: Testi = {
       configuratore: { titolo: "Konfiguraattori", crea: "Luo oma leivonnaisesi", comeFunziona: "Näin se toimii", quotazione: "Pyydä tarjous" },
       contatti: { titolo: "Yhteystiedot" },
     },
-    instagram: "Delsigel Instagramissa", dove: "Sijaintimme", mappaTitolo: "Kartta: Delsigelin toimipaikka, Via della Meccanica 1, Sermoneta",
+    instagram: "Delsigel Instagramissa", dove: "Sijaintimme", mappaTitolo: "Kartta: Delsigelin toimipaikka, Via della Meccanica 14, Sermoneta",
     legale: "© 2026 Delsigel Italia S.r.l. · ALV-tunnus 02241670591", termini: "Ehdot", privacy: "Tietosuoja", cookie: "Evästeet",
   },
   hero: {

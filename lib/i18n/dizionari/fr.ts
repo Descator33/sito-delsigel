@@ -20,7 +20,7 @@ export const fr: Testi = {
       configuratore: { titolo: "Configurateur", crea: "Créez votre douceur", comeFunziona: "Comment ça marche", quotazione: "Demander un devis" },
       contatti: { titolo: "Contact" },
     },
-    instagram: "Delsigel sur Instagram", dove: "Où nous trouver", mappaTitolo: "Carte : siège Delsigel, 1 via della Meccanica, Sermoneta",
+    instagram: "Delsigel sur Instagram", dove: "Où nous trouver", mappaTitolo: "Carte : siège Delsigel, 14 via della Meccanica, Sermoneta",
     legale: "© 2026 Delsigel Italia S.r.l. · TVA 02241670591", termini: "Conditions", privacy: "Confidentialité", cookie: "Cookies",
   },
   hero: {

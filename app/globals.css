@@ -372,6 +372,25 @@ html[data-porta-di-ritorno] .preloader-porta {
 [data-hero-caption] { will-change: transform; }
 .hero-scatto { position: absolute; inset: 0; }
 .hero-foto { object-position: 50% 50%; }
+/* Il titolo resta nello spazio libero a sinistra della fotografia. */
+@media (min-aspect-ratio: 5/4) {
+  .hero-titolo { font-size: clamp(1.8rem, 3.45vw, 4.7rem); }
+}
+/* Sugli schermi verticali separiamo il palco fotografico dal testo. */
+@media (max-aspect-ratio: 5/4) {
+  .hero-finestra { background: #890b07; }
+  .hero-scatto { bottom: 58%; }
+  .hero-scatto::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 20%;
+    background: linear-gradient(transparent, #890b07);
+    pointer-events: none;
+  }
+  .hero-finestra[data-compatta] .hero-scatto { bottom: 0; }
+  .hero-finestra[data-compatta] .hero-scatto::after { opacity: 0; }
+}
 @media (max-aspect-ratio: 5/4) {
   .hero-foto { object-position: 65% 50%; }
 }
