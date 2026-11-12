@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
         pathname: "/products-4k/**",
         search: "?v=2026-10-29-intriko-alpha-1",
       },
+      {
+        pathname: "/products-4k/**",
+        search: "?v=2026-11-12-dolci-alpha-1",
+      },
     ],
   },
   async headers() {

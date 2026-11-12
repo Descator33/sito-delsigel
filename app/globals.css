@@ -1075,7 +1075,7 @@ html.lenis body {
 .card-catalogo {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 16px;
   /* La campitura resta il colore di brand, ma si muove appena verso il
      prodotto: la zona luminosa lo porta in primo piano senza introdurre
@@ -1093,23 +1093,32 @@ html.lenis body {
 .card-catalogo::before {
   position: absolute;
   z-index: 0;
-  right: -16%;
-  bottom: -42%;
-  width: 76%;
-  aspect-ratio: 1;
-  border-radius: 50%;
+  inset: 0;
+  border-radius: inherit;
   pointer-events: none;
   content: "";
   background: radial-gradient(
-    circle,
+    ellipse 38% 50% at 78% 92%,
     rgb(255 255 255 / 0.18) 0%,
     rgb(255 255 255 / 0.05) 44%,
     transparent 71%
   );
 }
 
-/* Nessuna ombra sulla sagoma: anche una drop-shadow morbida si addensa sul
-   profilo dei prodotti chiari e viene percepita come un bordo scuro. */
+/* La sagoma esce dalla campitura, mentre il bagliore resta nella card. */
+.card-catalogo .foto-prodotto {
+  right: -3%;
+  bottom: -9%;
+  filter: drop-shadow(0 12px 10px rgb(86 52 15 / 0.16));
+}
+
+@media (min-width: 80rem) {
+  .card-catalogo .foto-prodotto {
+    right: -6%;
+    bottom: -10%;
+  }
+}
+
 .foto-prodotto {
   z-index: 1;
   filter: none;

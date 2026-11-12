@@ -41,7 +41,7 @@ export function AltreTipologie({
         <span className="mx-2.5 text-inchiostro/25">/</span>
         {interpola(testi.catalogo.tipologieCoda, { n: tipologie.length })}
       </h3>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mb-8 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-4">
         {tipologie.map((t) => (
           <Tessera key={t.code} t={t} onApri={() => onApri(t)} fotoIntere={fotoIntere} />
         ))}
@@ -52,6 +52,8 @@ export function AltreTipologie({
 
 function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; fotoIntere: boolean }) {
   const { testi } = useLingua();
+  // Le foto di gruppo sono molto panoramiche e hanno bisogno di più larghezza.
+  const fotoPanoramica = ["focaccine-miste-tre-gusti", "paninetto-colorato-tre-gusti", "rustici"].includes(t.slug);
   const nota =
     testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]] ??
     testi.prodotti.scattoProdotto;
@@ -73,7 +75,7 @@ function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; 
     >
       {t.image && (
         <motion.div
-          className={`foto-prodotto pointer-events-none absolute ${fotoIntere ? "bottom-[5%] right-[4%] h-[80%] w-[48%]" : "bottom-[-5%] right-[-5%] h-[86%] w-[56%]"}`}
+          className={`foto-prodotto pointer-events-none absolute ${fotoPanoramica ? "h-[90%] w-[88%]" : fotoIntere ? "bottom-[5%] right-[4%] h-[80%] w-[48%]" : "bottom-[-5%] right-[-5%] h-[86%] w-[56%]"}`}
           style={{ transformOrigin: "72% 100%" }}
           variants={{
             riposo: { scale: 1, rotate: 0 },
@@ -86,7 +88,7 @@ function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; 
             unoptimized={t.image.endsWith(".JPG") || t.slug === "frittella"}
             alt={`${t.name}: ${nota}`}
             fill
-            sizes="(max-width: 640px) 45vw, (max-width: 1279px) 22vw, 12vw"
+            sizes={fotoPanoramica ? "(max-width: 640px) 88vw, (max-width: 1279px) 44vw, 22vw" : "(max-width: 640px) 45vw, (max-width: 1279px) 22vw, 12vw"}
             className={`object-contain object-bottom ${t.image.endsWith(".JPG") ? "mix-blend-multiply" : ""} ${t.slug === "frittella" ? "scale-125" : ""}`}
           />
         </motion.div>

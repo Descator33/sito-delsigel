@@ -45,7 +45,7 @@ export function CatalogFeaturedGrid({
   return (
     <div
       data-scroll-catalog-grid
-      className="mt-8 grid grid-cols-1 gap-[13px] sm:grid-cols-2 xl:mt-9 xl:grid-cols-12 xl:grid-rows-[clamp(8.5rem,11.1vw,12.5rem)_clamp(8.5rem,11.1vw,12.5rem)]"
+      className="mb-8 mt-8 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 xl:mt-9 xl:grid-cols-12 xl:grid-rows-[clamp(8.5rem,11.1vw,12.5rem)_clamp(8.5rem,11.1vw,12.5rem)]"
     >
       {VETRINA_CATALOGO.map((card, indice) => (
         <div

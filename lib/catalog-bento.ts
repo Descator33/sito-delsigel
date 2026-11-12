@@ -135,9 +135,8 @@ const VETRINA = [
     variante: "grande",
     tema: "sabbia",
     posto: "xl:col-span-3 xl:row-span-2",
-    /* La sagoma circolare prende il primo piano mantenendo la crema libera
-       per nome, claim e comando. */
-    foto: "xl:w-[84%] xl:h-[86%] xl:right-[-9%] xl:bottom-[-4%]",
+    /* Il dolce sporge dalla campitura, lasciando spazio a nome e comando. */
+    foto: "xl:w-[84%] xl:h-[86%]",
   },
 ] as const satisfies readonly {
   slug: string;
