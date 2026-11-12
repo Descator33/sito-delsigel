@@ -728,7 +728,7 @@ export const it: Testi = {
       ruoloLungo: "Il ruolo non può superare i {max} caratteri.",
       repartoMancante: "Seleziona il reparto a cui vuoi inviare la richiesta.",
       messaggioCorto:
-        "Scrivi almeno {min} caratteri: cosa ti serve, e in che quantità.",
+        "Inserisci un messaggio.",
       messaggioLungo: "Il messaggio non può superare i {max} caratteri.",
       privacyMancante:
         "Devi accettare l'informativa privacy per inviare la richiesta.",

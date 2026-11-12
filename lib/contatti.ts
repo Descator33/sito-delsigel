@@ -135,7 +135,7 @@ export const LIMITI = {
   email: { max: 180 },
   azienda: { min: 2, max: 140 },
   ruolo: { min: 2, max: 120 },
-  messaggio: { min: 20, max: 4000 },
+  messaggio: { min: 1, max: 4000 },
 } as const;
 
 /* Nessuna regex «perfetta» per le email: non esiste, e quelle che ci

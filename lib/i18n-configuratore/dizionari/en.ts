@@ -264,7 +264,7 @@ export const en: Testi = {
       nomeCorto: "Enter your first name so we know who we are speaking to.", nomeLungo: "First name cannot exceed {max} characters.", cognomeCorto: "Enter your last name.", cognomeLungo: "Last name cannot exceed {max} characters.",
       telefonoMancante: "Enter a telephone number.", telefonoErrato: "Check the telephone number and country code.", emailMancante: "We need an email address to reply.", emailLunga: "Email address cannot exceed {max} characters.", emailErrata: "Check the address: the @ sign or domain is missing.",
       aziendaCorta: "Enter the company name.", aziendaLunga: "Company name cannot exceed {max} characters.", ruoloCorto: "Enter your role in the company.", ruoloLungo: "Role cannot exceed {max} characters.", repartoMancante: "Select the department that should receive your request.",
-      messaggioCorto: "Write at least {min} characters: what you need and in what quantity.", messaggioLungo: "Message cannot exceed {max} characters.", privacyMancante: "You must accept the privacy notice to send the request.",
+      messaggioCorto: "Enter a message.", messaggioLungo: "Message cannot exceed {max} characters.", privacyMancante: "You must accept the privacy notice to send the request.",
     },
     esiti: {
       ricevuto: "Message received. We will reply within one working day.", troppoInFretta: "The request was sent too quickly. Try again in a few seconds.", controllaCampi: "Check the highlighted fields: we need a little more information to reply.",

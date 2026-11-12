@@ -210,7 +210,7 @@ export const fr: Testi = {
       nomeCorto: "Indiquez votre prénom pour que nous sachions à qui nous parlons.", nomeLungo: "Le prénom ne peut pas dépasser {max} caractères.", cognomeCorto: "Indiquez votre nom.", cognomeLungo: "Le nom ne peut pas dépasser {max} caractères.",
       telefonoMancante: "Indiquez un numéro de téléphone.", telefonoErrato: "Vérifiez le numéro de téléphone et l'indicatif.", emailMancante: "Sans e-mail, nous ne pouvons pas vous répondre.", emailLunga: "L'e-mail ne peut pas dépasser {max} caractères.", emailErrata: "Vérifiez l'adresse : il manque l'arobase ou le domaine.",
       aziendaCorta: "Indiquez le nom de l'entreprise.", aziendaLunga: "Le nom de l'entreprise ne peut pas dépasser {max} caractères.", ruoloCorto: "Indiquez votre fonction dans l'entreprise.", ruoloLungo: "La fonction ne peut pas dépasser {max} caractères.", repartoMancante: "Sélectionnez le service auquel envoyer votre demande.",
-      messaggioCorto: "Écrivez au moins {min} caractères : ce qu'il vous faut et en quelle quantité.", messaggioLungo: "Le message ne peut pas dépasser {max} caractères.", privacyMancante: "Vous devez accepter la politique de confidentialité pour envoyer la demande.",
+      messaggioCorto: "Saisissez un message.", messaggioLungo: "Le message ne peut pas dépasser {max} caractères.", privacyMancante: "Vous devez accepter la politique de confidentialité pour envoyer la demande.",
     },
     esiti: {
       ricevuto: "Message reçu. Nous vous répondrons sous un jour ouvré.", troppoInFretta: "La demande a été envoyée trop rapidement. Réessayez dans quelques secondes.", controllaCampi: "Vérifiez les champs signalés : il nous manque des informations pour vous répondre.",
