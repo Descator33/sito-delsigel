@@ -152,10 +152,10 @@ export const CATALOG: Tipologia[] = [
       values: ["cioccolato", "crema"],
     }],
     catalogGamma: true,
-    image: "/af79ff9f-22e4-4120-99f0-8f9112a64256.JPG",
+    image: "/products-4k/mini-nuvola-crema-velo.png",
     variants: {
-      cioccolato: "/58f43503-7054-4977-8458-923943a8efcc.JPG",
-      crema: "/af79ff9f-22e4-4120-99f0-8f9112a64256.JPG",
+      cioccolato: "/products-4k/mini-nuvola-cioccolato-velo.png",
+      crema: "/products-4k/mini-nuvola-crema-velo.png",
     },
   },
   {
@@ -177,9 +177,9 @@ export const CATALOG: Tipologia[] = [
         ],
       },
     ],
-    image: "/0efe9400-310f-4027-b53e-4df056880fb6.JPG",
+    image: img("intriko-tre-cioccolati"),
     variants: {
-      cioccolato: "/0efe9400-310f-4027-b53e-4df056880fb6.JPG",
+      cioccolato: "/products-4k/intriko-cioccolato-granella-bianca.png",
       crema: img("intriko-crema"),
       "frutti di bosco": img("intriko-frutti-di-bosco"),
       pistacchio: img("intriko-pistacchio"),

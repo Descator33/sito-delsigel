@@ -154,7 +154,7 @@ function Scheda({
           <Image
             key={still}
             src={still}
-            unoptimized={still.endsWith(".JPG")}
+            unoptimized={still.endsWith(".JPG") || still === "/products-4k/intriko-cioccolato-granella-bianca.png" || still.includes("/mini-nuvola-")}
             alt={
               vistaSpaccata
                 ? interpola(testi.catalogo.scheda.spaccatoAlt, {
@@ -168,7 +168,7 @@ function Scheda({
             }
             fill
             sizes="(max-width: 767px) 92vw, 30vw"
-            className={`foto-prodotto object-contain p-8 md:p-10 ${still.endsWith(".JPG") ? "mix-blend-multiply" : ""}`}
+            className={`foto-prodotto object-contain p-8 md:p-10 ${still.endsWith(".JPG") ? "mix-blend-multiply" : ""} ${still.endsWith("/mini-nuvola-crema-velo.png") ? "scale-125" : ""}`}
           />
         ) : (
           <span

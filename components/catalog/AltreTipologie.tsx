@@ -83,11 +83,11 @@ function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; 
         >
           <Image
             src={t.image}
-            unoptimized={t.image.endsWith(".JPG")}
+            unoptimized={t.image.endsWith(".JPG") || t.slug === "frittella"}
             alt={`${t.name}: ${nota}`}
             fill
             sizes="(max-width: 640px) 45vw, (max-width: 1279px) 22vw, 12vw"
-            className={`object-contain object-bottom ${t.image.endsWith(".JPG") ? "mix-blend-multiply" : ""}`}
+            className={`object-contain object-bottom ${t.image.endsWith(".JPG") ? "mix-blend-multiply" : ""} ${t.slug === "frittella" ? "scale-125" : ""}`}
           />
         </motion.div>
       )}
