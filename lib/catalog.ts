@@ -63,7 +63,7 @@ export type Tipologia = {
  * browser e ottimizzatore Next a non riutilizzare le vecchie sagome in cache
  * quando i file vengono sostituiti mantenendo lo stesso nome.
  */
-const PRODUCT_IMAGE_REVISION = "2026-10-29-intriko-alpha-1";
+const PRODUCT_IMAGE_REVISION = "2026-11-12-dolci-alpha-1";
 const img = (slug: string) =>
   `/products-4k/${slug}.webp?v=${PRODUCT_IMAGE_REVISION}`;
 

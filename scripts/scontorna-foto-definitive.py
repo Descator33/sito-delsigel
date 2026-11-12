@@ -44,10 +44,10 @@ ASSETS = {
     "bomba-fritta-semplice-spaccato": "Dolci/Bomba fritta/Bomba fritta semplice/Bomba fritta semplice_aperta.png",
     "bomba-fritta-semplice": "Dolci/Bomba fritta/Bomba fritta semplice/Bomba fritta semplice_chiusa.png",
     # Dolci — Cuore
-    "cuore-cioccolato": "Dolci/Cuore/Cuore Nuì.png",
-    "cuore-crema": "Dolci/Cuore/Cuore crema e fragola.png",
-    "cuore-marmellata": "Dolci/Cuore/Cuore frutti rossi.png",
-    "cuore-pistacchio": "Dolci/Cuore/Cuore pistacchio e lampone.png",
+    "cuore-cioccolato": "../Cuore/Cuore Ciok E LAMPONE.png",
+    "cuore-crema": "../Cuore/Cuore crema e fragola.png",
+    "cuore-marmellata": "../Cuore/Cuore frutti rossi.png",
+    "cuore-pistacchio": "../Cuore/Cuore con pistacchio e lampone.jpg",
     "cuore-semplice": "Dolci/Cuore/Cuore semplice.jpg",
     # Dolci — Frittella
     "frittella-cioccolato": "Dolci/Frittella/Frittella con cioccolato.png",
@@ -76,7 +76,7 @@ ASSETS = {
     "intriko-tre-cioccolati": "Dolci/Intriko/Normali/Intriko 3 cioccolati.png",
     "intriko-vuoto": "Dolci/Intriko/Vuoto/Intriko Vuoto.png",
     # Dolci — Klejner e Lussekatt
-    "klejner": "Dolci/Klejner/ Klejner semplice.jpg",
+    "klejner": "../Klejner semplice (2).png",
     "klejner-cannella": "Dolci/Klejner/Klejner cannella.png",
     "lusekatt": "Dolci/Lussekatt/Lussekatt.jpg",
     # Dolci — Nuvola
@@ -94,10 +94,10 @@ ASSETS = {
     "nuvola-frutti-rossi": "Dolci/Nuvola/Frutti rossi.png",
     "nuvola-pistacchio-e-lampone": "Dolci/Nuvola/Pistacchio e lampone.png",
     # Dolci — Stella
-    "stella-cioccolato": "Dolci/Stella/Stella Nuì.png",
-    "stella-crema": "Dolci/Stella/Stella crema e fragola.png",
-    "stella-marmellata": "Dolci/Stella/Stella frutti rossi.png",
-    "stella-pistacchio": "Dolci/Stella/Stella pistacchio e lampone.png",
+    "stella-cioccolato": "../Stella/Stella Ciock e Lampone.png",
+    "stella-crema": "../Stella/Stella crema e fragola.png",
+    "stella-marmellata": "../Stella/Stella frutti rossi.png",
+    "stella-pistacchio": "../Stella/Stella con pistacchio e lampone.png",
     "stella-semplice": "Dolci/Stella/Stella semplice.jpg",
     # Salati — Focaccine
     "focaccina-bianca": "Salati/Focaccine tre gusti/Focaccina Bianca.png",
