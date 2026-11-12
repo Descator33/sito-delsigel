@@ -133,7 +133,10 @@ export function StorySweetsScene({
               start: condizioni.desktop || condizioni.mobile ? "top top" : "top 82%",
               end:
                 condizioni.desktop || condizioni.mobile
-                  ? "bottom bottom"
+                  // Il track include una schermata in più di pausa: il
+                  // reveal conserva la corsa originale, poi resta completo
+                  // mentre la Storia è ancora ferma e libera dal catalogo.
+                  ? () => `+=${storia.offsetHeight * (condizioni.desktop ? 1.4 : 0.5)}`
                   : "bottom 28%",
               scrub: window.matchMedia("(pointer: coarse)").matches ? true : 0.55,
               invalidateOnRefresh: true,
@@ -348,8 +351,8 @@ export function StorySweetsScene({
       const modo = scope.dataset.sceneMode;
       const offset =
         hash === "#storia" && modo === "desktop"
-          ? /* col track a 240svh il tratto utile è 140svh: 0.42 atterra
-               a copy rivelata, prima che il foglio panna entri */
+          ? /* Il reveal resta su 140svh anche con la pausa aggiuntiva:
+               0.42 atterra a copy rivelata, prima del foglio panna. */
             window.innerHeight * 0.42
           : hash === "#storia" && modo === "mobile"
             ? window.innerHeight * 0.36

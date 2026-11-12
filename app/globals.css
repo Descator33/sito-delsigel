@@ -834,12 +834,11 @@ html[data-porta-di-ritorno] .preloader-porta {
 }
 
 /* Desktop con abbastanza altezza: la Storia resta ferma, il foglio panna
-   sale dal basso e poi diventa il palco delle tre entrate laterali. La
-   sosta è breve per scelta (21/08, era 280svh): tolti i 100svh che il
-   catalogo si riprende col margine negativo restano ~40svh di quiete
-   dopo il reveal, poi il foglio panna comincia subito a salire. */
+   sale dal basso e poi diventa il palco delle tre entrate laterali.
+   I 100svh aggiuntivi sono una pausa di lettura: il reveal mantiene la
+   corsa originale di 140svh e il catalogo entra soltanto alla sua fine. */
 [data-scene-mode="desktop"] .story-sweets-scene__story-track {
-  height: 240svh;
+  height: 340svh;
 }
 
 [data-scene-mode="desktop"] .story-sweets-scene__story-sticky,
@@ -880,10 +879,11 @@ html[data-porta-di-ritorno] .preloader-porta {
   margin-top: clamp(1.25rem, 2.5svh, 1.75rem);
 }
 
-/* Sul telefono alto la sola Storia conserva un breve respiro sticky. Il
-   catalogo torna nel flusso e ogni card si anima soltanto quando arriva. */
+/* Anche sul telefono alto aggiungiamo 100svh di lettura a Storia ferma,
+   dopo il reveal originale di 50svh. Il catalogo torna nel flusso e ogni
+   card si anima soltanto quando arriva. */
 [data-scene-mode="mobile"] .story-sweets-scene__story-track {
-  height: 150svh;
+  height: 250svh;
 }
 
 [data-scene-mode="mobile"] .story-sweets-scene__story-sticky {
