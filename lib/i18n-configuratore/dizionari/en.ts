@@ -72,7 +72,7 @@ export const en: Testi = {
       golosone: "Filled leavened pastry with a satin glaze and dark chocolate sprinkles.",
       "bomba-fritta": "The traditional fried leavened pastry, filled or plain.", cuore: "Heart-shaped puff pastry with five fillings in the range.",
       frittella: "A soft fried counter pastry in two flavours.", intriko: "Filled braided puff pastry, in four variants plus an unfilled version.",
-      lusekatt: "The Nordic saffron swirl.", nuvola: "The lightest leavened pastry in the range, in five flavours.", stella: "Star-shaped puff pastry in five variants.",
+      lusekatt: "Our take on the Nordic swirl.", nuvola: "The lightest leavened pastry in the range, in five flavours.", stella: "Star-shaped puff pastry in five variants.",
       klejner: "The traditional Nordic fried knot, unfilled.", "focaccine-miste-tre-gusti": "A three-flavour set, ready for the counter.",
       montanarina: "The Neapolitan fried base with two toppings.", "paninetto-colorato-tre-gusti": "Three coloured doughs in one size.",
       "pizzetta-al-pomodoro": "The classic deli-counter size.", "pizzetta-bianca": "Oil and salt in the classic size.",
@@ -94,7 +94,7 @@ export const en: Testi = {
       "quadretti-di-cioccolato": "Chocolate squares", oreo: "Oreo", cocco: "Coconut", "mini-cookies": "Mini Cookies",
     },
     finiture: { "zucchero-a-velo": "Icing sugar" },
-    modalitaUso: "THAW AT ROOM TEMPERATURE FOR 3 h", scattoProdotto: "product photograph",
+    modalitaUso: "THAW AT ROOM TEMPERATURE FOR 2 h", scattoProdotto: "product photograph",
   },
   configuratore: {
     esperienza: ESPERIENZA.en,

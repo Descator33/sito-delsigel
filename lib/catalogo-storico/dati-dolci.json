@@ -8,7 +8,7 @@
       "id": "nuvola",
       "nome": "Nuvola",
       "diametro_cm": 9.5,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": 6,
         "pezzi_per_vassoio": 5,
@@ -27,7 +27,7 @@
       "id": "stella",
       "nome": "Stella",
       "diametro_cm": 9.5,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": 6,
         "pezzi_per_vassoio": 5,
@@ -46,7 +46,7 @@
       "id": "cuore",
       "nome": "Cuore",
       "diametro_cm": 9.5,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": 6,
         "pezzi_per_vassoio": 5,
@@ -65,7 +65,7 @@
       "id": "intriko",
       "nome": "Intriko",
       "diametro_cm": 16.5,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": 3,
         "pezzi_per_vassoio": 10,
@@ -84,7 +84,7 @@
       "id": "bomba",
       "nome": "Bomba",
       "diametro_cm": 9.0,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": 3,
         "pezzi_per_vassoio": 12,
@@ -103,7 +103,7 @@
       "id": "golosone",
       "nome": "Golosone",
       "diametro_cm": 9.5,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": 6,
         "pezzi_per_vassoio": 6,
@@ -122,7 +122,7 @@
       "id": "frittelline",
       "nome": "Frittelline",
       "diametro_cm": 5.0,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": 6,
         "pezzi_per_vassoio": 12,
@@ -141,7 +141,7 @@
       "id": "intriko-midi",
       "nome": "Intriko Midi",
       "diametro_cm": 16.0,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": null,
         "pezzi_per_vassoio": null,
@@ -160,7 +160,7 @@
       "id": "lussekatt",
       "nome": "Lussekatt",
       "diametro_cm": 12.5,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": null,
         "pezzi_per_vassoio": null,
@@ -179,7 +179,7 @@
       "id": "klejner",
       "nome": "Klejner",
       "diametro_cm": 12.5,
-      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+      "modalita_uso": "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
       "packaging": {
         "vassoi_per_cartone": null,
         "pezzi_per_vassoio": null,

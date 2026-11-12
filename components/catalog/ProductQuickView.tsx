@@ -111,7 +111,7 @@ function Scheda({
   const s = schedaDi(t, lingua, testi);
   const claim = testi.catalogo.claims[t.slug as keyof Testi["catalogo"]["claims"]];
   const nota = claim?.join(" ") ?? testi.prodotti.note[t.slug as keyof Testi["prodotti"]["note"]];
-  const [mostrato, setMostrato] = useState<string | null>(null);
+  const [mostrato, setMostrato] = useState<string | null>(t.slug === "montanarina" ? "classica" : null);
   const [vistaSpaccata, setVistaSpaccata] = useState(false);
   const variante = s.gamma
     .flatMap((g) => g.varianti)
@@ -125,15 +125,21 @@ function Scheda({
       : variante && t.variants?.[variante.chiave]) ?? t.image;
 
   const specifiche = [
-    s.formato && { voce: testi.catalogo.scheda.formato, valore: s.formato },
+    (variante?.formato ?? s.formato) && { voce: testi.catalogo.scheda.formato, valore: (variante?.formato ?? s.formato)! },
     /* scelto un prodotto finito, il peso è il suo, non più l'intervallo */
     (variante?.peso ?? s.peso) && {
       voce: testi.catalogo.scheda.peso,
       valore: variante?.peso ?? s.peso!,
     },
-    s.pezziPerCartone && {
+    s.cartoniStimati?.length && {
       voce: testi.catalogo.scheda.perCartone,
-      valore: interpola(testi.catalogo.scheda.pezzi, { n: s.pezziPerCartone }),
+      valore: s.cartoniStimati.map(({ pesoKg, pezzi, approssimato }) =>
+        `${approssimato ? "≈ " : ""}${interpola(testi.catalogo.scheda.pezzi, { n: pezzi })} (${pesoKg} kg)`
+      ).join(" · "),
+    },
+    (variante?.pezziPerCartone ?? s.pezziPerCartone) && {
+      voce: testi.catalogo.scheda.perCartone,
+      valore: interpola(testi.catalogo.scheda.pezzi, { n: (variante?.pezziPerCartone ?? s.pezziPerCartone)! }),
     },
   ].filter(Boolean) as { voce: string; valore: string }[];
 
@@ -253,7 +259,7 @@ function Scheda({
                       type="button"
                       disabled={!sfogliabile}
                       onClick={() => {
-                        setMostrato((m) => (m === v.id ? null : v.id));
+                        setMostrato((m) => (t.dimensioniVariantiCm ? v.id : m === v.id ? null : v.id));
                         setVistaSpaccata(false);
                       }}
                       aria-pressed={sfogliabile ? mostrato === v.id : undefined}

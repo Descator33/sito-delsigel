@@ -32,6 +32,12 @@ export type Tipologia = {
   pesoGr?: number;
   /** Peso unitario delle singole varianti, in grammi. */
   pesiVariantiGr?: Record<string, number>;
+  dimensioniCm?: number[];
+  dimensioniVariantiCm?: Record<string, number[]>;
+  /** Formati dichiarati a peso: i pezzi si stimano dal peso unitario. */
+  cartoniKg?: number[];
+  pezziPerCartone?: number;
+  pezziPerCartoneVarianti?: Record<string, number>;
   axes?: Axis[];
   set?: string[];
   views?: "spaccato"[];
@@ -138,6 +144,7 @@ export const CATALOG: Tipologia[] = [
     code: "N.04",
     name: "Mini Nuvola",
     macro: "dolci",
+    pesoGr: 28,
     slug: "frittella",
     note: "Il fritto morbido da banco, in due varianti.",
     axes: [{
@@ -214,13 +221,14 @@ export const CATALOG: Tipologia[] = [
     name: "Lussekatt",
     macro: "dolci",
     slug: "lusekatt",
-    note: "La girella nordica allo zafferano.",
+    note: "La nostra rivisitazione della girella nordica.",
     image: img("lusekatt"),
   },
   {
     code: "N.07",
     name: "Nuvola",
     macro: "dolci",
+    pesiVariantiGr: { cioccolato: 75 },
     slug: "nuvola",
     note: "Il lievitato più leggero della gamma.",
     axes: [
@@ -284,6 +292,8 @@ export const CATALOG: Tipologia[] = [
     name: "Focaccine Miste",
     macro: "salati",
     slug: "focaccine-miste-tre-gusti",
+    dimensioniCm: [7, 3.5],
+    pezziPerCartone: 90,
     pesoGr: 40,
     note: "Set da tre gusti, pronto per il banco.",
     set: ["bianca", "curcuma", "pomodoro"],
@@ -300,6 +310,8 @@ export const CATALOG: Tipologia[] = [
     name: "Montanarina",
     macro: "salati",
     slug: "montanarina",
+    dimensioniVariantiCm: { classica: [6, 3], "mini montanarina": [5, 3] },
+    pezziPerCartoneVarianti: { classica: 80, "mini montanarina": 100 },
     note: "La base fritta napoletana, nei formati classico e mini.",
     axes: [{ label: "Formato", values: ["classica", "mini montanarina"] }],
     pesiVariantiGr: { classica: 30, "mini montanarina": 20 },
@@ -314,6 +326,8 @@ export const CATALOG: Tipologia[] = [
     name: "Paninetto Colorato",
     macro: "salati",
     slug: "paninetto-colorato-tre-gusti",
+    dimensioniCm: [4, 3],
+    pezziPerCartone: 120,
     pesoGr: 16,
     note: "Tre impasti colorati, un unico formato.",
     set: ["bianco", "curcuma", "pomodoro"],
@@ -329,6 +343,8 @@ export const CATALOG: Tipologia[] = [
     name: "Pizzetta al Pomodoro",
     macro: "salati",
     slug: "pizzetta-al-pomodoro",
+    cartoniKg: [3, 6],
+    dimensioniCm: [8],
     pesoGr: 28,
     note: "Il formato classico da rosticceria.",
     image: img("pizzetta-al-pomodoro"),
@@ -337,7 +353,10 @@ export const CATALOG: Tipologia[] = [
     code: "N.14",
     name: "Pizzetta Fritta",
     macro: "salati",
+    pesoGr: 40,
     slug: "pizzetta-fritta",
+    cartoniKg: [3],
+    dimensioniCm: [7],
     note: "Soffice e dorata, pronta da gustare.",
     image: img("pizzetta-fritta-piccola"),
   },
@@ -346,6 +365,8 @@ export const CATALOG: Tipologia[] = [
     name: "Pizzette Fantasia",
     macro: "salati",
     slug: "pizzette-fantasia",
+    cartoniKg: [6],
+    dimensioniCm: [8],
     pesoGr: 45,
     note: "Quattro condimenti a rotazione stagionale.",
     axes: [
@@ -364,6 +385,8 @@ export const CATALOG: Tipologia[] = [
     name: "Rustici",
     macro: "salati",
     slug: "rustici",
+    cartoniKg: [3, 6],
+    dimensioniCm: [5, 3],
     pesoGr: 18,
     note: "Sei ripieni su base sfoglia.",
     axes: [
@@ -391,10 +414,12 @@ export const CATALOG: Tipologia[] = [
     },
   },
   {
-    code: "N.17",
+    code: "N.16+1",
     name: "Vol-au-vent",
     macro: "salati",
     slug: "vol-au-vent",
+    dimensioniCm: [4, 3],
+    pezziPerCartone: 120,
     pesoGr: 16,
     note: "La sfoglia monoporzione da farcire.",
     image: img("vol-au-vent"),

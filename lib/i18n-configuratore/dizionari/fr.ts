@@ -64,7 +64,7 @@ export const fr: Testi = {
     note: {
       golosone: "Pâte levée fourrée, glaçage satiné et éclats de chocolat noir.", "bomba-fritta": "La pâte levée frite traditionnelle, fourrée ou nature.",
       cuore: "Feuilleté en forme de cœur, décliné en cinq garnitures.", frittella: "Une douceur frite et moelleuse pour le comptoir, en deux saveurs.",
-      intriko: "Tresse feuilletée fourrée, quatre variantes et une version nature.", lusekatt: "La spirale nordique au safran.", nuvola: "La pâte levée la plus légère de la gamme, en cinq saveurs.",
+      intriko: "Tresse feuilletée fourrée, quatre variantes et une version nature.", lusekatt: "Notre réinterprétation de la spirale nordique.", nuvola: "La pâte levée la plus légère de la gamme, en cinq saveurs.",
       stella: "Feuilleté en forme d'étoile, en cinq variantes.", klejner: "Le nœud frit de la tradition nordique, sans garniture.", "focaccine-miste-tre-gusti": "Assortiment de trois saveurs, prêt pour le comptoir.",
       montanarina: "La base frite napolitaine, en deux garnitures.", "paninetto-colorato-tre-gusti": "Trois pâtes colorées, un seul format.", "pizzetta-al-pomodoro": "Le format classique de restauration rapide.",
       "pizzetta-bianca": "Huile et sel, format classique.", "pizzetta-fritta": "Deux formats pour le comptoir chaud.", "pizzette-fantasia": "Quatre garnitures en rotation saisonnière.",
@@ -85,7 +85,7 @@ export const fr: Testi = {
       "quadretti-di-cioccolato": "Carrés de chocolat", oreo: "Oreo", cocco: "Noix de coco", "mini-cookies": "Mini Cookies",
     },
     finiture: { "zucchero-a-velo": "Sucre glace" },
-    modalitaUso: "DÉCONGELER À TEMPÉRATURE AMBIANTE PENDANT 3 h", scattoProdotto: "photographie du produit",
+    modalitaUso: "DÉCONGELER À TEMPÉRATURE AMBIANTE PENDANT 2 h", scattoProdotto: "photographie du produit",
   },
   configuratore: {
     ...en.configuratore,

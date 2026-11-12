@@ -194,7 +194,7 @@ export const it: Testi = {
       cuore: "Sfoglia a cuore, cinque farciture a gamma.",
       frittella: "Il fritto morbido da banco, in due gusti.",
       intriko: "Treccia di sfoglia farcita, quattro varianti più la versione vuota.",
-      lusekatt: "La girella nordica allo zafferano.",
+      lusekatt: "La nostra rivisitazione della girella nordica.",
       nuvola: "Il lievitato più leggero della gamma, cinque gusti.",
       stella: "Sfoglia a stella, cinque varianti.",
       klejner: "Il nodo fritto della tradizione nordica, senza farcitura.",
@@ -263,7 +263,7 @@ export const it: Testi = {
     finiture: {
       "zucchero-a-velo": "Zucchero a velo",
     },
-    modalitaUso: "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+    modalitaUso: "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
     scattoProdotto: "scatto di prodotto",
   },
 

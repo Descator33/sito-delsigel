@@ -56,7 +56,7 @@ export const de: Testi = {
     ...en.prodotti,
     note: {
       golosone: "Gefülltes Hefegebäck mit seidiger Glasur und dunklen Schokostreuseln.", "bomba-fritta": "Traditionelles frittiertes Hefegebäck, gefüllt oder pur.", cuore: "Herzförmiges Blätterteiggebäck mit fünf Füllungen.",
-      frittella: "Weiches frittiertes Thekengebäck in zwei Geschmacksrichtungen.", intriko: "Gefüllter Blätterteigzopf in vier Varianten sowie ungefüllt.", lusekatt: "Die nordische Safranschnecke.",
+      frittella: "Weiches frittiertes Thekengebäck in zwei Geschmacksrichtungen.", intriko: "Gefüllter Blätterteigzopf in vier Varianten sowie ungefüllt.", lusekatt: "Unsere Interpretation der nordischen Schnecke.",
       nuvola: "Das leichteste Hefegebäck im Sortiment, in fünf Geschmacksrichtungen.", stella: "Sternförmiges Blätterteiggebäck in fünf Varianten.", klejner: "Der traditionelle nordische frittierte Knoten, ungefüllt.",
       "focaccine-miste-tre-gusti": "Dreier-Set verschiedener Geschmacksrichtungen, bereit für die Theke.", montanarina: "Die frittierte neapolitanische Basis mit zwei Belägen.", "paninetto-colorato-tre-gusti": "Drei farbige Teige in einem Format.",
       "pizzetta-al-pomodoro": "Das klassische Feinkostthekenformat.", "pizzetta-bianca": "Öl und Salz im klassischen Format.", "pizzetta-fritta": "Zwei Formate für die Warmtheke.", "pizzette-fantasia": "Vier Beläge im saisonalen Wechsel.",
@@ -76,7 +76,7 @@ export const de: Testi = {
       "quadretti-di-cioccolato": "Schokoladenstückchen", oreo: "Oreo", cocco: "Kokos", "mini-cookies": "Mini Cookies",
     },
     finiture: { "zucchero-a-velo": "Puderzucker" },
-    modalitaUso: "3 h BEI RAUMTEMPERATUR AUFTAUEN", scattoProdotto: "Produktaufnahme",
+    modalitaUso: "2 h BEI RAUMTEMPERATUR AUFTAUEN", scattoProdotto: "Produktaufnahme",
   },
   configuratore: {
     ...en.configuratore,

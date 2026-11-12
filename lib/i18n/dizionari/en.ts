@@ -71,7 +71,7 @@ export const en: Testi = {
       "bomba-fritta": "The traditional fried leavened pastry, filled or plain.", cuore: "Made to spoil your sweetheart.",
       frittella: "A soft bite of goodness.", intriko: "Filled braided puff pastry, in five variants plus an unfilled version.",
       "intriko-midi": "Midi Intriko in six filled variants.",
-      lusekatt: "The Nordic saffron swirl.", nuvola: "The lightest leavened pastry in the range.", stella: "For a sweeter Christmas.",
+      lusekatt: "Our take on the Nordic swirl.", nuvola: "The lightest leavened pastry in the range.", stella: "For a sweeter Christmas.",
       klejner: "The traditional Nordic fried knot, plain or cinnamon.", "focaccine-miste-tre-gusti": "A case of three flavours, ready for the counter.",
       montanarina: "The Neapolitan fried base in classic and mini sizes.", "paninetto-colorato-tre-gusti": "Three coloured doughs in one size. Assorted case.",
       "pizzetta-al-pomodoro": "The classic deli-counter size.", "pizzetta-bianca": "Oil and salt in the classic size.",
@@ -99,7 +99,7 @@ export const en: Testi = {
       "scagliette-di-cioccolato-tutti-e-3-i-cioccolati": "Chocolate flakes (all three chocolates)",
       "perle-di-zucchero-colorate-rosse": "Red coloured sugar pearls", semolato: "Granulated sugar",
     },
-    modalitaUso: "THAW AT ROOM TEMPERATURE FOR 3 h", scattoProdotto: "product photograph",
+    modalitaUso: "THAW AT ROOM TEMPERATURE FOR 2 h", scattoProdotto: "product photograph",
   },
   configuratore: {
     percorso: [

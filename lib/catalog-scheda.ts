@@ -43,6 +43,8 @@ export type Variante = {
   chiave: string;
   /** grammatura della combinazione, quando il foglio la dichiara */
   peso?: string;
+  formato?: string;
+  pezziPerCartone?: number;
 };
 
 export type Scheda = {
@@ -52,6 +54,7 @@ export type Scheda = {
   /** grammatura, o intervallo quando la farcitura la fa variare */
   peso?: string;
   pezziPerCartone?: number;
+  cartoniStimati?: { pesoKg: number; pezzi: number; approssimato: boolean }[];
   modalitaUso?: string;
   /** i prodotti finiti a catalogo */
   gamma: { label: string; varianti: Variante[] }[];
@@ -112,6 +115,8 @@ const FORMATI_MONTANARINA: Record<Lingua, Record<string, string>> = {
 export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
   const numero = (n: number) =>
     n.toLocaleString(LOCALE_NUMERI[lingua], { maximumFractionDigits: 1 });
+  const formato = (dimensioni: number[]) =>
+    `${dimensioni.length === 1 ? "Ø " : ""}${dimensioni.map(numero).join(" × ")} cm`;
   const valore = (v: string) =>
     (t.slug === "montanarina" ? FORMATI_MONTANARINA[lingua][v] : undefined) ??
     testi.prodotti.valori[v as ValoreAsse] ?? v;
@@ -126,6 +131,8 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
         varianti: a.values.map((v) => ({
           id: v, nome: valore(v), chiave: v,
           peso: t.pesiVariantiGr?.[v] != null ? `${numero(t.pesiVariantiGr[v])} g` : undefined,
+          formato: t.dimensioniVariantiCm?.[v] ? formato(t.dimensioniVariantiCm[v]) : undefined,
+          pezziPerCartone: t.pezziPerCartoneVarianti?.[v],
         })),
       }))
     : t.set?.length
@@ -144,7 +151,14 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
         ? testi.catalogo.scheda.lineaDolci
         : testi.catalogo.scheda.lineaSalati,
     gamma: gammaCatalogo,
-    peso: t.pesoGr != null ? `${numero(t.pesoGr)} g` : pesi.length
+    formato: t.dimensioniCm ? formato(t.dimensioniCm) : undefined,
+    pezziPerCartone: t.pezziPerCartone,
+    cartoniStimati: t.pesoGr ? t.cartoniKg?.map((pesoKg) => ({
+      pesoKg,
+      pezzi: Math.ceil(pesoKg * 1000 / t.pesoGr!),
+      approssimato: pesoKg * 1000 % t.pesoGr! !== 0,
+    })) : undefined,
+    peso: t.pesoGr != null ? `${numero(t.pesoGr)} g` : pesi.length && t.axes?.every((a) => a.values.every((v) => t.pesiVariantiGr?.[v] != null))
       ? `${numero(Math.min(...pesi))}–${numero(Math.max(...pesi))} g`
       : undefined,
   };
@@ -184,7 +198,7 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
         : [];
   }
 
-  if (grammature.length) {
+  if (grammature.length && t.pesoGr == null && !t.pesiVariantiGr) {
     const min = Math.min(...grammature);
     const max = Math.max(...grammature);
     scheda.peso = min === max ? `${min} g` : `${min}–${max} g`;

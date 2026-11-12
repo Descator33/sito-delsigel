@@ -62,7 +62,7 @@ export const fr: Testi = {
     note: {
       golosone: "Pâte levée fourrée, glaçage satiné et éclats de chocolat noir.", "bomba-fritta": "La pâte levée frite traditionnelle, fourrée ou nature.",
       cuore: "Pensé pour gâter votre moitié.", frittella: "Une bouchée moelleuse de gourmandise.",
-      intriko: "Tresse feuilletée fourrée, cinq variantes et une version nature.", "intriko-midi": "Intriko au format midi, six garnitures.", lusekatt: "La spirale nordique au safran.", nuvola: "La pâte levée la plus légère de la gamme.",
+      intriko: "Tresse feuilletée fourrée, cinq variantes et une version nature.", "intriko-midi": "Intriko au format midi, six garnitures.", lusekatt: "Notre réinterprétation de la spirale nordique.", nuvola: "La pâte levée la plus légère de la gamme.",
       stella: "Pour un Noël plus doux.", klejner: "Le nœud frit de la tradition nordique, nature ou à la cannelle.", "focaccine-miste-tre-gusti": "Un carton de trois saveurs, prêt pour le comptoir.",
       montanarina: "La base frite napolitaine en formats classique et mini.", "paninetto-colorato-tre-gusti": "Trois pâtes colorées, un seul format. Carton assorti.", "pizzetta-al-pomodoro": "Le format classique de restauration rapide.",
       "pizzetta-bianca": "Huile et sel, format classique.", "pizzetta-fritta": "Moelleuse et dorée, prête à savourer.", "pizzette-fantasia": "Carton assorti, quatre saveurs.",
@@ -86,7 +86,7 @@ export const fr: Testi = {
       "perle-di-zucchero-idrorepellenti-bianche": "Perles de sucre blanches résistantes à l'humidité", "scagliette-di-cioccolato-tutti-e-3-i-cioccolati": "Copeaux de chocolat (les trois chocolats)",
       "perle-di-zucchero-colorate-rosse": "Perles de sucre rouges", semolato: "Sucre semoule",
     },
-    modalitaUso: "DÉCONGELER À TEMPÉRATURE AMBIANTE PENDANT 3 h", scattoProdotto: "photographie du produit",
+    modalitaUso: "DÉCONGELER À TEMPÉRATURE AMBIANTE PENDANT 2 h", scattoProdotto: "photographie du produit",
   },
   configuratore: {
     ...en.configuratore,

@@ -54,7 +54,7 @@ export const de: Testi = {
     ...en.prodotti,
     note: {
       golosone: "Gefülltes Hefegebäck mit seidiger Glasur und dunklen Schokostreuseln.", "bomba-fritta": "Traditionelles frittiertes Hefegebäck, gefüllt oder pur.", cuore: "Für süße Momente mit deinem Lieblingsmenschen.",
-      frittella: "Ein fluffiger Bissen voller Genuss.", intriko: "Gefüllter Blätterteigzopf in fünf Varianten sowie ungefüllt.", "intriko-midi": "Intriko im Midi-Format mit sechs Füllungen.", lusekatt: "Die nordische Safranschnecke.",
+      frittella: "Ein fluffiger Bissen voller Genuss.", intriko: "Gefüllter Blätterteigzopf in fünf Varianten sowie ungefüllt.", "intriko-midi": "Intriko im Midi-Format mit sechs Füllungen.", lusekatt: "Unsere Interpretation der nordischen Schnecke.",
       nuvola: "Das leichteste Hefegebäck im Sortiment.", stella: "Für eine süßere Weihnachtszeit.", klejner: "Der traditionelle nordische frittierte Knoten, pur oder mit Zimt.",
       "focaccine-miste-tre-gusti": "Ein Karton mit drei Geschmacksrichtungen, bereit für die Theke.", montanarina: "Die frittierte neapolitanische Spezialität in klassischer und Mini-Größe.", "paninetto-colorato-tre-gusti": "Drei farbige Teige in einem Format. Sortierter Karton.",
       "pizzetta-al-pomodoro": "Das klassische Feinkostthekenformat.", "pizzetta-bianca": "Öl und Salz im klassischen Format.", "pizzetta-fritta": "Locker und goldbraun, fertig zum Genießen.", "pizzette-fantasia": "Sortierter Karton mit vier Geschmacksrichtungen.",
@@ -77,7 +77,7 @@ export const de: Testi = {
       "perle-di-zucchero-idrorepellenti-bianche": "Weiße feuchtigkeitsbeständige Zuckerperlen", "scagliette-di-cioccolato-tutti-e-3-i-cioccolati": "Schokoladenraspel (alle drei Schokoladensorten)",
       "perle-di-zucchero-colorate-rosse": "Rote Zuckerperlen", semolato: "Kristallzucker",
     },
-    modalitaUso: "3 h BEI RAUMTEMPERATUR AUFTAUEN", scattoProdotto: "Produktaufnahme",
+    modalitaUso: "2 h BEI RAUMTEMPERATUR AUFTAUEN", scattoProdotto: "Produktaufnahme",
   },
   configuratore: {
     ...en.configuratore,

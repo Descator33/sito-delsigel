@@ -193,7 +193,7 @@ export const it: Testi = {
       frittella: "Un soffice morso di bontà.",
       intriko: "Treccia di sfoglia farcita, cinque varianti più la versione vuota.",
       "intriko-midi": "Intriko in formato midi, sei farciture.",
-      lusekatt: "La girella nordica allo zafferano.",
+      lusekatt: "La nostra rivisitazione della girella nordica.",
       nuvola: "Il lievitato più leggero della gamma.",
       stella: "Per un Natale più dolce.",
       klejner: "Il nodo fritto della tradizione nordica, semplice o alla cannella.",
@@ -281,7 +281,7 @@ export const it: Testi = {
       "perle-di-zucchero-colorate-rosse": "Perle di zucchero colorate rosse",
       semolato: "Semolato",
     },
-    modalitaUso: "DECONGELARE A TEMPERATURA AMBIENTE PER 3 h",
+    modalitaUso: "DECONGELARE A TEMPERATURA AMBIENTE PER 2 h",
     scattoProdotto: "scatto di prodotto",
   },
 

@@ -52,7 +52,7 @@ export const fi: Testi = {
     ...en.prodotti,
     note: {
       golosone: "Täytetty hiivaleivonnainen, silkkinen kuorrute ja tummat suklaarakeet.", "bomba-fritta": "Perinteinen uppopaistettu hiivaleivonnainen, täytettynä tai ilman täytettä.", cuore: "Sydämenmuotoinen lehtitaikinaleivonnainen viidellä täytteellä.",
-      frittella: "Pehmeä uppopaistettu vitriinituote kahdessa maussa.", intriko: "Täytetty lehtitaikinapunos, neljä vaihtoehtoa sekä täyttämätön versio.", lusekatt: "Pohjoismainen sahramikierre.", nuvola: "Valikoiman kevein hiivaleivonnainen viidessä maussa.",
+      frittella: "Pehmeä uppopaistettu vitriinituote kahdessa maussa.", intriko: "Täytetty lehtitaikinapunos, neljä vaihtoehtoa sekä täyttämätön versio.", lusekatt: "Meidän versiomme pohjoismaisesta kierteestä.", nuvola: "Valikoiman kevein hiivaleivonnainen viidessä maussa.",
       stella: "Tähdenmuotoinen lehtitaikinaleivonnainen viitenä vaihtoehtona.", klejner: "Perinteinen pohjoismainen uppopaistettu solmu ilman täytettä.", "focaccine-miste-tre-gusti": "Kolmen maun lajitelma suoraan vitriiniin.",
       montanarina: "Napolilainen uppopaistettu pohja kahdella päällysteellä.", "paninetto-colorato-tre-gusti": "Kolme värillistä taikinaa yhdessä koossa.", "pizzetta-al-pomodoro": "Klassinen palvelutiskin koko.",
       "pizzetta-bianca": "Öljyä ja suolaa klassisessa koossa.", "pizzetta-fritta": "Kaksi kokoa lämpimään vitriiniin.", "pizzette-fantasia": "Neljä kausittain vaihtuvaa päällystettä.", rustici: "Kuusi täytettä lehtitaikinakuoressa.", "vol-au-vent": "Yksittäinen täytettävä lehtitaikinaleivonnainen.",
@@ -62,7 +62,7 @@ export const fi: Testi = {
     farciture: { cioccolato: "Suklaa", crema: "Kreemi" },
     credenza: { "frutti-di-bosco": "Metsämarjat", fragola: "Mansikka", kiwi: "Kiivi", banana: "Banaani", "kit-kat": "Kit Kat", "happy-hippo": "Happy Hippo", smarties: "Smarties", "kinder-bueno-dark": "Kinder Bueno Dark", "kinder-bueno-white": "Kinder Bueno White", kinder: "Kinder", "quadretti-di-cioccolato": "Suklaapalat", oreo: "Oreo", cocco: "Kookos", "mini-cookies": "Mini Cookies" },
     finiture: { "zucchero-a-velo": "Tomusokeri" },
-    modalitaUso: "SULATA HUONEENLÄMMÖSSÄ 3 h", scattoProdotto: "tuotekuva",
+    modalitaUso: "SULATA HUONEENLÄMMÖSSÄ 2 h", scattoProdotto: "tuotekuva",
   },
   configuratore: {
     ...en.configuratore,
