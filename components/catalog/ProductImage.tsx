@@ -26,7 +26,7 @@ export function ProductImage({
 }) {
   return (
     <motion.div
-      className={`foto-prodotto pointer-events-none absolute ${riquadro}`}
+      className={`foto-prodotto pointer-events-none absolute ${src.endsWith(".JPG") ? "mix-blend-multiply" : ""} ${riquadro}`}
       style={{ transformOrigin: "72% 100%" }}
       variants={{
         riposo: { scale: 1, rotate: 0 },
@@ -36,6 +36,7 @@ export function ProductImage({
     >
       <Image
         src={src}
+        unoptimized={src.endsWith(".JPG")}
         alt={alt}
         fill
         sizes="(max-width: 640px) 60vw, (max-width: 1279px) 40vw, 28vw"

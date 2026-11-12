@@ -152,10 +152,10 @@ export const CATALOG: Tipologia[] = [
       values: ["cioccolato", "crema"],
     }],
     catalogGamma: true,
-    image: img("frittella-crema"),
+    image: "/af79ff9f-22e4-4120-99f0-8f9112a64256.JPG",
     variants: {
-      cioccolato: img("frittella-cioccolato"),
-      crema: img("frittella-crema"),
+      cioccolato: "/58f43503-7054-4977-8458-923943a8efcc.JPG",
+      crema: "/af79ff9f-22e4-4120-99f0-8f9112a64256.JPG",
     },
   },
   {
@@ -177,9 +177,9 @@ export const CATALOG: Tipologia[] = [
         ],
       },
     ],
-    image: img("intriko-tre-cioccolati"),
+    image: "/0efe9400-310f-4027-b53e-4df056880fb6.JPG",
     variants: {
-      cioccolato: img("intriko-cioccolato"),
+      cioccolato: "/0efe9400-310f-4027-b53e-4df056880fb6.JPG",
       crema: img("intriko-crema"),
       "frutti di bosco": img("intriko-frutti-di-bosco"),
       pistacchio: img("intriko-pistacchio"),

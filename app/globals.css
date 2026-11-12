@@ -371,16 +371,16 @@ html[data-porta-di-ritorno] .preloader-porta {
 [data-hero-caption-logo],
 [data-hero-caption] { will-change: transform; }
 .hero-scatto { position: absolute; inset: 0; }
-.hero-foto { object-position: 50% 50%; }
+.hero-foto { object-position: 50% 45%; }
 @media (max-aspect-ratio: 5/4) {
-  .hero-foto { object-position: 65% 50%; }
+  .hero-foto { object-position: 50% 65%; }
 }
 /* I veli rendono leggibile il testo chiaro sulle zone più luminose. */
 .hero-sfumatura {
   background: linear-gradient(180deg, transparent 25%, rgb(50 0 0 / 0.35) 55%, rgb(50 0 0 / 0.88) 100%);
 }
 .hero-velo {
-  background: linear-gradient(90deg, rgb(50 0 0 / 0.42), transparent 58%);
+  background: linear-gradient(90deg, rgb(50 0 0 / 0.92), rgb(50 0 0 / 0.5) 32%, transparent 65%);
 }
 
 /* Navigazione primaria: una capsula corta e centrata, staccata dal
@@ -624,13 +624,13 @@ html[data-porta-di-ritorno] .preloader-porta {
 /* In orizzontale resta visibile anche il respiro editoriale a sinistra. */
 @media (min-aspect-ratio: 5/4) {
   .hero-finestra[data-compatta] .hero-foto {
-    object-position: 40% 50%;
+    object-position: 50% 45%;
   }
 }
 /* In verticale la fascia compatta mette al centro il Vortice. */
 @media (max-aspect-ratio: 5/4) {
   .hero-finestra[data-compatta] .hero-foto {
-    object-position: 50% 34%;
+    object-position: 50% 68%;
   }
 }
 

@@ -23,7 +23,7 @@ export const de: Testi = {
   },
   hero: {
     insegna: [{ testo: "Handwerkliche" }, { testo: "Industrie." }, { testo: "Tradition ist", accento: true }, { testo: "Innovation.", accento: true }],
-    alt: "Vier Intriko-Varianten auf roten und orangefarbenen Podesten.",
+    alt: "Schokoladen-Intriko mit weißem Hagelzucker.",
   },
   home: {
     ...en.home,

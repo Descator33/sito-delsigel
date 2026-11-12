@@ -26,7 +26,7 @@ export const en: Testi = {
   },
   hero: {
     insegna: [{ testo: "Craft" }, { testo: "industry." }, { testo: "Tradition is", accento: true }, { testo: "innovation.", accento: true }],
-    alt: "Four Intriko varieties on red and orange plinths.",
+    alt: "Chocolate Intriko with white sugar pearls.",
   },
   home: {
     storia: {

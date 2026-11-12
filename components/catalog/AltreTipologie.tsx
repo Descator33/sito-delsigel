@@ -83,10 +83,11 @@ function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; 
         >
           <Image
             src={t.image}
+            unoptimized={t.image.endsWith(".JPG")}
             alt={`${t.name}: ${nota}`}
             fill
             sizes="(max-width: 640px) 45vw, (max-width: 1279px) 22vw, 12vw"
-            className="object-contain object-bottom"
+            className={`object-contain object-bottom ${t.image.endsWith(".JPG") ? "mix-blend-multiply" : ""}`}
           />
         </motion.div>
       )}

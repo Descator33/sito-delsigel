@@ -324,7 +324,7 @@ export function Hero() {
           className="hero-finestra absolute overflow-hidden"
         >
           <div className="hero-scatto">
-            {/* Il PNG originale viene servito direttamente, senza ridimensionamenti. */}
+            {/* La fotografia originale viene servita direttamente, senza ridimensionamenti. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={HERO_IMAGE}
