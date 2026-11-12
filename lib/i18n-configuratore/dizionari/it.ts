@@ -284,7 +284,7 @@ export const it: Testi = {
   },
   {
     "titolo": "Zucchero a velo incluso",
-    "testo": "La finitura è già inclusa. Puoi modificare la ricetta dal riepilogo, condividerla e richiedere una quotazione."
+    "testo": "La finitura è già inclusa. Puoi modificare la ricetta dal riepilogo e condividerla."
   }
 ],
     statiNastro: [
@@ -318,7 +318,7 @@ export const it: Testi = {
   },
   {
     "titolo": "Zucchero a velo incluso",
-    "testo": "La finitura è già inclusa. Puoi modificare la ricetta dal riepilogo, condividerla e richiedere una quotazione."
+    "testo": "La finitura è già inclusa. Puoi modificare la ricetta dal riepilogo e condividerla."
   }
 ],
       chiudi: "Chiudi",
@@ -373,7 +373,7 @@ export const it: Testi = {
     finitura: {
       boom: "{nome}: il tuo dolce è pronto.",
       combo:
-        "La tua ricetta è pronta. Scegli la quantità, condividi il dolce o richiedi una quotazione.",
+        "La tua ricetta è pronta: condividi la tua creazione! La composizione è virtuale e gli ingredienti dalla credenza non sono forniti da Delsigel.",
       farcitura: "Farcitura",
       credenza: "Dalla credenza",
       finitura: "Finitura",
@@ -836,12 +836,12 @@ export const it: Testi = {
     configuratore: {
       radiceTitolo: "Configuratore dolci · Delsigel Italia",
       radiceDescrizione:
-        "Componi il tuo prodotto: base, farcitura e formato, con la catena logistica e l'ordine minimo dichiarati prima dell'invio.",
+        "Crea e condividi il tuo dolce virtuale scegliendo base, farcitura, ingredienti e finitura.",
       baseTitolo: "{base} · Configuratore Delsigel",
-      baseDescrizione: "Scegli la farcitura per {base} e componi la tua richiesta.",
+      baseDescrizione: "Scegli la farcitura per {base} e crea il tuo dolce virtuale.",
       combTitolo: "{nome} · {farcitura} · Configuratore Delsigel",
       combDescrizione:
-        "{nome} con {farcitura}, {credenza}, finitura {finitura}, {g} g. Configura quantità e richiedi la quotazione.",
+        "{nome} con {farcitura}, {credenza} e finitura {finitura}. Crea e condividi il tuo dolce virtuale.",
     },
   },
 };

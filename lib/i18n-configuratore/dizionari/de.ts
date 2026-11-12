@@ -96,7 +96,7 @@ export const de: Testi = {
   },
   {
     "titolo": "Puderzucker enthalten",
-    "testo": "Die Veredelung ist bereits enthalten. Ändern und teilen Sie Ihr Rezept über die Übersicht und fordern Sie ein Angebot an."
+    "testo": "Die Veredelung ist bereits enthalten. Ändern und teilen Sie Ihr Rezept über die Übersicht."
   }
 ],
     statiNastro: ["Ungefüllte Nuvola, die Basis ohne Füllung", "Nuvola mit Cremefüllung", "Nuvola mit Creme und Puderzucker"],
@@ -117,7 +117,7 @@ export const de: Testi = {
   },
   {
     "titolo": "Puderzucker enthalten",
-    "testo": "Die Veredelung ist bereits enthalten. Ändern und teilen Sie Ihr Rezept über die Übersicht und fordern Sie ein Angebot an."
+    "testo": "Die Veredelung ist bereits enthalten. Ändern und teilen Sie Ihr Rezept über die Übersicht."
   }
 ], chiudi: "Schließen", ok: "Verstanden, los geht's",
     },
@@ -132,7 +132,7 @@ export const de: Testi = {
     tessera: { prendimi: "Nimm mich!", inVolo: "Im Anflug!" },
     finitura: {
       boom: "Ihr {nome} ist fertig.",
-      combo: "Ihr Rezept ist fertig. Wählen Sie die Menge, teilen Sie Ihre Kreation oder fordern Sie ein Angebot an.",
+      combo: "Ihr Rezept ist fertig: Teilen Sie Ihre Kreation! Die Zusammenstellung ist virtuell; Zutaten aus der Vorratskammer werden nicht von Delsigel geliefert.",
       farcitura: "Füllung", credenza: "Aus der Vorratskammer", finitura: "Finish",
       grammatura: "Stückgewicht", diametro: "Durchmesser", modalitaUso: "Zubereitungshinweis",
       copiaLink: "Link zu Ihrem Gebäck kopieren", linkCopiato: "Link kopiert!", linkCopiatoAria: "Link in die Zwischenablage kopiert", richiediQuotazione: "Angebot anfordern →",
@@ -235,6 +235,6 @@ export const de: Testi = {
   metadata: {
     home: { titolo: "Delsigel Italia · Handwerkliche Industrie", descrizione: "Delsigel, das handwerkliche Industrieunternehmen: innovativ und für alle. Süße und herzhafte Backwaren, seit 1960 in großer Menge gefertigt. Entdecken Sie den Katalog 2026/27." },
     chiSiamo: { titolo: "Über uns · Delsigel Italia", descrizione: "Das Delsigel-Team und die Produktionslinie: handwerkliche Industrie aus Sermoneta, seit 1960." }, contatti: { titolo: "Kontakt · Delsigel Italia", descrizione: "Fordern Sie die Preisliste an, vereinbaren Sie eine Werksbesichtigung oder kontaktieren Sie Delsigel in Sermoneta, Italien." },
-    configuratore: { radiceTitolo: "Gebäckkonfigurator · Delsigel Italia", radiceDescrizione: "Stellen Sie Ihr Produkt zusammen: Basis, Füllung und Format – Logistikkette und Mindestbestellmenge werden vor dem Absenden ausgewiesen.", baseTitolo: "{base} · Delsigel-Konfigurator", baseDescrizione: "Wählen Sie die Füllung für {base} und stellen Sie Ihre Anfrage zusammen.", combTitolo: "{nome} · {farcitura} · Delsigel-Konfigurator", combDescrizione: "{nome} mit {farcitura}, {credenza}, Finish {finitura}, {g} g. Menge festlegen und Angebot anfordern." },
+    configuratore: { radiceTitolo: "Gebäckkonfigurator · Delsigel Italia", radiceDescrizione: "Kreieren und teilen Sie Ihr virtuelles Gebäck mit Basis, Füllung, Zutaten und Veredelung Ihrer Wahl.", baseTitolo: "{base} · Delsigel-Konfigurator", baseDescrizione: "Wählen Sie die Füllung für {base} und kreieren Sie Ihr virtuelles Gebäck.", combTitolo: "{nome} · {farcitura} · Delsigel-Konfigurator", combDescrizione: "{nome} mit {farcitura}, {credenza} und Finish {finitura}. Kreieren und teilen Sie Ihr virtuelles Gebäck." },
   },
 };

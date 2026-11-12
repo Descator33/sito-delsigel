@@ -24,7 +24,6 @@ import { PassoBase, type DragPasso } from "./PassoBase";
 import { PassoFarcitura } from "./PassoFarcitura";
 import { PassoCredenza } from "./PassoCredenza";
 import { PassoFinitura } from "./PassoFinitura";
-import type { DatiCliente } from "./ModuloQuotazione";
 import { PassoCompleto } from "./PassoCompleto";
 import { Riepilogo } from "./Riepilogo";
 import { Selettore } from "./Selettore";
@@ -37,9 +36,7 @@ export function Configuratore({
   fotoFarciture,
   fotoCredenza,
   fotoFinitura,
-  invioAttivo,
 }: {
-  invioAttivo: boolean;
   foto: FotoStati;
   fotoFarciture: FotoFarciture;
   fotoCredenza: FotoCredenza;
@@ -64,23 +61,6 @@ export function Configuratore({
       ? modifica
       : naturale
   ) as 1 | 2 | 3 | 4 | 5;
-  const [pedane, setPedane] = useState<number | "">(
-    base?.ordine_minimo_pedane ?? 1,
-  );
-  const [moduloAperto, setModuloAperto] = useState(false);
-  const [cliente, setCliente] = useState<DatiCliente>({
-    ragione_sociale: "",
-    canale: "",
-    email: "",
-    telefono: "",
-    note: "",
-  });
-  const [basePrecedente, setBasePrecedente] = useState(base?.id);
-  if (basePrecedente !== base?.id) {
-    setBasePrecedente(base?.id);
-    setPedane(base?.ordine_minimo_pedane ?? 1);
-    setModuloAperto(false);
-  }
   const [avviso, setAvviso] = useState<string | null>(null);
   useEffect(() => {
     if (query.has("nd")) {
@@ -139,8 +119,6 @@ export function Configuratore({
     void vaiA(pathname.replace(/^\/[a-z]{2}/, "") + "?modifica=" + n);
   }
   function ricomincia() {
-    setModuloAperto(false);
-    setPedane(base?.ordine_minimo_pedane ?? 1);
     void vaiA("/configuratore/" + sceltaCompatibile([]).join("/"));
   }
   const dragTessere: DragPasso =
@@ -299,17 +277,7 @@ export function Configuratore({
                 />
               )}
               {passo === 5 && prodotto && base && (
-                <PassoCompleto
-                  prodotto={prodotto}
-                  base={base}
-                  pedane={pedane}
-                  onCambiaPedane={setPedane}
-                  moduloAperto={moduloAperto}
-                  onApriModulo={() => setModuloAperto(true)}
-                  invioAttivo={invioAttivo}
-                  cliente={cliente}
-                  onClienteChange={setCliente}
-                />
+                <PassoCompleto prodotto={prodotto} base={base} />
               )}
             </div>
           </Selettore>

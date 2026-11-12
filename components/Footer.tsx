@@ -50,7 +50,6 @@ function colonne(testi: Testi): { titolo: string; voci: [string, string][] }[] {
       voci: [
         [f.configuratore.crea, DESTINAZIONE_CONFIGURATORE],
         [f.configuratore.comeFunziona, "/#come-si-crea"],
-        [f.configuratore.quotazione, "/contatti"],
       ],
     },
   ];

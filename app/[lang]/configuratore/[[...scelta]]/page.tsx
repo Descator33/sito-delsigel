@@ -135,7 +135,6 @@ export default async function ConfiguratorePage({ params }: Props) {
           statici nel bundle della funzione serverless. */}
         <Suspense fallback={<div className="min-h-screen" />}>
           <Configuratore
-            invioAttivo={false}
             foto={foto}
             fotoFarciture={farciture}
             fotoCredenza={credenze}

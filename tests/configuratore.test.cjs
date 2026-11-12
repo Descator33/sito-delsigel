@@ -36,23 +36,6 @@ require.extensions[".ts"] = (m, f) =>
     f,
   );
 const c = require("../lib/configuratore.ts");
-const { richiediQuotazione } = require("../app/configuratore/actions.ts");
-function form(overrides = {}) {
-  const f = new FormData();
-  for (const [k, v] of Object.entries({
-    ...c.DATASET.combinazioni[0],
-    pedane: "1",
-    lingua: "it",
-    versione_listino: c.DATASET.versione,
-    ragione_sociale: "Azienda test",
-    email: "buyer@example.com",
-    canale: "bar",
-    request_id: "11111111-1111-4111-8111-111111111111",
-    ...overrides,
-  }))
-    f.set(k, v);
-  return f;
-}
 test("tutte le ricette, prefissi e lingue restano coerenti", () => {
   for (const ricetta of c.DATASET.combinazioni) {
     const a = [
@@ -103,60 +86,6 @@ test("peso preciso e quantità non valida respinta", () => {
       "QUANTITA_NON_VALIDA",
     );
 });
-test("server respinge email, canale, note e versione non validi", async () => {
-  for (const values of [
-    { email: "invalid" },
-    { canale: "fake" },
-    { note: "x".repeat(2001) },
-    { ragione_sociale: "x".repeat(161) },
-    { request_id: "invalid" },
-  ]) {
-    const r = await richiediQuotazione(null, form(values));
-    assert.equal(r.ok, false);
-    assert.equal(r.errore, "CAMPI_NON_VALIDI");
-  }
-  assert.equal(
-    (await richiediQuotazione(null, form({ versione_listino: "old" }))).errore,
-    "VERSIONE_OBSOLETA",
-  );
-});
-test("senza configurazione non dichiara inviata la richiesta e genera un riferimento assoluto", async () => {
-  const key = process.env.RESEND_API_KEY,
-    from = process.env.QUOTAZIONI_FROM;
-  delete process.env.RESEND_API_KEY;
-  delete process.env.QUOTAZIONI_FROM;
-  try {
-    const r = await richiediQuotazione(null, form());
-    assert.equal(r.ok, true);
-    assert.equal(r.inviata, false);
-    assert.match(
-      decodeURIComponent(r.mailto),
-      /https:\/\/www.delsigel.it\/it\/configuratore/,
-    );
-    assert.match(decodeURIComponent(r.mailto), /235,2/);
-  } finally {
-    if (key) process.env.RESEND_API_KEY = key;
-    if (from) process.env.QUOTAZIONI_FROM = from;
-  }
-});
-test("la richiesta usa il programma di posta anche con vecchie variabili Resend", async () => {
-  const key = process.env.RESEND_API_KEY, from = process.env.QUOTAZIONI_FROM;
-  const oldFetch = global.fetch;
-  process.env.RESEND_API_KEY = "test-only";
-  process.env.QUOTAZIONI_FROM = "test@example.com";
-  global.fetch = async () => { throw new Error("Non deve inviare via rete"); };
-  try {
-    const r = await richiediQuotazione(null, form({ pedane: "2" }));
-    assert.equal(r.inviata, false);
-    assert.equal(r.quantita.peso_kg, 470.4);
-    assert.match(decodeURIComponent(r.mailto), /^mailto:info@delsigel.it/);
-  } finally {
-    global.fetch = oldFetch;
-    if (key === undefined) delete process.env.RESEND_API_KEY; else process.env.RESEND_API_KEY = key;
-    if (from === undefined) delete process.env.QUOTAZIONI_FROM; else process.env.QUOTAZIONI_FROM = from;
-  }
-});
-
 test("precaricamento: richieste condivise e riprova dopo errore", async () => {
   const {
     scaricaFoto,

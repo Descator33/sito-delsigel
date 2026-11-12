@@ -82,7 +82,7 @@ export const fi: Testi = {
   },
   {
     "titolo": "Tomusokeri sisältyy",
-    "testo": "Viimeistely on jo mukana. Muokkaa reseptiä yhteenvedosta, jaa se ja pyydä tarjous."
+    "testo": "Viimeistely on jo mukana. Muokkaa reseptiä yhteenvedosta ja jaa se."
   }
 ],
     statiNastro: ["Täyttämätön Nuvola-pohja", "Kreemillä täytetty Nuvola", "Kreemi-Nuvola tomusokerilla"],
@@ -102,7 +102,7 @@ export const fi: Testi = {
   },
   {
     "titolo": "Tomusokeri sisältyy",
-    "testo": "Viimeistely on jo mukana. Muokkaa reseptiä yhteenvedosta, jaa se ja pyydä tarjous."
+    "testo": "Viimeistely on jo mukana. Muokkaa reseptiä yhteenvedosta ja jaa se."
   }
 ], chiudi: "Sulje", ok: "Selvä, aloitetaan" },
     titoli: { passo1: "Valitse pohjasi", passo2: "Lisätään täyte", passo3: "Poimi kaapista", passo4: "Viimeinen silaus", completo: "Valmis!" }, passoDi: "Vaihe {n}/4 — {titolo}", avvisoSceltaSparita: "Avaamasi linkki sisälsi valinnan, joka ei enää ole saatavilla. Jatketaan tästä.",
@@ -111,7 +111,7 @@ export const fi: Testi = {
     tessera: { prendimi: "Valitse minut!", inVolo: "Tulossa!" },
     finitura: {
       boom: "{nome} on valmis.",
-      combo: "Reseptisi on valmis. Valitse määrä, jaa luomuksesi tai pyydä tarjous.",
+      combo: "Reseptisi on valmis: jaa luomuksesi! Kokoonpano on virtuaalinen, eikä Delsigel toimita kaapin aineksia.",
       farcitura: "Täyte", credenza: "Kaapista", finitura: "Viimeistely",
       grammatura: "Kappalepaino", diametro: "Halkaisija", modalitaUso: "Käyttöohje", copiaLink: "Kopioi leivonnaisesi linkki", linkCopiato: "Linkki kopioitu!", linkCopiatoAria: "Linkki kopioitu leikepöydälle", richiediQuotazione: "Pyydä tarjous →",
     },
@@ -185,6 +185,6 @@ export const fi: Testi = {
   metadata: {
     home: { titolo: "Delsigel Italia · Käsityöteollisuus", descrizione: "Delsigel on innovatiivista käsityöteollisuutta kaikille. Makeita ja suolaisia leipomotuotteita suuressa mittakaavassa vuodesta 1960. Tutustu kuvastoon 2026/27." },
     chiSiamo: { titolo: "Meistä · Delsigel Italia", descrizione: "Delsigelin tiimi ja tuotantolinja: Sermonetan käsityöteollisuutta vuodesta 1960." }, contatti: { titolo: "Yhteystiedot · Delsigel Italia", descrizione: "Pyydä hinnasto, varaa tehdasvierailu tai ota yhteyttä Delsigeliin Sermonetassa, Italiassa." },
-    configuratore: { radiceTitolo: "Leivonnaiskonfiguraattori · Delsigel Italia", radiceDescrizione: "Kokoa tuotteesi: pohja, täyte ja koko. Logistiikkaketju ja vähimmäistilaus ilmoitetaan ennen lähettämistä.", baseTitolo: "{base} · Delsigel-konfiguraattori", baseDescrizione: "Valitse tuotteen {base} täyte ja kokoa pyyntösi.", combTitolo: "{nome} · {farcitura} · Delsigel-konfiguraattori", combDescrizione: "{nome}, täyte {farcitura}, {credenza}, viimeistely {finitura}, {g} g. Aseta määrä ja pyydä tarjous." },
+    configuratore: { radiceTitolo: "Leivonnaiskonfiguraattori · Delsigel Italia", radiceDescrizione: "Luo ja jaa virtuaalinen leivonnaisesi valitsemalla pohja, täyte, ainekset ja viimeistely.", baseTitolo: "{base} · Delsigel-konfiguraattori", baseDescrizione: "Valitse tuotteen {base} täyte ja luo virtuaalinen leivonnaisesi.", combTitolo: "{nome} · {farcitura} · Delsigel-konfiguraattori", combDescrizione: "{nome}, täyte {farcitura}, {credenza} ja viimeistely {finitura}. Luo ja jaa virtuaalinen leivonnaisesi." },
   },
 };

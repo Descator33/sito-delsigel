@@ -105,7 +105,7 @@ export const fr: Testi = {
   },
   {
     "titolo": "Sucre glace inclus",
-    "testo": "La finition est déjà incluse. Modifiez la recette depuis le récapitulatif, partagez-la et demandez un devis."
+    "testo": "La finition est déjà incluse. Modifiez la recette depuis le récapitulatif et partagez-la."
   }
 ],
     statiNastro: ["Nuvola nature, la base sans garniture", "Nuvola garnie de crème", "Nuvola à la crème et au sucre glace"],
@@ -126,7 +126,7 @@ export const fr: Testi = {
   },
   {
     "titolo": "Sucre glace inclus",
-    "testo": "La finition est déjà incluse. Modifiez la recette depuis le récapitulatif, partagez-la et demandez un devis."
+    "testo": "La finition est déjà incluse. Modifiez la recette depuis le récapitulatif et partagez-la."
   }
 ], chiudi: "Fermer", ok: "J'ai compris, commençons",
     },
@@ -143,7 +143,7 @@ export const fr: Testi = {
     tessera: { prendimi: "Prenez-moi !", inVolo: "En vol !" },
     finitura: {
       boom: "Votre {nome} est prêt.",
-      combo: "Votre recette est prête. Choisissez la quantité, partagez votre douceur ou demandez un devis.",
+      combo: "Votre recette est prête : partagez votre création ! Cette composition est virtuelle et les ingrédients du placard ne sont pas fournis par Delsigel.",
       farcitura: "Garniture", credenza: "Depuis le placard", finitura: "Finition",
       grammatura: "Poids unitaire", diametro: "Diamètre", modalitaUso: "Mode d'emploi",
       copiaLink: "Copier le lien de votre douceur", linkCopiato: "Lien copié !", linkCopiatoAria: "Lien copié dans le presse-papiers", richiediQuotazione: "Demander un devis →",
@@ -269,6 +269,6 @@ export const fr: Testi = {
     home: { titolo: "Delsigel Italia · L'industrie artisanale", descrizione: "Delsigel, l'industrie artisanale : innovante et accessible à tous. Produits boulangers sucrés et salés, fabriqués à grande échelle depuis 1960. Découvrez le catalogue 2026/27." },
     chiSiamo: { titolo: "Qui sommes-nous · Delsigel Italia", descrizione: "L'équipe Delsigel et sa ligne de production : l'industrie artisanale de Sermoneta, depuis 1960." },
     contatti: { titolo: "Contact · Delsigel Italia", descrizione: "Demandez le tarif, réservez une visite de l'usine ou contactez Delsigel à Sermoneta, en Italie." },
-    configuratore: { radiceTitolo: "Configurateur de douceurs · Delsigel Italia", radiceDescrizione: "Composez votre produit : base, garniture et format, avec la chaîne logistique et la commande minimale indiquées avant l'envoi.", baseTitolo: "{base} · Configurateur Delsigel", baseDescrizione: "Choisissez la garniture de {base} et composez votre demande.", combTitolo: "{nome} · {farcitura} · Configurateur Delsigel", combDescrizione: "{nome} avec {farcitura}, {credenza}, finition {finitura}, {g} g. Indiquez la quantité et demandez un devis." },
+    configuratore: { radiceTitolo: "Configurateur de douceurs · Delsigel Italia", radiceDescrizione: "Créez et partagez votre douceur virtuelle en choisissant la base, la garniture, les ingrédients et la finition.", baseTitolo: "{base} · Configurateur Delsigel", baseDescrizione: "Choisissez la garniture de {base} et créez votre douceur virtuelle.", combTitolo: "{nome} · {farcitura} · Configurateur Delsigel", combDescrizione: "{nome} avec {farcitura}, {credenza} et finition {finitura}. Créez et partagez votre douceur virtuelle." },
   },
 };

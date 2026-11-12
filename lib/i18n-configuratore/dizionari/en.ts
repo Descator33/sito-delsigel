@@ -113,7 +113,7 @@ export const en: Testi = {
   },
   {
     "titolo": "Icing sugar included",
-    "testo": "The finish is already included. Edit your recipe from the summary, share it and request a quote."
+    "testo": "The finish is already included. Edit your recipe from the summary and share it."
   }
 ],
     statiNastro: ["Unfilled Nuvola, the base without filling", "Nuvola filled with custard", "Custard Nuvola with icing sugar"],
@@ -138,7 +138,7 @@ export const en: Testi = {
   },
   {
     "titolo": "Icing sugar included",
-    "testo": "The finish is already included. Edit your recipe from the summary, share it and request a quote."
+    "testo": "The finish is already included. Edit your recipe from the summary and share it."
   }
 ], chiudi: "Close", ok: "Got it, let's begin",
     },
@@ -157,7 +157,7 @@ export const en: Testi = {
     tessera: { prendimi: "Pick me!", inVolo: "Incoming!" },
     finitura: {
       boom: "Your {nome} is ready.",
-      combo: "Your recipe is ready. Choose the quantity, share your pastry or request a quote.",
+      combo: "Your recipe is ready: share your creation! This is a virtual creation and pantry ingredients are not supplied by Delsigel.",
       farcitura: "Filling", credenza: "From the cupboard", finitura: "Finish",
       grammatura: "Unit weight", diametro: "Diameter", modalitaUso: "Directions for use",
       copiaLink: "Copy your pastry link", linkCopiato: "Link copied!", linkCopiatoAria: "Link copied to clipboard", richiediQuotazione: "Request a quote →",
@@ -293,9 +293,9 @@ export const en: Testi = {
     chiSiamo: { titolo: "About us · Delsigel Italia", descrizione: "The Delsigel team and production line: Sermoneta's craft industry, since 1960." },
     contatti: { titolo: "Contact · Delsigel Italia", descrizione: "Request the price list, book a factory visit or contact Delsigel in Sermoneta, Italy." },
     configuratore: {
-      radiceTitolo: "Pastry configurator · Delsigel Italia", radiceDescrizione: "Build your product: base, filling and format, with the logistics chain and minimum order stated before you send your request.",
-      baseTitolo: "{base} · Delsigel configurator", baseDescrizione: "Choose the filling for {base} and build your request.", combTitolo: "{nome} · {farcitura} · Delsigel configurator",
-      combDescrizione: "{nome} with {farcitura}, {credenza}, {finitura} finish, {g} g. Set the quantity and request a quote.",
+      radiceTitolo: "Pastry configurator · Delsigel Italia", radiceDescrizione: "Create and share your virtual pastry with your choice of base, filling, ingredients and finish.",
+      baseTitolo: "{base} · Delsigel configurator", baseDescrizione: "Choose the filling for {base} and create your virtual pastry.", combTitolo: "{nome} · {farcitura} · Delsigel configurator",
+      combDescrizione: "{nome} with {farcitura}, {credenza} and {finitura} finish. Create and share your virtual pastry.",
     },
   },
 };
