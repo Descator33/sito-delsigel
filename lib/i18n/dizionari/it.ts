@@ -34,7 +34,7 @@ export const it: Testi = {
   },
 
   footer: {
-    tagline: "L'industria artigianale di Sermoneta, dal 1960.",
+    tagline: "L'industria della tradizione, Sermoneta, dal 1960.",
     colonne: {
       delsigel: {
         titolo: "Delsigel",
@@ -68,8 +68,6 @@ export const it: Testi = {
 
   hero: {
     insegna: [
-      { testo: "Industria" },
-      { testo: "artigianale." },
       { testo: "La tradizione", accento: true },
       { testo: "è innovazione.", accento: true },
     ],
@@ -80,9 +78,9 @@ export const it: Testi = {
     storia: {
       eyebrow: "La nostra storia",
       luogo: "Delsigel · Sermoneta",
-      titolo: ["13 milioni di dolci dopo."],
+      titolo: ["200 milioni di dolci dopo."],
       testo:
-        "Nel 2011 l'incontro tra Del Monte e Siani. Oggi un'industria artigianale certificata IFS Food, Rainforest Alliance e RSPO, una nuova generazione al banco e un piano per raddoppiare.",
+        "Nel 2011 l'incontro tra Del Monte e Siani. Oggi un'industria certificata IFS Food, Rainforest Alliance e RSPO, una nuova generazione al banco e un piano per raddoppiare.",
       cta: "Scopri la nostra storia",
       prossimoLabel: "Prossimo capitolo",
       prossimoNome: "Catalogo 2026/27",
@@ -501,10 +499,10 @@ export const it: Testi = {
     intro: {
       eyebrow: "Chi siamo · Delsigel Italia",
       titolo: [
-        { testo: "Un'industria" },
-        { testo: "artigianale" },
-        { testo: "a Sermoneta" },
-      ],
+      { testo: "Un'industria" },
+      { testo: "della tradizione" },
+      { testo: "a Sermoneta" },
+    ],
       sigillo: "dal 1960 · IFS Food · Rainforest Alliance · RSPO",
       fotoAlt: "Quattro colleghe Delsigel abbracciate e sorridenti in laboratorio",
     },
@@ -527,10 +525,10 @@ export const it: Testi = {
         },
         unione: {
           titolo: "L'ossimoro",
-          sottotitolo: "Industria artigianale",
+          sottotitolo: "Industria della tradizione",
           descrizione:
-            "Sembra una contraddizione, ma è il nostro segreto. Abbiamo unito il cuore e le ricette della pasticceria artigianale alla precisione delle tecnologie più avanzate. Il risultato? Prodotti che conservano l'amore e il gusto autentico del fatto a mano.",
-          frase: "Mani d'artigiano, passo d'industria.",
+            "Sembra una contraddizione, ma è il nostro segreto. Abbiamo unito il cuore e le ricette della pasticceria alla precisione delle tecnologie più avanzate. Il risultato? Prodotti che conservano l'amore e il gusto autentico del fatto con cura.",
+          frase: "Cura quotidiana, passo d'industria.",
           alt: "Composizione editoriale evocativa di due pasticceri che uniscono le mani sul banco",
         },
         qualita: {
@@ -553,13 +551,13 @@ export const it: Testi = {
           titolo: "2026",
           sottotitolo: "La nuova generazione",
           descrizione:
-            "Le grandi storie aziendali sono fatte di cicli naturali e di evoluzione. Entra in azienda la seconda generazione. La squadra si arricchisce di forze giovani, pronte a proseguire il percorso aziendale. La promessa: passano i testimoni, ma la formula di artigianalità e tecnologia resta la stessa. Ogni giorno.",
+            "Le grandi storie aziendali sono fatte di cicli naturali e di evoluzione. Entra in azienda la seconda generazione. La squadra si arricchisce di forze giovani, pronte a proseguire il percorso aziendale. La promessa: passano i testimoni, ma la formula di tradizionalità e tecnologia resta la stessa. Ogni giorno.",
           frase: "",
           alt: "Composizione editoriale evocativa del passaggio di un ricettario tra due generazioni",
         },
         futuro: {
           titolo: "28 milioni",
-          sottotitolo: "Il piano 2026–27",
+          sottotitolo: "Il piano 2026–2028",
           descrizione:
             "Abbiamo già tracciato la rotta per i prossimi anni. Nuovi investimenti per il 2027 permetteranno di raddoppiare la capacità produttiva. Nuove idee trasformate in nuovi prodotti, fedeli alla nostra identità.",
           frase: "",
@@ -581,7 +579,7 @@ export const it: Testi = {
     squadra: {
       titolo: "La squadra.",
       testo:
-        "Ventuno volti, un solo laboratorio: l'industria artigianale al completo, dal 1960.",
+        "Tanti volti, un solo laboratorio.",
       scritta: "una squadra coi fiocchi!",
       indietro: "Scorri la squadra indietro",
       avanti: "Scorri la squadra avanti",
@@ -602,7 +600,7 @@ export const it: Testi = {
       ritratto: "{nome}, {ruolo} Delsigel",
     },
     marquee:
-      "Delsigel / L'industria artigianale / Innovazione e Tradizione / Dal 1960 / ",
+      "Delsigel / Innovazione e Tradizione / Dal 1960 / ",
   },
 
   contatti: {
@@ -761,14 +759,14 @@ export const it: Testi = {
 
   metadata: {
     home: {
-      titolo: "Delsigel Italia · L'industria artigianale",
+      titolo: "Delsigel Italia. Tradizione e innovazione",
       descrizione:
-        "Delsigel, l'industria artigianale: innovativa e buona per tutti. Dolci e salati da laboratorio, prodotti su scala, dal 1960. Scopri il catalogo 2026/27.",
+        "Delsigel: tradizione, innovazione e qualità. Dolci e salati da laboratorio, prodotti su scala, dal 1960. Scopri il catalogo 2026/27.",
     },
     chiSiamo: {
       titolo: "Chi siamo · Delsigel Italia",
       descrizione:
-        "Il team Delsigel e la linea produttiva: l'industria artigianale di Sermoneta, dal 1960.",
+        "Il team Delsigel e la linea produttiva, Sermoneta, dal 1960.",
     },
     contatti: {
       titolo: "Contatti · Delsigel Italia",

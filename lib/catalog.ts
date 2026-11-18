@@ -36,6 +36,8 @@ export type Tipologia = {
   dimensioniVariantiCm?: Record<string, number[]>;
   /** Formati dichiarati a peso: i pezzi si stimano dal peso unitario. */
   cartoniKg?: number[];
+  /** Disabilita il conteggio derivato quando il catalogo dichiara solo i kg. */
+  stimaPezziPerCartone?: boolean;
   pezziPerCartone?: number;
   pezziPerCartoneVarianti?: Record<string, number>;
   axes?: Axis[];
@@ -228,7 +230,7 @@ export const CATALOG: Tipologia[] = [
     code: "N.07",
     name: "Nuvola",
     macro: "dolci",
-    pesiVariantiGr: { cioccolato: 75, crema: 85 },
+    pesiVariantiGr: { cioccolato: 70, crema: 70 },
     slug: "nuvola",
     note: "Il lievitato più leggero della gamma.",
     axes: [
@@ -318,7 +320,7 @@ export const CATALOG: Tipologia[] = [
     image: img("montanarina-pomodoro"),
     variants: {
       classica: img("montanarina-pomodoro"),
-      "mini montanarina": img("montanarina-pomodoro"),
+      "mini montanarina": img("pizzetta-fritta-piccola"),
     },
   },
   {
@@ -358,7 +360,7 @@ export const CATALOG: Tipologia[] = [
     cartoniKg: [3],
     dimensioniCm: [7],
     note: "Soffice e dorata, pronta da gustare.",
-    image: img("pizzetta-fritta-piccola"),
+    image: img("pizzetta-fritta-novembre-2026"),
   },
   {
     code: "N.15",
@@ -386,6 +388,7 @@ export const CATALOG: Tipologia[] = [
     macro: "salati",
     slug: "rustici",
     cartoniKg: [3, 6],
+    stimaPezziPerCartone: false,
     dimensioniCm: [5, 3],
     pesoGr: 18,
     note: "Sei ripieni su base sfoglia.",
@@ -422,7 +425,7 @@ export const CATALOG: Tipologia[] = [
     pezziPerCartone: 120,
     pesoGr: 16,
     note: "La sfoglia monoporzione da farcire.",
-    image: img("vol-au-vent"),
+    image: img("vol-au-vent-novembre-2026"),
   },
 ];
 

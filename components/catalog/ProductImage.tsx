@@ -39,6 +39,7 @@ export function ProductImage({
         unoptimized={src.endsWith(".JPG")}
         alt={alt}
         fill
+        quality={90}
         sizes="(max-width: 640px) 60vw, (max-width: 1279px) 40vw, 28vw"
         className="object-contain object-bottom"
       />

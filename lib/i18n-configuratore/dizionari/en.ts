@@ -13,7 +13,7 @@ export const en: Testi = {
     preloader: { caricamento: "loading experience", stato: "Loading the Delsigel experience: {pct}%" },
   },
   footer: {
-    tagline: "Sermoneta's craft industry, since 1960.",
+    tagline: "Industry rooted in tradition, Sermoneta, since 1960.",
     colonne: {
       delsigel: { titolo: "Delsigel", chiSiamo: "About us", storia: "Our story", contatti: "Contact" },
       prodotti: { titolo: "Products", dolci: "Our sweet range", salati: "Our savoury range", catalogo: "2026/27 catalogue" },
@@ -27,13 +27,13 @@ export const en: Testi = {
     termini: "Terms", privacy: "Privacy", cookie: "Cookies", credito: "Design & Development · Hoverture",
   },
   hero: {
-    insegna: [{ testo: "Craft" }, { testo: "industry." }, { testo: "Tradition is", accento: true }, { testo: "innovation.", accento: true }],
+    insegna: [{ testo: "Tradition is", accento: true }, { testo: "innovation.", accento: true }],
     alt: "Intriko, Delsigel's signature pastry, between a coral ribbon and a cocoa-coloured set.",
   },
   home: {
     storia: {
-      eyebrow: "Our story", luogo: "Delsigel · Sermoneta", titolo: ["One oven burning,", "13 million pastries later."],
-      testo: "Del Monte and Siani met in 2011. Today, Delsigel is an IFS Food, Rainforest Alliance and RSPO-certified craft industry, with a new generation at the bench and a plan to double capacity.",
+      eyebrow: "Our story", luogo: "Delsigel · Sermoneta", titolo: ["200 million pastries later."],
+      testo: "Del Monte and Siani met in 2011. Today, Delsigel is an IFS Food, Rainforest Alliance and RSPO-certified industry, with a new generation at the bench and a plan to double capacity.",
       cta: "Discover our story", prossimoLabel: "Next chapter", prossimoNome: "2026/27 catalogue", continuaAria: "Continue to the 2026/27 catalogue",
     },
     catalogoAria: "Delsigel sweet products catalogue", gammaAria: "Delsigel product catalogue",
@@ -197,7 +197,7 @@ export const en: Testi = {
   },
   chiSiamo: {
     intro: {
-      eyebrow: "About us · Delsigel Italia", titolo: [{ testo: "A craft" }, { testo: "industry" }, { testo: "in Sermoneta" }],
+      eyebrow: "About us · Delsigel Italia", titolo: [{ testo: "An industry" }, { testo: "rooted in tradition" }, { testo: "in Sermoneta" }],
       sigillo: "since 1960 · IFS Food · Rainforest Alliance · RSPO",
       fotoAlt: "Four Delsigel colleagues smiling and embracing in the bakery",
     },
@@ -207,17 +207,17 @@ export const en: Testi = {
       marquee: ["hands", "time", "care", "ingredients", "future"], progressoScorri: "scroll to continue",
       tappe: {
         origini: { titolo: "2011", sottotitolo: "The meeting", descrizione: "Del Monte, master of sweet fried pastries. Siani, a name built on puff pastry. In 2011, two established confectionery businesses brought recipes and expertise together: Delsigel was born in Sermoneta.", frase: "Two passions, one great excellence.", alt: "Evocative editorial composition of a pastry chef opening an oven at dawn" },
-        unione: { titolo: "The oxymoron", sottotitolo: "Craft industry", descrizione: "It sounds like a contradiction, but it is our secret. We have united the heart and the recipes of craft pastry-making with the precision of the most advanced technology. The result? Products that keep the love and authentic taste of handmade work.", frase: "Craft hands, industrial pace.", alt: "Evocative editorial composition of two pastry chefs joining hands over a workbench" },
+        unione: { titolo: "The oxymoron", sottotitolo: "Industry rooted in tradition", descrizione: "It sounds like a contradiction, but it is our secret. We have united the heart and the recipes of pastry-making with the precision of the most advanced technology. The result? Products that keep the love and authentic taste of carefully made products.", frase: "Daily care, industrial pace.", alt: "Evocative editorial composition of two pastry chefs joining hands over a workbench" },
         qualita: { titolo: "Quality", sottotitolo: "Certified, every day", descrizione: "Selected raw materials and verification of every production process through the strictest international standards: food safety, guaranteed by IFS Food certification; environmental protection, supported by Rainforest Alliance standards; ethics and sustainability, certified by RSPO in respect of those who grow our ingredients.", frase: "Certified by those who take no shortcuts.", alt: "Evocative editorial composition of hands folding puff pastry on a floured bench" },
         traguardo: { titolo: "13 million", sottotitolo: "2025 · Intriko", descrizione: "In 2025 we reached an extraordinary milestone: 13 million Intriko born from the union of the strength of our machines and the care of manual work.", frase: "", alt: "Evocative editorial composition of a pastry chef monitoring a modern production line" },
-        generazione: { titolo: "2026", sottotitolo: "The new generation", descrizione: "Great company stories are made of natural cycles and evolution. The second generation joins the company. The team grows with young talent, ready to carry the company's path forward. The promise: the hands change, but the formula of craft and technology stays the same. Every day.", frase: "", alt: "Evocative editorial composition of a recipe book passing between two generations" },
-        futuro: { titolo: "25 million", sottotitolo: "The 2026–27 plan", descrizione: "We have already charted the course for the coming years. New investments in 2027 will double our production capacity. New ideas turned into new products, true to our identity.", frase: "", alt: "Evocative editorial composition of a team of pastry chefs at work" },
+        generazione: { titolo: "2026", sottotitolo: "The new generation", descrizione: "Great company stories are made of natural cycles and evolution. The second generation joins the company. The team grows with young talent, ready to carry the company's path forward. The promise: the hands change, but the formula of tradition and technology stays the same. Every day.", frase: "", alt: "Evocative editorial composition of a recipe book passing between two generations" },
+        futuro: { titolo: "25 million", sottotitolo: "The 2026–2028 plan", descrizione: "We have already charted the course for the coming years. New investments in 2027 will double our production capacity. New ideas turned into new products, true to our identity.", frase: "", alt: "Evocative editorial composition of a team of pastry chefs at work" },
       },
       certificazioni: { ifs: "IFS Food certification logo — International Featured Standards", rainforest: "Rainforest Alliance logo, People & Nature", rspo: "RSPO mark — Certified Sustainable Palm Oil" },
       finale: { eyebrow: "The story continues", frase: ["The hands change.", "The care does not."], coda: "Since 1960, in Sermoneta · our best, every day" }, azione: "Meet the team",
     },
     squadra: {
-      titolo: "The team.", testo: "Twenty-one faces, one bakery: the whole craft industry, together since 1960.", scritta: "a truly brilliant team!",
+      titolo: "The team.", testo: "Many faces, one bakery.", scritta: "a truly brilliant team!",
       indietro: "Scroll the team backwards", avanti: "Scroll the team forwards", anniIn: "years at Delsigel", reparto: "department",
       ruoli: {
         Fornaio: "Baker", Decoratrice: "Decorator", Impastatore: "Dough maker", Sfoglina: "Pastry maker", Pasticcere: "Pastry chef", Farcitrice: "Filling specialist",
@@ -229,7 +229,7 @@ export const en: Testi = {
       ritratto: "{nome}, Delsigel {ruolo}",
     },
     nastri: ["From the flour sack to the seal", "Five stations · one standard", "No shortcuts ★★★★★"],
-    marquee: "Delsigel / Craft industry / Innovation and Tradition / Since 1960 / ",
+    marquee: "Delsigel / Innovation and Tradition / Since 1960 / ",
     linea: {
       eyebrow: "The technical heart · Sermoneta", titolo: [{ testo: "The production" }, { testo: "line" }],
       testo: "Five stations in line, one standard for every batch: the technological heart of the company, keeping consistent quality and on-time deliveries together.",
@@ -289,8 +289,8 @@ export const en: Testi = {
     vassoio: { label: "The classic", alt: "A hand takes one of two filled doughnuts from an oval tray against a yellow background" },
   },
   metadata: {
-    home: { titolo: "Delsigel Italia · Craft industry", descrizione: "Delsigel, the craft industry: innovative and made for everyone. Sweet and savoury bakery products, crafted at scale since 1960. Discover the 2026/27 catalogue." },
-    chiSiamo: { titolo: "About us · Delsigel Italia", descrizione: "The Delsigel team and production line: Sermoneta's craft industry, since 1960." },
+    home: { titolo: "Delsigel Italia. Tradition and innovation", descrizione: "Delsigel: tradition, innovation and quality. Sweet and savoury bakery products, made at scale since 1960. Discover the 2026/27 catalogue." },
+    chiSiamo: { titolo: "About us · Delsigel Italia", descrizione: "The Delsigel team and production line, Sermoneta, since 1960." },
     contatti: { titolo: "Contact · Delsigel Italia", descrizione: "Request the price list, book a factory visit or contact Delsigel in Sermoneta, Italy." },
     configuratore: {
       radiceTitolo: "Pastry configurator · Delsigel Italia", radiceDescrizione: "Create and share your virtual pastry with your choice of base, filling, ingredients and finish.",

@@ -12,7 +12,7 @@ export const de: Testi = {
     preloader: { caricamento: "Erlebnis wird geladen", stato: "Delsigel-Erlebnis wird geladen: {pct} %" },
   },
   footer: {
-    ...en.footer, tagline: "Das handwerkliche Industrieunternehmen aus Sermoneta, seit 1960.",
+    ...en.footer, tagline: "Industrie mit Tradition, Sermoneta, seit 1960.",
     colonne: {
       delsigel: { titolo: "Delsigel", chiSiamo: "Über uns", storia: "Unsere Geschichte", contatti: "Kontakt" },
       prodotti: { titolo: "Produkte", dolci: "Unsere süßen Produkte", salati: "Unsere herzhaften Produkte", catalogo: "Katalog 2026/27" },
@@ -24,12 +24,12 @@ export const de: Testi = {
     legale: "© 2026 Delsigel Italia S.r.l. · USt-IdNr. 02241670591", termini: "Bedingungen", privacy: "Datenschutz", cookie: "Cookies",
   },
   hero: {
-    insegna: [{ testo: "Handwerkliche" }, { testo: "Industrie." }, { testo: "Tradition ist", accento: true }, { testo: "Innovation.", accento: true }],
+    insegna: [{ testo: "Tradition ist", accento: true }, { testo: "Innovation.", accento: true }],
     alt: "Intriko, das Aushängeschild von Delsigel, zwischen einem korallfarbenen Band und einer kakaofarbenen Kulisse.",
   },
   home: {
     ...en.home,
-    storia: { eyebrow: "Unsere Geschichte", luogo: "Delsigel · Sermoneta", titolo: ["Ein brennender Ofen,", "13 Millionen Gebäcke später."], testo: "2011 begegneten sich Del Monte und Siani. Heute ist Delsigel ein nach IFS Food, Rainforest Alliance und RSPO zertifiziertes handwerkliches Industrieunternehmen – mit einer neuen Generation am Werktisch und dem Plan, die Kapazität zu verdoppeln.", cta: "Unsere Geschichte entdecken", prossimoLabel: "Nächstes Kapitel", prossimoNome: "Katalog 2026/27", continuaAria: "Weiter zum Katalog 2026/27" },
+    storia: { eyebrow: "Unsere Geschichte", luogo: "Delsigel · Sermoneta", titolo: ["200 Millionen Gebäcke später."], testo: "2011 begegneten sich Del Monte und Siani. Heute ist Delsigel ein nach IFS Food, Rainforest Alliance und RSPO zertifiziertes Industrieunternehmen – mit einer neuen Generation am Werktisch und dem Plan, die Kapazität zu verdoppeln.", cta: "Unsere Geschichte entdecken", prossimoLabel: "Nächstes Kapitel", prossimoNome: "Katalog 2026/27", continuaAria: "Weiter zum Katalog 2026/27" },
     catalogoAria: "Delsigel-Katalog süßer Produkte", gammaAria: "Delsigel-Produktkatalog",
     dolci: { eyebrow: "Katalog 2026/27", titolo: "Unsere", titoloAccento: "süßen Produkte.", promessa: "Einfache Rezepte, ausgewählte Zutaten und viel Leidenschaft. Jeden Tag Gebäck, das wirklich gut schmeckt.", tipologie: "{n} Produkttypen", varianti: "{n} Varianten" },
     salati: { eyebrow: "Katalog 2026/27", titolo: "Unsere", titoloAccento: "herzhaften Produkte.", promessa: "Tradition, Geschmack und Kreativität in jedem Rezept. Herzhafte Snacks, die jede Pause besonders machen.", tipologie: "{n} Produkttypen", varianti: "{n} Varianten" },
@@ -168,25 +168,25 @@ export const de: Testi = {
   },
   chiSiamo: {
     ...en.chiSiamo,
-    intro: { eyebrow: "Über uns · Delsigel Italia", titolo: [{ testo: "Handwerkliche" }, { testo: "Industrie" }, { testo: "in Sermoneta" }], sigillo: "seit 1960 · IFS Food · Rainforest Alliance · RSPO", fotoAlt: "Vier lächelnde Delsigel-Mitarbeiterinnen, die sich in der Backstube umarmen" },
+    intro: { eyebrow: "Über uns · Delsigel Italia", titolo: [{ testo: "Industrie" }, { testo: "mit Tradition" }, { testo: "in Sermoneta" }], sigillo: "seit 1960 · IFS Food · Rainforest Alliance · RSPO", fotoAlt: "Vier lächelnde Delsigel-Mitarbeiterinnen, die sich in der Backstube umarmen" },
     album: "Das Album aus dem Werk:",
     storia: {
       ...en.chiSiamo.storia,
       eyebrow: "Delsigel · seit 1960", titolo: ["Unsere", "Geschichte"], testo: "Sechs Kapitel mit echten Zahlen und echten Händen. Und ein Versprechen, das bleibt: jeden Tag unser Bestes zu geben.", marquee: ["Hände", "Zeit", "Sorgfalt", "Zutaten", "Zukunft"], progressoScorri: "zum Fortfahren scrollen",
       tappe: {
         origini: { titolo: "2011", sottotitolo: "Die Begegnung", descrizione: "Del Monte, Meisterin des süßen frittierten Gebäcks. Siani, ein Name für Blätterteig. 2011 verbinden zwei etablierte Konditoreibetriebe Rezepte und Können: Delsigel entsteht in Sermoneta.", frase: "Zwei Leidenschaften, eine große Exzellenz.", alt: "Stimmungsvolle redaktionelle Komposition eines Konditors, der im Morgengrauen den Ofen öffnet" },
-        unione: { titolo: "Das Oxymoron", sottotitolo: "Handwerkliche Industrie", descrizione: "Es klingt wie ein Widerspruch, ist aber unser Geheimnis. Wir haben das Herz und die Rezepte der handwerklichen Konditorei mit der Präzision modernster Technologie vereint. Das Ergebnis? Produkte, die die Liebe und den authentischen Geschmack von Handarbeit bewahren.", frase: "Handwerkliche Hände, industrielles Tempo.", alt: "Stimmungsvolle redaktionelle Komposition zweier Konditoren, die über der Arbeitsfläche die Hände zusammenlegen" },
+        unione: { titolo: "Das Oxymoron", sottotitolo: "Industrie mit Tradition", descrizione: "Es klingt wie ein Widerspruch, ist aber unser Geheimnis. Wir haben das Herz und die Rezepte der Konditorei mit der Präzision modernster Technologie vereint. Das Ergebnis? Produkte, die die Liebe und den authentischen Geschmack sorgfältig gefertigter Produkte bewahren.", frase: "Tägliche Sorgfalt, industrielles Tempo.", alt: "Stimmungsvolle redaktionelle Komposition zweier Konditoren, die über der Arbeitsfläche die Hände zusammenlegen" },
         qualita: { titolo: "Qualität", sottotitolo: "Jeden Tag zertifiziert", descrizione: "Ausgewählte Rohstoffe und Überprüfung jedes Produktionsprozesses nach den strengsten internationalen Standards: Lebensmittelsicherheit, garantiert durch die IFS-Food-Zertifizierung; Umweltschutz, unterstützt durch die Rainforest-Alliance-Standards; Ethik und Nachhaltigkeit, zertifiziert von RSPO aus Respekt vor denen, die anbauen.", frase: "Zertifiziert von denen, die keine Kompromisse machen.", alt: "Stimmungsvolle redaktionelle Komposition von Händen, die Blätterteig auf einer bemehlten Fläche falten" },
         traguardo: { titolo: "13 Millionen", sottotitolo: "2025 · Intriko", descrizione: "2025 haben wir einen außergewöhnlichen Meilenstein erreicht: 13 Millionen Intriko, entstanden aus der Verbindung der Kraft unserer Maschinen und der Sorgfalt der Handarbeit.", frase: "", alt: "Stimmungsvolle redaktionelle Komposition eines Konditors, der eine moderne Linie überwacht" },
-        generazione: { titolo: "2026", sottotitolo: "Die neue Generation", descrizione: "Große Unternehmensgeschichten bestehen aus natürlichen Zyklen und Weiterentwicklung. Die zweite Generation tritt in das Unternehmen ein. Das Team wächst mit jungen Kräften, bereit, den unternehmerischen Weg fortzusetzen. Das Versprechen: Die Hände wechseln, doch die Formel aus Handwerk und Technologie bleibt dieselbe. Jeden Tag.", frase: "", alt: "Stimmungsvolle redaktionelle Komposition eines Rezeptbuchs, das zwischen zwei Generationen weitergegeben wird" },
-        futuro: { titolo: "25 Millionen", sottotitolo: "Der Plan 2026–27", descrizione: "Wir haben den Kurs für die kommenden Jahre bereits festgelegt. Neue Investitionen im Jahr 2027 werden es ermöglichen, die Produktionskapazität zu verdoppeln. Neue Ideen, umgesetzt in neue Produkte, treu unserer Identität.", frase: "", alt: "Stimmungsvolle redaktionelle Komposition eines arbeitenden Konditorenteams" },
+        generazione: { titolo: "2026", sottotitolo: "Die neue Generation", descrizione: "Große Unternehmensgeschichten bestehen aus natürlichen Zyklen und Weiterentwicklung. Die zweite Generation tritt in das Unternehmen ein. Das Team wächst mit jungen Kräften, bereit, den unternehmerischen Weg fortzusetzen. Das Versprechen: Die Hände wechseln, doch die Formel aus Tradition und Technologie bleibt dieselbe. Jeden Tag.", frase: "", alt: "Stimmungsvolle redaktionelle Komposition eines Rezeptbuchs, das zwischen zwei Generationen weitergegeben wird" },
+        futuro: { titolo: "25 Millionen", sottotitolo: "Der Plan 2026–2028", descrizione: "Wir haben den Kurs für die kommenden Jahre bereits festgelegt. Neue Investitionen im Jahr 2027 werden es ermöglichen, die Produktionskapazität zu verdoppeln. Neue Ideen, umgesetzt in neue Produkte, treu unserer Identität.", frase: "", alt: "Stimmungsvolle redaktionelle Komposition eines arbeitenden Konditorenteams" },
       },
       certificazioni: { ifs: "Logo der IFS-Food-Zertifizierung — International Featured Standards", rainforest: "Rainforest-Alliance-Logo, People & Nature", rspo: "RSPO-Zeichen — Certified Sustainable Palm Oil" },
       finale: { eyebrow: "Die Geschichte geht weiter", frase: ["Die Hände wechseln.", "Die Sorgfalt bleibt."], coda: "Seit 1960 in Sermoneta · jeden Tag unser Bestes" }, azione: "Team kennenlernen",
     },
     squadra: {
       ...en.chiSiamo.squadra,
-      titolo: "Das Team.", testo: "Einundzwanzig Gesichter, eine Backstube: die ganze handwerkliche Industrie, seit 1960.", scritta: "ein großartiges Team!", indietro: "Im Team zurückblättern", avanti: "Im Team vorblättern", anniIn: "Jahre bei Delsigel", reparto: "Bereich",
+      titolo: "Das Team.", testo: "Viele Gesichter, eine Backstube.", scritta: "ein großartiges Team!", indietro: "Im Team zurückblättern", avanti: "Im Team vorblättern", anniIn: "Jahre bei Delsigel", reparto: "Bereich",
       ruoli: {
         Fornaio: "Bäcker", Decoratrice: "Dekorateurin", Impastatore: "Teigmacher", Sfoglina: "Blätterteigspezialistin", Pasticcere: "Konditor", Farcitrice: "Füllspezialistin", "Addetta linea": "Linienmitarbeiterin", "L'anima del lab": "Die Seele der Backstube",
         "Controllo qualità": "Qualitätskontrolle", "Mastro fornaio": "Bäckermeister", Glassatrice: "Glasiererin", "Addetto linea": "Linienmitarbeiter", "Capo turno": "Schichtleiterin", Manutentore: "Instandhalter", Mulettista: "Staplerfahrer",
@@ -194,7 +194,7 @@ export const de: Testi = {
       },
       reparti: { Forni: "Öfen", Dolci: "Süßwaren", Farina: "Teig", Linea: "Linie", Lab: "Backstube", Motori: "Technik", Scorte: "Lager", Cella: "Kühlraum", Uffici: "Büros" }, ritratto: "{nome}, {ruolo} bei Delsigel",
     },
-    nastri: ["Vom Mehlsack bis zum Siegel", "Fünf Stationen · ein Standard", "Keine Abkürzungen ★★★★★"], marquee: "Delsigel / Handwerkliche Industrie / Innovation und Tradition / Seit 1960 / ",
+    nastri: ["Vom Mehlsack bis zum Siegel", "Fünf Stationen · ein Standard", "Keine Abkürzungen ★★★★★"], marquee: "Delsigel / Innovation und Tradition / Seit 1960 / ",
     linea: {
       ...en.chiSiamo.linea,
       eyebrow: "Das technische Herz · Sermoneta", titolo: [{ testo: "Die Produktions-" }, { testo: "linie" }], testo: "Fünf Stationen in einer Linie, ein Standard für jede Charge: das technologische Herz des Unternehmens, das gleichbleibende Qualität und pünktliche Lieferungen verbindet.",
@@ -233,8 +233,8 @@ export const de: Testi = {
     vassoio: { label: "Der Klassiker", alt: "Eine Hand nimmt einen von zwei gefüllten Krapfen von einem ovalen Tablett vor gelbem Hintergrund" },
   },
   metadata: {
-    home: { titolo: "Delsigel Italia · Handwerkliche Industrie", descrizione: "Delsigel, das handwerkliche Industrieunternehmen: innovativ und für alle. Süße und herzhafte Backwaren, seit 1960 in großer Menge gefertigt. Entdecken Sie den Katalog 2026/27." },
-    chiSiamo: { titolo: "Über uns · Delsigel Italia", descrizione: "Das Delsigel-Team und die Produktionslinie: handwerkliche Industrie aus Sermoneta, seit 1960." }, contatti: { titolo: "Kontakt · Delsigel Italia", descrizione: "Fordern Sie die Preisliste an, vereinbaren Sie eine Werksbesichtigung oder kontaktieren Sie Delsigel in Sermoneta, Italien." },
+    home: { titolo: "Delsigel Italia. Tradition und Innovation", descrizione: "Delsigel: Tradition, Innovation und Qualität. Süße und herzhafte Backwaren, seit 1960 in großer Menge gefertigt. Entdecken Sie den Katalog 2026/27." },
+    chiSiamo: { titolo: "Über uns · Delsigel Italia", descrizione: "Das Delsigel-Team und die Produktionslinie, Sermoneta, seit 1960." }, contatti: { titolo: "Kontakt · Delsigel Italia", descrizione: "Fordern Sie die Preisliste an, vereinbaren Sie eine Werksbesichtigung oder kontaktieren Sie Delsigel in Sermoneta, Italien." },
     configuratore: { radiceTitolo: "Gebäckkonfigurator · Delsigel Italia", radiceDescrizione: "Kreieren und teilen Sie Ihr virtuelles Gebäck mit Basis, Füllung, Zutaten und Veredelung Ihrer Wahl.", baseTitolo: "{base} · Delsigel-Konfigurator", baseDescrizione: "Wählen Sie die Füllung für {base} und kreieren Sie Ihr virtuelles Gebäck.", combTitolo: "{nome} · {farcitura} · Delsigel-Konfigurator", combDescrizione: "{nome} mit {farcitura}, {credenza} und Finish {finitura}. Kreieren und teilen Sie Ihr virtuelles Gebäck." },
   },
 };

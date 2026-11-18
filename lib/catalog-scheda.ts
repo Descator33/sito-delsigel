@@ -55,6 +55,7 @@ export type Scheda = {
   peso?: string;
   pezziPerCartone?: number;
   cartoniStimati?: { pesoKg: number; pezzi: number; approssimato: boolean }[];
+  cartoniKg?: number[];
   modalitaUso?: string;
   /** i prodotti finiti a catalogo */
   gamma: { label: string; varianti: Variante[] }[];
@@ -153,13 +154,16 @@ export function schedaDi(t: Tipologia, lingua: Lingua, testi: Testi): Scheda {
     gamma: gammaCatalogo,
     formato: t.dimensioniCm ? formato(t.dimensioniCm) : undefined,
     pezziPerCartone: t.pezziPerCartone,
-    cartoniStimati: t.pesoGr ? t.cartoniKg?.map((pesoKg) => ({
+    cartoniKg: t.cartoniKg,
+    cartoniStimati: t.pesoGr && t.stimaPezziPerCartone !== false ? t.cartoniKg?.map((pesoKg) => ({
       pesoKg,
       pezzi: Math.ceil(pesoKg * 1000 / t.pesoGr!),
       approssimato: pesoKg * 1000 % t.pesoGr! !== 0,
     })) : undefined,
     peso: t.pesoGr != null ? `${numero(t.pesoGr)} g` : pesi.length && t.axes?.every((a) => a.values.every((v) => t.pesiVariantiGr?.[v] != null))
-      ? `${numero(Math.min(...pesi))}–${numero(Math.max(...pesi))} g`
+      ? Math.min(...pesi) === Math.max(...pesi)
+        ? `${numero(pesi[0])} g`
+        : `${numero(Math.min(...pesi))}–${numero(Math.max(...pesi))} g`
       : undefined,
   };
 

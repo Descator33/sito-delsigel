@@ -36,6 +36,25 @@ require.extensions[".ts"] = (m, f) =>
     f,
   );
 const c = require("../lib/configuratore.ts");
+
+test("le schede rispettano i pesi Nuvola aggiornati senza stimare pezzi per i Rustici", () => {
+  const { CATALOG } = require("../lib/catalog.ts");
+  const { schedaDi } = require("../lib/catalog-scheda.ts");
+  for (const lingua of ["it", "en", "fr", "de", "fi"]) {
+    const testi = require(`../lib/i18n/dizionari/${lingua}.ts`)[lingua];
+    const nuvola = schedaDi(CATALOG.find((t) => t.slug === "nuvola"), lingua, testi);
+    assert.equal(nuvola.peso, "70 g");
+    assert.deepEqual(nuvola.gamma.flatMap((g) => g.varianti.map((v) => v.peso)), ["70 g", "70 g"]);
+    const rustici = schedaDi(CATALOG.find((t) => t.slug === "rustici"), lingua, testi);
+    assert.equal(rustici.cartoniStimati, undefined);
+    assert.equal(rustici.pezziPerCartone, undefined);
+    assert.deepEqual(rustici.cartoniKg, [3, 6]);
+    assert.equal(rustici.peso, "18 g");
+    const pizzetta = schedaDi(CATALOG.find((t) => t.slug === "pizzetta-fritta"), lingua, testi);
+    assert.equal(pizzetta.cartoniStimati[0].pezzi, 75);
+  }
+});
+
 test("tutte le ricette, prefissi e lingue restano coerenti", () => {
   for (const ricetta of c.DATASET.combinazioni) {
     const a = [

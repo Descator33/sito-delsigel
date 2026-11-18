@@ -49,14 +49,14 @@ export function Intro() {
         {/* targa esagonale a cavallo del confine */}
         <div
           data-scatto
-          className="relative z-20 mx-auto -mt-28 w-[min(94vw,620px)] md:-mt-40"
+          className="relative z-20 mx-auto -mt-28 w-full max-w-[620px] md:-mt-40"
         >
           <div
             className="bg-inchiostro p-[3px] drop-shadow-[0_26px_50px_rgba(22,6,1,0.35)]"
             style={{ clipPath: HEX }}
           >
             <div
-              className="relative flex flex-col items-center gap-3 bg-panna px-12 py-10 text-center md:px-16 md:py-12"
+              className="relative flex flex-col items-center gap-3 bg-panna px-[9%] py-10 text-center md:px-16 md:py-12"
               style={{ clipPath: HEX }}
             >
               <span aria-hidden className="absolute left-[5%] top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-inchiostro" />
@@ -64,7 +64,7 @@ export function Intro() {
               <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-inchiostro/70">
                 {testi.eyebrow}
               </p>
-              <h1 className="type-display text-[clamp(2rem,4.2vw,3.4rem)] leading-[0.95] text-inchiostro">
+              <h1 className="type-display w-full min-w-0 text-[clamp(1.125rem,6vw,3.4rem)] leading-[0.95] text-inchiostro md:text-[clamp(2rem,4.2vw,3.4rem)]">
                 {testi.titolo.map((riga, indice) => (
                   <span key={riga.testo} className="block">
                     {riga.testo}

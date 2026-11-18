@@ -88,6 +88,7 @@ function Tessera({ t, onApri, fotoIntere }: { t: Tipologia; onApri: () => void; 
             unoptimized={t.image.endsWith(".JPG") || t.slug === "frittella"}
             alt={`${t.name}: ${nota}`}
             fill
+            quality={90}
             sizes={fotoPanoramica ? "(max-width: 640px) 88vw, (max-width: 1279px) 44vw, 22vw" : "(max-width: 640px) 45vw, (max-width: 1279px) 22vw, 12vw"}
             className={`object-contain object-bottom ${t.image.endsWith(".JPG") ? "mix-blend-multiply" : ""} ${t.slug === "frittella" ? "scale-125" : ""}`}
           />

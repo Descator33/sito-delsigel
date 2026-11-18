@@ -137,6 +137,10 @@ function Scheda({
         `${approssimato ? "≈ " : ""}${interpola(testi.catalogo.scheda.pezzi, { n: pezzi })} (${pesoKg} kg)`
       ).join(" · "),
     },
+    !s.cartoniStimati?.length && s.cartoniKg?.length && {
+      voce: testi.catalogo.scheda.perCartone,
+      valore: s.cartoniKg.map((pesoKg) => `${pesoKg} kg`).join(" · "),
+    },
     (variante?.pezziPerCartone ?? s.pezziPerCartone) && {
       voce: testi.catalogo.scheda.perCartone,
       valore: interpola(testi.catalogo.scheda.pezzi, { n: (variante?.pezziPerCartone ?? s.pezziPerCartone)! }),
@@ -167,6 +171,7 @@ function Scheda({
                 : `${t.name}: ${nota ?? testi.prodotti.scattoProdotto}`
             }
             fill
+            quality={90}
             sizes="(max-width: 767px) 92vw, 30vw"
             className={`foto-prodotto object-contain p-8 md:p-10 ${still.endsWith(".JPG") ? "mix-blend-multiply" : ""} ${still.endsWith("/mini-nuvola-crema-velo.png") ? "scale-125" : ""}`}
           />

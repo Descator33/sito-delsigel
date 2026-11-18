@@ -11,7 +11,7 @@ export const fi: Testi = {
     preloader: { caricamento: "elämystä ladataan", stato: "Delsigel-elämystä ladataan: {pct} %" },
   },
   footer: {
-    ...en.footer, tagline: "Sermonetan käsityöteollisuutta vuodesta 1960.",
+    ...en.footer, tagline: "Perinteisiin pohjautuvaa teollisuutta, Sermoneta, vuodesta 1960.",
     colonne: {
       delsigel: { titolo: "Delsigel", chiSiamo: "Meistä", storia: "Tarinamme", contatti: "Yhteystiedot" },
       prodotti: { titolo: "Tuotteet", dolci: "Makeat tuotteemme", salati: "Suolaiset tuotteemme", catalogo: "Kuvasto 2026/27" },
@@ -22,12 +22,12 @@ export const fi: Testi = {
     legale: "© 2026 Delsigel Italia S.r.l. · ALV-tunnus 02241670591", termini: "Ehdot", privacy: "Tietosuoja", cookie: "Evästeet",
   },
   hero: {
-    insegna: [{ testo: "Käsityö-" }, { testo: "teollisuutta." }, { testo: "Perinne on", accento: true }, { testo: "innovaatiota.", accento: true }],
+    insegna: [{ testo: "Perinne on", accento: true }, { testo: "innovaatiota.", accento: true }],
     alt: "Neljä Intriko-vaihtoehtoa punaisilla ja oransseilla jalustoilla.",
   },
   home: {
     ...en.home,
-    storia: { eyebrow: "Tarinamme", luogo: "Delsigel · Sermoneta", titolo: ["13 miljoonaa leivonnaista myöhemmin."], testo: "Del Monte ja Siani kohtasivat vuonna 2011. Nykyään Delsigel on IFS Food-, Rainforest Alliance- ja RSPO-sertifioitu käsityöteollisuusyritys, jossa uusi sukupolvi työskentelee leivontapöydän ääressä ja kapasiteetti aiotaan kaksinkertaistaa.", cta: "Tutustu tarinaamme", prossimoLabel: "Seuraava luku", prossimoNome: "Kuvasto 2026/27", continuaAria: "Jatka kuvastoon 2026/27" },
+    storia: { eyebrow: "Tarinamme", luogo: "Delsigel · Sermoneta", titolo: ["200 miljoonaa leivonnaista myöhemmin."], testo: "Del Monte ja Siani kohtasivat vuonna 2011. Nykyään Delsigel on IFS Food-, Rainforest Alliance- ja RSPO-sertifioitu teollisuusyritys, jossa uusi sukupolvi työskentelee leivontapöydän ääressä ja kapasiteetti aiotaan kaksinkertaistaa.", cta: "Tutustu tarinaamme", prossimoLabel: "Seuraava luku", prossimoNome: "Kuvasto 2026/27", continuaAria: "Jatka kuvastoon 2026/27" },
     catalogoAria: "Delsigelin makeiden tuotteiden kuvasto", gammaAria: "Delsigelin tuotekuvasto",
     dolci: { eyebrow: "Kuvasto 2026/27", titolo: "Makeat", titoloAccento: "tuotteemme.", promessa: "Yksinkertaiset reseptit, valikoidut raaka-aineet ja paljon intohimoa. Aidosti herkullisia leivonnaisia joka päivä.", tipologie: "{n} tuotetyyppiä", varianti: "{n} vaihtoehtoa" },
     salati: { eyebrow: "Kuvasto 2026/27", titolo: "Suolaiset", titoloAccento: "tuotteemme.", promessa: "Perinnettä, makua ja luovuutta jokaisessa reseptissä. Suolaisia herkkuja jokaiseen taukoon.", tipologie: "{n} tuotetyyppiä", varianti: "{n} vaihtoehtoa" },
@@ -84,28 +84,28 @@ export const fi: Testi = {
   },
   chiSiamo: {
     ...en.chiSiamo,
-    intro: { eyebrow: "Meistä · Delsigel Italia", titolo: [{ testo: "Sermonetan" }, { testo: "käsityö-" }, { testo: "teollisuus" }], sigillo: "vuodesta 1960 · IFS Food · Rainforest Alliance · RSPO", fotoAlt: "Neljä hymyilevää Delsigelin työntekijää halaamassa leipomossa" },
+    intro: { eyebrow: "Meistä · Delsigel Italia", titolo: [{ testo: "Perinteisiin pohjautuvaa" }, { testo: "teollisuutta" }, { testo: "Sermonetassa" }], sigillo: "vuodesta 1960 · IFS Food · Rainforest Alliance · RSPO", fotoAlt: "Neljä hymyilevää Delsigelin työntekijää halaamassa leipomossa" },
     album: "Kuvia tehtaalta:",
     storia: {
       ...en.chiSiamo.storia,
       eyebrow: "Delsigel · vuodesta 1960", titolo: ["Meidän", "tarinamme"], testo: "Kuusi lukua täynnä oikeita lukuja ja oikeita käsiä. Yksi lupaus ei muutu: teemme parhaamme joka päivä.", marquee: ["kädet", "aika", "huolenpito", "raaka-aine", "tulevaisuus"], progressoScorri: "jatka vierittämällä",
       tappe: {
         origini: { titolo: "2011", sottotitolo: "Kohtaaminen", descrizione: "Del Monte hallitsi makeat uppopaistetut leivonnaiset, Siani lehtitaikinan. Vuonna 2011 kaksi vakiintunutta leipomoyritystä yhdisti reseptinsä ja osaamisensa: Delsigel syntyi Sermonetassa.", frase: "Kaksi intohimoa, yksi suuri erinomaisuus.", alt: "Tunnelmallinen toimituksellinen kuva kondiittorista avaamassa uunia aamunkoitteessa" },
-        unione: { titolo: "Oksymoroni", sottotitolo: "Käsityöteollisuus", descrizione: "Se kuulostaa ristiriidalta, mutta se on salaisuutemme. Olemme yhdistäneet käsityöläiskonditorian sydämen ja reseptit kehittyneimmän teknologian tarkkuuteen. Lopputulos? Tuotteita, jotka säilyttävät käsin tehdyn työn rakkauden ja aidon maun.", frase: "Käsityöläisen kädet, teollisuuden tahti.", alt: "Tunnelmallinen toimituksellinen kuva kahdesta kondiittorista yhdistämässä kätensä työpöydän yllä" },
+        unione: { titolo: "Oksymoroni", sottotitolo: "Perinteisiin pohjautuva teollisuus", descrizione: "Se kuulostaa ristiriidalta, mutta se on salaisuutemme. Olemme yhdistäneet konditorian sydämen ja reseptit kehittyneimmän teknologian tarkkuuteen. Lopputulos? Tuotteita, jotka säilyttävät huolella tehdyn työn rakkauden ja aidon maun.", frase: "Päivittäistä huolenpitoa, teollisuuden tahti.", alt: "Tunnelmallinen toimituksellinen kuva kahdesta kondiittorista yhdistämässä kätensä työpöydän yllä" },
         qualita: { titolo: "Laatu", sottotitolo: "Sertifioitu joka päivä", descrizione: "Valikoidut raaka-aineet ja jokaisen tuotantoprosessin tarkastus tiukimpien kansainvälisten standardien mukaisesti: elintarviketurvallisuus, jonka takaa IFS Food -sertifikaatti; ympäristönsuojelu, jota tukevat Rainforest Alliance -standardit; etiikka ja kestävyys, jotka sertifioi RSPO viljelijöiden kunnioittamiseksi.", frase: "Sertifioitu niiden toimesta, jotka eivät tingi.", alt: "Tunnelmallinen toimituksellinen kuva käsistä taittelemassa lehtitaikinaa jauhotetulla pöydällä" },
         traguardo: { titolo: "13 miljoonaa", sottotitolo: "2025 · Intriko", descrizione: "Vuonna 2025 saavutimme poikkeuksellisen virstanpylvään: 13 miljoonaa Intrikoa, jotka syntyivät koneidemme voiman ja käsityön huolenpidon yhdistelmästä.", frase: "", alt: "Tunnelmallinen toimituksellinen kuva kondiittorista valvomassa modernia tuotantolinjaa" },
-        generazione: { titolo: "2026", sottotitolo: "Uusi sukupolvi", descrizione: "Suuret yritystarinat rakentuvat luonnollisista sykleistä ja kehityksestä. Toinen sukupolvi liittyy yritykseen. Tiimi vahvistuu nuorista osaajista, jotka ovat valmiita jatkamaan yrityksen matkaa. Lupaus: kädet vaihtuvat, mutta käsityön ja teknologian yhdistelmä pysyy samana. Joka päivä.", frase: "", alt: "Tunnelmallinen toimituksellinen kuva reseptikirjan siirtymisestä sukupolvelta toiselle" },
-        futuro: { titolo: "28 miljoonaa", sottotitolo: "Suunnitelma 2026–27", descrizione: "Olemme jo suunnitelleet suunnan tuleville vuosille. Vuoden 2027 uudet investoinnit mahdollistavat tuotantokapasiteetin kaksinkertaistamisen. Uudet ideat muuttuvat uusiksi tuotteiksi, uskollisina identiteetillemme.", frase: "", alt: "Tunnelmallinen toimituksellinen kuva työskentelevästä kondiittoritiimistä" },
+        generazione: { titolo: "2026", sottotitolo: "Uusi sukupolvi", descrizione: "Suuret yritystarinat rakentuvat luonnollisista sykleistä ja kehityksestä. Toinen sukupolvi liittyy yritykseen. Tiimi vahvistuu nuorista osaajista, jotka ovat valmiita jatkamaan yrityksen matkaa. Lupaus: kädet vaihtuvat, mutta perinteen ja teknologian yhdistelmä pysyy samana. Joka päivä.", frase: "", alt: "Tunnelmallinen toimituksellinen kuva reseptikirjan siirtymisestä sukupolvelta toiselle" },
+        futuro: { titolo: "28 miljoonaa", sottotitolo: "Suunnitelma 2026–2028", descrizione: "Olemme jo suunnitelleet suunnan tuleville vuosille. Vuoden 2027 uudet investoinnit mahdollistavat tuotantokapasiteetin kaksinkertaistamisen. Uudet ideat muuttuvat uusiksi tuotteiksi, uskollisina identiteetillemme.", frase: "", alt: "Tunnelmallinen toimituksellinen kuva työskentelevästä kondiittoritiimistä" },
       },
       certificazioni: { ifs: "IFS Food -sertifioinnin logo — International Featured Standards", rainforest: "Rainforest Alliance -logo, People & Nature", rspo: "RSPO-merkki — Certified Sustainable Palm Oil" }, finale: { eyebrow: "Tarina jatkuu", frase: ["Kädet vaihtuvat.", "Huolenpito säilyy."], coda: "Vuodesta 1960 Sermonetassa · parhaamme joka päivä" }, azione: "Tutustu tiimiin",
     },
     squadra: {
       ...en.chiSiamo.squadra,
-      titolo: "Tiimi.", testo: "Kaksikymmentäyksi kasvoa, yksi leipomo: koko käsityöteollisuus yhdessä vuodesta 1960.", scritta: "aivan loistava tiimi!", indietro: "Selaa tiimiä taaksepäin", avanti: "Selaa tiimiä eteenpäin",
+      titolo: "Tiimi.", testo: "Monet kasvot, yksi leipomo.", scritta: "aivan loistava tiimi!", indietro: "Selaa tiimiä taaksepäin", avanti: "Selaa tiimiä eteenpäin",
       ruoli: { "Ufficio commerciale": "Myyntiosasto", "Responsabile ufficio acquisti e personale": "Osto- ja henkilöstöpäällikkö", "Responsabile di magazzino": "Varastopäällikkö", "Autista": "Kuljettaja", "Direttore stabilimento e manutentore": "Tehtaanjohtaja ja kunnossapito", "Linea produttiva": "Tuotantolinja", "Responsabile impasti": "Taikinavastaava", "Impasto e piega": "Taikina ja taittelu", "Responsabile friggitrice": "Rasvakeittimen vastaava", "Responsabile produzione": "Tuotannon vastaava", "Linea di confezionamento": "Pakkauslinja", "Lavorazione pasta": "Taikinan käsittely" },
       ritratto: "{nome}, Delsigelin {ruolo}",
     },
-    marquee: "Delsigel / Käsityöteollisuus / Innovaatio ja perinne / Vuodesta 1960 / ",
+    marquee: "Delsigel / Innovaatio ja perinne / Vuodesta 1960 / ",
   },
   contatti: {
     ...en.contatti,
@@ -134,8 +134,8 @@ export const fi: Testi = {
     vassoio: { label: "Klassikko", alt: "Käsi ottaa toisen kahdesta täytetystä munkista soikealta tarjottimelta keltaisella taustalla" },
   },
   metadata: {
-    home: { titolo: "Delsigel Italia · Käsityöteollisuus", descrizione: "Delsigel on innovatiivista käsityöteollisuutta kaikille. Makeita ja suolaisia leipomotuotteita suuressa mittakaavassa vuodesta 1960. Tutustu kuvastoon 2026/27." },
-    chiSiamo: { titolo: "Meistä · Delsigel Italia", descrizione: "Delsigelin tiimi ja tuotantolinja: Sermonetan käsityöteollisuutta vuodesta 1960." }, contatti: { titolo: "Yhteystiedot · Delsigel Italia", descrizione: "Pyydä hinnasto, varaa tehdasvierailu tai ota yhteyttä Delsigeliin Sermonetassa, Italiassa." },
+    home: { titolo: "Delsigel Italia. Perinne ja innovaatio", descrizione: "Delsigel: perinne, innovaatio ja laatu. Makeita ja suolaisia leipomotuotteita suuressa mittakaavassa vuodesta 1960. Tutustu kuvastoon 2026/27." },
+    chiSiamo: { titolo: "Meistä · Delsigel Italia", descrizione: "Delsigelin tiimi ja tuotantolinja, Sermoneta, vuodesta 1960." }, contatti: { titolo: "Yhteystiedot · Delsigel Italia", descrizione: "Pyydä hinnasto, varaa tehdasvierailu tai ota yhteyttä Delsigeliin Sermonetassa, Italiassa." },
     configuratore: { radiceTitolo: "Leivonnaiskonfiguraattori · Delsigel Italia", radiceDescrizione: "Kokoa tuotteesi: pohja, täyte ja koko. Logistiikkaketju ja vähimmäistilaus ilmoitetaan ennen lähettämistä.", baseTitolo: "{base} · Delsigel-konfiguraattori", baseDescrizione: "Valitse tuotteen {base} täyte ja kokoa pyyntösi.", combTitolo: "{nome} · {farcitura} · Delsigel-konfiguraattori", combDescrizione: "{nome}, täyte {farcitura}, viimeistely {topping}, {g} g. Aseta määrä ja pyydä tarjous." },
   },
 };

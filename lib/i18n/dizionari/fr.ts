@@ -13,7 +13,7 @@ export const fr: Testi = {
   },
   footer: {
     ...en.footer,
-    tagline: "L'industrie artisanale de Sermoneta, depuis 1960.",
+    tagline: "L'industrie de la tradition, Sermoneta, depuis 1960.",
     colonne: {
       delsigel: { titolo: "Delsigel", chiSiamo: "Qui sommes-nous", storia: "Notre histoire", contatti: "Contact" },
       prodotti: { titolo: "Produits", dolci: "Nos douceurs", salati: "Nos produits salés", catalogo: "Catalogue 2026/27" },
@@ -24,14 +24,14 @@ export const fr: Testi = {
     legale: "© 2026 Delsigel Italia S.r.l. · TVA 02241670591", termini: "Conditions", privacy: "Confidentialité", cookie: "Cookies",
   },
   hero: {
-    insegna: [{ testo: "Industrie" }, { testo: "artisanale." }, { testo: "La tradition", accento: true }, { testo: "est innovation.", accento: true }],
+    insegna: [{ testo: "La tradition", accento: true }, { testo: "est innovation.", accento: true }],
     alt: "Quatre variétés d’Intriko sur des socles rouges et orange.",
   },
   home: {
     ...en.home,
     storia: {
-      eyebrow: "Notre histoire", luogo: "Delsigel · Sermoneta", titolo: ["13 millions de douceurs plus tard."],
-      testo: "En 2011, Del Monte et Siani se rencontrent. Aujourd'hui, Delsigel est une industrie artisanale certifiée IFS Food, Rainforest Alliance et RSPO, portée par une nouvelle génération et un projet visant à doubler sa capacité.",
+      eyebrow: "Notre histoire", luogo: "Delsigel · Sermoneta", titolo: ["200 millions de douceurs plus tard."],
+      testo: "En 2011, Del Monte et Siani se rencontrent. Aujourd'hui, Delsigel est une industrie certifiée IFS Food, Rainforest Alliance et RSPO, portée par une nouvelle génération et un projet visant à doubler sa capacité.",
       cta: "Découvrir notre histoire", prossimoLabel: "Prochain chapitre", prossimoNome: "Catalogue 2026/27", continuaAria: "Continuer vers le catalogue 2026/27",
     },
     catalogoAria: "Catalogue des douceurs Delsigel", gammaAria: "Catalogue des produits Delsigel",
@@ -155,7 +155,7 @@ export const fr: Testi = {
   chiSiamo: {
     ...en.chiSiamo,
     intro: {
-      eyebrow: "Qui sommes-nous · Delsigel Italia", titolo: [{ testo: "Une industrie" }, { testo: "artisanale" }, { testo: "à Sermoneta" }], sigillo: "depuis 1960 · IFS Food · Rainforest Alliance · RSPO",
+      eyebrow: "Qui sommes-nous · Delsigel Italia", titolo: [{ testo: "Une industrie" }, { testo: "de la tradition" }, { testo: "à Sermoneta" }], sigillo: "depuis 1960 · IFS Food · Rainforest Alliance · RSPO",
       fotoAlt: "Quatre collaboratrices Delsigel souriantes et enlacées dans le laboratoire",
     },
     album: "L'album de l'usine :",
@@ -165,18 +165,18 @@ export const fr: Testi = {
       marquee: ["mains", "temps", "soin", "matière", "avenir"], progressoScorri: "faites défiler pour continuer",
       tappe: {
         origini: { titolo: "2011", sottotitolo: "La rencontre", descrizione: "Del Monte, experte des douceurs frites. Siani, maison de la pâte feuilletée. En 2011, deux entreprises reconnues réunissent recettes et savoir-faire : Delsigel naît à Sermoneta.", frase: "Deux passions, une seule grande excellence.", alt: "Composition éditoriale évocatrice d'un pâtissier ouvrant le four à l'aube" },
-        unione: { titolo: "L'oxymore", sottotitolo: "Industrie artisanale", descrizione: "Cela ressemble à une contradiction, mais c'est notre secret. Nous avons uni le cœur et les recettes de la pâtisserie artisanale à la précision des technologies les plus avancées. Le résultat ? Des produits qui conservent l'amour et le goût authentique du fait main.", frase: "Des mains d'artisan, un rythme industriel.", alt: "Composition éditoriale évocatrice de deux pâtissiers joignant leurs mains sur le plan de travail" },
+        unione: { titolo: "L'oxymore", sottotitolo: "L'industrie de la tradition", descrizione: "Cela ressemble à une contradiction, mais c'est notre secret. Nous avons uni le cœur et les recettes de la pâtisserie à la précision des technologies les plus avancées. Le résultat ? Des produits qui conservent l'amour et le goût authentique du fait avec soin.", frase: "Le soin au quotidien, un rythme industriel.", alt: "Composition éditoriale évocatrice de deux pâtissiers joignant leurs mains sur le plan de travail" },
         qualita: { titolo: "La qualité", sottotitolo: "Certifiée, chaque jour", descrizione: "Matières premières sélectionnées et vérification de chaque processus de production selon les normes internationales les plus strictes : sécurité alimentaire, garantie par la certification IFS Food ; protection de l'environnement, soutenue par les normes Rainforest Alliance ; éthique et durabilité, certifiées par RSPO pour le respect de ceux qui cultivent.", frase: "Certifiée par ceux qui ne font aucune concession.", alt: "Composition éditoriale évocatrice de mains pliant une pâte feuilletée sur un plan fariné" },
         traguardo: { titolo: "13 millions", sottotitolo: "2025 · Intriko", descrizione: "En 2025, nous avons atteint un cap extraordinaire : 13 millions d'Intriko nés de l'union entre la force de nos machines et le soin du travail manuel.", frase: "", alt: "Composition éditoriale évocatrice d'un pâtissier contrôlant une ligne moderne" },
-        generazione: { titolo: "2026", sottotitolo: "La nouvelle génération", descrizione: "Les grandes histoires d'entreprise sont faites de cycles naturels et d'évolution. La deuxième génération entre dans l'entreprise. L'équipe s'enrichit de forces jeunes, prêtes à poursuivre le parcours de l'entreprise. La promesse : les mains changent, mais la formule d'artisanat et de technologie reste la même. Chaque jour.", frase: "", alt: "Composition éditoriale évocatrice d'un livre de recettes transmis entre deux générations" },
-        futuro: { titolo: "28 millions", sottotitolo: "Le plan 2026–27", descrizione: "Nous avons déjà tracé la route pour les prochaines années. De nouveaux investissements pour 2027 permettront de doubler la capacité de production. De nouvelles idées transformées en nouveaux produits, fidèles à notre identité.", frase: "", alt: "Composition éditoriale évocatrice d'une équipe de pâtissiers au travail" },
+        generazione: { titolo: "2026", sottotitolo: "La nouvelle génération", descrizione: "Les grandes histoires d'entreprise sont faites de cycles naturels et d'évolution. La deuxième génération entre dans l'entreprise. L'équipe s'enrichit de forces jeunes, prêtes à poursuivre le parcours de l'entreprise. La promesse : les mains changent, mais la formule de tradition et de technologie reste la même. Chaque jour.", frase: "", alt: "Composition éditoriale évocatrice d'un livre de recettes transmis entre deux générations" },
+        futuro: { titolo: "28 millions", sottotitolo: "Le plan 2026–2028", descrizione: "Nous avons déjà tracé la route pour les prochaines années. De nouveaux investissements pour 2027 permettront de doubler la capacité de production. De nouvelles idées transformées en nouveaux produits, fidèles à notre identité.", frase: "", alt: "Composition éditoriale évocatrice d'une équipe de pâtissiers au travail" },
       },
       certificazioni: { ifs: "Logo de la certification IFS Food — International Featured Standards", rainforest: "Logo Rainforest Alliance, People & Nature", rspo: "Label RSPO — Certified Sustainable Palm Oil" },
       finale: { eyebrow: "L'histoire continue", frase: ["Les mains changent.", "Le soin demeure."], coda: "Depuis 1960, à Sermoneta · le meilleur de nous-mêmes, chaque jour" }, azione: "Rencontrer l'équipe",
     },
     squadra: {
       ...en.chiSiamo.squadra,
-      titolo: "L'équipe.", testo: "Vingt et un visages, un seul laboratoire : toute l'industrie artisanale réunie, depuis 1960.", scritta: "une équipe formidable !", indietro: "Faire défiler l'équipe vers l'arrière", avanti: "Faire défiler l'équipe vers l'avant",
+      titolo: "L'équipe.", testo: "De nombreux visages, un seul laboratoire.", scritta: "une équipe formidable !", indietro: "Faire défiler l'équipe vers l'arrière", avanti: "Faire défiler l'équipe vers l'avant",
       ruoli: {
         "Ufficio commerciale": "Service commercial",
         "Responsabile ufficio acquisti e personale": "Responsable achats et personnel",
@@ -193,7 +193,7 @@ export const fr: Testi = {
       },
       ritratto: "{nome}, {ruolo} chez Delsigel",
     },
-    marquee: "Delsigel / L'industrie artisanale / Innovation et Tradition / Depuis 1960 / ",
+    marquee: "Delsigel / Innovation et Tradition / Depuis 1960 / ",
   },
   contatti: {
     ...en.contatti,
@@ -235,8 +235,8 @@ export const fr: Testi = {
     vassoio: { label: "Le classique", alt: "Une main saisit l'un des deux beignets fourrés posés sur un plateau ovale, sur fond jaune" },
   },
   metadata: {
-    home: { titolo: "Delsigel Italia · L'industrie artisanale", descrizione: "Delsigel, l'industrie artisanale : innovante et accessible à tous. Produits boulangers sucrés et salés, fabriqués à grande échelle depuis 1960. Découvrez le catalogue 2026/27." },
-    chiSiamo: { titolo: "Qui sommes-nous · Delsigel Italia", descrizione: "L'équipe Delsigel et sa ligne de production : l'industrie artisanale de Sermoneta, depuis 1960." },
+    home: { titolo: "Delsigel Italia. Tradition et innovation", descrizione: "Delsigel : tradition, innovation et qualité. Des produits sucrés et salés de laboratoire, fabriqués à grande échelle depuis 1960. Découvrez le catalogue 2026/27." },
+    chiSiamo: { titolo: "Qui sommes-nous · Delsigel Italia", descrizione: "L'équipe Delsigel et la ligne de production, Sermoneta, depuis 1960." },
     contatti: { titolo: "Contact · Delsigel Italia", descrizione: "Demandez le tarif, réservez une visite de l'usine ou contactez Delsigel à Sermoneta, en Italie." },
     configuratore: { radiceTitolo: "Configurateur de douceurs · Delsigel Italia", radiceDescrizione: "Composez votre produit : base, garniture et format, avec la chaîne logistique et la commande minimale indiquées avant l'envoi.", baseTitolo: "{base} · Configurateur Delsigel", baseDescrizione: "Choisissez la garniture de {base} et composez votre demande.", combTitolo: "{nome} · {farcitura} · Configurateur Delsigel", combDescrizione: "{nome} avec {farcitura}, finition {topping}, {g} g. Indiquez la quantité et demandez un devis." },
   },
